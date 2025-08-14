@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binomial Completion Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .title {
+            color: #4a5568;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            color: #718096;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .score-item {
+            text-align: center;
+        }
+
+        .score-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .score-label {
+            color: #718096;
+            font-size: 0.9em;
+        }
+
+        .question-card {
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border: 3px solid #e2e8f0;
+        }
+
+        .question-text {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #2d3748;
+        }
+
+        .binomial-display {
+            font-size: 2.2em;
+            font-weight: bold;
+            margin: 20px 0;
+            color: #4a5568;
+        }
+
+        .missing-word {
+            color: #e53e3e;
+            text-decoration: underline;
+            text-decoration-style: dashed;
+        }
+
+        .input-container {
+            margin: 25px 0;
+        }
+
+        .answer-input {
+            font-size: 1.3em;
+            padding: 12px 20px;
+            border: 3px solid #cbd5e0;
+            border-radius: 10px;
+            width: 200px;
+            text-align: center;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .answer-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn {
+            font-size: 1.1em;
+            padding: 12px 25px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+            transform: translateY(-1px);
+        }
+
+        .feedback {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: all 0.5s ease;
+        }
+
+        .feedback.show {
+            opacity: 1;
+            transform: scale(1.05);
+        }
+
+        .feedback.correct {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 2px solid #38a169;
+        }
+
+        .feedback.incorrect {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 2px solid #e53e3e;
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .game-over {
+            display: none;
+            background: #ffffff;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .final-score {
+            font-size: 2em;
+            color: #4a5568;
+            margin: 20px 0;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .bounce {
+            animation: bounce 0.6s;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="title">🎯 Binomial Game</h1>
+        <p class="subtitle">Complete the word pairs!</p>
+
+        <div class="score-board">
+            <div class="score-item">
+                <div class="score-number" id="correct-score">0</div>
+                <div class="score-label">Correct</div>
+            </div>
+            <div class="score-item">
+                <div class="score-number" id="total-score">0</div>
+                <div class="score-label">Total</div>
+            </div>
+            <div class="score-item">
+                <div class="score-number" id="percentage">0%</div>
+                <div class="score-label">Accuracy</div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress"></div>
+        </div>
+
+        <div class="question-card" id="question-card">
+            <div class="question-text">Complete the binomial:</div>
+            <div class="binomial-display" id="binomial-display"></div>
+            <div class="input-container">
+                <input type="text" class="answer-input" id="answer-input" placeholder="Type your answer..." autocomplete="off">
+            </div>
+            <button class="btn btn-primary" id="submit-btn" onclick="checkAnswer()">Submit Answer</button>
+            <button class="btn btn-secondary" id="skip-btn" onclick="skipQuestion()">Skip</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <div class="game-over" id="game-over">
+            <h2>🎉 Game Complete!</h2>
+            <div class="final-score" id="final-score"></div>
+            <button class="btn btn-primary" onclick="restartGame()">Play Again</button>
+        </div>
+
+        <button class="btn btn-secondary" onclick="restartGame()" style="margin-top: 20px;">New Game</button>
+    </div>
+
+    <script>
+        const binomials = [
+            "back and forth", "bits and pieces", "bright and early", "by and large",
+            "far and wide", "first and foremost", "give and take", "hit and miss",
+            "hustle and bustle", "ifs or buts", "ins and outs", "law and order",
+            "length and breadth", "live and learn", "loud and clear", "more or less",
+            "now and then", "odds and ends", "once and for all", "part and parcel",
+            "peace and quiet", "pros and cons", "rain or shine", "rise and shine",
+            "safe and sound", "short and sweet", "sick and tired", "sink or swim",
+            "skin and bones", "slowly but surely", "sooner or later", "there and then",
+            "touch and go", "trial and error", "ups and downs", "wait and see",
+            "wear and tear", "wine and dine"
+        ];
+
+        let currentQuestion = 0;
+        let correctAnswers = 0;
+        let totalQuestions = 0;
+        let gameQuestions = [];
+        let currentAnswer = "";
+
+        // Audio context for sound effects
+        let audioContext;
+        
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        function playSound(frequency, duration, type = 'sine') {
+            initAudio();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            oscillator.type = type;
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        function playCorrectSound() {
+            // Happy ascending notes
+            playSound(523, 0.15); // C
+            setTimeout(() => playSound(659, 0.15), 100); // E
+            setTimeout(() => playSound(784, 0.2), 200); // G
+        }
+
+        function playIncorrectSound() {
+            // Descending error sound
+            playSound(400, 0.3, 'sawtooth');
+        }
+
+        function playGameOverSound() {
+            // Victory fanfare
+            playSound(523, 0.2);
+            setTimeout(() => playSound(659, 0.2), 150);
+            setTimeout(() => playSound(784, 0.2), 300);
+            setTimeout(() => playSound(1047, 0.4), 450);
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function generateQuestions() {
+            gameQuestions = [];
+            const shuffledBinomials = shuffleArray(binomials);
+            
+            shuffledBinomials.forEach(binomial => {
+                // Split by common connectors
+                let parts, connector;
+                if (binomial.includes(' and ')) {
+                    parts = binomial.split(' and ');
+                    connector = 'and';
+                } else if (binomial.includes(' or ')) {
+                    parts = binomial.split(' or ');
+                    connector = 'or';
+                }
+                
+                if (parts && parts.length === 2) {
+                    // Random choice: hide first or second part
+                    if (Math.random() > 0.5) {
+                        // Hide first part - show "_____ and sound"
+                        gameQuestions.push({
+                            display: `_____ ${connector} ${parts[1]}`,
+                            answer: parts[0].toLowerCase().trim(),
+                            full: binomial
+                        });
+                    } else {
+                        // Hide second part - show "safe and _____"
+                        gameQuestions.push({
+                            display: `${parts[0]} ${connector} _____`,
+                            answer: parts[1].toLowerCase().trim(),
+                            full: binomial
+                        });
+                    }
+                }
+            });
+            
+            gameQuestions = shuffleArray(gameQuestions);
+        }
+
+        function displayQuestion() {
+            if (currentQuestion >= gameQuestions.length) {
+                endGame();
+                return;
+            }
+
+            const question = gameQuestions[currentQuestion];
+            document.getElementById('binomial-display').textContent = question.display;
+            document.getElementById('answer-input').value = '';
+            document.getElementById('answer-input').focus();
+            currentAnswer = question.answer;
+
+            // Update progress
+            const progress = ((currentQuestion) / gameQuestions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+
+            // Hide feedback
+            const feedback = document.getElementById('feedback');
+            feedback.classList.remove('show');
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer-input').value.trim().toLowerCase();
+            const feedback = document.getElementById('feedback');
+            
+            totalQuestions++;
+            
+            if (userAnswer === currentAnswer) {
+                correctAnswers++;
+                feedback.textContent = `🎉 Correct! "${gameQuestions[currentQuestion].full}"`;
+                feedback.className = 'feedback correct show';
+                playCorrectSound();
+                document.querySelector('.game-container').classList.add('bounce');
+                setTimeout(() => document.querySelector('.game-container').classList.remove('bounce'), 600);
+            } else {
+                feedback.textContent = `❌ Incorrect. The answer was "${currentAnswer}". Full phrase: "${gameQuestions[currentQuestion].full}"`;
+                feedback.className = 'feedback incorrect show';
+                playIncorrectSound();
+            }
+            
+            updateScore();
+            
+            // Disable input and buttons during feedback
+            document.getElementById('answer-input').disabled = true;
+            document.getElementById('submit-btn').disabled = true;
+            document.getElementById('skip-btn').disabled = true;
+            
+            setTimeout(() => {
+                currentQuestion++;
+                displayQuestion();
+                // Re-enable input and buttons
+                document.getElementById('answer-input').disabled = false;
+                document.getElementById('submit-btn').disabled = false;
+                document.getElementById('skip-btn').disabled = false;
+            }, 2500);
+        }
+
+        function skipQuestion() {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = `⏭️ Skipped! The answer was "${currentAnswer}". Full phrase: "${gameQuestions[currentQuestion].full}"`;
+            feedback.className = 'feedback incorrect show';
+            
+            totalQuestions++;
+            updateScore();
+            
+            // Disable input and buttons during feedback
+            document.getElementById('answer-input').disabled = true;
+            document.getElementById('submit-btn').disabled = true;
+            document.getElementById('skip-btn').disabled = true;
+            
+            setTimeout(() => {
+                currentQuestion++;
+                displayQuestion();
+                // Re-enable input and buttons
+                document.getElementById('answer-input').disabled = false;
+                document.getElementById('submit-btn').disabled = false;
+                document.getElementById('skip-btn').disabled = false;
+            }, 2000);
+        }
+
+        function updateScore() {
+            document.getElementById('correct-score').textContent = correctAnswers;
+            document.getElementById('total-score').textContent = totalQuestions;
+            const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+            document.getElementById('percentage').textContent = percentage + '%';
+        }
+
+        function endGame() {
+            document.getElementById('question-card').style.display = 'none';
+            document.getElementById('game-over').style.display = 'block';
+            
+            const percentage = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+            let message = '';
+            
+            if (percentage >= 90) {
+                message = '🌟 Excellent! You\'re a binomial master!';
+            } else if (percentage >= 70) {
+                message = '👏 Great job! You know your binomials well!';
+            } else if (percentage >= 50) {
+                message = '👍 Good effort! Keep practicing!';
+            } else {
+                message = '💪 Keep studying! You\'ll get better with practice!';
+            }
+            
+            document.getElementById('final-score').innerHTML = `
+                ${message}<br>
+                Score: ${correctAnswers}/${totalQuestions} (${percentage}%)
+            `;
+            
+            playGameOverSound();
+            
+            // Update progress to 100%
+            document.getElementById('progress').style.width = '100%';
+        }
+
+        function restartGame() {
+            currentQuestion = 0;
+            correctAnswers = 0;
+            totalQuestions = 0;
+            
+            document.getElementById('question-card').style.display = 'block';
+            document.getElementById('game-over').style.display = 'none';
+            
+            generateQuestions();
+            updateScore();
+            displayQuestion();
+        }
+
+        // Enter key support
+        document.getElementById('answer-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        // Initialize game
+        document.addEventListener('DOMContentLoaded', function() {
+            generateQuestions();
+            displayQuestion();
+        });
+
+        // Initialize audio on first user interaction
+        document.addEventListener('click', initAudio, { once: true });
+    </script>
+</body>
+</html>
