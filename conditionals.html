@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Conditionals Learning Bot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #e0f2fe 0%, #e8eaf6 100%);
+            min-height: 100vh;
+            padding: 1.5rem;
+        }
+        
+        .container {
+            max-width: 64rem;
+            margin: 0 auto;
+        }
+        
+        .main-card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: #3f51b5;
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            color: #6b7280;
+            margin-bottom: 1rem;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .level-navigation {
+            margin-bottom: 2rem;
+        }
+        
+        .level-navigation h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.5rem;
+        }
+        
+        .level-button {
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+        
+        .level-button.current {
+            background: #3f51b5;
+            color: white;
+        }
+        
+        .level-button.completed {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+        
+        .level-button.available {
+            background: #f5f5f5;
+            color: #374151;
+        }
+        
+        .level-button.available:hover {
+            background: #e5e7eb;
+        }
+        
+        .level-info {
+            background: #e8eaf6;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .level-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .level-title h2 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #3f51b5;
+        }
+        
+        .structure-box {
+            background: white;
+            border-radius: 0.25rem;
+            padding: 0.75rem;
+            margin: 0.75rem 0;
+        }
+        
+        .structure-code {
+            background: #f5f5f5;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .examples-list {
+            list-style: disc;
+            list-style-position: inside;
+            margin-top: 0.5rem;
+            color: #374151;
+        }
+        
+        .examples-list li {
+            font-style: italic;
+            margin: 0.25rem 0;
+        }
+        
+        .exercise-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .exercise-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .exercise-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .btn-small {
+            padding: 0.25rem 0.75rem;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-hint {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .btn-hint:hover {
+            background: #ffeaa7;
+        }
+        
+        .btn-reset {
+            background: #f8f9fa;
+            color: #6c757d;
+        }
+        
+        .btn-reset:hover {
+            background: #e9ecef;
+        }
+        
+        .exercise-prompt {
+            font-size: 1.125rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .hint-box {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 0.25rem;
+            padding: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .input-field {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: #3f51b5;
+            box-shadow: 0 0 0 2px rgba(63, 81, 181, 0.2);
+        }
+        
+        .btn-primary {
+            padding: 0.75rem 1.5rem;
+            background: #3f51b5;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: #303f9f;
+        }
+        
+        .btn-primary:disabled {
+            background: #d1d5db;
+            cursor: not-allowed;
+        }
+        
+        .btn-success {
+            padding: 0.75rem 1.5rem;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .btn-success:hover {
+            background: #45a049;
+        }
+        
+        .feedback {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .feedback.correct {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+        
+        .feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #f44336;
+        }
+        
+        .explanation {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            border-radius: 0.5rem;
+        }
+        
+        .progress-section {
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.5rem;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background: #e5e7eb;
+            border-radius: 0.25rem;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: #3f51b5;
+            transition: width 0.3s ease;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-card {
+                padding: 1rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .level-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .exercise-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .input-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-card">
+            <header class="header">
+                <h1>English Conditionals Learning Bot</h1>
+                <p>Master conditionals and "wish" structures step by step!</p>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span>🏆</span>
+                        <span>Score: <span id="score">0</span></span>
+                    </div>
+                    <div class="stat-item">
+                        <span>🎯</span>
+                        <span>Completed: <span id="completed-count">0</span>/8</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="level-navigation">
+                <h3>Choose the type of conditional you want to practise:</h3>
+                <div class="level-grid" id="level-grid">
+                    <!-- Level buttons will be generated here -->
+                </div>
+            </div>
+
+            <div class="level-info" id="level-info">
+                <!-- Level information will be displayed here -->
+            </div>
+
+            <div class="exercise-card" id="exercise-card">
+                <!-- Exercise content will be displayed here -->
+            </div>
+
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span>Level Progress</span>
+                    <span id="progress-text">1/3</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <footer class="footer">
+                <p>Created for English language learners • Practice makes perfect! 🌟</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Application state
+        let currentLevel = 0;
+        let currentExercise = 0;
+        let userAnswer = '';
+        let feedback = '';
+        let showExplanation = false;
+        let score = 0;
+        let completedLevels = new Set();
+        let showHint = false;
+
+        // Track correct answers for final challenge
+        let finalChallengeCorrect = 0;
+        let finalChallengeTotal = 0;
+        let finalChallengeAnswered = new Set(); // Track which exercises have been answered
+
+        // Course data
+        const levels = [
+            {
+                title: "Zero Conditionals",
+                description: "Facts and general truths",
+                structure: "If + present simple, present simple",
+                examples: ["If you heat water to 100°C, it boils.", "If I drink coffee at night, I can't sleep."],
+                exercises: [
+                    {
+                        prompt: "Complete: If you _____ (mix) red and blue, you get purple.",
+                        answer: "mix",
+                        explanation: "Zero conditionals use present simple in both clauses for general truths.",
+                        hint: "Think about what always happens when you combine these colors."
+                    },
+                    {
+                        prompt: "Complete: If it _____ (rain), the ground gets wet.",
+                        answer: "rains",
+                        explanation: "Third person singular takes -s in present simple.",
+                        hint: "Remember the -s for third person singular (it)."
+                    },
+                    {
+                        prompt: "Complete: People _____ (get) tired if they don't sleep enough.",
+                        answer: "get",
+                        explanation: "Both clauses use present simple for universal truths.",
+                        hint: "What always happens to people who don't get enough sleep?"
+                    }
+                ],
+                exerciseTemplates: [
+                    { prompt: "If water _____ (freeze), it turns into ice.", answer: "freezes", verb: "freeze" },
+                    { prompt: "If you _____ (not water) plants, they die.", answer: "don't water", verb: "not water" },
+                    { prompt: "The sun _____ (rise) in the east if you look at the compass.", answer: "rises", verb: "rise" },
+                    { prompt: "If you _____ (press) this button, the machine starts.", answer: "press", verb: "press" },
+                    { prompt: "Metal _____ (expand) if you heat it.", answer: "expands", verb: "expand" },
+                    { prompt: "If children _____ (not eat) properly, they don't grow well.", answer: "don't eat", verb: "not eat" },
+                    { prompt: "Flowers _____ (bloom) if they get enough sunlight.", answer: "bloom", verb: "bloom" },
+                    { prompt: "If you _____ (drop) a glass, it breaks.", answer: "drop", verb: "drop" },
+                    { prompt: "Wood _____ (float) if you put it in water.", answer: "floats", verb: "float" },
+                    { prompt: "If the temperature _____ (fall) below zero, water freezes.", answer: "falls", verb: "fall" }
+                ]
+            },
+            {
+                title: "First Conditionals",
+                description: "Real future possibilities",
+                structure: "If + present simple, will + infinitive",
+                examples: ["If it rains tomorrow, I will stay home.", "If you study hard, you will pass the exam."],
+                exercises: [
+                    {
+                        prompt: "Complete: If she _____ (arrive) early, we will start the meeting.",
+                        answer: "arrives",
+                        explanation: "First conditional: present simple in the if-clause, will + infinitive in the main clause.",
+                        hint: "Use present simple in the if-clause, even for future meaning."
+                    },
+                    {
+                        prompt: "Complete: I _____ (call) you if I have any news.",
+                        answer: "will call",
+                        explanation: "The main clause uses will + infinitive for future results.",
+                        hint: "What will you do in the future if you have news?"
+                    },
+                    {
+                        prompt: "Complete: If they _____ (not hurry), they will miss the train.",
+                        answer: "don't hurry",
+                        explanation: "Negative forms in the if-clause use don't/doesn't + infinitive.",
+                        hint: "Make the verb negative in present simple."
+                    }
+                ],
+                exerciseTemplates: [
+                    { prompt: "If the weather _____ (be) nice, we will go to the beach.", answer: "is", verb: "be" },
+                    { prompt: "She _____ (help) you if you ask her nicely.", answer: "will help", verb: "help" },
+                    { prompt: "If I _____ (finish) work early, I'll come to your party.", answer: "finish", verb: "finish" },
+                    { prompt: "You _____ (feel) better if you take this medicine.", answer: "will feel", verb: "feel" },
+                    { prompt: "If he _____ (not study), he won't pass the test.", answer: "doesn't study", verb: "not study" },
+                    { prompt: "We _____ (go) shopping if the stores are open.", answer: "will go", verb: "go" },
+                    { prompt: "If you _____ (eat) too much, you will feel sick.", answer: "eat", verb: "eat" },
+                    { prompt: "They _____ (not come) if the weather is bad.", answer: "won't come", verb: "not come" },
+                    { prompt: "If she _____ (practice) every day, she will improve quickly.", answer: "practices", verb: "practice" },
+                    { prompt: "I _____ (buy) a new car if I get the job.", answer: "will buy", verb: "buy" }
+                ]
+            },
+            {
+                title: "Second Conditionals",
+                description: "Hypothetical present/future situations",
+                structure: "If + past simple, would + infinitive",
+                examples: ["If I were rich, I would buy a yacht.", "If you lived here, we would see each other more often."],
+                exercises: [
+                    {
+                        prompt: "Complete: If I _____ (have) more time, I would learn Spanish.",
+                        answer: "had",
+                        explanation: "Second conditional uses past simple in the if-clause for hypothetical situations.",
+                        hint: "Use past simple for imaginary present situations."
+                    },
+                    {
+                        prompt: "Complete: She _____ (travel) around the world if she won the lottery.",
+                        answer: "would travel",
+                        explanation: "The main clause uses would + infinitive for hypothetical results.",
+                        hint: "What would she do as a result of winning?"
+                    },
+                    {
+                        prompt: "Complete: If we _____ (be) birds, we could fly.",
+                        answer: "were",
+                        explanation: "Use 'were' for all persons in second conditionals with the verb 'to be'.",
+                        hint: "Special rule: always use 'were' in second conditionals, even with 'I' and 'he/she/it'."
+                    }
+                ],
+                exerciseTemplates: [
+                    { prompt: "If I _____ (know) his number, I would call him.", answer: "knew", verb: "know" },
+                    { prompt: "She _____ (be) happier if she lived by the sea.", answer: "would be", verb: "be" },
+                    { prompt: "If they _____ (have) more money, they would buy a bigger house.", answer: "had", verb: "have" },
+                    { prompt: "I _____ (not work) if I were a millionaire.", answer: "wouldn't work", verb: "not work" },
+                    { prompt: "If he _____ (speak) Chinese, he could get that job.", answer: "spoke", verb: "speak" },
+                    { prompt: "We _____ (go) to Japan if flights were cheaper.", answer: "would go", verb: "go" },
+                    { prompt: "If I _____ (be) you, I would apologize.", answer: "were", verb: "be" },
+                    { prompt: "They _____ (move) to the countryside if they could work remotely.", answer: "would move", verb: "move" },
+                    { prompt: "If she _____ (not have) children, she would travel more.", answer: "didn't have", verb: "not have" },
+                    { prompt: "You _____ (feel) better if you exercised regularly.", answer: "would feel", verb: "feel" }
+                ]
+            },
+            {
+                title: "Third Conditionals",
+                description: "Past hypothetical situations",
+                structure: "If + past perfect, would have + past participle",
+                examples: ["If I had studied harder, I would have passed the exam.", "If you had called me, I would have helped you."],
+                exercises: [
+                    {
+                        prompt: "Complete: If she _____ (leave) earlier, she wouldn't have missed the flight.",
+                        answer: "had left",
+                        explanation: "Third conditional uses past perfect in the if-clause for past hypothetical situations.",
+                        hint: "Use past perfect (had + past participle) in the if-clause."
+                    },
+                    {
+                        prompt: "Complete: I _____ (help) you if you had asked me.",
+                        answer: "would have helped",
+                        explanation: "The main clause uses would have + past participle for past hypothetical results.",
+                        hint: "What would you have done in the past if they had asked?"
+                    },
+                    {
+                        prompt: "Complete: If they _____ (not make) that mistake, they would have won the game.",
+                        answer: "hadn't made",
+                        explanation: "Negative past perfect: hadn't + past participle.",
+                        hint: "Make the past perfect negative."
+                    }
+                ],
+                exerciseTemplates: [
+                    { prompt: "If I _____ (know) about the party, I would have come.", answer: "had known", verb: "know" },
+                    { prompt: "She _____ (pass) the exam if she had studied more.", answer: "would have passed", verb: "pass" },
+                    { prompt: "If we _____ (arrive) earlier, we would have got better seats.", answer: "had arrived", verb: "arrive" },
+                    { prompt: "They _____ (not lose) the match if they had played better.", answer: "wouldn't have lost", verb: "not lose" },
+                    { prompt: "If you _____ (tell) me, I would have helped you.", answer: "had told", verb: "tell" },
+                    { prompt: "He _____ (get) the job if he had prepared for the interview.", answer: "would have got", verb: "get" },
+                    { prompt: "If it _____ (not rain), we would have had a picnic.", answer: "hadn't rained", verb: "not rain" },
+                    { prompt: "I _____ (buy) that house if I had had enough money.", answer: "would have bought", verb: "buy" },
+                    { prompt: "If she _____ (listen) to advice, she wouldn't have made that mistake.", answer: "had listened", verb: "listen" },
+                    { prompt: "We _____ (enjoy) the concert more if we had had better seats.", answer: "would have enjoyed", verb: "enjoy" }
+                ]
+            },
+            {
+                title: "Mixed Conditionals",
+                description: "Combining different time references",
+                structure: "Past condition → Present result OR Present condition → Past result",
+                examples: ["If I had studied medicine, I would be a doctor now.", "If she were more organized, she wouldn't have lost her keys."],
+                exercises: [
+                    {
+                        prompt: "Complete: If I _____ (save) money when I was young, I would be rich now.",
+                        answer: "had saved",
+                        explanation: "Past condition (past perfect) with present result (would + infinitive).",
+                        hint: "The saving happened in the past, but the result is now."
+                    },
+                    {
+                        prompt: "Complete: If he _____ (be) more careful, he wouldn't have had that accident.",
+                        answer: "were",
+                        explanation: "Present/general condition with past result - he's generally not careful.",
+                        hint: "This is about his general character (present) affecting a past event."
+                    },
+                    {
+                        prompt: "Complete: She _____ (be) happier now if she had chosen a different career.",
+                        answer: "would be",
+                        explanation: "Past decision (past perfect) affecting present state (would + be).",
+                        hint: "The career choice was in the past, but happiness is about now."
+                    }
+                ],
+                exerciseTemplates: [
+                    { prompt: "If I _____ (learn) to drive when I was younger, I would have a car now.", answer: "had learned", verb: "learn" },
+                    { prompt: "He _____ (not be) so tired now if he had slept last night.", answer: "wouldn't be", verb: "not be" },
+                    { prompt: "If she _____ (be) more confident, she would have got the promotion.", answer: "were", verb: "be" },
+                    { prompt: "I _____ (understand) the film if I had studied French at school.", answer: "would understand", verb: "understand" },
+                    { prompt: "If they _____ (not spend) all their money, they would have savings now.", answer: "hadn't spent", verb: "not spend" },
+                    { prompt: "She _____ (not lose) her job if she were more punctual.", answer: "wouldn't have lost", verb: "not lose" },
+                    { prompt: "If I _____ (take) that job offer, I would be living in New York now.", answer: "had taken", verb: "take" },
+                    { prompt: "They _____ (win) the championship if they were better prepared.", answer: "would have won", verb: "win" },
+                    { prompt: "If he _____ (invest) wisely, he would be wealthy now.", answer: "had invested", verb: "invest" },
+                    { prompt: "You _____ (not fail) the test if you were more focused.", answer: "wouldn't have failed", verb: "not fail" }
+                ]
+            },
+            {
+                title: "Wish + Would",
+                description: "Expressing annoyance or desire for change",
+                structure: "I wish + subject + would + infinitive",
+                examples: ["I wish you would listen to me.", "I wish it would stop raining."],
+                exercises: [
+                    {
+                        prompt: "Complete: I wish my neighbor _____ (stop) playing loud music at night.",
+                        answer: "would stop",
+                        explanation: "Wish + would expresses desire for someone/something to change their behavior.",
+                        hint: "You want your neighbor to change their behavior."
+                    },
+                    {
+                        prompt: "Complete: She wishes her boss _____ (give) her more interesting projects.",
+                        answer: "would give",
+                        explanation: "Use would + infinitive after wish to express desired changes.",
+                        hint: "She wants her boss to do something different in the future."
+                    },
+                    {
+                        prompt: "Complete: I wish the weather _____ (improve) soon.",
+                        answer: "would improve",
+                        explanation: "Wish + would can be used for things we want to change but can't control.",
+                        hint: "You want the weather to change, but you can't control it."
+                    }
+                ],
+                exerciseTemplates: [
+                    { prompt: "I wish he _____ (call) me more often.", answer: "would call", verb: "call" },
+                    { prompt: "She wishes her children _____ (help) with the housework.", answer: "would help", verb: "help" },
+                    { prompt: "I wish you _____ (not interrupt) me when I'm speaking.", answer: "wouldn't interrupt", verb: "not interrupt" },
+                    { prompt: "They wish their teacher _____ (explain) things more clearly.", answer: "would explain", verb: "explain" },
+                    { prompt: "I wish my computer _____ (work) faster.", answer: "would work", verb: "work" },
+                    { prompt: "He wishes his girlfriend _____ (be) more understanding.", answer: "would be", verb: "be" },
+                    { prompt: "I wish the government _____ (do) something about pollution.", answer: "would do", verb: "do" },
+                    { prompt: "She wishes her husband _____ (not snore) so loudly.", answer: "wouldn't snore", verb: "not snore" },
+                    { prompt: "I wish prices _____ (not increase) so quickly.", answer: "wouldn't increase", verb: "not increase" },
+                    { prompt: "We wish the neighbors _____ (be) quieter.", answer: "would be", verb: "be" }
+                ]
+            },
+            {
+                title: "Wish + Past Tense",
+                description: "Expressing regret about present situations",
+                structure: "I wish + past simple/past perfect",
+                examples: ["I wish I had more time.", "I wish I had studied harder at school."],
+                exercises: [
+                    {
+                        prompt: "Complete: I wish I _____ (speak) French fluently.",
+                        answer: "spoke",
+                        explanation: "Wish + past simple expresses regret about present situations.",
+                        hint: "You don't speak French fluently now, but you wish you did."
+                    },
+                    {
+                        prompt: "Complete: She wishes she _____ (take) that job offer last year.",
+                        answer: "had taken",
+                        explanation: "Wish + past perfect expresses regret about past decisions.",
+                        hint: "She didn't take the job in the past, and now she regrets it."
+                    },
+                    {
+                        prompt: "Complete: I wish I _____ (be) taller.",
+                        answer: "were",
+                        explanation: "Use 'were' for all persons with wish + be (like in second conditionals).",
+                        hint: "Special rule: always use 'were' after wish, even with 'I'."
+                    }
+                ],
+                exerciseTemplates: [
+                    { prompt: "I wish I _____ (have) more free time.", answer: "had", verb: "have" },
+                    { prompt: "She wishes she _____ (not eat) so much at dinner.", answer: "hadn't eaten", verb: "not eat" },
+                    { prompt: "I wish I _____ (live) closer to work.", answer: "lived", verb: "live" },
+                    { prompt: "He wishes he _____ (study) harder at university.", answer: "had studied", verb: "study" },
+                    { prompt: "I wish I _____ (can) play the piano.", answer: "could", verb: "can" },
+                    { prompt: "They wish they _____ (buy) a bigger house.", answer: "had bought", verb: "buy" },
+                    { prompt: "I wish I _____ (not be) so shy.", answer: "weren't", verb: "not be" },
+                    { prompt: "She wishes she _____ (go) to the party last night.", answer: "had gone", verb: "go" },
+                    { prompt: "I wish I _____ (know) the answer.", answer: "knew", verb: "know" },
+                    { prompt: "We wish we _____ (not move) to this city.", answer: "hadn't moved", verb: "not move" }
+                ]
+            },
+            {
+                title: "Final Challenge: ALL Types",
+                description: "Test your mastery of all conditionals and wish structures",
+                structure: "Mixed structures - all types covered in this course",
+                examples: ["Various conditional types and wish structures mixed together"],
+                exercises: [
+                    {
+                        prompt: "Complete: If you _____ (heat) ice, it melts.",
+                        answer: "heat",
+                        explanation: "Zero conditional - general truth about what always happens.",
+                        hint: "Think about what always happens when ice gets warm."
+                    },
+                    {
+                        prompt: "Complete: If it _____ (snow) tomorrow, school will be cancelled.",
+                        answer: "snows",
+                        explanation: "First conditional - real possibility in the future.",
+                        hint: "Real future possibility - use present simple in if-clause."
+                    },
+                    {
+                        prompt: "Complete: I _____ (quit) my job if I won the lottery.",
+                        answer: "would quit",
+                        explanation: "Second conditional - hypothetical present/future situation.",
+                        hint: "Hypothetical situation - what would you do?"
+                    },
+                    {
+                        prompt: "Complete: If I _____ (not miss) the train, I would have arrived on time.",
+                        answer: "hadn't missed",
+                        explanation: "Third conditional - past hypothetical situation.",
+                        hint: "Past hypothetical - use past perfect in if-clause."
+                    },
+                    {
+                        prompt: "Complete: If she _____ (study) law, she would be a lawyer now.",
+                        answer: "had studied",
+                        explanation: "Mixed conditional - past condition affecting present result.",
+                        hint: "Past decision affecting present - what tense for the past?"
+                    },
+                    {
+                        prompt: "Complete: I wish you _____ (not talk) so loudly on the phone.",
+                        answer: "wouldn't talk",
+                        explanation: "Wish + would - desire for behavior change.",
+                        hint: "You want someone to change their behavior."
+                    },
+                    {
+                        prompt: "Complete: She wishes she _____ (not spend) all her savings last year.",
+                        answer: "hadn't spent",
+                        explanation: "Wish + past perfect - regret about past action.",
+                        hint: "Regret about something done in the past."
+                    },
+                    {
+                        prompt: "Complete: If plants _____ (not get) water, they die.",
+                        answer: "don't get",
+                        explanation: "Zero conditional - general truth, negative form.",
+                        hint: "General truth - what always happens without water?"
+                    },
+                    {
+                        prompt: "Complete: You _____ (pass) the exam if you study hard.",
+                        answer: "will pass",
+                        explanation: "First conditional - main clause with future result.",
+                        hint: "Real possibility - what will happen in the future?"
+                    },
+                    {
+                        prompt: "Complete: If he _____ (be) more patient, he wouldn't have lost his temper.",
+                        answer: "were",
+                        explanation: "Mixed conditional - general characteristic affecting past event.",
+                        hint: "His general character (not patient) caused a past problem."
+                    }
+                ],
+                exerciseTemplates: [
+                    { prompt: "Sugar _____ (dissolve) if you put it in water.", answer: "dissolves", verb: "dissolve", type: "zero" },
+                    { prompt: "If she _____ (call) tonight, I'll tell her the news.", answer: "calls", verb: "call", type: "first" },
+                    { prompt: "We _____ (move) to Spain if we could speak Spanish.", answer: "would move", verb: "move", type: "second" },
+                    { prompt: "If they _____ (leave) earlier, they would have caught the plane.", answer: "had left", verb: "leave", type: "third" },
+                    { prompt: "If I _____ (listen) to my parents, I would have a better job now.", answer: "had listened", verb: "listen", type: "mixed" },
+                    { prompt: "I wish it _____ (stop) raining soon.", answer: "would stop", verb: "stop", type: "wish-would" },
+                    { prompt: "He wishes he _____ (be) more confident.", answer: "were", verb: "be", type: "wish-past" },
+                    { prompt: "If you _____ (freeze) water, it becomes ice.", answer: "freeze", verb: "freeze", type: "zero" },
+                    { prompt: "I _____ (help) you if you ask me nicely.", answer: "will help", verb: "help", type: "first" },
+                    { prompt: "If I _____ (be) you, I would apologize immediately.", answer: "were", verb: "be", type: "second" },
+                    { prompt: "She _____ (not fail) if she had studied harder.", answer: "wouldn't have failed", verb: "not fail", type: "third" },
+                    { prompt: "If he _____ (be) taller, he would have played basketball professionally.", answer: "were", verb: "be", type: "mixed" },
+                    { prompt: "I wish my boss _____ (give) me a raise.", answer: "would give", verb: "give", type: "wish-would" },
+                    { prompt: "They wish they _____ (not sell) their old car.", answer: "hadn't sold", verb: "not sell", type: "wish-past" },
+                    { prompt: "Metal _____ (expand) if you heat it.", answer: "expands", verb: "expand", type: "zero" },
+                    { prompt: "If the weather _____ (be) good, we'll have a barbecue.", answer: "is", verb: "be", type: "first" },
+                    { prompt: "I _____ (travel) more if I had more vacation days.", answer: "would travel", verb: "travel", type: "second" },
+                    { prompt: "If you _____ (tell) me earlier, I would have helped.", answer: "had told", verb: "tell", type: "third" },
+                    { prompt: "If she _____ (save) more money, she wouldn't be struggling now.", answer: "had saved", verb: "save", type: "mixed" },
+                    { prompt: "I wish people _____ (be) kinder to each other.", answer: "were", verb: "be", type: "wish-past" }
+                ],
+                isFinalChallenge: true
+            }
+        ];
+
+        // DOM elements - Initialize after DOM is loaded
+        let scoreElement, completedCountElement, levelGridElement, levelInfoElement, exerciseCardElement, progressTextElement, progressFillElement;
+
+        // Initialize the application
+        function init() {
+            // Get DOM elements
+            scoreElement = document.getElementById('score');
+            completedCountElement = document.getElementById('completed-count');
+            levelGridElement = document.getElementById('level-grid');
+            levelInfoElement = document.getElementById('level-info');
+            exerciseCardElement = document.getElementById('exercise-card');
+            progressTextElement = document.getElementById('progress-text');
+            progressFillElement = document.getElementById('progress-fill');
+
+            // Reset final challenge tracking
+            finalChallengeCorrect = 0;
+            finalChallengeTotal = 0;
+            finalChallengeAnswered = new Set();
+            
+            // Ensure Final Challenge has 10 exercises
+            const finalChallengeIndex = levels.length - 1;
+            if (levels[finalChallengeIndex].isFinalChallenge && levels[finalChallengeIndex].exercises.length !== 10) {
+                generateNewExercises(finalChallengeIndex);
+            }
+
+            renderLevels();
+            renderCurrentLevel();
+            renderExercise();
+            updateProgress();
+        }
+
+        // Render level buttons
+        function renderLevels() {
+            if (!levelGridElement) {
+                console.error('Level grid element not found');
+                return;
+            }
+            
+            levelGridElement.innerHTML = '';
+            
+            levels.forEach((level, index) => {
+                const button = document.createElement('button');
+                
+                // Set button class
+                let buttonClass = 'level-button ';
+                if (currentLevel === index) {
+                    buttonClass += 'current';
+                } else if (completedLevels.has(index)) {
+                    buttonClass += 'completed';
+                } else {
+                    buttonClass += 'available';
+                }
+                button.className = buttonClass;
+                
+                button.onclick = () => selectLevel(index);
+                
+                // Add icon for completed levels
+                let buttonContent = level.title;
+                if (completedLevels.has(index)) {
+                    buttonContent = '✓ ' + level.title;
+                }
+                
+                button.textContent = buttonContent;
+                levelGridElement.appendChild(button);
+            });
+        }
+
+        // Render current level information
+        function renderCurrentLevel() {
+            if (!levelInfoElement) return;
+            
+            const level = levels[currentLevel];
+            let examplesHtml = level.examples.map(example => `<li>"${example}"</li>`).join('');
+            
+            levelInfoElement.innerHTML = `
+                <div class="level-title">
+                    <span>📚</span>
+                    <h2>${level.title}</h2>
+                </div>
+                <p style="color: #374151; margin-bottom: 0.75rem;">${level.description}</p>
+                <div class="structure-box">
+                    <strong>Structure:</strong> <span class="structure-code">${level.structure}</span>
+                </div>
+                <div>
+                    <strong>Examples:</strong>
+                    <ul class="examples-list">${examplesHtml}</ul>
+                </div>
+            `;
+        }
+
+        // Render current exercise
+        function renderExercise() {
+            if (!exerciseCardElement) return;
+            
+            const level = levels[currentLevel];
+            const exercise = level.exercises[currentExercise];
+            
+            let hintHtml = showHint ? `<div class="hint-box"><strong>💡 Hint:</strong> ${exercise.hint}</div>` : '';
+            
+            let buttonHtml = '';
+            if (!feedback) {
+                let disabledAttr = !userAnswer.trim() ? 'disabled' : '';
+                buttonHtml = `<button class="btn-primary" onclick="checkAnswer()" ${disabledAttr}>Check</button>`;
+            } else {
+                buttonHtml = '<button class="btn-success" onclick="nextExercise()">Next →</button>';
+            }
+            
+            let feedbackHtml = '';
+            if (feedback) {
+                let feedbackClass = feedback.includes('Correct') ? 'correct' : 'incorrect';
+                let icon = feedback.includes('Correct') ? '✅' : '❌';
+                // Replace newlines with <br> for proper display
+                let formattedFeedback = feedback.replace(/\n\n/g, '<br><br>');
+                feedbackHtml = `
+                    <div class="feedback ${feedbackClass}">
+                        <span>${icon} ${formattedFeedback}</span>
+                    </div>
+                `;
+            }
+            
+            let explanationHtml = '';
+            if (showExplanation) {
+                explanationHtml = `
+                    <div class="explanation">
+                        <strong>📚 Explanation:</strong> ${exercise.explanation}
+                    </div>
+                `;
+            }
+            
+            let disabledInput = feedback ? 'disabled' : '';
+            
+            // Store current input value before re-rendering
+            const currentInput = document.getElementById('answer-input');
+            const currentValue = currentInput ? currentInput.value : userAnswer;
+            const currentSelectionStart = currentInput ? currentInput.selectionStart : 0;
+            const currentSelectionEnd = currentInput ? currentInput.selectionEnd : 0;
+            
+            exerciseCardElement.innerHTML = `
+                <div class="exercise-header">
+                    <h3 class="exercise-title">Exercise ${currentExercise + 1} of ${level.exercises.length}</h3>
+                    <div class="exercise-buttons">
+                        <button class="btn-small btn-hint" onclick="toggleHint()">
+                            ${showHint ? 'Hide Hint' : 'Show Hint'}
+                        </button>
+                        <button class="btn-small btn-reset" onclick="resetExercise()">🔄 Reset</button>
+                    </div>
+                </div>
+                <div style="margin-bottom: 1rem;">
+                    <p class="exercise-prompt">${exercise.prompt}</p>
+                    ${hintHtml}
+                </div>
+                <div class="input-group">
+                    <input type="text" id="answer-input" class="input-field" 
+                        placeholder="Type your answer here..." value="${currentValue}" 
+                        onkeypress="handleKeyPress(event)" oninput="handleInput(event); updateCheckButton();" ${disabledInput}/>
+                    ${buttonHtml}
+                </div>
+                ${feedbackHtml}
+                ${explanationHtml}
+            `;
+                
+            // Restore cursor position after re-rendering
+            setTimeout(() => {
+                const input = document.getElementById('answer-input');
+                if (input && !feedback) {
+                    input.focus();
+                    if (currentInput) {
+                        input.setSelectionRange(currentSelectionStart, currentSelectionEnd);
+                    }
+                }
+            }, 0);
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const level = levels[currentLevel];
+            const progressPercent = ((currentExercise + 1) / level.exercises.length) * 100;
+            if (progressTextElement) {
+                progressTextElement.textContent = `${currentExercise + 1}/${level.exercises.length}`;
+            }
+            if (progressFillElement) {
+                progressFillElement.style.width = `${progressPercent}%`;
+            }
+        }
+
+        // Function to generate additional exercises
+        function generateNewExercises(levelIndex) {
+            const level = levels[levelIndex];
+            const templates = level.exerciseTemplates;
+            
+            // Shuffle templates
+            const shuffled = [...templates].sort(() => Math.random() - 0.5);
+            
+            // For Final Challenge, take 10 exercises; for others, take 3
+            const exerciseCount = level.isFinalChallenge ? 10 : 3;
+            const selected = shuffled.slice(0, exerciseCount);
+            
+            // Convert templates to full exercises
+            const newExercises = selected.map(template => ({
+                prompt: template.prompt,
+                answer: template.answer,
+                explanation: getExplanationForLevel(levelIndex),
+                hint: getHintForLevel(levelIndex, template.verb)
+            }));
+            
+            // Replace the level's exercises
+            level.exercises = newExercises;
+        }
+
+        function getExplanationForLevel(levelIndex) {
+            const explanations = [
+                "Zero conditionals use present simple in both clauses for general truths.",
+                "First conditional: present simple in the if-clause, will + infinitive in the main clause.",
+                "Second conditional uses past simple in the if-clause for hypothetical situations.",
+                "Third conditional uses past perfect in the if-clause for past hypothetical situations.",
+                "Mixed conditionals combine different time references - past with present or present with past.",
+                "Wish + would expresses desire for someone/something to change their behavior.",
+                "Wish + past tense expresses regret about current situations or past events.",
+                "This exercise mixes all conditional types and wish structures. Review the structure needed for each sentence."
+            ];
+            return explanations[levelIndex];
+        }
+
+        function getHintForLevel(levelIndex, verb) {
+            const hints = [
+                "What always happens? Use present simple.",
+                "Real possibility in the future - use present simple in if-clause.",
+                "Imaginary situation - use past simple (but it's not really past!).",
+                "Something that didn't happen in the past - use past perfect.",
+                "Think about the time reference - is the condition past or present?",
+                "You want something to change - use would.",
+                "Regret about now or the past - use past tense after wish.",
+                "Identify the type first: Is it a general truth? Future possibility? Hypothetical? Past regret?"
+            ];
+            return hints[levelIndex];
+        }
+
+        // Event handlers
+        function handleInput(event) {
+            userAnswer = event.target.value;
+            // Don't re-render during typing
+        }
+
+        function updateCheckButton() {
+            const checkButton = document.querySelector('.btn-primary');
+            if (checkButton) {
+                if (userAnswer.trim()) {
+                    checkButton.disabled = false;
+                } else {
+                    checkButton.disabled = true;
+                }
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !feedback && userAnswer.trim()) {
+                event.preventDefault();
+                checkAnswer();
+            }
+        }
+
+        function toggleHint() {
+            showHint = !showHint;
+            renderExercise();
+        }
+
+        function resetExercise() {
+            userAnswer = '';
+            feedback = '';
+            showExplanation = false;
+            showHint = false;
+            renderExercise();
+        }
+
+        function selectLevel(levelIndex) {
+            currentLevel = levelIndex;
+            currentExercise = 0;
+            userAnswer = '';
+            feedback = '';
+            showExplanation = false;
+            showHint = false;
+            
+            // Reset final challenge tracking
+            if (levels[levelIndex].isFinalChallenge) {
+                finalChallengeCorrect = 0;
+                finalChallengeTotal = 0;
+                finalChallengeAnswered = new Set();
+                
+                // Always generate 10 new exercises for Final Challenge
+                generateNewExercises(levelIndex);
+            }
+            
+            renderLevels();
+            renderCurrentLevel();
+            renderExercise();
+            updateProgress();
+        }
+
+        // Function to normalize contractions for comparison
+        function normalizeContractions(text) {
+            // Convert all contractions to their full forms for comparison
+            const contractions = {
+                "isn't": "is not",
+                "aren't": "are not",
+                "wasn't": "was not",
+                "weren't": "were not",
+                "haven't": "have not",
+                "hasn't": "has not",
+                "hadn't": "had not",
+                "won't": "will not",
+                "wouldn't": "would not",
+                "don't": "do not",
+                "doesn't": "does not",
+                "didn't": "did not",
+                "can't": "cannot",
+                "cannot": "can not",
+                "couldn't": "could not",
+                "shouldn't": "should not",
+                "mightn't": "might not",
+                "mustn't": "must not",
+                "shan't": "shall not",
+                "needn't": "need not",
+                "oughtn't": "ought not",
+                "won't": "will not",
+                "let's": "let us",
+                "that's": "that is",
+                "there's": "there is",
+                "here's": "here is",
+                "what's": "what is",
+                "where's": "where is",
+                "who's": "who is",
+                "it's": "it is",
+                "he's": "he is",
+                "she's": "she is",
+                "we're": "we are",
+                "they're": "they are",
+                "you're": "you are",
+                "i'm": "i am",
+                "we've": "we have",
+                "they've": "they have",
+                "you've": "you have",
+                "i've": "i have",
+                "he'd": "he would",
+                "she'd": "she would",
+                "we'd": "we would",
+                "they'd": "they would",
+                "you'd": "you would",
+                "i'd": "i would",
+                "he'll": "he will",
+                "she'll": "she will",
+                "we'll": "we will",
+                "they'll": "they will",
+                "you'll": "you will",
+                "i'll": "i will"
+            };
+            
+            let normalized = text.toLowerCase().trim();
+            
+            // Replace contractions with full forms
+            for (const [contraction, full] of Object.entries(contractions)) {
+                // Use word boundaries to avoid partial replacements
+                const regex = new RegExp(`\\b${contraction}\\b`, 'g');
+                normalized = normalized.replace(regex, full);
+            }
+            
+            // Also normalize spaces (multiple spaces to single space)
+            normalized = normalized.replace(/\s+/g, ' ').trim();
+            
+            return normalized;
+        }
+
+        // Function to check if answer involves subjunctive "be" forms
+        function checkSubjunctiveBe(userAnswer, correctAnswer, prompt) {
+            // Check if this is a subjunctive context
+            const subjunctiveContexts = [
+                'wish', 'if only', 'suppose', 'supposing', 'provided', 'providing', 
+                'as if', 'as though', 'would rather', 'it\'s time', 'it is time'
+            ];
+            
+            const promptLower = prompt.toLowerCase();
+            const isSubjunctiveContext = subjunctiveContexts.some(context => 
+                promptLower.includes(context)) || 
+                (promptLower.includes('if') && (correctAnswer === 'were' || userAnswer === 'was' || userAnswer === 'were'));
+            
+            // Check if user used "was" where "were" is expected (or vice versa)
+            if (isSubjunctiveContext && correctAnswer === 'were' && userAnswer === 'was') {
+                return {
+                    isCorrect: true,
+                    note: "Note: Both 'was' and 'were' are accepted here. 'Were' is the traditional subjunctive form (more formal), while 'was' is common in everyday speech."
+                };
+            }
+            
+            return { isCorrect: false, note: null };
+        }
+
+        function checkAnswer() {
+            const exercise = levels[currentLevel].exercises[currentExercise];
+            const level = levels[currentLevel];
+            
+            // Normalize both user answer and correct answer for comparison
+            const normalizedUserAnswer = normalizeContractions(userAnswer);
+            const normalizedCorrectAnswer = normalizeContractions(exercise.answer);
+            
+            // Special handling for "I wish people ___ (be) kinder to each other"
+            if (exercise.prompt.includes("I wish people") && exercise.prompt.includes("(be) kinder to each other")) {
+                if (normalizedUserAnswer === "was") {
+                    feedback = 'Correct! Well done! 🎉\n\nNote: "Was" is commonly used in colloquial speech, though "were" is the standard form in the subjunctive after "wish".';
+                    score++;
+                    const scoreElement = document.getElementById('score');
+                    if (scoreElement) scoreElement.textContent = score;
+                    showExplanation = true;
+                    
+                    // Track for final challenge
+                    if (level.isFinalChallenge && !finalChallengeAnswered.has(currentExercise)) {
+                        finalChallengeCorrect++;
+                        finalChallengeTotal++;
+                        finalChallengeAnswered.add(currentExercise);
+                    }
+                    
+                    renderExercise();
+                    return;
+                } else if (normalizedUserAnswer === "would be") {
+                    feedback = 'Correct! Well done! 🎉\n\nNote: "Would be" is colloquially often chosen to express annoyance and a demand for change. However, with the stative verb "to be" the form "were" is standard.';
+                    score++;
+                    const scoreElement = document.getElementById('score');
+                    if (scoreElement) scoreElement.textContent = score;
+                    showExplanation = true;
+                    
+                    // Track for final challenge
+                    if (level.isFinalChallenge && !finalChallengeAnswered.has(currentExercise)) {
+                        finalChallengeCorrect++;
+                        finalChallengeTotal++;
+                        finalChallengeAnswered.add(currentExercise);
+                    }
+                    
+                    renderExercise();
+                    return;
+                }
+            }
+            
+            // Check for subjunctive "be" special case
+            const subjunctiveCheck = checkSubjunctiveBe(normalizedUserAnswer, normalizedCorrectAnswer, exercise.prompt);
+            
+            // For final challenge, only count the first attempt at each exercise
+            const isFirstAttempt = level.isFinalChallenge && !finalChallengeAnswered.has(currentExercise);
+            
+            if (normalizedUserAnswer === normalizedCorrectAnswer || subjunctiveCheck.isCorrect) {
+                feedback = 'Correct! Well done! 🎉';
+                if (subjunctiveCheck.note) {
+                    feedback += '\n\n' + subjunctiveCheck.note;
+                }
+                score++;
+                const scoreElement = document.getElementById('score');
+                if (scoreElement) scoreElement.textContent = score;
+                showExplanation = true;
+                
+                // Track correct answers for final challenge - only on first attempt
+                if (isFirstAttempt) {
+                    finalChallengeCorrect++;
+                    finalChallengeTotal++;
+                    finalChallengeAnswered.add(currentExercise);
+                }
+            } else {
+                // Provide smart feedback based on the error type
+                const smartFeedback = getSmartFeedback(normalizedUserAnswer, normalizedCorrectAnswer, currentLevel, exercise);
+                feedback = smartFeedback;
+                showExplanation = true;
+                
+                // Track total attempts for final challenge - only on first attempt
+                if (isFirstAttempt) {
+                    finalChallengeTotal++;
+                    finalChallengeAnswered.add(currentExercise);
+                }
+            }
+            
+            renderExercise();
+        }
+
+        function getSmartFeedback(userAnswer, correctAnswer, levelIndex, exercise) {
+            // Extract the verb from the prompt if provided
+            const verbMatch = exercise.prompt.match(/\((.*?)\)/);
+            const infinitive = verbMatch ? verbMatch[1] : '';
+            
+            // Check common errors based on conditional type
+            switch(levelIndex) {
+                case 0: // Zero Conditional
+                case 1: // First Conditional (if-clause)
+                    if (exercise.prompt.includes('If')) {
+                        return checkPresentSimpleError(userAnswer, correctAnswer, infinitive);
+                    }
+                    break;
+                case 2: // Second Conditional
+                    if (exercise.prompt.includes('If')) {
+                        return checkPastSimpleError(userAnswer, correctAnswer, infinitive);
+                    }
+                    break;
+                case 3: // Third Conditional
+                    return checkPastPerfectError(userAnswer, correctAnswer, infinitive);
+                case 4: // Mixed Conditionals
+                    if (correctAnswer.includes('had')) {
+                        return checkPastPerfectError(userAnswer, correctAnswer, infinitive);
+                    } else if (correctAnswer === 'were') {
+                        return checkSecondConditionalBeError(userAnswer);
+                    }
+                    break;
+            }
+            
+            // Check for would/will errors in main clauses
+            if (correctAnswer.includes('would') || correctAnswer.includes('will')) {
+                return checkModalError(userAnswer, correctAnswer);
+            }
+            
+            // Default feedback
+            return `Not quite right. The correct answer is: ${correctAnswer}`;
+        }
+
+        function checkPresentSimpleError(userAnswer, correctAnswer, infinitive) {
+            const baseForm = infinitive.replace('not ', '').trim();
+            
+            // Common present simple forms
+            const presentForms = {
+                'mix': ['mix', 'mixes'],
+                'rain': ['rain', 'rains'],
+                'get': ['get', 'gets'],
+                'water': ['water', 'waters'],
+                'eat': ['eat', 'eats'],
+                'rise': ['rise', 'rises'],
+                'press': ['press', 'presses'],
+                'expand': ['expand', 'expands'],
+                'bloom': ['bloom', 'blooms'],
+                'drop': ['drop', 'drops'],
+                'float': ['float', 'floats'],
+                'fall': ['fall', 'falls'],
+                'freeze': ['freeze', 'freezes'],
+                'arrive': ['arrive', 'arrives'],
+                'hurry': ['hurry', 'hurries'],
+                'finish': ['finish', 'finishes'],
+                'practice': ['practice', 'practices'],
+                'be': ['am', 'is', 'are']
+            };
+            
+            const forms = presentForms[baseForm] || [];
+            
+            // Check if user used a valid present simple form but wrong person
+            if (forms.includes(userAnswer)) {
+                if (correctAnswer.endsWith('s') && !userAnswer.endsWith('s')) {
+                    return `Almost right! You used present simple correctly, but remember: third person singular (he/she/it) needs -s. The correct answer is: ${correctAnswer}`;
+                } else if (!correctAnswer.endsWith('s') && userAnswer.endsWith('s')) {
+                    return `Almost right! You used present simple correctly, but this subject is plural (or I/you/we/they), so no -s needed. The correct answer is: ${correctAnswer}`;
+                }
+            }
+            
+            // Check for common tense errors
+            if (userAnswer === baseForm + 'ed' || userAnswer === getPastForm(baseForm)) {
+                return `Wrong tense! Zero conditionals use present simple (not past) for general truths. The correct answer is: ${correctAnswer}`;
+            }
+            
+            if (userAnswer === 'will ' + baseForm || userAnswer === 'would ' + baseForm) {
+                return `Wrong form! In the if-clause of zero conditionals, use present simple (not will/would). The correct answer is: ${correctAnswer}`;
+            }
+            
+            // Check negative forms
+            if (infinitive.includes('not')) {
+                if (userAnswer === baseForm || userAnswer === baseForm + 's') {
+                    return `Don't forget the negative! Use don't/doesn't + base form. The correct answer is: ${correctAnswer}`;
+                }
+            }
+            
+            return `Wrong form. Zero conditionals use present simple in both parts. The correct answer is: ${correctAnswer}`;
+        }
+
+        function checkPastSimpleError(userAnswer, correctAnswer, infinitive) {
+            const baseForm = infinitive.replace('not ', '').trim();
+            
+            // Common irregular past forms
+            const pastForms = {
+                'have': 'had',
+                'be': 'were',
+                'know': 'knew',
+                'speak': 'spoke',
+                'see': 'saw',
+                'take': 'took',
+                'make': 'made',
+                'get': 'got',
+                'give': 'gave',
+                'go': 'went',
+                'come': 'came',
+                'think': 'thought',
+                'say': 'said',
+                'do': 'did',
+                'buy': 'bought',
+                'eat': 'ate',
+                'drink': 'drank',
+                'write': 'wrote',
+                'read': 'read',
+                'understand': 'understood'
+            };
+            
+            // Check if user used present instead of past
+            if (userAnswer === baseForm || userAnswer === baseForm + 's') {
+                return `Wrong tense! Second conditionals use past simple (not present) in the if-clause. The correct answer is: ${correctAnswer}`;
+            }
+            
+            // Check for 'was' instead of 'were'
+            if (correctAnswer === 'were' && userAnswer === 'was') {
+                return `Special rule! In second conditionals, always use 'were' (not 'was') with all subjects, even I/he/she/it. The correct answer is: were`;
+            }
+            
+            // Check if user made up a regular past form for irregular verb
+            if (pastForms[baseForm] && userAnswer === baseForm + 'ed') {
+                return `Careful! '${baseForm}' is an irregular verb. Its past form is '${pastForms[baseForm]}', not '${userAnswer}'.`;
+            }
+            
+            // Check if user used present perfect
+            if (userAnswer.startsWith('have ') || userAnswer.startsWith('has ')) {
+                return `Wrong tense! Second conditionals use past simple (not present perfect) in the if-clause. The correct answer is: ${correctAnswer}`;
+            }
+            
+            return `Wrong form. Second conditionals use past simple in the if-clause. The correct answer is: ${correctAnswer}`;
+        }
+
+        function checkPastPerfectError(userAnswer, correctAnswer, infinitive) {
+            const baseForm = infinitive.replace('not ', '').trim();
+            
+            // Get past participle
+            const pastParticiples = {
+                'leave': 'left',
+                'make': 'made',
+                'know': 'known',
+                'arrive': 'arrived',
+                'tell': 'told',
+                'get': 'got',
+                'take': 'taken',
+                'save': 'saved',
+                'learn': 'learned',
+                'spend': 'spent',
+                'invest': 'invested',
+                'study': 'studied',
+                'buy': 'bought',
+                'go': 'gone',
+                'move': 'moved',
+                'listen': 'listened',
+                'enjoy': 'enjoyed'
+            };
+            
+            const pastParticiple = pastParticiples[baseForm] || baseForm + 'ed';
+            
+            // Check if user forgot 'had'
+            if (userAnswer === pastParticiple) {
+                return `You need 'had' before the past participle! Past perfect = had + past participle. The correct answer is: ${correctAnswer}`;
+            }
+            
+            // Check if user used simple past
+            if (userAnswer === getPastForm(baseForm)) {
+                return `Wrong tense! Third conditionals use past perfect (had + past participle), not simple past. The correct answer is: ${correctAnswer}`;
+            }
+            
+            // Check if user used wrong auxiliary
+            if (userAnswer.startsWith('have ') || userAnswer.startsWith('has ')) {
+                return `Wrong auxiliary! Use 'had' (not have/has) for past perfect. The correct answer is: ${correctAnswer}`;
+            }
+            
+            // Check negative forms
+            if (correctAnswer.includes("hadn't") && userAnswer === 'had not ' + pastParticiple) {
+                return `Good! But use the contraction: hadn't ${pastParticiple}`;
+            }
+            
+            return `Wrong form. Third conditionals use past perfect (had + past participle) in the if-clause. The correct answer is: ${correctAnswer}`;
+        }
+
+        function checkModalError(userAnswer, correctAnswer) {
+            // Check will vs would confusion
+            if (correctAnswer.includes('will') && userAnswer.includes('would')) {
+                return `Wrong modal! First conditionals use 'will' (not 'would') for real possibilities. The correct answer is: ${correctAnswer}`;
+            }
+            
+            if (correctAnswer.includes('would') && userAnswer.includes('will')) {
+                return `Wrong modal! Second conditionals use 'would' (not 'will') for hypothetical situations. The correct answer is: ${correctAnswer}`;
+            }
+            
+            // Check for would have errors
+            if (correctAnswer.includes('would have')) {
+                if (userAnswer.includes('would of')) {
+                    return `Common mistake! It's 'would have' (not 'would of'). The correct answer is: ${correctAnswer}`;
+                }
+                if (userAnswer === 'would ' + correctAnswer.replace('would have ', '')) {
+                    return `Missing 'have'! Third conditional main clause needs 'would have + past participle'. The correct answer is: ${correctAnswer}`;
+                }
+            }
+            
+            return `Not quite right. The correct answer is: ${correctAnswer}`;
+        }
+
+        function checkSecondConditionalBeError(userAnswer) {
+            if (userAnswer === 'was') {
+                return `Special rule! In second conditionals and wishes, always use 'were' (not 'was') with all subjects, even I/he/she/it. The correct answer is: were`;
+            }
+            if (userAnswer === 'am' || userAnswer === 'is' || userAnswer === 'are') {
+                return `Wrong tense! Second conditionals use past forms (even though they refer to present/future). Use 'were' for all subjects. The correct answer is: were`;
+            }
+            return `Remember: in hypothetical situations, use 'were' for all subjects. The correct answer is: were`;
+        }
+
+        function getPastForm(verb) {
+            const irregularPasts = {
+                'have': 'had',
+                'be': 'was/were',
+                'know': 'knew',
+                'speak': 'spoke',
+                'see': 'saw',
+                'take': 'took',
+                'make': 'made',
+                'get': 'got',
+                'give': 'gave',
+                'go': 'went',
+                'come': 'came',
+                'think': 'thought',
+                'say': 'said',
+                'do': 'did',
+                'buy': 'bought',
+                'eat': 'ate',
+                'drink': 'drank',
+                'write': 'wrote',
+                'read': 'read',
+                'understand': 'understood',
+                'leave': 'left',
+                'tell': 'told',
+                'arrive': 'arrived',
+                'hurry': 'hurried',
+                'finish': 'finished',
+                'practice': 'practiced'
+            };
+            
+            return irregularPasts[verb] || verb + 'ed';
+        }
+
+        function nextExercise() {
+            const level = levels[currentLevel];
+            
+            // Check if Final Challenge is complete
+            if (level.isFinalChallenge && currentExercise === level.exercises.length - 1) {
+                // Show results in the exercise card
+                showFinalChallengeResults();
+                return;
+            }
+            
+            if (currentExercise < level.exercises.length - 1) {
+                currentExercise++;
+            } else {
+                // Regular level completed
+                if (!level.isFinalChallenge) {
+                    completedLevels.add(currentLevel);
+                    const completedCountElement = document.getElementById('completed-count');
+                    if (completedCountElement) completedCountElement.textContent = completedLevels.size;
+                    
+                    // Ask if user wants more exercises
+                    const wantsMore = confirm(`Level completed! 🎉\n\nWould you like to practice more ${level.title}?\n\nClick OK for more exercises, or Cancel to move to the next level.`);
+                    
+                    if (wantsMore) {
+                        // Generate new exercises for this level
+                        generateNewExercises(currentLevel);
+                        currentExercise = 0;
+                        // Remove from completed so progress bar resets
+                        completedLevels.delete(currentLevel);
+                        if (completedCountElement) completedCountElement.textContent = completedLevels.size;
+                    } else if (currentLevel < levels.length - 1) {
+                        alert(`Great job! Moving to: ${levels[currentLevel + 1].title}`);
+                        currentLevel++;
+                        currentExercise = 0;
+                    } else {
+                        alert('Congratulations! You have completed all levels! 🏆\n\nYou can select any level from the menu to practice more.');
+                    }
+                }
+            }
+            
+            // Clear the input field value
+            const input = document.getElementById('answer-input');
+            if (input) {
+                input.value = '';
+            }
+            
+            userAnswer = '';
+            feedback = '';
+            showExplanation = false;
+            showHint = false;
+            
+            renderLevels();
+            renderCurrentLevel();
+            renderExercise();
+            updateProgress();
+        }
+        
+        function showFinalChallengeResults() {
+            const exerciseCardElement = document.getElementById('exercise-card');
+            if (!exerciseCardElement) return;
+            
+            // Always use 10 as the total for Final Challenge
+            const total = 10;
+            const percentage = Math.round((finalChallengeCorrect / total) * 100);
+            const passed = percentage >= 80;
+            
+            let resultsHtml = `
+                <div style="text-align: center; padding: 2rem;">
+                    <h2 style="color: #3f51b5; margin-bottom: 1.5rem;">
+                        FINAL CHALLENGE COMPLETE!
+                    </h2>
+                    
+                    <div style="font-size: 1.5rem; margin-bottom: 1rem;">
+                        Your score: <strong>${finalChallengeCorrect} out of ${total}</strong>
+                    </div>
+                    
+                    <div style="font-size: 3rem; font-weight: bold; margin-bottom: 1.5rem; color: ${passed ? '#4caf50' : '#f44336'};">
+                        ${percentage}%
+                    </div>
+                    
+                    <div style="margin-bottom: 2rem; font-size: 1.125rem;">
+                        ${passed 
+                            ? '<p style="color: #4caf50; font-weight: bold;">🎉 CONGRATULATIONS! YOU PASSED! 🎉</p><p>You have successfully mastered all conditional types and wish structures!</p>' 
+                            : `<p style="color: #f44336; font-weight: bold;">You need 80% to pass.</p><p>Don't give up! You scored ${percentage}% - ${percentage >= 60 ? "you're getting close!" : "keep practicing!"}</p><p>Review the conditional types where you made mistakes and try again.</p>`
+                        }
+                    </div>
+                    
+                    <div style="display: flex; gap: 1rem; justify-content: center;">
+                        <button class="btn-success" onclick="restartFinalChallenge()">
+                            ${passed ? 'Try Another Challenge' : 'Try Again'} →
+                        </button>
+                        <button class="btn-primary" onclick="returnToMenu()">
+                            Return to Menu
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            exerciseCardElement.innerHTML = resultsHtml;
+            
+            // Mark as completed if passed
+            if (passed) {
+                completedLevels.add(currentLevel);
+                const completedCountElement = document.getElementById('completed-count');
+                if (completedCountElement) completedCountElement.textContent = completedLevels.size;
+            }
+        }
+        
+        function restartFinalChallenge() {
+            // Reset all tracking
+            currentExercise = 0;
+            finalChallengeCorrect = 0;
+            finalChallengeTotal = 0;
+            finalChallengeAnswered.clear();
+            
+            // Generate new exercises
+            generateNewExercises(currentLevel);
+            
+            // Clear and re-render
+            userAnswer = '';
+            feedback = '';
+            showExplanation = false;
+            showHint = false;
+            
+            renderExercise();
+            updateProgress();
+        }
+        
+        function returnToMenu() {
+            // Reset to first level
+            currentLevel = 0;
+            currentExercise = 0;
+            
+            // Reset all Final Challenge tracking
+            finalChallengeCorrect = 0;
+            finalChallengeTotal = 0;
+            finalChallengeAnswered.clear();
+            
+            // Clear and re-render
+            userAnswer = '';
+            feedback = '';
+            showExplanation = false;
+            showHint = false;
+            
+            renderLevels();
+            renderCurrentLevel();
+            renderExercise();
+            updateProgress();
+        }
+
+        // Start the application when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+            
+            // Add global Enter key handler
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' && feedback && !event.repeat) {
+                    // Check if the input field has focus - if so, don't trigger next
+                    const inputField = document.getElementById('answer-input');
+                    if (document.activeElement === inputField) {
+                        return;
+                    }
+                    
+                    // If feedback is shown and Enter is pressed (not from input), go next
+                    event.preventDefault();
+                    nextExercise();
+                }
+            });
+        });
+        
+        // Make functions globally accessible for HTML onclick handlers
+        window.checkAnswer = checkAnswer;
+        window.nextExercise = nextExercise;
+        window.toggleHint = toggleHint;
+        window.resetExercise = resetExercise;
+        window.selectLevel = selectLevel;
+        window.restartFinalChallenge = restartFinalChallenge;
+        window.returnToMenu = returnToMenu;
+    </script>
+</body>
+</html>
