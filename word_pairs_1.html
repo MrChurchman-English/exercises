@@ -1,0 +1,350 @@
+import React, { useState, useEffect, useCallback } from 'react';
+import { Shuffle, RotateCcw, CheckCircle, XCircle, Volume2 } from 'lucide-react';
+
+const BinomialMatchingGame = () => {
+  const allBinomials = [
+    { first: "above", second: "and beyond" },
+    { first: "back", second: "and forth" },
+    { first: "bits", second: "and pieces" },
+    { first: "bright", second: "and early" },
+    { first: "by", second: "and large" },
+    { first: "far", second: "and wide" },
+    { first: "first", second: "and foremost" },
+    { first: "give", second: "and take" },
+    { first: "hit", second: "and miss" },
+    { first: "hustle", second: "and bustle" },
+    { first: "ifs", second: "or buts" },
+    { first: "ins", second: "and outs" },
+    { first: "law", second: "and order" },
+    { first: "length", second: "and breadth" },
+    { first: "live", second: "and learn" },
+    { first: "loud", second: "and clear" },
+    { first: "more", second: "or less" },
+    { first: "now", second: "and then" },
+    { first: "odds", second: "and ends" },
+    { first: "once", second: "and for all" },
+    { first: "part", second: "and parcel" },
+    { first: "peace", second: "and quiet" },
+    { first: "pick", second: "and choose" },
+    { first: "pros", second: "and cons" },
+    { first: "rain", second: "or shine" },
+    { first: "rise", second: "and shine" },
+    { first: "safe", second: "and sound" },
+    { first: "short", second: "and sweet" },
+    { first: "sick", second: "and tired" },
+    { first: "sink", second: "or swim" },
+    { first: "skin", second: "and bones" },
+    { first: "slowly", second: "but surely" },
+    { first: "sooner", second: "or later" },
+    { first: "there", second: "and then" },
+    { first: "touch", second: "and go" },
+    { first: "trial", second: "and error" },
+    { first: "up", second: "and coming" },
+    { first: "ups", second: "and downs" },
+    { first: "wait", second: "and see" },
+    { first: "wear", second: "and tear" }
+  ];
+
+  const [currentSet, setCurrentSet] = useState([]);
+  const [shuffledFirsts, setShuffledFirsts] = useState([]);
+  const [shuffledSeconds, setShuffledSeconds] = useState([]);
+  const [matches, setMatches] = useState({});
+  const [selectedFirst, setSelectedFirst] = useState(null);
+  const [selectedSecond, setSelectedSecond] = useState(null);
+  const [feedback, setFeedback] = useState('');
+  const [score, setScore] = useState(0);
+  const [totalSets, setTotalSets] = useState(0);
+  const [gameComplete, setGameComplete] = useState(false);
+  const [availableSets, setAvailableSets] = useState([]);
+
+  // Sound effects
+  const playSound = useCallback((type) => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    let frequency, duration;
+    
+    switch(type) {
+      case 'correct':
+        frequency = 523.25; // C5
+        duration = 0.3;
+        break;
+      case 'incorrect':
+        frequency = 220; // A3
+        duration = 0.5;
+        break;
+      case 'complete':
+        // Play a cheerful melody
+        const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+        notes.forEach((freq, i) => {
+          setTimeout(() => {
+            const osc = audioContext.createOscillator();
+            const gain = audioContext.createGain();
+            osc.connect(gain);
+            gain.connect(audioContext.destination);
+            osc.frequency.setValueAtTime(freq, audioContext.currentTime);
+            osc.type = 'sine';
+            gain.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+            osc.start(audioContext.currentTime);
+            osc.stop(audioContext.currentTime + 0.3);
+          }, i * 100);
+        });
+        return;
+      default:
+        return;
+    }
+    
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+    oscillator.type = type === 'correct' ? 'sine' : 'sawtooth';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + duration);
+  }, []);
+
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  const initializeGame = useCallback(() => {
+    const shuffledAll = shuffleArray(allBinomials);
+    const sets = [];
+    for (let i = 0; i < shuffledAll.length; i += 5) {
+      sets.push(shuffledAll.slice(i, i + 5));
+    }
+    setAvailableSets(sets);
+    setTotalSets(sets.length);
+    setScore(0);
+    setGameComplete(false);
+    loadNextSet(sets, 0);
+  }, []);
+
+  const loadNextSet = (sets, setIndex) => {
+    if (setIndex >= sets.length) {
+      setGameComplete(true);
+      setFeedback('🎉 Congratulations! You\'ve completed all the binomial pairs!');
+      playSound('complete');
+      return;
+    }
+
+    const newSet = sets[setIndex];
+    setCurrentSet(newSet);
+    setShuffledFirsts(shuffleArray(newSet.map(pair => pair.first)));
+    setShuffledSeconds(shuffleArray(newSet.map(pair => pair.second)));
+    setMatches({});
+    setSelectedFirst(null);
+    setSelectedSecond(null);
+    setFeedback('');
+  };
+
+  useEffect(() => {
+    initializeGame();
+  }, [initializeGame]);
+
+  const handleFirstClick = (word) => {
+    if (Object.values(matches).includes(word)) return;
+    setSelectedFirst(word);
+    setSelectedSecond(null);
+  };
+
+  const handleSecondClick = (word) => {
+    if (Object.keys(matches).includes(word)) return;
+    
+    if (selectedFirst) {
+      const isCorrectMatch = currentSet.some(pair => 
+        pair.first === selectedFirst && pair.second === word
+      );
+      
+      if (isCorrectMatch) {
+        const newMatches = { ...matches, [word]: selectedFirst };
+        setMatches(newMatches);
+        playSound('correct');
+        
+        if (Object.keys(newMatches).length === 5) {
+          setScore(score + 1);
+          setFeedback('🎯 Perfect! All pairs matched correctly!');
+          setTimeout(() => {
+            const currentSetIndex = availableSets.findIndex(set => 
+              set.every(pair => currentSet.some(cp => cp.first === pair.first && cp.second === pair.second))
+            );
+            loadNextSet(availableSets, currentSetIndex + 1);
+          }, 2000);
+        }
+      } else {
+        playSound('incorrect');
+        setFeedback('❌ Not quite right. Try again!');
+        setTimeout(() => setFeedback(''), 1500);
+      }
+      
+      setSelectedFirst(null);
+      setSelectedSecond(null);
+    } else {
+      setSelectedSecond(word);
+    }
+  };
+
+  const resetCurrentSet = () => {
+    setMatches({});
+    setSelectedFirst(null);
+    setSelectedSecond(null);
+    setFeedback('');
+    setShuffledFirsts(shuffleArray(currentSet.map(pair => pair.first)));
+    setShuffledSeconds(shuffleArray(currentSet.map(pair => pair.second)));
+  };
+
+  const getButtonClass = (word, isFirst) => {
+    const baseClass = "p-4 m-2 rounded-lg border-2 font-semibold text-lg transition-all duration-200 hover:scale-105 cursor-pointer";
+    
+    if (isFirst) {
+      if (Object.values(matches).includes(word)) {
+        return `${baseClass} bg-green-100 border-green-400 text-green-800`;
+      }
+      if (selectedFirst === word) {
+        return `${baseClass} bg-blue-200 border-blue-500 text-blue-800 ring-2 ring-blue-300`;
+      }
+      return `${baseClass} bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200`;
+    } else {
+      if (Object.keys(matches).includes(word)) {
+        return `${baseClass} bg-green-100 border-green-400 text-green-800`;
+      }
+      if (selectedSecond === word) {
+        return `${baseClass} bg-blue-200 border-blue-500 text-blue-800 ring-2 ring-blue-300`;
+      }
+      return `${baseClass} bg-slate-100 border-slate-300 text-slate-700 hover:bg-slate-200`;
+    }
+  };
+
+  if (gameComplete) {
+    return (
+      <div className="max-w-4xl mx-auto p-6 bg-gradient-to-br from-green-50 to-blue-50 rounded-xl shadow-lg">
+        <div className="text-center">
+          <CheckCircle className="w-24 h-24 text-green-500 mx-auto mb-4" />
+          <h1 className="text-4xl font-bold text-green-700 mb-4">Game Complete!</h1>
+          <p className="text-xl text-gray-700 mb-6">
+            You successfully matched all {totalSets} sets of binomial pairs!
+          </p>
+          <button
+            onClick={initializeGame}
+            className="bg-blue-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors flex items-center gap-2 mx-auto"
+          >
+            <RotateCcw className="w-5 h-5" />
+            Play Again
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-6xl mx-auto p-6 bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-lg">
+      <div className="text-center mb-6">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2 flex items-center justify-center gap-2">
+          <Volume2 className="w-8 h-8 text-blue-600" />
+          Binomial Pairs Matching
+        </h1>
+        <p className="text-gray-600 mb-4">Match the first half with the correct second half of each binomial pair</p>
+        <div className="flex justify-center gap-4 text-sm text-gray-600">
+          <span>Set: {score + 1} / {totalSets}</span>
+          <span>Matched: {Object.keys(matches).length} / 5</span>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-8 mb-6">
+        {/* First halves */}
+        <div className="bg-white rounded-lg p-6 shadow-md">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">First Half</h2>
+          <div className="space-y-2">
+            {shuffledFirsts.map((word, index) => (
+              <button
+                key={index}
+                onClick={() => handleFirstClick(word)}
+                className={getButtonClass(word, true)}
+                disabled={Object.values(matches).includes(word)}
+              >
+                {word}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Second halves */}
+        <div className="bg-white rounded-lg p-6 shadow-md">
+          <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">Second Half</h2>
+          <div className="space-y-2">
+            {shuffledSeconds.map((word, index) => (
+              <button
+                key={index}
+                onClick={() => handleSecondClick(word)}
+                className={getButtonClass(word, false)}
+                disabled={Object.keys(matches).includes(word)}
+              >
+                {word}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Instructions and Feedback */}
+      <div className="text-center mb-4">
+        <p className="text-gray-600 mb-2">
+          {selectedFirst ? 
+            `Selected: "${selectedFirst}" - Now choose the matching second half` : 
+            'Click on a word from the first column, then its matching pair from the second column'
+          }
+        </p>
+        {feedback && (
+          <div className="text-lg font-semibold p-3 rounded-lg bg-white shadow-sm">
+            {feedback}
+          </div>
+        )}
+      </div>
+
+      {/* Controls */}
+      <div className="flex justify-center gap-4">
+        <button
+          onClick={resetCurrentSet}
+          className="bg-yellow-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-yellow-600 transition-colors flex items-center gap-2"
+        >
+          <Shuffle className="w-4 h-4" />
+          Reset Set
+        </button>
+        <button
+          onClick={initializeGame}
+          className="bg-gray-500 text-white px-6 py-2 rounded-lg font-semibold hover:bg-gray-600 transition-colors flex items-center gap-2"
+        >
+          <RotateCcw className="w-4 h-4" />
+          New Game
+        </button>
+      </div>
+
+      {/* Matched pairs display */}
+      {Object.keys(matches).length > 0 && (
+        <div className="mt-6 bg-white rounded-lg p-4 shadow-md">
+          <h3 className="text-lg font-semibold text-gray-700 mb-3">Matched Pairs:</h3>
+          <div className="flex flex-wrap gap-2">
+            {Object.entries(matches).map(([second, first]) => (
+              <span key={second} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                {first} {second}
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default BinomialMatchingGame;
