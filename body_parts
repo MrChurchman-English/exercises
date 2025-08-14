@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>German-English Body Parts Translation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .game-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 700px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+        }
+
+        .round-info {
+            background: linear-gradient(45deg, #ff6b6b, #ffa726);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .score-board {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 15px;
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .german-word {
+            font-size: 3em;
+            font-weight: bold;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .instruction {
+            font-size: 1.3em;
+            color: #e0e0e0;
+            margin-bottom: 25px;
+        }
+
+        .input-container {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .answer-input {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px 25px;
+            font-size: 1.4em;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 20px rgba(79, 172, 254, 0.4);
+            transform: scale(1.02);
+        }
+
+        .answer-input.correct {
+            border-color: #4CAF50;
+            background: #c8e6c9;
+            animation: correctPulse 0.6s ease;
+        }
+
+        .answer-input.incorrect {
+            border-color: #f44336;
+            background: #ffcdd2;
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .submit-btn {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            border: none;
+            border-radius: 15px;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .next-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            border-radius: 15px;
+            padding: 15px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .next-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .feedback {
+            font-size: 1.4em;
+            font-weight: bold;
+            margin: 20px 0;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feedback.correct {
+            color: #4CAF50;
+            animation: bounceIn 0.6s ease;
+        }
+
+        .feedback.incorrect {
+            color: #f44336;
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .hint {
+            background: rgba(255, 193, 7, 0.2);
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            font-size: 1.1em;
+            color: #fff3cd;
+        }
+
+        .round-complete {
+            display: none;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 20px 0;
+        }
+
+        .round-score {
+            font-size: 2em;
+            margin: 20px 0;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .continue-btn {
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            border: none;
+            border-radius: 15px;
+            padding: 20px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 10px;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-over {
+            display: none;
+            text-align: center;
+        }
+
+        .final-score {
+            font-size: 2.5em;
+            margin: 30px 0;
+            color: #ffeb3b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .performance-message {
+            font-size: 1.3em;
+            margin: 20px 0;
+            color: #e0e0e0;
+        }
+
+        .restart-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border: none;
+            border-radius: 15px;
+            padding: 20px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .restart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .rounds-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .round-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 0.9em;
+        }
+
+        .round-badge.completed {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4CAF50;
+        }
+
+        .round-badge.current {
+            background: rgba(255, 235, 59, 0.3);
+            border-color: #ffeb3b;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🇩🇪➡️🇬🇧 Translation Challenge</h1>
+        <p class="subtitle">Complete body parts vocabulary in rounds</p>
+        
+        <div class="round-info" id="round-info">Round 1 of 4</div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        
+        <div class="score-board">
+            <div>Total Score: <span id="total-score">0</span> / <span id="total-possible">40</span></div>
+            <div>Round: <span id="current-question">1</span> / 10</div>
+        </div>
+
+        <div id="game-area">
+            <div class="question-card">
+                <div class="german-word" id="german-word">der Ellbogen</div>
+                <div class="instruction">Type the English translation:</div>
+                
+                <div class="input-container">
+                    <input type="text" class="answer-input" id="answer-input" 
+                           placeholder="Enter English word..." 
+                           autocomplete="off" spellcheck="false">
+                </div>
+                
+                <button class="submit-btn" id="submit-btn" onclick="checkAnswer()">Check Answer</button>
+                <button class="next-btn" id="next-btn" onclick="nextQuestion()" disabled>Next Question</button>
+            </div>
+
+            <div class="feedback" id="feedback"></div>
+            <div class="hint" id="hint" style="display: none;"></div>
+        </div>
+
+        <div class="round-complete" id="round-complete">
+            <h2>🎯 Round Complete!</h2>
+            <div class="round-score" id="round-score"></div>
+            <div id="round-message"></div>
+            <button class="continue-btn" id="continue-btn" onclick="nextRound()">Continue to Next Round</button>
+            <button class="restart-btn" id="view-results-btn" onclick="showFinalResults()" style="display: none;">View Final Results</button>
+        </div>
+
+        <div class="game-over" id="game-over">
+            <h2>🎉 All Rounds Complete!</h2>
+            <div class="final-score" id="final-score"></div>
+            <div class="performance-message" id="performance-message"></div>
+            
+            <div class="rounds-overview" id="rounds-overview"></div>
+            
+            <button class="restart-btn" onclick="restartGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        // Audio context for sound effects
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Sound effect functions
+        function playSound(frequency, duration, type = 'sine') {
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = type;
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        function playCorrectSound() {
+            playSound(523, 0.2); // C note
+            setTimeout(() => playSound(659, 0.2), 100); // E note
+            setTimeout(() => playSound(784, 0.4), 200); // G note
+        }
+
+        function playIncorrectSound() {
+            playSound(200, 0.6, 'sawtooth');
+        }
+
+        function playTypeSound() {
+            playSound(1000, 0.05, 'square');
+        }
+
+        function playRoundCompleteSound() {
+            playSound(523, 0.3);
+            setTimeout(() => playSound(659, 0.3), 200);
+            setTimeout(() => playSound(784, 0.3), 400);
+            setTimeout(() => playSound(1047, 0.5), 600);
+        }
+
+        // Complete vocabulary organized in rounds - ALL words from the image
+        const vocabularyRounds = [
+            // Round 1: Basic external body parts
+            [
+                { german: "der Ellbogen", english: ["elbow"], hint: "The joint in the middle of your arm" },
+                { german: "die Fußsohle", english: ["sole"], hint: "The bottom of your foot" },
+                { german: "der Daumen", english: ["thumb"], hint: "The thickest finger" },
+                { german: "die Wimper", english: ["eyelash"], hint: "Hair that grows on your eyelid" },
+                { german: "das Schienbein", english: ["shin"], hint: "The front part of your lower leg" },
+                { german: "die Wade", english: ["calf"], hint: "The back muscle of your lower leg" },
+                { german: "die Wange", english: ["cheek"], hint: "The side of your face" },
+                { german: "die Lippe", english: ["lip"], hint: "The edge of your mouth" },
+                { german: "der Knöchel", english: ["ankle"], hint: "The joint between your foot and leg" },
+                { german: "das Nasenloch", english: ["nostril"], hint: "Opening in your nose for breathing" }
+            ],
+            // Round 2: Face and head parts
+            [
+                { german: "der Kiefer", english: ["jaw"], hint: "The bone that moves when you chew" },
+                { german: "das Ohrläppchen", english: ["earlobe"], hint: "The soft part at the bottom of your ear" },
+                { german: "die Taille", english: ["waist"], hint: "The narrow part of your body" },
+                { german: "die Handfläche", english: ["palm"], hint: "The inside of your hand" },
+                { german: "der Oberschenkel", english: ["thigh"], hint: "The upper part of your leg" },
+                { german: "der Magen", english: ["stomach"], hint: "Where your food goes after eating" },
+                { german: "das Kinn", english: ["chin"], hint: "The bottom part of your face" },
+                { german: "die Hüfte", english: ["hip"], hint: "The joint where your leg meets your torso" },
+                { german: "der Hals", english: ["neck"], hint: "Connects your head to your body" },
+                { german: "die Ferse", english: ["heel"], hint: "The back part of your foot" }
+            ],
+            // Round 3: Internal organs and advanced parts
+            [
+                { german: "der Kehlkopf", english: ["throat"], hint: "The passage in your neck" },
+                { german: "die Achselhöhle", english: ["armpit"], hint: "Under your arm where it meets your body" },
+                { german: "die Lunge", english: ["lung"], hint: "Organ you use for breathing" },
+                { german: "der Darm", english: ["intestines"], hint: "Long tube where food is digested" },
+                { german: "die Augenbraue", english: ["eyebrow"], hint: "Hair above your eye" },
+                { german: "die Wirbelsäule", english: ["spine"], hint: "The bone column in your back" },
+                { german: "die Stirn", english: ["forehead"], hint: "The upper part of your face" },
+                { german: "das Handgelenk", english: ["wrist"], hint: "The joint between your hand and arm" },
+                { german: "die Ader", english: ["veins"], hint: "Blood vessels that carry blood to your heart" },
+                { german: "die Niere", english: ["kidney"], hint: "Organ that filters your blood" }
+            ],
+            // Round 4: Advanced anatomy and bones
+            [
+                { german: "die Schläfe", english: ["temple"], hint: "The side of your head near your eye" },
+                { german: "das Becken", english: ["pelvis"], hint: "Hip bone structure" },
+                { german: "der Fingerknöchel", english: ["knuckle"], hint: "Joint where your fingers bend" },
+                { german: "die Brust", english: ["chest"], hint: "The front part of your torso" },
+                { german: "die Rippe", english: ["rib"], hint: "Curved bone that protects your chest" },
+                { german: "die Leber", english: ["liver"], hint: "Large organ that processes toxins" },
+                { german: "der Zeigefinger", english: ["index finger", "index"], hint: "The finger you point with" },
+                { german: "der Mittelfinger", english: ["middle finger", "middle"], hint: "The longest finger" },
+                { german: "der Ringfinger", english: ["ring finger", "ring"], hint: "The finger where you wear a wedding ring" },
+                { german: "der kleine Finger", english: ["pinky", "little finger"], hint: "The smallest finger" }
+            ]
+        ];
+
+        let currentRound = 0;
+        let currentQuestion = 0;
+        let totalScore = 0;
+        let roundScores = [0, 0, 0, 0];
+        let currentAnswer = [];
+        let attemptsOnCurrentQuestion = 0;
+
+        // Initialize game
+        function initGame() {
+            showQuestion();
+            updateDisplay();
+            setupInputEvents();
+        }
+
+        function setupInputEvents() {
+            const input = document.getElementById('answer-input');
+            
+            // Submit on Enter key
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    if (!document.getElementById('submit-btn').disabled) {
+                        checkAnswer();
+                    } else if (!document.getElementById('next-btn').disabled) {
+                        nextQuestion();
+                    }
+                }
+            });
+
+            // Play sound on typing
+            input.addEventListener('input', function() {
+                playTypeSound();
+                // Remove previous styling when user starts typing again
+                input.classList.remove('correct', 'incorrect');
+            });
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= 10) {
+                completeRound();
+                return;
+            }
+
+            const question = vocabularyRounds[currentRound][currentQuestion];
+            currentAnswer = question.english;
+            attemptsOnCurrentQuestion = 0;
+
+            // Update question display
+            document.getElementById('german-word').textContent = question.german;
+            
+            // Clear input and reset styling
+            const input = document.getElementById('answer-input');
+            input.value = '';
+            input.classList.remove('correct', 'incorrect');
+            input.focus();
+
+            // Reset buttons and feedback
+            document.getElementById('submit-btn').disabled = false;
+            document.getElementById('next-btn').disabled = true;
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('hint').style.display = 'none';
+
+            updateDisplay();
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('answer-input').value.trim().toLowerCase();
+            const input = document.getElementById('answer-input');
+            
+            if (!userAnswer) {
+                input.focus();
+                return;
+            }
+
+            attemptsOnCurrentQuestion++;
+            const isCorrect = currentAnswer.some(answer => answer.toLowerCase() === userAnswer);
+
+            if (isCorrect) {
+                // Correct answer
+                roundScores[currentRound]++;
+                totalScore++;
+                input.classList.add('correct');
+                
+                const correctMessages = [
+                    '🎉 Excellent! Perfect translation!',
+                    '👏 Outstanding! You got it right!',
+                    '✨ Brilliant! Correct answer!',
+                    '🌟 Superb! Well done!',
+                    '🎯 Perfect! You nailed it!'
+                ];
+                
+                document.getElementById('feedback').textContent = 
+                    correctMessages[Math.floor(Math.random() * correctMessages.length)];
+                document.getElementById('feedback').className = 'feedback correct';
+                
+                playCorrectSound();
+                
+                // Enable next button, disable submit
+                document.getElementById('submit-btn').disabled = true;
+                document.getElementById('next-btn').disabled = false;
+                
+            } else {
+                // Incorrect answer
+                input.classList.add('incorrect');
+                playIncorrectSound();
+                
+                if (attemptsOnCurrentQuestion === 1) {
+                    // First attempt - give hint
+                    document.getElementById('feedback').textContent = 
+                        '❌ Not quite right. Here\'s a hint:';
+                    document.getElementById('feedback').className = 'feedback incorrect';
+                    
+                    document.getElementById('hint').textContent = 
+                        vocabularyRounds[currentRound][currentQuestion].hint;
+                    document.getElementById('hint').style.display = 'block';
+                    
+                    // Clear input for another try
+                    setTimeout(() => {
+                        input.value = '';
+                        input.classList.remove('incorrect');
+                        input.focus();
+                    }, 1000);
+                    
+                } else {
+                    // Second attempt - show correct answer
+                    document.getElementById('feedback').textContent = 
+                        `❌ The correct answer is: ${currentAnswer[0]}`;
+                    document.getElementById('feedback').className = 'feedback incorrect';
+                    
+                    // Enable next button, disable submit
+                    document.getElementById('submit-btn').disabled = true;
+                    document.getElementById('next-btn').disabled = false;
+                }
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            updateDisplay();
+            showQuestion();
+        }
+
+        function completeRound() {
+            document.getElementById('game-area').style.display = 'none';
+            document.getElementById('round-complete').style.display = 'block';
+            
+            playRoundCompleteSound();
+            
+            const roundScore = roundScores[currentRound];
+            const percentage = Math.round((roundScore / 10) * 100);
+            
+            document.getElementById('round-score').textContent = 
+                `Round ${currentRound + 1}: ${roundScore}/10 (${percentage}%)`;
+            
+            let message = '';
+            if (percentage >= 90) message = '🏆 Outstanding round! Excellent work!';
+            else if (percentage >= 80) message = '🥇 Great round! Very impressive!';
+            else if (percentage >= 70) message = '🥈 Good round! Well done!';
+            else if (percentage >= 60) message = '🥉 Decent round! Keep it up!';
+            else message = '💪 Challenging round! You\'re learning!';
+            
+            document.getElementById('round-message').textContent = message;
+            
+            // Show appropriate button
+            if (currentRound < 3) {
+                document.getElementById('continue-btn').style.display = 'inline-block';
+                document.getElementById('view-results-btn').style.display = 'none';
+            } else {
+                document.getElementById('continue-btn').style.display = 'none';
+                document.getElementById('view-results-btn').style.display = 'inline-block';
+            }
+        }
+
+        function nextRound() {
+            currentRound++;
+            currentQuestion = 0;
+            
+            document.getElementById('game-area').style.display = 'block';
+            document.getElementById('round-complete').style.display = 'none';
+            
+            showQuestion();
+        }
+
+        function showFinalResults() {
+            document.getElementById('round-complete').style.display = 'none';
+            document.getElementById('game-over').style.display = 'block';
+            
+            const totalPossible = 40;
+            const percentage = Math.round((totalScore / totalPossible) * 100);
+            
+            document.getElementById('final-score').textContent = 
+                `${totalScore} / ${totalPossible} (${percentage}%)`;
+            
+            let message = '';
+            if (percentage >= 90) message = '🏆 Exceptional! You\'ve mastered advanced body vocabulary!';
+            else if (percentage >= 80) message = '🥇 Excellent! Outstanding vocabulary knowledge!';
+            else if (percentage >= 70) message = '🥈 Great work! Strong vocabulary skills!';
+            else if (percentage >= 60) message = '🥉 Good effort! Solid foundation built!';
+            else message = '💪 Keep practicing! Every round makes you stronger!';
+            
+            document.getElementById('performance-message').textContent = message;
+            
+            // Show round breakdown
+            const overview = document.getElementById('rounds-overview');
+            overview.innerHTML = '';
+            for (let i = 0; i < 4; i++) {
+                const badge = document.createElement('div');
+                badge.className = 'round-badge completed';
+                badge.innerHTML = `Round ${i + 1}<br>${roundScores[i]}/10`;
+                overview.appendChild(badge);
+            }
+        }
+
+        function updateDisplay() {
+            document.getElementById('total-score').textContent = totalScore;
+            document.getElementById('current-question').textContent = currentQuestion + 1;
+            document.getElementById('round-info').textContent = `Round ${currentRound + 1} of 4`;
+            
+            // Update progress bar (across all rounds)
+            const totalProgress = ((currentRound * 10 + currentQuestion) / 40) * 100;
+            document.getElementById('progress-fill').style.width = totalProgress + '%';
+        }
+
+        function restartGame() {
+            currentRound = 0;
+            currentQuestion = 0;
+            totalScore = 0;
+            roundScores = [0, 0, 0, 0];
+            
+            document.getElementById('game-area').style.display = 'block';
+            document.getElementById('round-complete').style.display = 'none';
+            document.getElementById('game-over').style.display = 'none';
+            document.getElementById('progress-fill').style.width = '0%';
+            
+            initGame();
+        }
+
+        // Start the game when page loads
+        window.onload = function() {
+            // Initialize audio context on first user interaction
+            document.addEventListener('click', function initAudio() {
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                document.removeEventListener('click', initAudio);
+            });
+            
+            initGame();
+        };
+    </script>
+</body>
+</html>
