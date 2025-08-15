@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Word Formation Exercise #2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2196F3, #21CBF3);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 25px;
+            border-bottom: 3px solid #e9ecef;
+        }
+
+        .instructions h2 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .exercise-content {
+            padding: 30px;
+        }
+
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #ffffff;
+            border-left: 4px solid #007bff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .question:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number {
+            font-weight: bold;
+            color: #007bff;
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        .input-container {
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        .word-in-brackets {
+            font-weight: bold;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .feedback.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feedback.correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .feedback.incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .controls {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(135deg, #6c757d, #545b62);
+        }
+
+        .btn.success {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #17a2b8, #138496);
+            color: white;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .instructions, .exercise-content {
+                padding: 20px;
+            }
+            
+            input[type="text"] {
+                min-width: 150px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Word Formation Exercise #2</h1>
+            <p>Upper Intermediate EFL</p>
+        </div>
+
+        <div class="instructions">
+            <h2>Instructions</h2>
+            <p>Complete each sentence by adding the correct prefix and/or suffix to the word in brackets. Form a new word that fits the context of the sentence.</p>
+        </div>
+
+        <div class="exercise-content">
+            <div class="score-display">
+                <span id="score">Score: 0 / 20</span>
+            </div>
+
+            <div id="questions-container">
+                <!-- Questions will be generated here -->
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="checkAnswers()">Check Answers</button>
+            <button class="btn secondary" onclick="showAnswers()">Show Answers</button>
+            <button class="btn success" onclick="resetExercise()">Reset</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { text: "His __________ (judge) of her character was completely wrong from the start.", answer: "misjudgment" },
+            { text: "Her __________ (flexible) made it impossible to adapt to the new system.", answer: "inflexibility" },
+            { text: "The restaurant offers __________ (smoke) seating for health-conscious customers.", answer: "non-smoking" },
+            { text: "His __________ (fortune) continued when he lost his second job in six months.", answer: "misfortune" },
+            { text: "The __________ (legal) of the contract caused serious problems for both parties.", answer: "illegality" },
+            { text: "She expressed her __________ (satisfy) with the poor quality of service.", answer: "dissatisfaction" },
+            { text: "The weather conditions made the mountain trail completely __________ (pass).", answer: "impassable" },
+            { text: "The team's __________ (unite) led to their defeat in the championship.", answer: "disunity" },
+            { text: "His __________ (relevant) comments during the meeting annoyed everyone.", answer: "irrelevant" },
+            { text: "The building's __________ (stable) became apparent after the earthquake.", answer: "instability" },
+            { text: "The company's __________ (ethical) practices were exposed by journalists.", answer: "unethical" },
+            { text: "There was complete __________ (silent) in the library during exam week.", answer: "silence" },
+            { text: "His __________ (sincere) was revealed when we discovered he had been lying.", answer: "insincerity" },
+            { text: "The software proved to be __________ (reliable) and crashed repeatedly.", answer: "unreliable" },
+            { text: "Her jacket is __________ (rain) so she stayed dry during the storm.", answer: "rainproof" },
+            { text: "The sudden __________ (connect) of the internet caused problems for online workers.", answer: "disconnection" },
+            { text: "His __________ (polite) toward the elderly woman shocked everyone present.", answer: "impoliteness" },
+            { text: "The museum displays many __________ (price) artifacts from ancient civilizations.", answer: "priceless" },
+            { text: "The doctor's __________ (diagnose) led to the wrong treatment being prescribed.", answer: "misdiagnosis" },
+            { text: "The small amount of evidence was __________ (sufficient) to prove his guilt.", answer: "insufficient" }
+        ];
+
+        function generateQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            questions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                
+                const parts = question.text.split('__________');
+                const bracketMatch = parts[1].match(/\(([^)]+)\)/);
+                const wordInBrackets = bracketMatch ? bracketMatch[1] : '';
+                
+                questionDiv.innerHTML = `
+                    <div>
+                        <span class="question-number">${index + 1}.</span>
+                        ${parts[0]}
+                        <div class="input-container">
+                            <input type="text" id="answer-${index}" placeholder="Enter your answer">
+                            <span class="word-in-brackets">(${wordInBrackets})</span>
+                        </div>
+                        ${parts[1].replace(/\([^)]+\)/, '')}
+                        <div class="feedback" id="feedback-${index}"></div>
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function checkAnswers() {
+            let correct = 0;
+            
+            questions.forEach((question, index) => {
+                const input = document.getElementById(`answer-${index}`);
+                const feedback = document.getElementById(`feedback-${index}`);
+                const userAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = question.answer.toLowerCase();
+                
+                if (userAnswer === '') {
+                    feedback.textContent = "Please enter an answer.";
+                    feedback.className = "feedback incorrect show";
+                    input.style.borderColor = "#dc3545";
+                } else if (userAnswer === correctAnswer) {
+                    feedback.textContent = "Correct! ✓";
+                    feedback.className = "feedback correct show";
+                    input.style.borderColor = "#28a745";
+                    correct++;
+                } else {
+                    feedback.textContent = "Incorrect. Try again!";
+                    feedback.className = "feedback incorrect show";
+                    input.style.borderColor = "#dc3545";
+                }
+            });
+            
+            document.getElementById('score').textContent = `Score: ${correct} / ${questions.length}`;
+        }
+
+        function showAnswers() {
+            questions.forEach((question, index) => {
+                const input = document.getElementById(`answer-${index}`);
+                const feedback = document.getElementById(`feedback-${index}`);
+                
+                input.value = question.answer;
+                feedback.textContent = `Answer: ${question.answer}`;
+                feedback.className = "feedback correct show";
+                input.style.borderColor = "#007bff";
+            });
+            
+            document.getElementById('score').textContent = `Score: ${questions.length} / ${questions.length}`;
+        }
+
+        function resetExercise() {
+            questions.forEach((question, index) => {
+                const input = document.getElementById(`answer-${index}`);
+                const feedback = document.getElementById(`feedback-${index}`);
+                
+                input.value = '';
+                input.style.borderColor = '#e9ecef';
+                feedback.className = 'feedback';
+                feedback.textContent = '';
+            });
+            
+            document.getElementById('score').textContent = 'Score: 0 / 20';
+        }
+
+        // Add enter key support
+        document.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswers();
+            }
+        });
+
+        // Generate questions on page load
+        generateQuestions();
+    </script>
+</body>
+</html>
