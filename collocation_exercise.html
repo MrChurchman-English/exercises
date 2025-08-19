@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Collocations Gap-Fill Exercise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .exercise-content {
+            padding: 40px;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .sentence {
+            background: #fff;
+            border: 1px solid #e1e8ed;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sentence:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .sentence-number {
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            background: #3498db;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .sentence-text {
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin-top: 5px;
+        }
+
+        .gap {
+            display: inline-block;
+            min-width: 120px;
+            border-bottom: 2px solid #3498db;
+            margin: 0 3px;
+            padding: 2px 8px;
+            background: transparent;
+            border-top: none;
+            border-left: none;
+            border-right: none;
+            font-size: inherit;
+            font-family: inherit;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .gap:focus {
+            border-bottom-color: #2980b9;
+            background: #f0f8ff;
+        }
+
+        .gap.correct {
+            border-bottom-color: #27ae60;
+            background: #d5f4e6;
+            color: #27ae60;
+        }
+
+        .gap.incorrect {
+            border-bottom-color: #e74c3c;
+            background: #fdf2f2;
+            color: #e74c3c;
+        }
+
+        .controls {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+        }
+
+        .btn.secondary:hover {
+            box-shadow: 0 6px 20px rgba(149, 165, 166, 0.4);
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.3em;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e1e8ed;
+        }
+
+        .score.hidden {
+            display: none;
+        }
+
+        .score-text {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-size: 1em;
+        }
+
+        .excellent { color: #27ae60; }
+        .good { color: #f39c12; }
+        .needs-practice { color: #e74c3c; }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .exercise-content {
+                padding: 20px;
+            }
+            
+            .gap {
+                min-width: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Advanced Collocations Exercise</h1>
+            <p>Complete the gaps with the correct words to form common collocations and fixed phrases</p>
+        </div>
+        
+        <div class="exercise-content">
+            <div class="instructions">
+                <h2>Instructions</h2>
+                <p>Fill in the gaps with the missing words to complete the collocations and fixed expressions. When you're ready, click "Check Answers" to see your results.</p>
+            </div>
+
+            <div id="sentences">
+                <!-- Sentences will be inserted here by JavaScript -->
+            </div>
+
+            <div class="controls">
+                <button class="btn" onclick="checkAnswers()">Check Answers</button>
+                <button class="btn secondary" onclick="resetExercise()">Reset</button>
+            </div>
+
+            <div id="score" class="score hidden">
+                <div class="score-text" id="score-text"></div>
+                <div class="feedback" id="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sentences = [
+            {
+                text: "The students were _____ disappointed with their exam results.",
+                answer: "bitterly"
+            },
+            {
+                text: "It's time to _____ these new strategies into practice.",
+                answer: "put"
+            },
+            {
+                text: "You need to _____ patience when learning a new language.",
+                answer: "have"
+            },
+            {
+                text: "Good teachers _____ an example for their students to follow.",
+                answer: "set"
+            },
+            {
+                text: "_____ in mind that the weather can change quickly in the mountains, you should pack warm clothes.",
+                answer: "bearing"
+            },
+            {
+                text: "The documentary will _____ an effect on how people view climate change.",
+                answer: "have"
+            },
+            {
+                text: "Could you _____ me a favour and pick up some milk?",
+                answer: "do"
+            },
+            {
+                text: "The new environmental policies will _____ a difference to our carbon emissions.",
+                answer: "make"
+            },
+            {
+                text: "The committee will _____ turns presenting their findings.",
+                answer: "take"
+            },
+            {
+                text: "The Olympic champion will _____ a record that may never be broken.",
+                answer: "set"
+            },
+            {
+                text: "We shouldn't _____ our good health for granted.",
+                answer: "take"
+            },
+            {
+                text: "Please _____ your best on this important exam.",
+                answer: "do"
+            },
+            {
+                text: "I _____ you my word that I'll finish this project on time.",
+                answer: "give"
+            },
+            {
+                text: "The audience was _____ moved by the powerful performance.",
+                answer: "deeply"
+            },
+            {
+                text: "She always _____ a promise, no matter how difficult it might be.",
+                answer: "keeps"
+            },
+            {
+                text: "The board decided to _____ pressure on the CEO to resign.",
+                answer: "put"
+            },
+            {
+                text: "I'm afraid your explanation doesn't _____ sense to me.",
+                answer: "make"
+            },
+            {
+                text: "The teacher decided to _____ an exception for students who were ill.",
+                answer: "make"
+            },
+            {
+                text: "Please _____ notice of the new safety regulations.",
+                answer: "take"
+            },
+            {
+                text: "The professor will _____ a talk about artificial intelligence next week.",
+                answer: "give"
+            }
+        ];
+
+        function initializeExercise() {
+            const container = document.getElementById('sentences');
+            container.innerHTML = '';
+            
+            sentences.forEach((sentence, index) => {
+                const div = document.createElement('div');
+                div.className = 'sentence';
+                div.innerHTML = `
+                    <div class="sentence-number">${index + 1}</div>
+                    <div class="sentence-text">
+                        ${sentence.text.replace('_____', '<input type="text" class="gap" data-answer="' + sentence.answer + '">')}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function checkAnswers() {
+            const gaps = document.querySelectorAll('.gap');
+            let correct = 0;
+            let total = gaps.length;
+
+            gaps.forEach(gap => {
+                const userAnswer = gap.value.trim().toLowerCase();
+                const correctAnswer = gap.dataset.answer.toLowerCase();
+                
+                gap.classList.remove('correct', 'incorrect');
+                
+                if (userAnswer === correctAnswer) {
+                    gap.classList.add('correct');
+                    correct++;
+                } else {
+                    gap.classList.add('incorrect');
+                }
+            });
+
+            showScore(correct, total);
+        }
+
+        function showScore(correct, total) {
+            const scoreElement = document.getElementById('score');
+            const scoreText = document.getElementById('score-text');
+            const feedback = document.getElementById('feedback');
+            
+            const percentage = Math.round((correct / total) * 100);
+            
+            scoreText.textContent = `Score: ${correct}/${total} (${percentage}%)`;
+            
+            let feedbackText = '';
+            let feedbackClass = '';
+            
+            if (percentage >= 90) {
+                feedbackText = 'Excellent work! You have mastered these collocations.';
+                feedbackClass = 'excellent';
+            } else if (percentage >= 70) {
+                feedbackText = 'Good job! Keep practicing to improve further.';
+                feedbackClass = 'good';
+            } else {
+                feedbackText = 'Keep practicing! Review the collocations and try again.';
+                feedbackClass = 'needs-practice';
+            }
+            
+            feedback.textContent = feedbackText;
+            feedback.className = `feedback ${feedbackClass}`;
+            
+            scoreElement.classList.remove('hidden');
+        }
+
+        function resetExercise() {
+            const gaps = document.querySelectorAll('.gap');
+            gaps.forEach(gap => {
+                gap.value = '';
+                gap.classList.remove('correct', 'incorrect');
+            });
+            
+            document.getElementById('score').classList.add('hidden');
+        }
+
+        // Initialize the exercise when the page loads
+        window.onload = function() {
+            initializeExercise();
+        };
+    </script>
+</body>
+</html>
