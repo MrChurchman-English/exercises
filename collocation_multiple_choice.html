@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Collocations Multiple Choice Exercise</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #8b5a96 0%, #c44569 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #5d4e75, #8b5a96);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .exercise-content {
+            padding: 40px;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            border-left: 4px solid #8b5a96;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .question {
+            background: #fff;
+            border: 1px solid #e1e8ed;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .question:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .question-number {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: #8b5a96;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9em;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(139, 90, 150, 0.3);
+        }
+
+        .question-text {
+            font-size: 1.15em;
+            line-height: 1.7;
+            margin: 10px 0 20px 0;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: #8b5a96;
+            background: #f0f0ff;
+            transform: translateX(5px);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 12px;
+            accent-color: #8b5a96;
+            transform: scale(1.2);
+        }
+
+        .option label {
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 500;
+            color: #34495e;
+        }
+
+        .option.correct {
+            border-color: #27ae60;
+            background: #d5f4e6;
+            animation: correctPulse 0.6s ease;
+        }
+
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #fdf2f2;
+            animation: incorrectShake 0.6s ease;
+        }
+
+        .option.correct-answer {
+            border-color: #27ae60;
+            background: #e8f5e8;
+            border-width: 3px;
+        }
+
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .controls {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #8b5a96, #5d4e75);
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(139, 90, 150, 0.3);
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(139, 90, 150, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+        }
+
+        .btn.secondary:hover {
+            box-shadow: 0 8px 25px rgba(149, 165, 166, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.4em;
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            border: 1px solid #dee2e6;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .score.hidden {
+            display: none;
+        }
+
+        .score-text {
+            color: #2c3e50;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .feedback {
+            margin-top: 12px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .excellent { color: #27ae60; }
+        .good { color: #f39c12; }
+        .needs-practice { color: #e74c3c; }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e1e8ed;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #8b5a96, #c44569);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .exercise-content {
+                padding: 20px;
+            }
+
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            .question {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Advanced Collocations Quiz</h1>
+            <p>Choose the correct word to complete each collocation or fixed expression</p>
+        </div>
+        
+        <div class="exercise-content">
+            <div class="instructions">
+                <h2>Instructions</h2>
+                <p>Select the correct option for each question. Some distractors are also common collocations, so think carefully about which word best fits the context. Click "Submit Quiz" when you're ready to see your results.</p>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+
+            <div id="questions">
+                <!-- Questions will be inserted here by JavaScript -->
+            </div>
+
+            <div class="controls">
+                <button class="btn" id="submit-btn" onclick="submitQuiz()">Submit Quiz</button>
+                <button class="btn secondary" onclick="resetQuiz()">Reset Quiz</button>
+            </div>
+
+            <div id="score" class="score hidden">
+                <div class="score-text" id="score-text"></div>
+                <div class="feedback" id="feedback"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                text: "Even small donations can _____ a difference to children's lives in developing countries.",
+                options: ["create", "make", "build", "form"],
+                correct: 1
+            },
+            {
+                text: "His bizarre conspiracy theories simply don't _____ sense to rational people.",
+                options: ["create", "make", "have", "give"],
+                correct: 1
+            },
+            {
+                text: "The football fans were _____ disappointed when their team lost the championship final.",
+                options: ["deeply", "bitterly", "heavily", "extremely"],
+                correct: 1
+            },
+            {
+                text: "Would you mind _____ me a favour and watering my plants while I'm away?",
+                options: ["making", "giving", "doing", "offering"],
+                correct: 2
+            },
+            {
+                text: "The war veterans were _____ moved by the memorial ceremony.",
+                options: ["bitterly", "heavily", "deeply", "highly"],
+                correct: 2
+            },
+            {
+                text: "Parents must _____ patience when teaching toddlers new skills.",
+                options: ["make", "take", "have", "show"],
+                correct: 2
+            },
+            {
+                text: "_____ in mind that prices fluctuate daily, you should check the website before ordering.",
+                options: ["Keeping", "Taking", "Bearing", "Holding"],
+                correct: 2
+            },
+            {
+                text: "The media campaign will _____ pressure on politicians to address climate change.",
+                options: ["make", "give", "put", "apply"],
+                correct: 2
+            },
+            {
+                text: "Many wealthy people _____ their privileged lifestyle for granted.",
+                options: ["have", "take", "hold", "keep"],
+                correct: 1
+            },
+            {
+                text: "The innovative architect hopes to _____ a new standard in sustainable building design.",
+                options: ["make", "create", "set", "establish"],
+                correct: 2
+            },
+            {
+                text: "Childhood trauma can _____ a profound effect on adult relationships.",
+                options: ["make", "have", "create", "give"],
+                correct: 1
+            },
+            {
+                text: "Experienced teachers _____ an example of lifelong learning for their students.",
+                options: ["make", "give", "set", "show"],
+                correct: 2
+            },
+            {
+                text: "Drivers should _____ notice of warning signs about dangerous road conditions ahead.",
+                options: ["give", "take", "make", "pay"],
+                correct: 1
+            },
+            {
+                text: "The politician failed to _____ his election promises about healthcare reform.",
+                options: ["hold", "maintain", "keep", "preserve"],
+                correct: 2
+            },
+            {
+                text: "In group projects, students should _____ turns being the team leader.",
+                options: ["make", "take", "have", "do"],
+                correct: 1
+            },
+            {
+                text: "The nuclear waste disposal issue remains _____ controversial among environmentalists.",
+                options: ["deeply", "bitterly", "heavily", "highly"],
+                correct: 3
+            },
+            {
+                text: "The company needs to _____ these cost-cutting measures into practice immediately.",
+                options: ["bring", "put", "set", "place"],
+                correct: 1
+            },
+            {
+                text: "The witness _____ her word that she would testify truthfully in court.",
+                options: ["made", "offered", "gave", "provided"],
+                correct: 2
+            },
+            {
+                text: "The strict headmaster rarely _____ an exception to the school uniform policy.",
+                options: ["creates", "makes", "gives", "allows"],
+                correct: 1
+            },
+            {
+                text: "The renowned scientist will _____ a talk at next month's international conference.",
+                options: ["make", "do", "give", "present"],
+                correct: 2
+            }
+        ];
+
+        let selectedAnswers = {};
+        let quizSubmitted = false;
+
+        function initializeQuiz() {
+            const container = document.getElementById('questions');
+            container.innerHTML = '';
+            selectedAnswers = {};
+            quizSubmitted = false;
+            
+            questions.forEach((question, questionIndex) => {
+                const div = document.createElement('div');
+                div.className = 'question';
+                
+                const optionsHtml = question.options.map((option, optionIndex) => `
+                    <div class="option" onclick="selectOption(${questionIndex}, ${optionIndex})">
+                        <input type="radio" name="question-${questionIndex}" value="${optionIndex}" id="q${questionIndex}o${optionIndex}">
+                        <label for="q${questionIndex}o${optionIndex}">${option}</label>
+                    </div>
+                `).join('');
+                
+                div.innerHTML = `
+                    <div class="question-number">${questionIndex + 1}</div>
+                    <div class="question-text">${question.text}</div>
+                    <div class="options">
+                        ${optionsHtml}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+            
+            updateProgress();
+            document.getElementById('score').classList.add('hidden');
+            document.getElementById('submit-btn').disabled = false;
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            if (quizSubmitted) return;
+            
+            selectedAnswers[questionIndex] = optionIndex;
+            
+            // Update radio button
+            const radioButton = document.getElementById(`q${questionIndex}o${optionIndex}`);
+            radioButton.checked = true;
+            
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const answered = Object.keys(selectedAnswers).length;
+            const total = questions.length;
+            const percentage = (answered / total) * 100;
+            
+            document.getElementById('progress-fill').style.width = percentage + '%';
+        }
+
+        function submitQuiz() {
+            if (Object.keys(selectedAnswers).length < questions.length) {
+                alert('Please answer all questions before submitting.');
+                return;
+            }
+            
+            quizSubmitted = true;
+            let correct = 0;
+            
+            questions.forEach((question, questionIndex) => {
+                const selectedOption = selectedAnswers[questionIndex];
+                const correctOption = question.correct;
+                
+                // Get all option elements for this question
+                const options = document.querySelectorAll(`input[name="question-${questionIndex}"]`).forEach((radio, optionIndex) => {
+                    const optionDiv = radio.closest('.option');
+                    
+                    if (optionIndex === selectedOption) {
+                        if (selectedOption === correctOption) {
+                            optionDiv.classList.add('correct');
+                            correct++;
+                        } else {
+                            optionDiv.classList.add('incorrect');
+                        }
+                    }
+                    
+                    if (optionIndex === correctOption && selectedOption !== correctOption) {
+                        optionDiv.classList.add('correct-answer');
+                    }
+                });
+            });
+            
+            showScore(correct, questions.length);
+            document.getElementById('submit-btn').disabled = true;
+        }
+
+        function showScore(correct, total) {
+            const scoreElement = document.getElementById('score');
+            const scoreText = document.getElementById('score-text');
+            const feedback = document.getElementById('feedback');
+            
+            const percentage = Math.round((correct / total) * 100);
+            
+            scoreText.textContent = `Final Score: ${correct}/${total} (${percentage}%)`;
+            
+            let feedbackText = '';
+            let feedbackClass = '';
+            
+            if (percentage >= 90) {
+                feedbackText = 'Outstanding! You have excellent command of these collocations.';
+                feedbackClass = 'excellent';
+            } else if (percentage >= 75) {
+                feedbackText = 'Well done! You show good understanding of collocation patterns.';
+                feedbackClass = 'good';
+            } else if (percentage >= 60) {
+                feedbackText = 'Good effort! Review the incorrect answers and keep practicing.';
+                feedbackClass = 'good';
+            } else {
+                feedbackText = 'Keep studying! Focus on learning common collocation patterns.';
+                feedbackClass = 'needs-practice';
+            }
+            
+            feedback.textContent = feedbackText;
+            feedback.className = `feedback ${feedbackClass}`;
+            
+            scoreElement.classList.remove('hidden');
+            
+            // Scroll to score
+            scoreElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function resetQuiz() {
+            initializeQuiz();
+        }
+
+        // Initialize the quiz when the page loads
+        window.onload = function() {
+            initializeQuiz();
+        };
+    </script>
+</body>
+</html>
