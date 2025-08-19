@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verb-Noun Collocations Memory Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            padding: 30px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #e9ecef;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #3498db;
+            display: block;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .card {
+            aspect-ratio: 1;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        .card.flipped {
+            background: white;
+            border: 3px solid #3498db;
+        }
+
+        .card.matched {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border: 3px solid #27ae60;
+            animation: matchPulse 0.6s ease;
+        }
+
+        .card.wrong {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            animation: wrongShake 0.6s ease;
+        }
+
+        @keyframes matchPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .card-content {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #2c3e50;
+            text-align: center;
+            padding: 10px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card.flipped .card-content,
+        .card.matched .card-content {
+            opacity: 1;
+            color: #2c3e50;
+        }
+
+        .card-back {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            color: white;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .card.flipped .card-back,
+        .card.matched .card-back {
+            opacity: 0;
+        }
+
+        .controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn.secondary {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+        }
+
+        .btn.secondary:hover {
+            box-shadow: 0 6px 20px rgba(149, 165, 166, 0.4);
+        }
+
+        .game-over {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            border-radius: 15px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .game-over.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-over h2 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .game-over p {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .difficulty-selector {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .difficulty-btn {
+            background: #ecf0f1;
+            color: #2c3e50;
+            border: 2px solid #bdc3c7;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+
+        .difficulty-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .difficulty-btn:hover {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        @media (max-width: 768px) {
+            .game-board {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .game-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .card {
+                font-size: 0.9em;
+            }
+
+            .card-content {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-board {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .card-content {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>🧠 Collocation Memory Game</h1>
+            <p>Match verbs with their correct noun collocations!</p>
+        </div>
+
+        <div class="difficulty-selector">
+            <button class="difficulty-btn active" onclick="setDifficulty('easy')">Easy (12 cards)</button>
+            <button class="difficulty-btn" onclick="setDifficulty('medium')">Medium (18 cards)</button>
+            <button class="difficulty-btn" onclick="setDifficulty('hard')">Hard (24 cards)</button>
+        </div>
+
+        <div class="game-stats">
+            <div class="stat">
+                <span class="stat-number" id="moves">0</span>
+                <span class="stat-label">Moves</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="matches">0</span>
+                <span class="stat-label">Matches</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number" id="timer">00:00</span>
+                <span class="stat-label">Time</span>
+            </div>
+        </div>
+
+        <div class="game-board" id="game-board">
+            <!-- Cards will be generated here -->
+        </div>
+
+        <div class="controls">
+            <button class="btn" onclick="startNewGame()">New Game</button>
+            <button class="btn secondary" onclick="restartGame()">Restart</button>
+        </div>
+
+        <div class="game-over" id="game-over">
+            <h2>🎉 Congratulations!</h2>
+            <p id="final-stats"></p>
+            <p>You've mastered these collocations!</p>
+        </div>
+    </div>
+
+    <script>
+        // All verb-noun collocations from the original list plus additional common ones
+        const allCollocations = [
+            // Original collocations
+            { verb: "make", noun: "a difference" },
+            { verb: "make", noun: "sense" },
+            { verb: "make", noun: "an exception" },
+            { verb: "make", noun: "trouble" },
+            { verb: "do", noun: "your best" },
+            { verb: "do", noun: "the shopping" },
+            { verb: "do", noun: "someone a favour" },
+            { verb: "do", noun: "harm" },
+            { verb: "have", noun: "an experience" },
+            { verb: "have", noun: "an effect" },
+            { verb: "have", noun: "patience" },
+            { verb: "have", noun: "a row" },
+            { verb: "take", noun: "notice" },
+            { verb: "take", noun: "something for granted" },
+            { verb: "take", noun: "pleasure" },
+            { verb: "take", noun: "turns" },
+            { verb: "put", noun: "pressure on someone" },
+            { verb: "put", noun: "something into practice" },
+            { verb: "put", noun: "an end to something" },
+            { verb: "put", noun: "your mind to something" },
+            { verb: "give", noun: "a talk" },
+            { verb: "give", noun: "your word" },
+            { verb: "give", noun: "credit to someone" },
+            { verb: "give", noun: "someone a chance" },
+            { verb: "set", noun: "an example" },
+            { verb: "set", noun: "a record" },
+            { verb: "set", noun: "an alarm" },
+            { verb: "set", noun: "fire to something" },
+            { verb: "keep", noun: "a promise" },
+            { verb: "keep", noun: "a diary" },
+            { verb: "keep", noun: "a secret" },
+            { verb: "keep", noun: "in touch" },
+            
+            // Additional common verb-noun collocations
+            { verb: "break", noun: "the news" },
+            { verb: "break", noun: "a habit" },
+            { verb: "break", noun: "the law" },
+            { verb: "catch", noun: "a cold" },
+            { verb: "catch", noun: "someone's attention" },
+            { verb: "catch", noun: "a train" },
+            { verb: "pay", noun: "attention" },
+            { verb: "pay", noun: "a compliment" },
+            { verb: "pay", noun: "the bill" },
+            { verb: "run", noun: "a business" },
+            { verb: "run", noun: "out of time" },
+            { verb: "run", noun: "a risk" },
+            { verb: "save", noun: "money" },
+            { verb: "save", noun: "time" },
+            { verb: "save", noun: "someone's life" },
+            { verb: "lose", noun: "weight" },
+            { verb: "lose", noun: "your temper" },
+            { verb: "lose", noun: "track of time" },
+            { verb: "waste", noun: "time" },
+            { verb: "waste", noun: "money" },
+            { verb: "waste", noun: "an opportunity" },
+            { verb: "miss", noun: "the point" },
+            { verb: "miss", noun: "an opportunity" },
+            { verb: "miss", noun: "someone terribly" },
+            { verb: "tell", noun: "the truth" },
+            { verb: "tell", noun: "a lie" },
+            { verb: "tell", noun: "a story" },
+            { verb: "face", noun: "the facts" },
+            { verb: "face", noun: "a challenge" },
+            { verb: "face", noun: "the consequences" },
+            { verb: "solve", noun: "a problem" },
+            { verb: "solve", noun: "a mystery" },
+            { verb: "solve", noun: "an equation" },
+            { verb: "reach", noun: "a decision" },
+            { verb: "reach", noun: "an agreement" },
+            { verb: "reach", noun: "your goal" },
+            { verb: "draw", noun: "a conclusion" },
+            { verb: "draw", noun: "someone's attention" },
+            { verb: "draw", noun: "a picture" },
+            { verb: "raise", noun: "your voice" },
+            { verb: "raise", noun: "a question" },
+            { verb: "raise", noun: "money for charity" },
+            { verb: "follow", noun: "instructions" },
+            { verb: "follow", noun: "your dreams" },
+            { verb: "follow", noun: "someone's advice" }
+        ];
+
+        let gameState = {
+            cards: [],
+            flippedCards: [],
+            matches: 0,
+            moves: 0,
+            gameStarted: false,
+            gameFinished: false,
+            startTime: null,
+            timerInterval: null,
+            difficulty: 'easy'
+        };
+
+        const difficulties = {
+            easy: 6,    // 12 cards (6 pairs)
+            medium: 9,  // 18 cards (9 pairs)
+            hard: 12    // 24 cards (12 pairs)
+        };
+
+        function setDifficulty(level) {
+            // Update active button
+            document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            gameState.difficulty = level;
+            startNewGame();
+        }
+
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        function createGameCards() {
+            const pairsNeeded = difficulties[gameState.difficulty];
+            
+            // Randomly select collocations for this game
+            const selectedCollocations = shuffleArray(allCollocations).slice(0, pairsNeeded);
+            
+            // Create pairs (verb and noun phrase for each collocation)
+            const cards = [];
+            selectedCollocations.forEach((collocation, index) => {
+                cards.push({
+                    id: `verb-${index}`,
+                    content: collocation.verb,
+                    type: 'verb',
+                    pairId: index
+                });
+                cards.push({
+                    id: `noun-${index}`,
+                    content: collocation.noun,
+                    type: 'noun',
+                    pairId: index
+                });
+            });
+
+            return shuffleArray(cards);
+        }
+
+        function renderBoard() {
+            const board = document.getElementById('game-board');
+            board.innerHTML = '';
+            
+            // Adjust grid columns based on difficulty
+            const columns = gameState.difficulty === 'easy' ? 4 : gameState.difficulty === 'medium' ? 6 : 6;
+            board.style.gridTemplateColumns = `repeat(${columns}, 1fr)`;
+            
+            gameState.cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'card';
+                cardElement.dataset.cardId = card.id;
+                cardElement.dataset.pairId = card.pairId;
+                cardElement.onclick = () => flipCard(index);
+                
+                cardElement.innerHTML = `
+                    <div class="card-back">🎯</div>
+                    <div class="card-content">${card.content}</div>
+                `;
+                
+                board.appendChild(cardElement);
+            });
+        }
+
+        function flipCard(cardIndex) {
+            if (gameState.gameFinished) return;
+            if (gameState.flippedCards.length >= 2) return;
+            if (gameState.flippedCards.includes(cardIndex)) return;
+            
+            if (!gameState.gameStarted) {
+                startTimer();
+                gameState.gameStarted = true;
+            }
+            
+            const cardElement = document.querySelector(`[data-card-id="${gameState.cards[cardIndex].id}"]`);
+            cardElement.classList.add('flipped');
+            
+            gameState.flippedCards.push(cardIndex);
+            
+            if (gameState.flippedCards.length === 2) {
+                gameState.moves++;
+                updateStats();
+                setTimeout(checkMatch, 1000);
+            }
+        }
+
+        function checkMatch() {
+            const [firstIndex, secondIndex] = gameState.flippedCards;
+            const firstCard = gameState.cards[firstIndex];
+            const secondCard = gameState.cards[secondIndex];
+            
+            const firstElement = document.querySelector(`[data-card-id="${firstCard.id}"]`);
+            const secondElement = document.querySelector(`[data-card-id="${secondCard.id}"]`);
+            
+            if (firstCard.pairId === secondCard.pairId) {
+                // Match found!
+                firstElement.classList.add('matched');
+                secondElement.classList.add('matched');
+                gameState.matches++;
+                updateStats();
+                
+                // Check if game is complete
+                if (gameState.matches === difficulties[gameState.difficulty]) {
+                    finishGame();
+                }
+            } else {
+                // No match
+                firstElement.classList.remove('flipped');
+                secondElement.classList.remove('flipped');
+                firstElement.classList.add('wrong');
+                secondElement.classList.add('wrong');
+                
+                setTimeout(() => {
+                    firstElement.classList.remove('wrong');
+                    secondElement.classList.remove('wrong');
+                }, 600);
+            }
+            
+            gameState.flippedCards = [];
+        }
+
+        function startTimer() {
+            gameState.startTime = Date.now();
+            gameState.timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function updateTimer() {
+            if (!gameState.startTime) return;
+            
+            const elapsed = Math.floor((Date.now() - gameState.startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            
+            document.getElementById('timer').textContent = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function updateStats() {
+            document.getElementById('moves').textContent = gameState.moves;
+            document.getElementById('matches').textContent = gameState.matches;
+        }
+
+        function finishGame() {
+            gameState.gameFinished = true;
+            clearInterval(gameState.timerInterval);
+            
+            const finalTime = document.getElementById('timer').textContent;
+            const efficiency = Math.round((gameState.matches / gameState.moves) * 100);
+            
+            document.getElementById('final-stats').innerHTML = `
+                Completed in ${finalTime} with ${gameState.moves} moves<br>
+                Efficiency: ${efficiency}% - ${getPerformanceMessage(efficiency)}
+            `;
+            
+            document.getElementById('game-over').classList.add('show');
+        }
+
+        function getPerformanceMessage(efficiency) {
+            if (efficiency >= 80) return "Outstanding memory!";
+            if (efficiency >= 60) return "Great job!";
+            if (efficiency >= 40) return "Good effort!";
+            return "Keep practicing!";
+        }
+
+        function startNewGame() {
+            resetGame();
+            gameState.cards = createGameCards();
+            renderBoard();
+        }
+
+        function restartGame() {
+            resetGame();
+            renderBoard();
+        }
+
+        function resetGame() {
+            gameState.flippedCards = [];
+            gameState.matches = 0;
+            gameState.moves = 0;
+            gameState.gameStarted = false;
+            gameState.gameFinished = false;
+            gameState.startTime = null;
+            
+            if (gameState.timerInterval) {
+                clearInterval(gameState.timerInterval);
+                gameState.timerInterval = null;
+            }
+            
+            document.getElementById('timer').textContent = '00:00';
+            document.getElementById('game-over').classList.remove('show');
+            updateStats();
+        }
+
+        // Initialize game when page loads
+        window.onload = function() {
+            startNewGame();
+        };
+    </script>
+</body>
+</html>
