@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambridge C1 Reading and Use of English - Part 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .text-passage {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .gap {
+            display: inline-block;
+            margin: 0 5px;
+            position: relative;
+        }
+
+        .gap select {
+            background: #fff;
+            border: 2px solid #3498db;
+            border-radius: 5px;
+            padding: 8px 12px;
+            font-size: 1rem;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .gap select:hover {
+            border-color: #2980b9;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+        }
+
+        .gap select:focus {
+            outline: none;
+            border-color: #2980b9;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .gap.correct select {
+            border-color: #27ae60;
+            background-color: #d5f4e6;
+        }
+
+        .gap.incorrect select {
+            border-color: #e74c3c;
+            background-color: #fdf2f2;
+        }
+
+        .buttons {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn.reset {
+            background: linear-gradient(45deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 4px 15px rgba(149, 165, 166, 0.3);
+        }
+
+        .btn.reset:hover {
+            box-shadow: 0 6px 20px rgba(149, 165, 166, 0.4);
+        }
+
+        .results {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .results.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .score.excellent {
+            color: #27ae60;
+        }
+
+        .score.good {
+            color: #f39c12;
+        }
+
+        .score.needs-improvement {
+            color: #e74c3c;
+        }
+
+        .answer-key {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .answer-key h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .answer-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f2f6;
+        }
+
+        .answer-item:last-child {
+            border-bottom: none;
+        }
+
+        .question-num {
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .text-passage {
+                padding: 20px;
+                font-size: 1rem;
+            }
+            
+            .gap select {
+                min-width: 100px;
+                font-size: 0.9rem;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+                margin: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Cambridge C1 Reading and Use of English</h1>
+            <p>Part 1 - Multiple Choice Cloze</p>
+        </div>
+        
+        <div class="content">
+            <div class="instructions">
+                <strong>Instructions:</strong> For questions 1-8, read the text below and choose which answer (A, B, C or D) best fits each gap. Click "Check Answers" when you're done to see your results.
+            </div>
+            
+            <div class="text-passage">
+                <h2>The Rise of Urban Farming</h2>
+                <br>
+                <p>Urban farming has become a <strong>highly</strong> controversial topic in city planning circles. While supporters argue that growing food in urban environments can 
+                <span class="gap" data-question="1">
+                    <select id="q1">
+                        <option value="">Choose...</option>
+                        <option value="A">A) have</option>
+                        <option value="B">B) make</option>
+                        <option value="C">C) take</option>
+                        <option value="D">D) give</option>
+                    </select>
+                </span>
+                a significant difference to food security, critics worry about the practical challenges involved. Many city councils have been reluctant to support initiatives, and this can 
+                <span class="gap" data-question="2">
+                    <select id="q2">
+                        <option value="">Choose...</option>
+                        <option value="A">A) make</option>
+                        <option value="B">B) do</option>
+                        <option value="C">C) have</option>
+                        <option value="D">D) put</option>
+                    </select>
+                </span>
+                harm to community development efforts.</p>
+
+                <p>The concept is not entirely new, but recent innovations have made the practice much more available to ordinary citizens. Vertical farming techniques, for example, allow people to make use of limited space in creative ways. However, 
+                <span class="gap" data-question="3">
+                    <select id="q3">
+                        <option value="">Choose...</option>
+                        <option value="A">A) Keeping</option>
+                        <option value="B">B) Having</option>
+                        <option value="C">C) Bearing</option>
+                        <option value="D">D) Making</option>
+                    </select>
+                </span>
+                in mind the high costs involved, many projects are 
+                <span class="gap" data-question="4">
+                    <select id="q4">
+                        <option value="">Choose...</option>
+                        <option value="A">A) hardly</option>
+                        <option value="B">B) closely</option>
+                        <option value="C">C) heavily</option>
+                        <option value="D">D) deeply</option>
+                    </select>
+                </span>
+                subsidised by local governments.</p>
+
+                <p>Successful urban farming initiatives often require community members to 
+                <span class="gap" data-question="5">
+                    <select id="q5">
+                        <option value="">Choose...</option>
+                        <option value="A">A) make</option>
+                        <option value="B">B) have</option>
+                        <option value="C">C) give</option>
+                        <option value="D">D) take</option>
+                    </select>
+                </span>
+                turns in maintaining shared growing spaces. Experienced farmers typically 
+                <span class="gap" data-question="6">
+                    <select id="q6">
+                        <option value="">Choose...</option>
+                        <option value="A">A) make</option>
+                        <option value="B">B) have</option>
+                        <option value="C">C) give</option>
+                        <option value="D">D) take</option>
+                    </select>
+                </span>
+                a talk to newcomers about best practices, and most participants try to 
+                <span class="gap" data-question="7">
+                    <select id="q7">
+                        <option value="">Choose...</option>
+                        <option value="A">A) make</option>
+                        <option value="B">B) take</option>
+                        <option value="C">C) have</option>
+                        <option value="D">D) keep</option>
+                    </select>
+                </span>
+                a promise to contribute regularly to the project. Ultimately, those willing to 
+                <span class="gap" data-question="8">
+                    <select id="q8">
+                        <option value="">Choose...</option>
+                        <option value="A">A) set</option>
+                        <option value="B">B) make</option>
+                        <option value="C">C) put</option>
+                        <option value="D">D) keep</option>
+                    </select>
+                </span>
+                their mind to solving urban food challenges may find that the benefits extend far beyond simple crop production.</p>
+            </div>
+            
+            <div class="buttons">
+                <button class="btn" onclick="checkAnswers()">Check Answers</button>
+                <button class="btn reset" onclick="resetExercise()">Reset Exercise</button>
+                <button class="btn" id="showAnswersBtn" onclick="showAnswers()" style="display: none; background: linear-gradient(45deg, #e67e22, #d35400);">Show Answers</button>
+            </div>
+            
+            <div id="results" class="results">
+                <div id="score" class="score"></div>
+                <div id="feedback"></div>
+                <div class="answer-key" id="answerKey" style="display: none;">
+                    <h3>Answer Key & Explanations</h3>
+                    <div class="answer-item"><span class="question-num">1.</span> B) make (make a difference)</div>
+                    <div class="answer-item"><span class="question-num">2.</span> B) do (do harm)</div>
+                    <div class="answer-item"><span class="question-num">3.</span> C) Bearing (bearing in mind)</div>
+                    <div class="answer-item"><span class="question-num">4.</span> C) heavily (heavily subsidised)</div>
+                    <div class="answer-item"><span class="question-num">5.</span> D) take (take turns)</div>
+                    <div class="answer-item"><span class="question-num">6.</span> C) give (give a talk)</div>
+                    <div class="answer-item"><span class="question-num">7.</span> D) keep (keep a promise)</div>
+                    <div class="answer-item"><span class="question-num">8.</span> C) put (put your mind to something)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            1: 'B',
+            2: 'B', 
+            3: 'C',
+            4: 'C',
+            5: 'D',
+            6: 'C',
+            7: 'D',
+            8: 'C'
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            let totalQuestions = 8;
+            let answeredQuestions = 0;
+            
+            // Count how many questions have been answered
+            for (let i = 1; i <= totalQuestions; i++) {
+                const select = document.getElementById(`q${i}`);
+                if (select.value !== '') {
+                    answeredQuestions++;
+                }
+            }
+            
+            // Check if at least half the questions are answered
+            if (answeredQuestions < 4) {
+                alert('Please answer at least 4 questions before checking your answers.');
+                return;
+            }
+            
+            // Reset all gaps
+            document.querySelectorAll('.gap').forEach(gap => {
+                gap.classList.remove('correct', 'incorrect');
+            });
+            
+            // Check each answer
+            for (let i = 1; i <= totalQuestions; i++) {
+                const select = document.getElementById(`q${i}`);
+                const gap = select.closest('.gap');
+                const selectedAnswer = select.value;
+                
+                if (selectedAnswer === correctAnswers[i]) {
+                    gap.classList.add('correct');
+                    score++;
+                } else if (selectedAnswer !== '') {
+                    gap.classList.add('incorrect');
+                }
+            }
+            
+            // Show results without answer key
+            const resultsDiv = document.getElementById('results');
+            const scoreDiv = document.getElementById('score');
+            const feedbackDiv = document.getElementById('feedback');
+            const showAnswersBtn = document.getElementById('showAnswersBtn');
+            
+            const percentage = Math.round((score / answeredQuestions) * 100);
+            
+            // Determine score class and feedback
+            let scoreClass = '';
+            let feedback = '';
+            
+            if (percentage >= 80) {
+                scoreClass = 'excellent';
+                feedback = 'Excellent work! You have a strong grasp of these collocations and fixed expressions.';
+            } else if (percentage >= 60) {
+                scoreClass = 'good';
+                feedback = 'Good job! Review any incorrect answers and try to complete all questions.';
+            } else {
+                scoreClass = 'needs-improvement';
+                feedback = 'Keep practicing! Focus on learning these common collocations and fixed expressions.';
+            }
+            
+            scoreDiv.className = `score ${scoreClass}`;
+            scoreDiv.textContent = `Your Score: ${score}/${answeredQuestions} answered (${percentage}%)`;
+            feedbackDiv.innerHTML = feedback + '<br><br>If you need help, click "Show Answers" to see the correct responses.';
+            
+            // Show the "Show Answers" button
+            showAnswersBtn.style.display = 'inline-block';
+            
+            resultsDiv.classList.add('show');
+            
+            // Scroll to results
+            resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function showAnswers() {
+            const answerKey = document.getElementById('answerKey');
+            answerKey.style.display = 'block';
+            
+            // Update all gaps to show correct answers
+            for (let i = 1; i <= 8; i++) {
+                const select = document.getElementById(`q${i}`);
+                const gap = select.closest('.gap');
+                
+                // Remove previous classes
+                gap.classList.remove('correct', 'incorrect');
+                
+                // If not answered or incorrect, show correct answer
+                if (select.value === '') {
+                    select.value = correctAnswers[i];
+                    gap.classList.add('correct');
+                } else if (select.value !== correctAnswers[i]) {
+                    // Keep their wrong answer but show it's incorrect
+                    gap.classList.add('incorrect');
+                } else {
+                    // Their answer was correct
+                    gap.classList.add('correct');
+                }
+            }
+            
+            // Scroll to answer key
+            answerKey.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function resetExercise() {
+            // Reset all selects
+            for (let i = 1; i <= 8; i++) {
+                document.getElementById(`q${i}`).value = '';
+            }
+            
+            // Remove all classes from gaps
+            document.querySelectorAll('.gap').forEach(gap => {
+                gap.classList.remove('correct', 'incorrect');
+            });
+            
+            // Hide results and answer key
+            document.getElementById('results').classList.remove('show');
+            document.getElementById('answerKey').style.display = 'none';
+            document.getElementById('showAnswersBtn').style.display = 'none';
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Add keyboard support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                checkAnswers();
+            }
+            if (e.key === 'r' && e.ctrlKey) {
+                e.preventDefault();
+                resetExercise();
+            }
+        });
+    </script>
+</body>
+</html>
