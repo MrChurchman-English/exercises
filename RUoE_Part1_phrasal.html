@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reading and Use of English - Part 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-left: 4px solid #3498db;
+            margin: 0;
+        }
+        
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .text-passage {
+            background: #fafbfc;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid #e1e5e9;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+        
+        .gap {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+            min-width: 60px;
+            text-align: center;
+            padding: 2px 8px;
+            margin: 0 2px;
+            background: #e3f2fd;
+            border: 2px solid #3498db;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .gap:hover {
+            background: #bbdefb;
+            transform: translateY(-1px);
+        }
+        
+        .gap.selected {
+            background: #2196f3;
+            color: white;
+        }
+        
+        .gap.correct {
+            background: #4caf50;
+            color: white;
+            border-color: #4caf50;
+        }
+        
+        .gap.incorrect {
+            background: #f44336;
+            color: white;
+            border-color: #f44336;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border: 2px solid #3498db;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            z-index: 1000;
+            min-width: 120px;
+            display: none;
+        }
+        
+        .dropdown-option {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #e1e5e9;
+            transition: background 0.2s ease;
+            font-weight: normal;
+        }
+        
+        .dropdown-option:hover {
+            background: #f0f8ff;
+        }
+        
+        .dropdown-option:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-option.selected-option {
+            background: #e3f2fd;
+            font-weight: bold;
+        }
+        
+        .submit-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .results {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 25px;
+            text-align: center;
+            display: none;
+        }
+        
+        .results h3 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        
+        .score {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        .reset-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-btn:hover {
+            background: white;
+            color: #667eea;
+        }
+        
+        .explanations {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .explanation-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .explanation-item h4 {
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        
+        .explanation-item p {
+            color: #5a6c7d;
+            font-size: 0.95em;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                border-radius: 10px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .gap {
+                min-width: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Reading and Use of English</h1>
+            <p>Part 1 - Multiple Choice Cloze</p>
+        </div>
+        
+        <div class="instructions">
+            <h3>Instructions</h3>
+            <p>For questions 1-8, read the text below and decide which answer (A, B, C or D) best fits each gap. Click on each gap to see the options. There is an example at the beginning (0).</p>
+        </div>
+        
+        <div class="content">
+            <div class="text-passage">
+                After years of planning, Sarah finally decided to <strong>set</strong> up her own consultancy business. However, the initial months proved challenging as she struggled to 
+                <span class="gap" data-question="1" data-answer="B">
+                    1 _____
+                    <div class="dropdown-menu">
+                        <div class="dropdown-option" data-value="A">A) come</div>
+                        <div class="dropdown-option" data-value="B">B) bring</div>
+                        <div class="dropdown-option" data-value="C">C) carry</div>
+                        <div class="dropdown-option" data-value="D">D) take</div>
+                    </div>
+                </span>
+                in new clients and establish her reputation in the competitive market.
+                
+                <br><br>Her former colleagues had warned her that she might find it difficult to get 
+                <span class="gap" data-question="2" data-answer="C">
+                    2 _____
+                    <div class="dropdown-menu">
+                        <div class="dropdown-option" data-value="A">A) through</div>
+                        <div class="dropdown-option" data-value="B">B) over</div>
+                        <div class="dropdown-option" data-value="C">C) by</div>
+                        <div class="dropdown-option" data-value="D">D) around</div>
+                    </div>
+                </span>
+                financially without the security of a regular salary, but Sarah was determined to make her venture succeed.
+                
+                <br><br>The breakthrough came when a major corporation decided to take her 
+                <span class="gap" data-question="3" data-answer="A">
+                    3 _____
+                    <div class="dropdown-menu">
+                        <div class="dropdown-option" data-value="A">A) on</div>
+                        <div class="dropdown-option" data-value="B">B) up</div>
+                        <div class="dropdown-option" data-value="C">C) over</div>
+                        <div class="dropdown-option" data-value="D">D) off</div>
+                    </div>
+                </span>
+                as a strategic advisor for their expansion project. This opportunity helped her career truly 
+                <span class="gap" data-question="4" data-answer="D">
+                    4 _____
+                    <div class="dropdown-menu">
+                        <div class="dropdown-option" data-value="A">A) set</div>
+                        <div class="dropdown-option" data-value="B">B) put</div>
+                        <div class="dropdown-option" data-value="C">C) get</div>
+                        <div class="dropdown-option" data-value="D">D) take</div>
+                    </div>
+                </span>
+                off, and soon other companies began to take notice of her expertise.
+                
+                <br><br>However, success brought its own challenges. Sarah found herself struggling to 
+                <span class="gap" data-question="5" data-answer="A">
+                    5 _____
+                    <div class="dropdown-menu">
+                        <div class="dropdown-option" data-value="A">A) put</div>
+                        <div class="dropdown-option" data-value="B">B) get</div>
+                        <div class="dropdown-option" data-value="C">C) set</div>
+                        <div class="dropdown-option" data-value="D">D) keep</div>
+                    </div>
+                </span>
+                up with the increasing demands on her time, leaving little time for personal relationships.
+                
+                <br><br>When her best friend confronted her about neglecting their friendship, Sarah realized she needed to face 
+                <span class="gap" data-question="6" data-answer="C">
+                    6 _____
+                    <div class="dropdown-menu">
+                        <div class="dropdown-option" data-value="A">A) off</div>
+                        <div class="dropdown-option" data-value="B">B) down</div>
+                        <div class="dropdown-option" data-value="C">C) up</div>
+                        <div class="dropdown-option" data-value="D">D) through</div>
+                    </div>
+                </span>
+                to the fact that work-life balance was crucial. She decided to turn 
+                <span class="gap" data-question="7" data-answer="A">
+                    7 _____
+                    <div class="dropdown-menu">
+                        <div class="dropdown-option" data-value="A">A) down</div>
+                        <div class="dropdown-option" data-value="B">B) off</div>
+                        <div class="dropdown-option" data-value="C">C) away</div>
+                        <div class="dropdown-option" data-value="D">D) out</div>
+                    </div>
+                </span>
+                a lucrative but demanding project to focus on what truly mattered. Looking back, she's grateful that her friend had the courage to 
+                <span class="gap" data-question="8" data-answer="D">
+                    8 _____
+                    <div class="dropdown-menu">
+                        <div class="dropdown-option" data-value="A">A) carry</div>
+                        <div class="dropdown-option" data-value="B">B) set</div>
+                        <div class="dropdown-option" data-value="C">C) put</div>
+                        <div class="dropdown-option" data-value="D">D) bring</div>
+                    </div>
+                </span>
+                up the issue of her workaholism – it helped her find a more sustainable approach to success.
+            </div>
+
+            <div class="submit-section">
+                <button class="submit-btn" onclick="checkAnswers()">Submit Answers</button>
+            </div>
+
+            <div class="results" id="results">
+                <h3>Your Results</h3>
+                <div class="score" id="score">0/8</div>
+                <p id="feedback">Good effort! Review the explanations below to improve your understanding.</p>
+                <button class="reset-btn" onclick="resetQuiz()">Try Again</button>
+            </div>
+
+            <div class="explanations" id="explanations">
+                <h3>Explanations</h3>
+                <div class="explanation-item">
+                    <h4>Question 1: <em>bring</em> in new clients</h4>
+                    <p><strong>"Bring in"</strong> means to attract or obtain something, especially customers or business. This is a common business phrase.</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>Question 2: get <em>by</em> financially</h4>
+                    <p><strong>"Get by"</strong> means to manage to survive or cope, especially financially with limited resources.</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>Question 3: take her <em>on</em></h4>
+                    <p><strong>"Take someone on"</strong> means to hire or employ someone for a job or position.</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>Question 4: <em>take</em> off</h4>
+                    <p><strong>"Take off"</strong> means to start to improve rapidly or become successful (referring to her career).</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>Question 5: <em>put</em> up with</h4>
+                    <p><strong>"Put up with"</strong> means to tolerate or endure something unpleasant or difficult.</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>Question 6: face <em>up</em> to</h4>
+                    <p><strong>"Face up to"</strong> means to accept and deal with something difficult or unpleasant.</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>Question 7: turn <em>down</em></h4>
+                    <p><strong>"Turn down"</strong> means to refuse or reject an offer, invitation, or opportunity.</p>
+                </div>
+                <div class="explanation-item">
+                    <h4>Question 8: <em>bring</em> up the issue</h4>
+                    <p><strong>"Bring up"</strong> means to mention or raise a topic in conversation.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedAnswers = {};
+        let submitted = false;
+
+        // Add click event listeners to gaps
+        document.querySelectorAll('.gap').forEach(gap => {
+            gap.addEventListener('click', function(e) {
+                if (submitted) return;
+                
+                e.stopPropagation();
+                
+                // Hide all other dropdown menus
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    if (menu !== this.querySelector('.dropdown-menu')) {
+                        menu.style.display = 'none';
+                    }
+                });
+                
+                // Toggle current dropdown
+                const dropdown = this.querySelector('.dropdown-menu');
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+
+        // Add click event listeners to dropdown options
+        document.querySelectorAll('.dropdown-option').forEach(option => {
+            option.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                const gap = this.closest('.gap');
+                const questionNum = gap.dataset.question;
+                const selectedValue = this.dataset.value;
+                
+                // Update selected answer
+                selectedAnswers[questionNum] = selectedValue;
+                
+                // Update gap text
+                const selectedText = this.textContent.split(') ')[1];
+                gap.childNodes[0].textContent = `${questionNum} ${selectedText}`;
+                gap.classList.add('selected');
+                
+                // Update dropdown visual state
+                gap.querySelectorAll('.dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected-option');
+                });
+                this.classList.add('selected-option');
+                
+                // Hide dropdown
+                gap.querySelector('.dropdown-menu').style.display = 'none';
+            });
+        });
+
+        // Hide dropdowns when clicking outside
+        document.addEventListener('click', function() {
+            if (!submitted) {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    menu.style.display = 'none';
+                });
+            }
+        });
+
+        function checkAnswers() {
+            if (submitted) return;
+            
+            const correctAnswers = {
+                '1': 'B', // bring
+                '2': 'C', // by
+                '3': 'A', // on
+                '4': 'D', // take
+                '5': 'A', // put
+                '6': 'C', // up
+                '7': 'A', // down
+                '8': 'D'  // bring
+            };
+            
+            let score = 0;
+            const totalQuestions = 8;
+            
+            // Check each answer and update gap appearance
+            for (let i = 1; i <= totalQuestions; i++) {
+                const gap = document.querySelector(`[data-question="${i}"]`);
+                const selectedAnswer = selectedAnswers[i];
+                const correctAnswer = correctAnswers[i];
+                
+                if (selectedAnswer === correctAnswer) {
+                    gap.classList.add('correct');
+                    gap.classList.remove('selected');
+                    score++;
+                } else {
+                    gap.classList.add('incorrect');
+                    gap.classList.remove('selected');
+                }
+                
+                // Disable clicking on gaps
+                gap.style.pointerEvents = 'none';
+            }
+            
+            // Show results
+            const resultsDiv = document.getElementById('results');
+            const scoreElement = document.getElementById('score');
+            const feedbackElement = document.getElementById('feedback');
+            const explanationsDiv = document.getElementById('explanations');
+            
+            scoreElement.textContent = `${score}/${totalQuestions}`;
+            
+            let feedback = '';
+            if (score === totalQuestions) {
+                feedback = 'Excellent! Perfect score! You have mastered these phrasal verbs.';
+            } else if (score >= totalQuestions * 0.75) {
+                feedback = 'Very good! You have a strong understanding of these phrasal verbs.';
+            } else if (score >= totalQuestions * 0.5) {
+                feedback = 'Good effort! Review the explanations below to improve your knowledge.';
+            } else {
+                feedback = 'Keep practicing! Focus on learning the meanings and usage of these phrasal verbs.';
+            }
+            
+            feedbackElement.textContent = feedback;
+            resultsDiv.style.display = 'block';
+            explanationsDiv.style.display = 'block';
+            
+            document.querySelector('.submit-btn').disabled = true;
+            document.querySelector('.submit-btn').textContent = 'Submitted';
+            
+            submitted = true;
+        }
+
+        function resetQuiz() {
+            // Reset answers
+            selectedAnswers = {};
+            submitted = false;
+            
+            // Reset all gaps
+            document.querySelectorAll('.gap').forEach(gap => {
+                const questionNum = gap.dataset.question;
+                gap.childNodes[0].textContent = `${questionNum} _____`;
+                gap.classList.remove('selected', 'correct', 'incorrect');
+                gap.style.pointerEvents = 'auto';
+                
+                // Reset dropdown selections
+                gap.querySelectorAll('.dropdown-option').forEach(opt => {
+                    opt.classList.remove('selected-option');
+                });
+                
+                // Hide dropdown
+                gap.querySelector('.dropdown-menu').style.display = 'none';
+            });
+            
+            // Hide results and explanations
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('explanations').style.display = 'none';
+            
+            // Reset submit button
+            document.querySelector('.submit-btn').disabled = false;
+            document.querySelector('.submit-btn').textContent = 'Submit Answers';
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
