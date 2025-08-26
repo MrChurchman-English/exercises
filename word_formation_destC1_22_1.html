@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Formation Exercise #2 - Advanced EFL</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        .exercise-item {
+            background: #f8f9fa;
+            margin: 15px 0;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #e91e63;
+            transition: all 0.3s ease;
+        }
+        
+        .exercise-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .question {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .base-word {
+            font-weight: bold;
+            color: #e91e63;
+            text-transform: uppercase;
+        }
+        
+        .input-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .answer-input {
+            padding: 10px 15px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1em;
+            min-width: 200px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .answer-input:focus {
+            outline: none;
+            border-color: #e91e63;
+            box-shadow: 0 0 0 3px rgba(233, 30, 99, 0.1);
+        }
+        
+        .check-btn {
+            padding: 10px 20px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        
+        .check-btn:hover {
+            background: #388e3c;
+        }
+        
+        .check-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+        
+        .correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f093fb, #f5576c);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .score-container {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+        
+        .reset-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 12px 30px;
+            background: #ff5722;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+        
+        .reset-btn:hover {
+            background: #e64a19;
+        }
+        
+        .number {
+            font-weight: bold;
+            color: #9c27b0;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Word Formation Exercise #2</h1>
+        <p class="subtitle">Complete each sentence with the correct form of the given word</p>
+        
+        <div class="score-container">
+            <span id="score">Score: 0/20</span>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div id="exercises">
+            <!-- Exercise items will be generated by JavaScript -->
+        </div>
+        
+        <button class="reset-btn" onclick="resetExercise()">Reset Exercise</button>
+    </div>
+
+    <script>
+        const exercises = [
+            {
+                sentence: "The architect designed the building ________ to create maximum space efficiency.",
+                baseWord: "art",
+                answer: "artfully",
+                alternatives: []
+            },
+            {
+                sentence: "The students found the explanation ________ and couldn't understand the concept.",
+                baseWord: "adequate",
+                answer: "inadequate",
+                alternatives: []
+            },
+            {
+                sentence: "She is truly ________ for her dedication to environmental causes.",
+                baseWord: "admire",
+                answer: "admirable",
+                alternatives: []
+            },
+            {
+                sentence: "The earthquake caused ________ damage to the historic city center.",
+                baseWord: "terror",
+                answer: "terrible",
+                alternatives: []
+            },
+            {
+                sentence: "His ________ of the original painting was so good that experts were fooled.",
+                baseWord: "imitate",
+                answer: "imitation",
+                alternatives: []
+            },
+            {
+                sentence: "The team worked ________ to solve the complex problem.",
+                baseWord: "collect",
+                answer: "collectively",
+                alternatives: []
+            },
+            {
+                sentence: "The medicine was completely ________ against the new strain of virus.",
+                baseWord: "use",
+                answer: "useless",
+                alternatives: []
+            },
+            {
+                sentence: "The young pianist's performance left a lasting ________ on everyone present.",
+                baseWord: "impress",
+                answer: "impression",
+                alternatives: []
+            },
+            {
+                sentence: "The company's recent ________ in customer service have been remarkable.",
+                baseWord: "improve",
+                answer: "improvements",
+                alternatives: []
+            },
+            {
+                sentence: "The charity organization distributed ________ to families in need.",
+                baseWord: "good",
+                answer: "goods",
+                alternatives: []
+            },
+            {
+                sentence: "The document contained several ________ that needed to be corrected.",
+                baseWord: "perfect",
+                answer: "imperfections",
+                alternatives: []
+            },
+            {
+                sentence: "The professional ________ helped arrange several successful marriages in the community.",
+                baseWord: "match",
+                answer: "matchmaker",
+                alternatives: []
+            },
+            {
+                sentence: "The ancient fortress served as a ________ during the medieval wars.",
+                baseWord: "strong",
+                answer: "stronghold",
+                alternatives: []
+            },
+            {
+                sentence: "The police decided to ________ all the documents related to the case.",
+                baseWord: "class",
+                answer: "classify",
+                alternatives: []
+            },
+            {
+                sentence: "Her grandmother's jewelry collection contains many ________.",
+                baseWord: "value",
+                answer: "valuables",
+                alternatives: []
+            },
+            {
+                sentence: "The old coins in the collection proved to be completely ________.",
+                baseWord: "worth",
+                answer: "worthless",
+                alternatives: []
+            },
+            {
+                sentence: "The hurricane was incredibly ________ to the coastal communities.",
+                baseWord: "destroy",
+                answer: "destructive",
+                alternatives: []
+            },
+            {
+                sentence: "The young ________ painted beautiful landscapes of the countryside.",
+                baseWord: "art",
+                answer: "artist",
+                alternatives: []
+            },
+            {
+                sentence: "The young activists showed an ________ commitment to saving the rainforest.",
+                baseWord: "ideal",
+                answer: "idealistic",
+                alternatives: []
+            },
+            {
+                sentence: "The research team conducted a ________ study of consumer behavior.",
+                baseWord: "quality",
+                answer: "qualitative",
+                alternatives: []
+            }
+        ];
+
+        let score = 0;
+        let answered = new Set();
+        let attempts = {};
+
+        function initializeExercise() {
+            const container = document.getElementById('exercises');
+            container.innerHTML = '';
+            
+            exercises.forEach((exercise, index) => {
+                const div = document.createElement('div');
+                div.className = 'exercise-item';
+                div.innerHTML = `
+                    <div class="question">
+                        <span class="number">${index + 1}.</span>
+                        ${exercise.sentence.replace('________', '<u>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</u>')}
+                    </div>
+                    <div class="input-container">
+                        <input type="text" class="answer-input" id="input-${index}" 
+                               placeholder="Enter your answer" onkeypress="handleEnter(event, ${index})">
+                        <span>(<span class="base-word">${exercise.baseWord}</span>)</span>
+                        <button class="check-btn" onclick="checkAnswer(${index})">Check</button>
+                    </div>
+                    <div class="feedback" id="feedback-${index}"></div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function handleEnter(event, index) {
+            if (event.key === 'Enter') {
+                checkAnswer(index);
+            }
+        }
+
+        function checkAnswer(index) {
+            const input = document.getElementById(`input-${index}`);
+            const feedback = document.getElementById(`feedback-${index}`);
+            const button = input.nextElementSibling.nextElementSibling;
+            
+            if (answered.has(index)) return;
+            
+            const userAnswer = input.value.trim().toLowerCase();
+            const correctAnswer = exercises[index].answer.toLowerCase();
+            const alternatives = exercises[index].alternatives.map(alt => alt.toLowerCase());
+            const baseWord = exercises[index].baseWord.toLowerCase();
+            
+            // Initialize attempts counter for this question
+            if (!attempts[index]) {
+                attempts[index] = 0;
+            }
+            attempts[index]++;
+            
+            // Check if user just entered the base word unchanged
+            if (userAnswer === baseWord) {
+                feedback.textContent = `You need to change the word form. Try again!`;
+                feedback.className = 'feedback incorrect';
+                feedback.style.display = 'block';
+                input.style.borderColor = '#e74c3c';
+                input.value = '';
+                return;
+            }
+            
+            const isCorrect = userAnswer === correctAnswer || alternatives.includes(userAnswer);
+            
+            if (isCorrect) {
+                feedback.textContent = `Correct! ✓`;
+                feedback.className = 'feedback correct';
+                input.style.borderColor = '#27ae60';
+                if (!answered.has(index)) {
+                    score++;
+                    answered.add(index);
+                }
+                button.disabled = true;
+                input.disabled = true;
+            } else {
+                // Give hints based on number of attempts
+                if (attempts[index] === 1) {
+                    feedback.textContent = `Incorrect. Think about what word form is needed here. Try again!`;
+                } else if (attempts[index] === 2) {
+                    feedback.textContent = `Still not right. Consider: is it a noun, verb, adjective, or adverb? Try again!`;
+                } else {
+                    feedback.textContent = `The correct answer is: ${exercises[index].answer}`;
+                    button.disabled = true;
+                    input.disabled = true;
+                    answered.add(index);
+                }
+                feedback.className = 'feedback incorrect';
+                input.style.borderColor = '#e74c3c';
+                if (attempts[index] <= 2) {
+                    input.value = '';
+                }
+            }
+            
+            feedback.style.display = 'block';
+            updateScore();
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = `Score: ${score}/20`;
+            const percentage = (answered.size / exercises.length) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+            
+            if (answered.size === exercises.length) {
+                setTimeout(() => {
+                    const message = score >= 16 ? 'Excellent work!' : 
+                                   score >= 12 ? 'Good job!' : 
+                                   'Keep practicing!';
+                    alert(`Exercise completed! ${message}\nYour final score: ${score}/20`);
+                }, 500);
+            }
+        }
+
+        function resetExercise() {
+            score = 0;
+            answered.clear();
+            attempts = {};
+            
+            exercises.forEach((_, index) => {
+                const input = document.getElementById(`input-${index}`);
+                const feedback = document.getElementById(`feedback-${index}`);
+                const button = input.nextElementSibling.nextElementSibling;
+                
+                input.value = '';
+                input.disabled = false;
+                input.style.borderColor = '#bdc3c7';
+                button.disabled = false;
+                feedback.style.display = 'none';
+            });
+            
+            updateScore();
+        }
+
+        // Initialize the exercise when the page loads
+        initializeExercise();
+    </script>
+</body>
+</html>
