@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Wish - Grammar Exercise</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f7fa;
+            line-height: 1.6;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .instructions {
+            background: #e8f4fd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding: 20px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            background: #fafbfc;
+        }
+        
+        .question-number {
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 10px;
+        }
+        
+        .sentence {
+            font-size: 16px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            border-bottom: 2px solid #3498db;
+            margin: 0 3px;
+        }
+        
+        input[type="text"] {
+            border: 2px solid #bdc3c7;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 150px;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .correct {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .hint {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+            margin-top: 5px;
+            font-weight: normal;
+            font-style: italic;
+        }
+        
+        .progress {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+        
+        .completion {
+            text-align: center;
+            background: #d4edda;
+            color: #155724;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>I Wish - Grammar Practice</h1>
+        
+        <div class="instructions">
+            <strong>Instructions:</strong> Complete each sentence with the correct form of the verb in brackets. Remember:
+            <ul style="margin: 10px 0;">
+                <li><strong>Present wishes:</strong> I wish + past simple (I wish I were...)</li>
+                <li><strong>Past wishes:</strong> I wish + past perfect (I wish I had...)</li>
+                <li><strong>Future/changeable wishes:</strong> I wish + would (I wish you would...)</li>
+            </ul>
+        </div>
+        
+        <div class="progress">
+            <span id="score">Correct: 0</span> | <span id="total">Total: 20</span>
+        </div>
+        
+        <div id="questions"></div>
+        
+        <div id="completion" class="completion">
+            <h2>🎉 Well Done!</h2>
+            <p>You've completed all 20 sentences. Great work on practicing "I wish" structures!</p>
+            <button onclick="resetExercise()" style="margin-top: 10px;">Try Again</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                sentence: "I wish I _____ (be) better at speaking German in class.",
+                answer: ["were", "was"],
+                hint: "This is about a present situation. Use the past simple form of 'be'.",
+                type: "present"
+            },
+            {
+                sentence: "I wish I _____ (study) harder for the Matura exams last year.",
+                answer: ["had studied"],
+                hint: "This is about the past. Use 'had' + past participle.",
+                type: "past"
+            },
+            {
+                sentence: "I wish my parents _____ (not be) so strict about my curfew.",
+                answer: ["weren't", "were not", "were not so"],
+                hint: "This is about a present situation. Use the negative past simple form of 'be'.",
+                type: "present"
+            },
+            {
+                sentence: "I wish you _____ (stop) checking your phone during our conversations.",
+                answer: ["would stop", "'d stop", "would stop", "d stop"],
+                hint: "This is about something that could change. Use 'would' + base form.",
+                type: "future"
+            },
+            {
+                sentence: "I wish I _____ (have) more money to buy that new iPhone.",
+                answer: ["had"],
+                hint: "This is about a present situation. Use the past simple form.",
+                type: "present"
+            },
+            {
+                sentence: "I wish I _____ (not eat) so much chocolate at the party yesterday.",
+                answer: ["had not eaten", "hadn't eaten"],
+                hint: "This is about the past. Use 'had not' + past participle.",
+                type: "past"
+            },
+            {
+                sentence: "I wish the weather _____ (be) warmer so we could go swimming in Lake Geneva.",
+                answer: ["were", "was"],
+                hint: "This is about a present situation. Use the past simple form of 'be'.",
+                type: "present"
+            },
+            {
+                sentence: "I wish my little brother _____ (not make) so much noise when I'm studying.",
+                answer: ["wouldn't make", "would not make", "'t make", "t make"],
+                hint: "This is about something that could change. Use 'would not' + base form.",
+                type: "future"
+            },
+            {
+                sentence: "I wish I _____ (learn) to ski when I was younger.",
+                answer: ["had learned", "had learnt"],
+                hint: "This is about the past. Use 'had' + past participle.",
+                type: "past"
+            },
+            {
+                sentence: "I wish our school _____ (start) later in the morning.",
+                answer: ["started"],
+                hint: "This is about a present situation. Use the past simple form.",
+                type: "present"
+            },
+            {
+                sentence: "I wish you _____ (tell) me the truth about what happened at the party.",
+                answer: ["would tell", "'d tell", "d tell"],
+                hint: "This is about something that could change. Use 'would' + base form.",
+                type: "future"
+            },
+            {
+                sentence: "I wish I _____ (not forget) to charge my phone before the school trip.",
+                answer: ["had not forgotten", "hadn't forgotten"],
+                hint: "This is about the past. Use 'had not' + past participle.",
+                type: "past"
+            },
+            {
+                sentence: "I wish I _____ (be) taller so I could play basketball better.",
+                answer: ["were", "was"],
+                hint: "This is about a present situation. Use the past simple form of 'be'.",
+                type: "present"
+            },
+            {
+                sentence: "I wish the trains in Switzerland _____ (not be) so expensive.",
+                answer: ["weren't", "were not"],
+                hint: "This is about a present situation. Use the negative past simple form of 'be'.",
+                type: "present"
+            },
+            {
+                sentence: "I wish I _____ (save) more money from my part-time job last summer.",
+                answer: ["had saved"],
+                hint: "This is about the past. Use 'had' + past participle.",
+                type: "past"
+            },
+            {
+                sentence: "I wish my friends _____ (invite) me to more parties.",
+                answer: ["would invite", "'d invite", "d invite"],
+                hint: "This is about something that could change. Use 'would' + base form.",
+                type: "future"
+            },
+            {
+                sentence: "I wish I _____ (can) speak French as well as my classmates from Geneva.",
+                answer: ["could"],
+                hint: "This is about a present ability. Use 'could' (past form of 'can').",
+                type: "present"
+            },
+            {
+                sentence: "I wish I _____ (not spend) all my allowance on video games last month.",
+                answer: ["had not spent", "hadn't spent"],
+                hint: "This is about the past. Use 'had not' + past participle.",
+                type: "past"
+            },
+            {
+                sentence: "I wish our teachers _____ (give) us less homework on weekends.",
+                answer: ["would give", "'d give", "d give"],
+                hint: "This is about something that could change. Use 'would' + base form.",
+                type: "future"
+            },
+            {
+                sentence: "I wish I _____ (live) closer to the city center so I could walk to school.",
+                answer: ["lived"],
+                hint: "This is about a present situation. Use the past simple form.",
+                type: "present"
+            }
+        ];
+
+        let currentScore = 0;
+        let attempts = {};
+
+        function initializeExercise() {
+            const questionsContainer = document.getElementById('questions');
+            questionsContainer.innerHTML = '';
+            
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <div class="question-number">Question ${index + 1}/20</div>
+                    <div class="sentence">${q.sentence}</div>
+                    <input type="text" id="answer-${index}" placeholder="Type your answer here">
+                    <button onclick="checkAnswer(${index})">Check</button>
+                    <div id="feedback-${index}" class="feedback" style="display: none;"></div>
+                `;
+                questionsContainer.appendChild(questionDiv);
+            });
+            
+            updateScore();
+        }
+
+        function checkAnswer(questionIndex) {
+            const userAnswer = document.getElementById(`answer-${questionIndex}`).value.trim().toLowerCase();
+            const correctAnswers = questions[questionIndex].answer.map(ans => ans.toLowerCase());
+            const feedbackDiv = document.getElementById(`feedback-${questionIndex}`);
+            
+            if (!attempts[questionIndex]) {
+                attempts[questionIndex] = 0;
+            }
+            attempts[questionIndex]++;
+            
+            if (correctAnswers.includes(userAnswer)) {
+                feedbackDiv.className = 'feedback correct';
+                feedbackDiv.innerHTML = '✓ Correct! Well done!';
+                feedbackDiv.style.display = 'block';
+                
+                if (attempts[questionIndex] === 1) {
+                    currentScore++;
+                    updateScore();
+                }
+                
+                document.getElementById(`answer-${questionIndex}`).disabled = true;
+                document.querySelector(`button[onclick="checkAnswer(${questionIndex})"]`).disabled = true;
+                
+                checkCompletion();
+            } else {
+                feedbackDiv.className = 'feedback incorrect';
+                if (attempts[questionIndex] === 1) {
+                    feedbackDiv.innerHTML = `
+                        ✗ Not quite right. Try again!
+                        <div class="hint">${questions[questionIndex].hint}</div>
+                    `;
+                } else if (attempts[questionIndex] === 2) {
+                    feedbackDiv.innerHTML = `
+                        ✗ Still not correct. The answer is: <strong>${questions[questionIndex].answer[0]}</strong>
+                        <div class="hint">${questions[questionIndex].hint}</div>
+                    `;
+                    document.getElementById(`answer-${questionIndex}`).disabled = true;
+                    document.querySelector(`button[onclick="checkAnswer(${questionIndex})"]`).disabled = true;
+                } else {
+                    feedbackDiv.innerHTML = `
+                        ✗ Try again!
+                        <div class="hint">${questions[questionIndex].hint}</div>
+                    `;
+                }
+                feedbackDiv.style.display = 'block';
+            }
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = `Correct: ${currentScore}`;
+        }
+
+        function checkCompletion() {
+            const allAnswered = questions.every((_, index) => {
+                const input = document.getElementById(`answer-${index}`);
+                return input.disabled;
+            });
+            
+            if (allAnswered) {
+                document.getElementById('completion').style.display = 'block';
+            }
+        }
+
+        function resetExercise() {
+            currentScore = 0;
+            attempts = {};
+            document.getElementById('completion').style.display = 'none';
+            initializeExercise();
+        }
+
+        // Initialize the exercise when the page loads
+        initializeExercise();
+    </script>
+</body>
+</html>
