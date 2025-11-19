@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verb Collocations - Gap Fill Exercise</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        .instructions {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #3498db;
+        }
+        .exercise-container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .question {
+            margin-bottom: 25px;
+            padding: 15px;
+            background-color: #fafafa;
+            border-radius: 5px;
+        }
+        .question-number {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 8px;
+        }
+        input[type="text"] {
+            padding: 8px 12px;
+            font-size: 16px;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            background-color: white;
+            min-width: 150px;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        input[type="text"].correct {
+            border-color: #27ae60;
+            background-color: #d5f4e6;
+        }
+        input[type="text"].incorrect {
+            border-color: #e74c3c;
+            background-color: #fadbd8;
+        }
+        .sentence {
+            font-size: 17px;
+            color: #34495e;
+        }
+        .feedback {
+            margin-top: 8px;
+            font-size: 14px;
+            font-style: italic;
+        }
+        .correct-feedback {
+            color: #27ae60;
+        }
+        .incorrect-feedback {
+            color: #e74c3c;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        .reset-btn {
+            background-color: #95a5a6;
+        }
+        .reset-btn:hover {
+            background-color: #7f8c8d;
+        }
+        .score {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border-radius: 5px;
+            display: none;
+        }
+        .score.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h1>Verb Collocations Exercise</h1>
+    <p class="subtitle">Upper-Intermediate Level</p>
+    
+    <div class="instructions">
+        <strong>Instructions:</strong> Type the correct verb (or verb + particle) to complete each collocation. Pay attention to the form required (base form, past tense, -ing form). When you're finished, click "Check Answers" to see your score.
+    </div>
+
+    <div class="exercise-container">
+        <div class="question" data-answer="carry out">
+            <div class="question-number">1.</div>
+            <div class="sentence">
+                Scientists need to 
+                <input type="text" id="q1" autocomplete="off" placeholder="verb + particle">
+                research before they can draw any conclusions.
+            </div>
+            <div class="feedback" id="feedback1"></div>
+        </div>
+
+        <div class="question" data-answer="put on">
+            <div class="question-number">2.</div>
+            <div class="sentence">
+                I've 
+                <input type="text" id="q2" autocomplete="off" placeholder="verb + particle">
+                weight since I stopped going to the gym regularly.
+            </div>
+            <div class="feedback" id="feedback2"></div>
+        </div>
+
+        <div class="question" data-answer="stay">
+            <div class="question-number">3.</div>
+            <div class="sentence">
+                I drank too much coffee and couldn't 
+                <input type="text" id="q3" autocomplete="off" placeholder="verb">
+                awake during the meeting.
+            </div>
+            <div class="feedback" id="feedback3"></div>
+        </div>
+
+        <div class="question" data-answer="take into">
+            <div class="question-number">4.</div>
+            <div class="sentence">
+                We need to 
+                <input type="text" id="q4" autocomplete="off" placeholder="verb + particle">
+                account the weather conditions before planning the outdoor event.
+            </div>
+            <div class="feedback" id="feedback4"></div>
+        </div>
+
+        <div class="question" data-answer="suffered">
+            <div class="question-number">5.</div>
+            <div class="sentence">
+                My grandfather 
+                <input type="text" id="q5" autocomplete="off" placeholder="verb (past)">
+                a stroke last year but has made a good recovery.
+            </div>
+            <div class="feedback" id="feedback5"></div>
+        </div>
+
+        <div class="question" data-answer="have">
+            <div class="question-number">6.</div>
+            <div class="sentence">
+                After lunch, I like to 
+                <input type="text" id="q6" autocomplete="off" placeholder="verb">
+                a nap for about 20 minutes.
+            </div>
+            <div class="feedback" id="feedback6"></div>
+        </div>
+
+        <div class="question" data-answer="follow">
+            <div class="question-number">7.</div>
+            <div class="sentence">
+                The crimes in this area seem to 
+                <input type="text" id="q7" autocomplete="off" placeholder="verb">
+                a pattern, always occurring on weekends.
+            </div>
+            <div class="feedback" id="feedback7"></div>
+        </div>
+
+        <div class="question" data-answer="became|become">
+            <div class="question-number">8.</div>
+            <div class="sentence">
+                As the investigation continued, several inconsistencies 
+                <input type="text" id="q8" autocomplete="off" placeholder="verb (past)">
+                apparent to the detectives.
+            </div>
+            <div class="feedback" id="feedback8"></div>
+        </div>
+
+        <div class="question" data-answer="digest">
+            <div class="question-number">9.</div>
+            <div class="sentence">
+                Your body needs time to 
+                <input type="text" id="q9" autocomplete="off" placeholder="verb">
+                food properly, so don't exercise immediately after eating.
+            </div>
+            <div class="feedback" id="feedback9"></div>
+        </div>
+
+        <div class="question" data-answer="get to">
+            <div class="question-number">10.</div>
+            <div class="sentence">
+                I was so worried about the exam that I couldn't 
+                <input type="text" id="q10" autocomplete="off" placeholder="verb + particle">
+                sleep the night before.
+            </div>
+            <div class="feedback" id="feedback10"></div>
+        </div>
+
+        <div class="question" data-answer="withdraw from">
+            <div class="question-number">11.</div>
+            <div class="sentence">
+                After the scandal, the celebrity decided to 
+                <input type="text" id="q11" autocomplete="off" placeholder="verb + particle">
+                the world and live in privacy.
+            </div>
+            <div class="feedback" id="feedback11"></div>
+        </div>
+
+        <div class="question" data-answer="running|taking">
+            <div class="question-number">12.</div>
+            <div class="sentence">
+                Starting a new business always involves 
+                <input type="text" id="q12" autocomplete="off" placeholder="verb + -ing">
+                a risk, but it can be worth it.
+            </div>
+            <div class="feedback" id="feedback12"></div>
+        </div>
+
+        <div class="question" data-answer="get">
+            <div class="question-number">13.</div>
+            <div class="sentence">
+                Come on everyone, let's 
+                <input type="text" id="q13" autocomplete="off" placeholder="verb">
+                going or we'll be late for the concert!
+            </div>
+            <div class="feedback" id="feedback13"></div>
+        </div>
+
+        <div class="question" data-answer="fight">
+            <div class="question-number">14.</div>
+            <div class="sentence">
+                In the game, you need to collect weapons and armor to 
+                <input type="text" id="q14" autocomplete="off" placeholder="verb">
+                your enemies effectively.
+            </div>
+            <div class="feedback" id="feedback14"></div>
+        </div>
+
+        <div class="button-container">
+            <button onclick="checkAnswers()">Check Answers</button>
+            <button class="reset-btn" onclick="resetQuiz()">Reset</button>
+        </div>
+
+        <div class="score" id="score"></div>
+    </div>
+
+    <script>
+        let checked = false;
+
+        function normalizeAnswer(answer) {
+            return answer.toLowerCase().trim();
+        }
+
+        function checkAnswers() {
+            if (checked) return;
+            
+            let correct = 0;
+            let total = 14;
+            
+            const questions = document.querySelectorAll('.question');
+            
+            questions.forEach((question, index) => {
+                const qNum = index + 1;
+                const input = document.getElementById('q' + qNum);
+                const feedback = document.getElementById('feedback' + qNum);
+                const correctAnswers = question.getAttribute('data-answer').split('|');
+                const userAnswer = normalizeAnswer(input.value);
+                
+                if (userAnswer === '') {
+                    feedback.textContent = '⚠ Please enter an answer';
+                    feedback.className = 'feedback incorrect-feedback';
+                    return;
+                }
+                
+                if (correctAnswers.includes(userAnswer)) {
+                    input.className = 'correct';
+                    feedback.textContent = '✓ Correct!';
+                    feedback.className = 'feedback correct-feedback';
+                    correct++;
+                } else {
+                    input.className = 'incorrect';
+                    const displayAnswer = correctAnswers.length > 1 
+                        ? correctAnswers.join(' or ') 
+                        : correctAnswers[0];
+                    feedback.textContent = `✗ Incorrect. The correct answer is: ${displayAnswer}`;
+                    feedback.className = 'feedback incorrect-feedback';
+                }
+                
+                input.disabled = true;
+            });
+            
+            const percentage = Math.round((correct / total) * 100);
+            const scoreDiv = document.getElementById('score');
+            scoreDiv.textContent = `Your Score: ${correct}/${total} (${percentage}%)`;
+            scoreDiv.className = 'score show';
+            
+            checked = true;
+        }
+
+        function resetQuiz() {
+            checked = false;
+            
+            for (let i = 1; i <= 14; i++) {
+                const input = document.getElementById('q' + i);
+                const feedback = document.getElementById('feedback' + i);
+                
+                input.value = '';
+                input.className = '';
+                input.disabled = false;
+                feedback.textContent = '';
+                feedback.className = 'feedback';
+            }
+            
+            const scoreDiv = document.getElementById('score');
+            scoreDiv.className = 'score';
+        }
+    </script>
+</body>
+</html>
