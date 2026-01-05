@@ -1,0 +1,248 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Suffixes Practice – Upper-Intermediate EFL (Updated)</title>
+  <style>
+    :root { --bg:#0f172a; --card:#111827; --muted:#93c5fd; --accent:#38bdf8; --accent2:#a78bfa; --success:#22c55e; --warn:#f59e0b; --error:#ef4444; --text:#e5e7eb; }
+    body { font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Arial; background: radial-gradient(1200px 800px at 20% 10%, #1f2937, var(--bg)); color: var(--text); margin:0; }
+    header { padding:24px; text-align:center; position:sticky; top:0; backdrop-filter:blur(6px); background:linear-gradient(180deg, rgba(15,23,42,0.8) 50%, rgba(15,23,42,0)); border-bottom:1px solid #1f2937; }
+    h1 { margin:0 0 8px; font-size:clamp(1.6rem,3vw,2.2rem); }
+    main { max-width:1000px; margin:0 auto; padding:24px; }
+    .card { background:linear-gradient(180deg, rgba(17,24,39,0.95), rgba(17,24,39,0.85)); border:1px solid #1f2937; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.35); padding:16px 16px 20px; margin-bottom:16px; }
+    .card h2 { margin:0 0 10px; color:var(--muted); font-size:1.15rem; }
+    .item { background:#0b1220; border:1px solid #1f2937; padding:10px; border-radius:10px; margin:8px 0; }
+    .footer-bar { display:flex; gap:8px; align-items:center; justify-content:space-between; margin-top:10px; }
+    .badge { display:inline-block; padding:4px 8px; border-radius:999px; font-size:12px; background:#1f2937; color:#cbd5e1; border:1px solid #334155; }
+    button { background:linear-gradient(180deg, var(--accent), var(--accent2)); border:none; color:white; padding:10px 14px; border-radius:10px; cursor:pointer; font-weight:600; box-shadow:0 8px 20px rgba(56,189,248,0.3); }
+    button.secondary { background:#334155; color:#e2e8f0; box-shadow:none; }
+    .result { font-weight:600; }
+    .small { font-size:0.85rem; color:#9ca3af; }
+    input[type="text"] { padding:9px; border-radius:8px; border:2px solid #334155; background:#0b1220; color:#e2e8f0; }
+    .hint { font-size:0.9rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Suffixes Practice (Upper-Intermediate EFL) – Updated</h1>
+    <p>Identification task removed. High school-themed cloze added with near-miss spelling feedback and BrE/AmE variants.</p>
+  </header>
+  <main>
+    <section class="card">
+      <h2>1) Build the Correct Noun</h2>
+      <div id="build-noun-list"></div>
+      <div class="footer-bar">
+        <span class="badge">10 items • common noun suffixes</span>
+        <div>
+          <button id="check-noun">Check</button>
+          <button id="reset-noun" class="secondary">Reset</button>
+        </div>
+      </div>
+      <div id="noun-result" class="result"></div>
+    </section>
+
+    <section class="card">
+      <h2>2) Choose the Best Adjective</h2>
+      <div id="adj-choose-list"></div>
+      <div class="footer-bar">
+        <span class="badge">8 items • common adjective suffixes</span>
+        <div>
+          <button id="check-adj">Check</button>
+          <button id="reset-adj" class="secondary">Reset</button>
+        </div>
+      </div>
+      <div id="adj-result" class="result"></div>
+    </section>
+
+    <section class="card">
+      <h2>3) Quick Categorization</h2>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <div style="flex:1;">
+          <div class="badge">Suffixes</div>
+          <div id="drag-bank" class="item" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+        </div>
+        <div style="flex:1;">
+          <div class="badge">Categories</div>
+          <div id="drop-noun" class="item" style="min-height:80px;">NOUN</div>
+          <div id="drop-adj" class="item" style="min-height:80px;">ADJECTIVE</div>
+        </div>
+      </div>
+      <div class="footer-bar">
+        <span class="badge">Drag & drop</span>
+        <div>
+          <button id="check-drag">Check</button>
+          <button id="reset-drag" class="secondary">Reset</button>
+        </div>
+      </div>
+      <div id="drag-result" class="result"></div>
+    </section>
+
+    <section class="card">
+      <h2>4) Continuous Text – Cloze (20 gaps)</h2>
+      <div class="item" id="cloze-text">For our final-year group project, the <input type="text" id="gap-0" data-answer="organizer" placeholder="Type here" style="width:14ch;" /> <span class="small">(organize)</span>  set up a plan for effective <input type="text" id="gap-1" data-answer="collaboration" placeholder="Type here" style="width:14ch;" /> <span class="small">(collaborate)</span>  and quick <input type="text" id="gap-2" data-answer="preparation" placeholder="Type here" style="width:14ch;" /> <span class="small">(prepare)</span> . We started with an <input type="text" id="gap-3" data-answer="investigation" placeholder="Type here" style="width:14ch;" /> <span class="small">(investigate)</span>  of sources and checked the library's <input type="text" id="gap-4" data-answer="availability" placeholder="Type here" style="width:14ch;" /> <span class="small">(available)</span> . In science, a more <input type="text" id="gap-5" data-answer="scientific" placeholder="Type here" style="width:14ch;" /> <span class="small">(science)</span>  approach made our results <input type="text" id="gap-6" data-answer="reliable" placeholder="Type here" style="width:14ch;" /> <span class="small">(rely)</span> , and the lab rules improved <input type="text" id="gap-7" data-answer="safety" placeholder="Type here" style="width:14ch;" /> <span class="small">(safe)</span> . At first my notes looked <input type="text" id="gap-8" data-answer="messy" placeholder="Type here" style="width:14ch;" /> <span class="small">(mess)</span> , but steady <input type="text" id="gap-9" data-answer="improvement" placeholder="Type here" style="width:14ch;" /> <span class="small">(improve)</span>  meant my draft became more <input type="text" id="gap-10" data-answer="readable" placeholder="Type here" style="width:14ch;" /> <span class="small">(read)</span>  and reduced <input type="text" id="gap-11" data-answer="carelessness" placeholder="Type here" style="width:14ch;" /> <span class="small">(careless)</span> . In history, a truly <input type="text" id="gap-12" data-answer="historical" placeholder="Type here" style="width:14ch;" /> <span class="small">(history)</span>  documentary explained why the <input type="text" id="gap-13" data-answer="decision" placeholder="Type here" style="width:14ch;" /> <span class="small">(decide)</span>  to protest gained wide <input type="text" id="gap-14" data-answer="approval" placeholder="Type here" style="width:14ch;" /> <span class="small">(approve)</span> . Our coach praised regular <input type="text" id="gap-15" data-answer="attendance" placeholder="Type here" style="width:14ch;" /> <span class="small">(attend)</span>  and strong team <input type="text" id="gap-16" data-answer="performance" placeholder="Type here" style="width:14ch;" /> <span class="small">(perform)</span>  before the regional <input type="text" id="gap-17" data-answer="competition" placeholder="Type here" style="width:14ch;" /> <span class="small">(compete)</span> , reminding us to stay <input type="text" id="gap-18" data-answer="ambitious" placeholder="Type here" style="width:14ch;" /> <span class="small">(ambition)</span>  but <input type="text" id="gap-19" data-answer="fearless" placeholder="Type here" style="width:14ch;" /> <span class="small">(fear)</span>.</div>
+      <div class="footer-bar">
+        <span class="badge">20 items</span>
+        <div>
+          <button id="check-cloze">Check</button>
+          <button id="reset-cloze" class="secondary">Reset</button>
+        </div>
+      </div>
+      <div id="cloze-result" class="result"></div>
+      <div class="hint" id="cloze-hint"></div>
+    </section>
+  </main>
+
+  <div style="position:sticky; bottom:0; background:rgba(17,24,39,0.85); padding:10px 24px; border-top:1px solid #1f2937; display:flex; gap:10px; align-items:center;">
+    <span class="badge">Overall Score</span>
+    <span id="overall-score" class="badge">0 / 0</span>
+    <button id="reset-all" class="secondary">Reset All</button>
+  </div>
+
+  <script>
+    const el = (s) => document.querySelector(s);
+    const create = (t, o={}) => { const n=document.createElement(t); Object.assign(n,o); return n; };
+    const shuffle = (a) => a.sort(()=>Math.random()-0.5);
+
+    // Build Noun
+    const nounBuildItems = shuffle([
+      { base:'achieve', answers:['achievement'] },
+      { base:'approve', answers:['approval'] },
+      { base:'decide', answers:['decision'] },
+      { base:'create', answers:['creation'] },
+      { base:'invent', answers:['invention'] },
+      { base:'patient', answers:['patience'] },
+      { base:'kind', answers:['kindness'] },
+      { base:'curious', answers:['curiosity'] },
+      { base:'educate', answers:['education'] },
+      { base:'govern', answers:['government'] },
+    ]);
+    const buildNounList = el('#build-noun-list');
+    nounBuildItems.forEach((item, idx)=>{
+      const row = create('div', { className:'item' });
+      row.innerHTML = `<strong>${item.base}</strong> → <input type="text" id="noun-input-${idx}" placeholder="Type the noun" />`;
+      const hint = create('div', { className:'small', id:`hint-noun-${idx}` }); hint.textContent = '';
+      row.appendChild(hint);
+      buildNounList.append(row);
+    });
+    el('#check-noun').addEventListener('click', ()=>{
+      let correct=0,total=nounBuildItems.length;
+      nounBuildItems.forEach((item, idx)=>{
+        const val = el(`#noun-input-${idx}`).value.trim().toLowerCase();
+        const expected = item.answers.map(a=>a.toLowerCase());
+        const hint = el(`#hint-noun-${idx}`);
+        if (expected.includes(val)) { hint.textContent='✓'; hint.style.color='#22c55e'; correct++; }
+        else { hint.textContent=`✗ e.g., ${item.answers[0]}`; hint.style.color='#ef4444'; }
+      });
+      el('#noun-result').textContent = `Score: ${correct} / ${total}`;
+      updateOverall();
+    });
+    el('#reset-noun').addEventListener('click', ()=>{ nounBuildItems.forEach((_,idx)=>{ el(`#noun-input-${idx}`).value=''; const h=el(`#hint-noun-${idx}`); h.textContent=''; h.style.color=''; }); el('#noun-result').textContent=''; updateOverall(); });
+
+    // Choose Adjective
+    const adjChooseItems = shuffle([
+      { context:'This solution is ___ (adapt).', options:['adaptable','adaptive','adaptful'], answer:'adaptable' },
+      { context:'He gave a very ___ (humour) speech.', options:['humourful','humorous','humourous'], answer:'humorous' },
+      { context:'It was a ___ decision (politics).', options:['politic','political','policy'], answer:'political' },
+      { context:'She wore a ___ outfit (style).', options:['stylish','styley','stylic'], answer:'stylish' },
+      { context:'The bag is ___ (use).', options:['useless','useful','useable'], answer:'useful' },
+      { context:'A ___ response is required (science).', options:['scientific','sciencey','sciencable'], answer:'scientific' },
+      { context:'That was a ___ comment (child).', options:['childish','childly','childable'], answer:'childish' },
+      { context:'The room felt ___ (dust).', options:['dusty','dustless','dustful'], answer:'dusty' },
+    ]);
+    const adjChooseList = el('#adj-choose-list');
+    adjChooseItems.forEach((item, idx)=>{
+      const row = create('div', { className:'item' });
+      const q = create('div'); q.textContent = item.context;
+      const sel = create('select'); sel.innerHTML = '<option value="">Choose</option>'+item.options.map(o=>`<option value="${o}">${o}</option>`).join('');
+      const hint = create('div', { className:'small', id:`hint-adj-${idx}` });
+      row.append(q, sel, hint);
+      adjChooseList.append(row);
+    });
+    el('#check-adj').addEventListener('click', ()=>{
+      let correct=0,total=adjChooseItems.length;
+      adjChooseItems.forEach((item, idx)=>{
+        const sel = adjChooseList.querySelectorAll('select')[idx];
+        const hint = el(`#hint-adj-${idx}`);
+        if (sel.value === item.answer) { hint.textContent='✓'; hint.style.color='#22c55e'; correct++; } else { hint.textContent=`✗ prefer: ${item.answer}`; hint.style.color='#ef4444'; }
+      });
+      el('#adj-result').textContent = `Score: ${correct} / ${total}`;
+      updateOverall();
+    });
+    el('#reset-adj').addEventListener('click', ()=>{ adjChooseList.querySelectorAll('select').forEach(s=>s.value=''); adjChooseList.querySelectorAll('.small').forEach(h=>{ h.textContent=''; h.style.color=''; }); el('#adj-result').textContent=''; updateOverall(); });
+
+    // Drag & Drop
+    const suffixBank = ["-tion/-sion/-ation/-ition","-ment","-ness","-ity/-ty","-er/-or","-ance/-ence","-al","-al","-ful","-ic","-ish","-less","-ous","-able/-ible","-y"];
+    const bankEl = el('#drag-bank');
+    const dropNoun = el('#drop-noun');
+    const dropAdj = el('#drop-adj');
+    function makeDraggable(label){ const d=create('div',{ className:'badge', draggable:true }); d.textContent=label; d.setAttribute('data-label',label); d.addEventListener('dragstart',(e)=>{ e.dataTransfer.setData('text/plain',label); e.dataTransfer.effectAllowed='move'; }); return d; }
+    function enableDrop(zone){ zone.addEventListener('dragover',e=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; zone.style.borderColor='#475569'; }); zone.addEventListener('dragleave',()=>{ zone.style.borderColor='#1f2937'; }); zone.addEventListener('drop',e=>{ e.preventDefault(); const label=e.dataTransfer.getData('text/plain'); const elmt=[...bankEl.children, ...dropNoun.children, ...dropAdj.children].find(c=>c.getAttribute('data-label')===label); if (elmt) zone.appendChild(elmt); zone.style.borderColor='#1f2937'; }); }
+    suffixBank.forEach(s=>bankEl.appendChild(makeDraggable(s)));
+    enableDrop(bankEl); enableDrop(dropNoun); enableDrop(dropAdj);
+    const nounSet = new Set(["-tion/-sion/-ation/-ition","-ment","-ness","-ity/-ty","-er/-or","-ance/-ence","-al"]);
+    const adjSet = new Set(["-al","-ful","-ic","-ish","-less","-ous","-able/-ible","-y"]);
+    el('#check-drag').addEventListener('click',()=>{
+      const getLabels = (zone) => [...zone.children].map(c=>c.getAttribute('data-label')).filter(Boolean);
+      const nouns = new Set(getLabels(dropNoun));
+      const adjs = new Set(getLabels(dropAdj));
+      let wrong = [];
+      nouns.forEach(s=>{ if (!nounSet.has(s)) wrong.push(`${s} → ADJECTIVE`); });
+      adjs.forEach(s=>{ if (!adjSet.has(s)) wrong.push(`${s} → NOUN`); });
+      const total = nounSet.size + adjSet.size;
+      const correctCount = total - wrong.length;
+      el('#drag-result').textContent = wrong.length ? `Issues: ${wrong.join('; ')}` : '✓ All categorized correctly!';
+      el('#overall-score').setAttribute('data-drag', `${correctCount}/${total}`);
+      updateOverall();
+    });
+    el('#reset-drag').addEventListener('click',()=>{ [...dropNoun.children, ...dropAdj.children].forEach(c=>bankEl.appendChild(c)); el('#drag-result').textContent=''; updateOverall(); });
+
+    // Cloze with near-miss spelling feedback + BrE/AmE organiser/organizer
+    function lower(s){ return (s||'').toLowerCase(); }
+    function editDistance(a,b){
+      a=lower(a); b=lower(b);
+      const dp = Array.from({length:a.length+1}, ()=>Array(b.length+1).fill(0));
+      for(let i=0;i<=a.length;i++) dp[i][0]=i;
+      for(let j=0;j<=b.length;j++) dp[0][j]=j;
+      for(let i=1;i<=a.length;i++){
+        for(let j=1;j<=b.length;j++){
+          const cost = a[i-1]===b[j-1] ? 0 : 1;
+          dp[i][j] = Math.min(dp[i-1][j]+1, dp[i][j-1]+1, dp[i-1][j-1]+cost);
+        }
+      }
+      return dp[a.length][b.length];
+    }
+    el('#check-cloze').addEventListener('click',()=>{
+      const inputs = el('#cloze-text').querySelectorAll('input[type="text"]');
+      let correct=0,total=inputs.length; let near=0; const hint=el('#cloze-hint');
+      inputs.forEach(inp=>{
+        const ans = lower(inp.getAttribute('data-answer'));
+        let val = lower(inp.value.trim());
+        const variants = new Set([ans]);
+        if (ans === 'organizer') variants.add('organiser');
+        if (variants.has(val)) { inp.style.borderColor='#22c55e'; correct+=1; return; }
+        if (val && Array.from(variants).some(v=>editDistance(val,v)<=1)) { inp.style.borderColor='#f59e0b'; near+=1; return; }
+        inp.style.borderColor='#ef4444';
+      });
+      el('#cloze-result').textContent = `Score: ${correct} / ${total}`;
+      hint.textContent = near ? `⚠ Some answers look close. Check spelling in the amber-highlighted gaps.` : '';
+      hint.style.color = near ? '#fbbf24' : '';
+      updateOverall();
+    });
+    el('#reset-cloze').addEventListener('click',()=>{ el('#cloze-text').querySelectorAll('input').forEach(i=>{ i.value=''; i.style.borderColor='#334155'; }); el('#cloze-result').textContent=''; el('#cloze-hint').textContent=''; updateOverall(); });
+
+    function updateOverall(){
+      const parts = [];
+      const n = el('#noun-result').textContent.match(/(\d+) \/ (\d+)/); if (n) parts.push({got:+n[1], tot:+n[2]});
+      const a = el('#adj-result').textContent.match(/(\d+) \/ (\d+)/); if (a) parts.push({got:+a[1], tot:+a[2]});
+      const c = el('#cloze-result').textContent.match(/(\d+) \/ (\d+)/); if (c) parts.push({got:+c[1], tot:+c[2]});
+      const dData = el('#overall-score').getAttribute('data-drag'); if (dData) { const [g,t]=dData.split('/').map(Number); parts.push({got:g, tot:t}); }
+      const got = parts.reduce((s,p)=>s+p.got,0); const tot = parts.reduce((s,p)=>s+p.tot,0);
+      el('#overall-score').textContent = `${got} / ${tot}`;
+    }
+
+    el('#reset-all').addEventListener('click',()=>{ el('#reset-noun').click(); el('#reset-adj').click(); el('#reset-drag').click(); el('#reset-cloze').click(); el('#overall-score').textContent='0 / 0'; el('#overall-score').removeAttribute('data-drag'); });
+  </script>
+</body>
+</html>
