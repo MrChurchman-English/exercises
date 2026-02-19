@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passive Voice Revision — B2</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --card: #ffffff;
+    --ink: #1a1a2e;
+    --ink-light: #5a5a72;
+    --accent: #2d6a4f;
+    --accent-light: #d8f3dc;
+    --accent-dark: #1b4332;
+    --error: #c1121f;
+    --error-light: #fde8e8;
+    --correct: #2d6a4f;
+    --correct-light: #d8f3dc;
+    --border: #d4cfc4;
+    --shadow: rgba(26, 26, 46, 0.06);
+    --section-a: #264653;
+    --section-b: #2a9d8f;
+    --section-c: #e76f51;
+    --section-d: #6a4c93;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', Georgia, serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .hero {
+    background: var(--ink);
+    color: var(--bg);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60%; left: -20%;
+    width: 140%; height: 200%;
+    background: radial-gradient(ellipse at 30% 50%, rgba(45,106,79,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 30%, rgba(45,106,79,0.1) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.4rem;
+    position: relative;
+  }
+  .hero p {
+    font-size: 1.05rem;
+    opacity: 0.7;
+    position: relative;
+  }
+  .hero .tag {
+    display: inline-block;
+    margin-top: 1rem;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.3rem 1rem;
+    border-radius: 2rem;
+    position: relative;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0.6rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  .progress-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+    border-radius: 8px;
+    width: 0%;
+    transition: width 0.5s ease;
+  }
+  .progress-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink-light);
+    white-space: nowrap;
+    min-width: 3.5rem;
+    text-align: right;
+  }
+
+  /* Main layout */
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* Section headers */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 2.5rem 0 1.2rem;
+  }
+  .section-header .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    padding: 0.25rem 0.7rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .section-header h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+  .section-desc {
+    color: var(--ink-light);
+    font-size: 0.95rem;
+    margin-bottom: 1.2rem;
+    font-style: italic;
+  }
+
+  /* Question cards */
+  .q-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.4rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 4px var(--shadow);
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  .q-card.correct {
+    border-color: var(--correct);
+    background: var(--correct-light);
+  }
+  .q-card.incorrect {
+    border-color: var(--error);
+    background: var(--error-light);
+  }
+  .q-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--ink-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+  }
+  .q-prompt {
+    font-size: 1.05rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.65;
+  }
+  .q-prompt strong { color: var(--accent-dark); }
+
+  /* Inputs */
+  input[type="text"] {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    padding: 0.5rem 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    background: #fafaf7;
+    color: var(--ink);
+    width: 100%;
+    max-width: 460px;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: #fff;
+  }
+  input[type="text"].input-correct {
+    border-color: var(--correct);
+    background: var(--correct-light);
+  }
+  input[type="text"].input-incorrect {
+    border-color: var(--error);
+    background: var(--error-light);
+  }
+
+  /* Multiple choice */
+  .mc-options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .mc-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.9rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #fafaf7;
+  }
+  .mc-option:hover { border-color: var(--accent); background: #f0f7f2; }
+  .mc-option.selected { border-color: var(--accent); background: var(--accent-light); }
+  .mc-option.selected-correct { border-color: var(--correct); background: var(--correct-light); }
+  .mc-option.selected-incorrect { border-color: var(--error); background: var(--error-light); }
+  .mc-option.reveal-correct { border-color: var(--correct); background: var(--correct-light); }
+  .mc-option input[type="radio"] { display: none; }
+  .mc-dot {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+    transition: border-color 0.2s;
+  }
+  .mc-option.selected .mc-dot,
+  .mc-option.selected-correct .mc-dot { border-color: var(--accent); }
+  .mc-option.selected .mc-dot::after,
+  .mc-option.selected-correct .mc-dot::after {
+    content: '';
+    position: absolute;
+    top: 3px; left: 3px;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+  .mc-option.selected-incorrect .mc-dot { border-color: var(--error); }
+  .mc-option.selected-incorrect .mc-dot::after {
+    content: '✕';
+    position: absolute;
+    top: -3px; left: 1px;
+    font-size: 0.75rem;
+    color: var(--error);
+    font-weight: 700;
+  }
+  .mc-label { font-size: 0.98rem; }
+
+  /* Feedback */
+  .feedback {
+    margin-top: 0.7rem;
+    font-size: 0.9rem;
+    display: none;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    line-height: 1.5;
+  }
+  .feedback.show { display: block; }
+  .feedback.fb-correct { background: var(--correct-light); color: var(--accent-dark); }
+  .feedback.fb-incorrect { background: var(--error-light); color: var(--error); }
+  .feedback.fb-retry { background: #fff7e6; color: #b8860b; }
+
+  .attempts-dots {
+    display: inline-flex;
+    gap: 4px;
+    margin-left: 0.5rem;
+    vertical-align: middle;
+  }
+  .attempts-dots .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    transition: background 0.3s;
+  }
+  .attempts-dots .dot.used { background: var(--error); }
+  .attempts-dots .dot.correct-dot { background: var(--correct); }
+
+  /* Buttons */
+  .btn-section-check {
+    display: block;
+    margin: 1.2rem auto 0.5rem;
+    padding: 0.7rem 2rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s, background 0.2s, opacity 0.3s;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .btn-section-check:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,0.2); filter: brightness(1.1); }
+  .btn-section-check:active { transform: translateY(0); }
+  .btn-section-check:disabled { opacity: 0.45; pointer-events: none; }
+
+  .section-result {
+    text-align: center;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0.5rem 0 0.5rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    display: none;
+  }
+  .section-result.show { display: block; }
+
+  .section-divider {
+    border: none;
+    border-top: 2px dashed var(--border);
+    margin: 2rem 0 0.5rem;
+  }
+
+  .btn-reset {
+    display: block;
+    margin: 2rem auto 2rem;
+    padding: 0.65rem 2rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--ink-light);
+    background: transparent;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-reset:hover { border-color: var(--ink-light); color: var(--ink); }
+
+  /* Results */
+  .results-box {
+    display: none;
+    background: var(--card);
+    border: 2px solid var(--accent);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    margin: 2rem 0;
+    box-shadow: 0 4px 20px var(--shadow);
+  }
+  .results-box.show { display: block; }
+  .results-score {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 3rem;
+    color: var(--accent-dark);
+  }
+  .results-label {
+    font-size: 1rem;
+    color: var(--ink-light);
+    margin-top: 0.3rem;
+  }
+  .results-msg {
+    margin-top: 0.8rem;
+    font-size: 1.05rem;
+  }
+
+  /* Instruction hint */
+  .hint {
+    font-size: 0.82rem;
+    color: var(--ink-light);
+    margin-top: 0.3rem;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .container { padding: 1.2rem 1rem 3rem; }
+    .q-card { padding: 1.1rem 1.1rem; }
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>The Passive Voice</h1>
+  <p>Comprehensive Revision — Form, Use, Causative &amp; Reporting Verbs</p>
+  <span class="tag">B2 · Upper-Intermediate</span>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-text" id="progressText">0 / 30</div>
+</div>
+
+<div class="container" id="quizContainer"></div>
+
+<script>
+// ===== QUESTION DATA =====
+const sections = [
+  {
+    id: 'A',
+    title: 'Multiple Choice',
+    desc: 'Choose the correct option to complete each sentence.',
+    color: '#264653',
+    questions: [
+      {
+        type: 'mc',
+        prompt: 'The new hospital _____ by the end of next year.',
+        options: ['will have been built', 'will have built', 'will be building', 'has been built'],
+        correct: 0,
+        explanation: 'Future perfect passive: <em>will have been + past participle</em>. The hospital is the object receiving the action.'
+      },
+      {
+        type: 'mc',
+        prompt: 'The suspect is thought _____ the country already.',
+        options: ['to leave', 'to have left', 'leaving', 'having left'],
+        correct: 1,
+        explanation: 'Passive reporting verb + perfect infinitive (<em>to have left</em>) because the leaving happened before the thinking.'
+      },
+      {
+        type: 'mc',
+        prompt: 'She _____ her car serviced every six months.',
+        options: ['gets', 'is getting done', 'has got', 'makes'],
+        correct: 0,
+        explanation: 'Causative: <em>get + object + past participle</em>. "Gets her car serviced" means she arranges for someone to service it.'
+      },
+      {
+        type: 'mc',
+        prompt: 'It _____ that over 500 people attended the rally.',
+        options: ['is estimated', 'has estimated', 'estimates', 'was estimating'],
+        correct: 0,
+        explanation: 'Passive with reporting verb: <em>It is estimated that…</em> is an impersonal passive structure.'
+      },
+      {
+        type: 'mc',
+        prompt: 'By the time we arrived, the decorations _____.',
+        options: ['had already been put up', 'have already been put up', 'were already putting up', 'had already put up'],
+        correct: 0,
+        explanation: 'Past perfect passive: <em>had been + past participle</em>. The action was completed before another past action.'
+      },
+      {
+        type: 'mc',
+        prompt: 'I\'m having my wisdom teeth _____ tomorrow.',
+        options: ['remove', 'removed', 'to remove', 'removing'],
+        correct: 1,
+        explanation: 'Causative: <em>have + object + past participle</em>. "Having my wisdom teeth removed" = a dentist will do it.'
+      },
+      {
+        type: 'mc',
+        prompt: 'The professor is believed _____ on a groundbreaking theory.',
+        options: ['to be working', 'to working', 'working', 'be working'],
+        correct: 0,
+        explanation: 'Passive reporting verb + continuous infinitive (<em>to be working</em>) for an action in progress.'
+      },
+      {
+        type: 'mc',
+        prompt: 'This software _____ by millions of people worldwide.',
+        options: ['uses', 'is used', 'used', 'is using'],
+        correct: 1,
+        explanation: 'Present simple passive: <em>is + past participle</em>. The software receives the action of being used.'
+      }
+    ]
+  },
+  {
+    id: 'B',
+    title: 'Gap Fill',
+    desc: 'Type the correct passive, causative, or reporting verb form. Use the verb in brackets.',
+    color: '#2a9d8f',
+    questions: [
+      {
+        type: 'fill',
+        prompt: 'The results <strong>[announce]</strong> at the press conference tomorrow.',
+        answer: ['will be announced'],
+        explanation: 'Future simple passive: <em>will be + past participle</em>.'
+      },
+      {
+        type: 'fill',
+        prompt: 'When I walked in, the office <strong>[already / clean]</strong>.',
+        answer: ['had already been cleaned'],
+        explanation: 'Past perfect passive: <em>had (already) been + past participle</em>.'
+      },
+      {
+        type: 'fill',
+        prompt: 'She <strong>[have / her portrait / paint]</strong> by a famous artist last year.',
+        answer: ['had her portrait painted'],
+        explanation: 'Causative past simple: <em>had + object + past participle</em>.'
+      },
+      {
+        type: 'fill',
+        prompt: 'The missing painting is reported <strong>[find]</strong> in a private collection.',
+        answer: ['to have been found'],
+        explanation: 'Passive reporting verb + perfect passive infinitive: <em>to have been found</em>.'
+      },
+      {
+        type: 'fill',
+        prompt: 'Over 200 languages <strong>[speak]</strong> in Brazil — but Portuguese is the official one.',
+        answer: ['are spoken'],
+        explanation: 'Present simple passive: <em>are + past participle</em>.'
+      },
+      {
+        type: 'fill',
+        prompt: 'We need to <strong>[get / the roof / repair]</strong> before winter.',
+        answer: ['get the roof repaired'],
+        explanation: 'Causative with <em>get</em>: <em>get + object + past participle</em>.'
+      },
+      {
+        type: 'fill',
+        prompt: 'It <strong>[believe]</strong> that the Earth\'s core is as hot as the surface of the sun.',
+        answer: ['is believed'],
+        explanation: 'Impersonal passive with reporting verb: <em>It is believed that…</em>'
+      },
+      {
+        type: 'fill',
+        prompt: 'The road <strong>[currently / resurface]</strong>, so please use the detour.',
+        answer: ['is currently being resurfaced'],
+        explanation: 'Present continuous passive: <em>is being + past participle</em>.'
+      },
+      {
+        type: 'fill',
+        prompt: 'The politician <strong>[say]</strong> to be considering resignation.',
+        answer: ['is said'],
+        explanation: 'Personal passive with reporting verb: <em>subject + is said + to-infinitive</em>.'
+      },
+      {
+        type: 'fill',
+        prompt: 'I <strong>[just / get / my phone screen / replace]</strong>. It looks brand new!',
+        answer: ["have just got my phone screen replaced", "have just gotten my phone screen replaced", "'ve just got my phone screen replaced", "'ve just gotten my phone screen replaced"],
+        explanation: 'Causative present perfect: <em>have/has (just) got + object + past participle</em>.'
+      }
+    ]
+  },
+  {
+    id: 'C',
+    title: 'Sentence Transformation',
+    desc: 'Rewrite the sentence using the word in brackets. Do not change this word.',
+    color: '#e76f51',
+    questions: [
+      {
+        type: 'transform',
+        prompt: 'People say the CEO is planning a major restructure. <strong>[SAID]</strong><br><span class="hint">Begin with: <em>The CEO…</em></span>',
+        answer: ['The CEO is said to be planning a major restructure'],
+        explanation: 'Personal passive with reporting verb: <em>The CEO is said to be planning…</em>'
+      },
+      {
+        type: 'transform',
+        prompt: 'They had already signed the contract before we objected. <strong>[BEEN]</strong><br><span class="hint">Begin with: <em>The contract…</em></span>',
+        answer: ['The contract had already been signed before we objected'],
+        explanation: 'Past perfect passive: <em>The contract had already been signed…</em>'
+      },
+      {
+        type: 'transform',
+        prompt: 'A famous architect designed our new kitchen for us. <strong>[HAD]</strong><br><span class="hint">Begin with: <em>We…</em></span>',
+        answer: ['We had our new kitchen designed by a famous architect'],
+        explanation: 'Causative: <em>We had our new kitchen designed by…</em>'
+      },
+      {
+        type: 'transform',
+        prompt: 'Experts believe the painting is a forgery. <strong>[BELIEVED]</strong><br><span class="hint">Begin with: <em>The painting…</em></span>',
+        answer: ['The painting is believed to be a forgery'],
+        explanation: 'Personal passive with reporting verb: <em>The painting is believed to be…</em>'
+      },
+      {
+        type: 'transform',
+        prompt: 'Someone is going to deliver the package this afternoon. <strong>[DELIVERED]</strong><br><span class="hint">Begin with: <em>The package…</em></span>',
+        answer: ['The package is going to be delivered this afternoon'],
+        explanation: 'Going to – passive: <em>is going to be + past participle</em>.'
+      },
+      {
+        type: 'transform',
+        prompt: 'A professional will photograph us at the wedding. <strong>[HAVE]</strong><br><span class="hint">Begin with: <em>We will…</em></span>',
+        answer: ['We will have ourselves photographed at the wedding', 'We will have our photos taken at the wedding'],
+        explanation: 'Causative future: <em>We will have ourselves photographed…</em> or <em>We will have our photos taken…</em>'
+      }
+    ]
+  },
+  {
+    id: 'D',
+    title: 'Error Correction',
+    desc: 'Each sentence contains one error related to the passive, causative, or reporting verbs. Type the full corrected sentence.',
+    color: '#6a4c93',
+    questions: [
+      {
+        type: 'error',
+        prompt: '❌ The new bridge is being build at the moment.',
+        answer: ['The new bridge is being built at the moment'],
+        explanation: 'The past participle of "build" is <em>built</em>, not "build".'
+      },
+      {
+        type: 'error',
+        prompt: '❌ She had her car to repair last week.',
+        answer: ['She had her car repaired last week'],
+        explanation: 'Causative: <em>had + object + past participle</em> (not <em>to + infinitive</em>).'
+      },
+      {
+        type: 'error',
+        prompt: '❌ It is believing that the economy will recover soon.',
+        answer: ['It is believed that the economy will recover soon'],
+        explanation: 'Impersonal passive with reporting verb: <em>It is believed that…</em> (past participle, not present participle).'
+      },
+      {
+        type: 'error',
+        prompt: '❌ The suspect is reported to escape from prison.',
+        answer: ['The suspect is reported to have escaped from prison'],
+        explanation: 'The escape happened before the report, so we need the perfect infinitive: <em>to have escaped</em>.'
+      },
+      {
+        type: 'error',
+        prompt: '❌ A new shopping centre is been built on the outskirts of town.',
+        answer: ['A new shopping centre is being built on the outskirts of town'],
+        explanation: 'Present continuous passive: <em>is being + past participle</em>, not "is been".'
+      },
+      {
+        type: 'error',
+        prompt: '❌ The documents have been already signed by the director.',
+        answer: ['The documents have already been signed by the director'],
+        explanation: 'Adverb placement: <em>have already been signed</em> — "already" goes between the auxiliary verbs.'
+      }
+    ]
+  }
+];
+
+const totalQuestions = sections.reduce((sum, s) => sum + s.questions.length, 0);
+let answered = new Set();
+
+// ===== BUILD QUIZ =====
+function buildQuiz() {
+  const container = document.getElementById('quizContainer');
+  let globalIndex = 0;
+
+  sections.forEach(section => {
+    // Section header
+    const headerHTML = `
+      <div class="section-header">
+        <span class="badge" style="background:${section.color}">Section ${section.id}</span>
+        <h2>${section.title}</h2>
+      </div>
+      <p class="section-desc">${section.desc}</p>
+    `;
+    container.insertAdjacentHTML('beforeend', headerHTML);
+
+    section.questions.forEach((q, qi) => {
+      globalIndex++;
+      const qId = `q-${section.id}-${qi}`;
+      let inputHTML = '';
+
+      if (q.type === 'mc') {
+        inputHTML = `<div class="mc-options" data-qid="${qId}">
+          ${q.options.map((opt, oi) => `
+            <label class="mc-option" data-oi="${oi}" onclick="selectMC('${qId}', ${oi})">
+              <input type="radio" name="${qId}" value="${oi}">
+              <span class="mc-dot"></span>
+              <span class="mc-label">${opt}</span>
+            </label>
+          `).join('')}
+        </div>`;
+      } else {
+        const placeholder = q.type === 'error' ? 'Type the full corrected sentence…' :
+                           q.type === 'transform' ? 'Type the full rewritten sentence…' :
+                           'Type the correct form…';
+        inputHTML = `<input type="text" id="${qId}-input" placeholder="${placeholder}" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+      }
+
+      const cardHTML = `
+        <div class="q-card" id="${qId}" data-section="${section.id}" data-qi="${qi}">
+          <div class="q-number">Q${globalIndex}</div>
+          <div class="q-prompt">${q.prompt}</div>
+          ${inputHTML}
+          <div class="feedback" id="${qId}-fb"></div>
+        </div>
+      `;
+      container.insertAdjacentHTML('beforeend', cardHTML);
+    });
+
+    // Per-section check button and result
+    container.insertAdjacentHTML('beforeend', `
+      <div class="section-result" id="result-${section.id}"></div>
+      <button class="btn-section-check" id="btn-${section.id}" style="background:${section.color}" onclick="checkSection('${section.id}')">Check Section ${section.id}</button>
+      <hr class="section-divider">
+    `);
+  });
+
+  // Overall results & reset
+  container.insertAdjacentHTML('beforeend', `
+    <div class="results-box" id="resultsBox">
+      <div class="results-score" id="resultsScore"></div>
+      <div class="results-label">out of ${totalQuestions} correct</div>
+      <div class="results-msg" id="resultsMsg"></div>
+    </div>
+    <button class="btn-reset" id="btnReset" onclick="resetAll()">↻ Start Again</button>
+  `);
+}
+
+// ===== INTERACTION =====
+function selectMC(qId, oi) {
+  const wrap = document.querySelector(`.mc-options[data-qid="${qId}"]`);
+  wrap.querySelectorAll('.mc-option').forEach(el => el.classList.remove('selected'));
+  wrap.querySelector(`[data-oi="${oi}"]`).classList.add('selected');
+  markAnswered(qId);
+}
+
+function markAnswered(qId) {
+  answered.add(qId);
+  updateProgress();
+}
+
+function updateProgress() {
+  let count = 0;
+  sections.forEach(section => {
+    section.questions.forEach((q, qi) => {
+      const qId = `q-${section.id}-${qi}`;
+      if (resolved[qId]) { count++; return; }
+      if (q.type === 'mc') {
+        const wrap = document.querySelector(`.mc-options[data-qid="${qId}"]`);
+        if (wrap && wrap.querySelector('.selected')) count++;
+      } else {
+        const input = document.getElementById(`${qId}-input`);
+        if (input && input.value.trim()) count++;
+      }
+    });
+  });
+  const pct = Math.round((count / totalQuestions) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${count} / ${totalQuestions}`;
+}
+
+// Listen for input changes
+document.addEventListener('input', (e) => {
+  if (e.target.matches('input[type="text"]')) updateProgress();
+});
+
+// ===== NORMALIZE =====
+function normalize(str) {
+  return str.trim().toLowerCase()
+    .replace(/[\u2018\u2019\u0060]/g, "'")
+    .replace(/[\u201C\u201D]/g, '"')
+    .replace(/\s+/g, ' ')
+    .replace(/\s*([.,;:!?])\s*/g, '$1 ')
+    .replace(/\.\s*$/, '')
+    .trim();
+}
+
+// ===== CHECK SECTION (with 3-attempt retry) =====
+const sectionScores = {};
+const sectionChecked = new Set();
+const attempts = {};       // qId -> number of attempts
+const resolved = {};       // qId -> true if correct or max attempts reached
+const MAX_ATTEMPTS = 3;
+
+function getAttemptDots(qId) {
+  const used = attempts[qId] || 0;
+  const done = resolved[qId];
+  const isCorrect = done && document.getElementById(qId).classList.contains('correct');
+  let html = '<span class="attempts-dots">';
+  for (let i = 0; i < MAX_ATTEMPTS; i++) {
+    if (i < used) {
+      html += `<span class="dot ${isCorrect && i === used - 1 ? 'correct-dot' : 'used'}"></span>`;
+    } else {
+      html += '<span class="dot"></span>';
+    }
+  }
+  html += '</span>';
+  return html;
+}
+
+function checkSection(sectionId) {
+  const section = sections.find(s => s.id === sectionId);
+  let allResolved = true;
+
+  section.questions.forEach((q, qi) => {
+    const qId = `q-${section.id}-${qi}`;
+
+    // Skip already resolved questions
+    if (resolved[qId]) return;
+
+    if (!attempts[qId]) attempts[qId] = 0;
+    attempts[qId]++;
+
+    const card = document.getElementById(qId);
+    const fb = document.getElementById(`${qId}-fb`);
+    let isCorrect = false;
+
+    if (q.type === 'mc') {
+      const wrap = document.querySelector(`.mc-options[data-qid="${qId}"]`);
+      const selected = wrap.querySelector('.selected');
+      if (selected) {
+        const chosen = parseInt(selected.dataset.oi);
+        isCorrect = (chosen === q.correct);
+      }
+
+      if (isCorrect) {
+        // Lock and show correct
+        wrap.querySelectorAll('.mc-option').forEach(el => {
+          el.classList.remove('selected', 'selected-correct', 'selected-incorrect', 'reveal-correct');
+          el.style.pointerEvents = 'none';
+        });
+        selected.classList.add('selected-correct');
+        resolved[qId] = true;
+        card.classList.add('correct');
+        fb.className = 'feedback show fb-correct';
+        fb.innerHTML = '✓ Correct! ' + q.explanation + ' ' + getAttemptDots(qId);
+      } else if (attempts[qId] >= MAX_ATTEMPTS) {
+        // Max attempts — reveal answer
+        wrap.querySelectorAll('.mc-option').forEach(el => {
+          el.classList.remove('selected', 'selected-correct', 'selected-incorrect', 'reveal-correct');
+          el.style.pointerEvents = 'none';
+        });
+        if (selected) selected.classList.add('selected-incorrect');
+        wrap.querySelector(`[data-oi="${q.correct}"]`).classList.add('reveal-correct');
+        resolved[qId] = true;
+        card.classList.add('incorrect');
+        fb.className = 'feedback show fb-incorrect';
+        fb.innerHTML = `✗ The correct answer is <strong>${q.options[q.correct]}</strong>. ${q.explanation} ${getAttemptDots(qId)}`;
+      } else {
+        // Retry
+        allResolved = false;
+        fb.className = 'feedback show fb-retry';
+        const remaining = MAX_ATTEMPTS - attempts[qId];
+        fb.innerHTML = `Not quite — try again! ${remaining} attempt${remaining > 1 ? 's' : ''} remaining. ${getAttemptDots(qId)}`;
+        // Deselect so they can pick again
+        wrap.querySelectorAll('.mc-option').forEach(el => el.classList.remove('selected'));
+      }
+    } else {
+      // Text input types (fill, transform, error)
+      const input = document.getElementById(`${qId}-input`);
+      const userVal = normalize(input.value);
+      const accepted = q.answer.map(a => normalize(a));
+      isCorrect = accepted.includes(userVal);
+
+      if (isCorrect) {
+        input.classList.remove('input-incorrect');
+        input.classList.add('input-correct');
+        input.disabled = true;
+        resolved[qId] = true;
+        card.classList.add('correct');
+        fb.className = 'feedback show fb-correct';
+        fb.innerHTML = '✓ Correct! ' + q.explanation + ' ' + getAttemptDots(qId);
+      } else if (attempts[qId] >= MAX_ATTEMPTS) {
+        input.classList.add('input-incorrect');
+        input.disabled = true;
+        resolved[qId] = true;
+        card.classList.add('incorrect');
+        fb.className = 'feedback show fb-incorrect';
+        fb.innerHTML = `✗ The correct answer is <strong>${q.answer[0]}</strong>. ${q.explanation} ${getAttemptDots(qId)}`;
+      } else {
+        allResolved = false;
+        input.classList.remove('input-correct');
+        input.classList.add('input-incorrect');
+        fb.className = 'feedback show fb-retry';
+        const remaining = MAX_ATTEMPTS - attempts[qId];
+        fb.innerHTML = `Not quite — try again! ${remaining} attempt${remaining > 1 ? 's' : ''} remaining. ${getAttemptDots(qId)}`;
+        // Briefly shake the input
+        input.style.animation = 'none';
+        input.offsetHeight; // trigger reflow
+        input.style.animation = 'shake 0.35s ease';
+        // Remove incorrect styling after a moment so they can retype
+        setTimeout(() => { input.classList.remove('input-incorrect'); }, 800);
+      }
+    }
+  });
+
+  // Check if unresolved questions remain
+  const unresolvedCount = section.questions.filter((q, qi) => !resolved[`q-${section.id}-${qi}`]).length;
+
+  if (unresolvedCount === 0) {
+    // Section complete — show score
+    let sectionScore = section.questions.filter((q, qi) =>
+      document.getElementById(`q-${section.id}-${qi}`).classList.contains('correct')
+    ).length;
+    const total = section.questions.length;
+    const pct = Math.round((sectionScore / total) * 100);
+    const emoji = pct >= 80 ? '🎉' : pct >= 50 ? '👍' : '📖';
+    const resultEl = document.getElementById(`result-${sectionId}`);
+    resultEl.innerHTML = `${emoji} Section ${sectionId}: <strong>${sectionScore} / ${total}</strong> correct (${pct}%)`;
+    resultEl.style.background = pct >= 60 ? 'var(--correct-light)' : 'var(--error-light)';
+    resultEl.style.color = pct >= 60 ? 'var(--accent-dark)' : 'var(--error)';
+    resultEl.classList.add('show');
+
+    const btn = document.getElementById(`btn-${sectionId}`);
+    btn.disabled = true;
+
+    sectionScores[sectionId] = sectionScore;
+    sectionChecked.add(sectionId);
+
+    resultEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    if (sectionChecked.size === sections.length) {
+      showOverallResults();
+    }
+  } else {
+    // Update button text
+    const btn = document.getElementById(`btn-${sectionId}`);
+    btn.textContent = `Re-check Section ${sectionId} (${unresolvedCount} remaining)`;
+
+    // Scroll to first unresolved question
+    const firstUnresolved = section.questions.findIndex((q, qi) => !resolved[`q-${section.id}-${qi}`]);
+    if (firstUnresolved !== -1) {
+      document.getElementById(`q-${section.id}-${firstUnresolved}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  updateProgress();
+}
+
+function showOverallResults() {
+  const score = Object.values(sectionScores).reduce((a, b) => a + b, 0);
+  const pct = Math.round((score / totalQuestions) * 100);
+  document.getElementById('resultsScore').textContent = `${score} / ${totalQuestions}`;
+  let msg = '';
+  if (pct >= 90) msg = 'Excellent work! You\'ve mastered the passive! 🎉';
+  else if (pct >= 70) msg = 'Good job! A few areas to review — check the explanations above.';
+  else if (pct >= 50) msg = 'Not bad — but there\'s room for improvement. Review the feedback carefully.';
+  else msg = 'Keep practising! Go through the explanations and try again.';
+  document.getElementById('resultsMsg').textContent = msg;
+  document.getElementById('resultsBox').classList.add('show');
+
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressText').textContent = `${score} ✓`;
+
+  setTimeout(() => {
+    document.getElementById('resultsBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 400);
+}
+
+// ===== RESET =====
+function resetAll() {
+  sections.forEach(section => {
+    section.questions.forEach((q, qi) => {
+      const qId = `q-${section.id}-${qi}`;
+      const card = document.getElementById(qId);
+      const fb = document.getElementById(`${qId}-fb`);
+      card.classList.remove('correct', 'incorrect');
+      fb.className = 'feedback';
+      fb.innerHTML = '';
+
+      if (q.type === 'mc') {
+        const wrap = document.querySelector(`.mc-options[data-qid="${qId}"]`);
+        wrap.querySelectorAll('.mc-option').forEach(el => {
+          el.classList.remove('selected', 'selected-correct', 'selected-incorrect', 'reveal-correct');
+          el.style.pointerEvents = '';
+        });
+      } else {
+        const input = document.getElementById(`${qId}-input`);
+        input.value = '';
+        input.disabled = false;
+        input.classList.remove('input-correct', 'input-incorrect');
+      }
+    });
+
+    // Reset section results and buttons
+    const resultEl = document.getElementById(`result-${section.id}`);
+    resultEl.classList.remove('show');
+    resultEl.innerHTML = '';
+    const btn = document.getElementById(`btn-${section.id}`);
+    btn.disabled = false;
+    btn.textContent = `Check Section ${section.id}`;
+  });
+
+  // Clear tracking
+  answered.clear();
+  sectionChecked.clear();
+  for (const key in sectionScores) delete sectionScores[key];
+  for (const key in attempts) delete attempts[key];
+  for (const key in resolved) delete resolved[key];
+
+  updateProgress();
+  document.getElementById('resultsBox').classList.remove('show');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ===== INIT =====
+buildQuiz();
+updateProgress();
+</script>
+
+</body>
+</html>
