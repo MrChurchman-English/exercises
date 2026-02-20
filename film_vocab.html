@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B2 Film Vocabulary: 20-Gap Challenge</title>
+    <style>
+        :root { --primary: #1e40af; --secondary: #64748b; --success: #15803d; --error: #b91c1c; --reset: #ef4444; --bg: #fdfdfd; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.8; background-color: #f1f5f9; color: #334155; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+        h1 { color: var(--primary); text-align: center; margin-bottom: 5px; font-size: 2rem; }
+        .subtitle { text-align: center; color: #64748b; margin-bottom: 30px; }
+        .review-text { font-size: 1.1rem; text-align: justify; padding: 20px; background: #fff; border-radius: 8px; }
+        input { border: none; border-bottom: 2px solid #cbd5e1; width: 140px; font-size: 1rem; font-weight: 600; text-align: center; color: var(--primary); outline: none; transition: 0.3s; margin: 2px 0; border-radius: 4px 4px 0 0; }
+        input::placeholder { color: #94a3b8; font-weight: normal; font-style: italic; opacity: 0.7; }
+        input:focus { border-bottom-color: var(--primary); background: #f8fafc; }
+        input.correct { color: var(--success); border-bottom-color: var(--success); background: #f0fdf4; }
+        input.incorrect { color: var(--error); border-bottom-color: var(--error); background: #fef2f2; }
+        .controls { text-align: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid #e2e8f0; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+        button { border: none; padding: 12px 25px; font-size: 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; color: white; }
+        .btn-check { background: var(--primary); }
+        .btn-check:hover { background: #1e3a8a; transform: translateY(-1px); }
+        .btn-hint { background: var(--secondary); }
+        .btn-hint:hover { background: #475569; }
+        .btn-reset { background: var(--reset); }
+        .btn-reset:hover { background: #dc2626; opacity: 0.9; }
+        #score-msg { margin-top: 25px; font-size: 1.3rem; font-weight: bold; text-align: center; width: 100%; min-height: 1.5em; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🎬 Film Review: <i>The Shadow Protocol</i></h1>
+    <p class="subtitle">Complete the 20 gaps. Use <b>Hint</b> for the first letter, or <b>Reset</b> to start over.</p>
+
+    <div class="review-text">
+        The latest sci-fi thriller, which was (1) 
+        <input type="text" data-ans="directed"> by an Oscar-winner, was finally (2) 
+        <input type="text" data-ans="released"> in cinemas last month. The (3) 
+        <input type="text" data-ans="setting"> is a futuristic version of London, where the (4) 
+        <input type="text" data-ans="plot"> revolves around a missing scientist. The (5) 
+        <input type="text" data-ans="script"> is exceptionally well-written, featuring sharp (6) 
+        <input type="text" data-ans="dialogue"> that feels very natural and witty. 
+        <br><br>
+        The (7) 
+        <input type="text" data-ans="cast"> is quite diverse, and the film (8) 
+        <input type="text" data-ans="stars"> a famous Hollywood actor who (9) 
+        <input type="text" data-ans="portrays"> a cynical detective. His (10) 
+        <input type="text" data-ans="performance"> has been described as his best work yet. While the first half is a (11) 
+        <input type="text" data-ans="gripping"> mystery, the second half becomes a truly (12) 
+        <input type="text" data-ans="action-packed"> thriller with several high-speed car chases. 
+        <br><br>
+        The (13) 
+        <input type="text" data-ans="cinematography"> is breathtaking, and the haunting musical (14) 
+        <input type="text" data-ans="score"> creates a very tense atmosphere throughout. Even though the movie has some (15) 
+        <input type="text" data-ans="hilarious"> moments that make the audience laugh, the overall tone is quite serious. A major (16) 
+        <input type="text" data-ans="twist"> halfway through changes everything, and the film ends on a massive (17) 
+        <input type="text" data-ans="cliffhanger">. 
+        <br><br>
+        Fans are already asking when the (18) 
+        <input type="text" data-ans="sequel"> will be made to answer the remaining questions. It is no surprise that this (19) 
+        <input type="text" data-ans="blockbuster"> has earned millions and received rave (20) 
+        <input type="text" data-ans="reviews"> from critics worldwide.
+    </div>
+
+    <div class="controls">
+        <button class="btn-check" onclick="checkAnswers()">Check Answers</button>
+        <button class="btn-hint" onclick="provideHints()">Get Hints</button>
+        <button class="btn-reset" onclick="resetForm()">Reset All</button>
+        <div id="score-msg"></div>
+    </div>
+</div>
+
+<script>
+    function provideHints() {
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            const answer = input.getAttribute('data-ans');
+            if (input.value === '') {
+                input.placeholder = answer.charAt(0) + "...";
+            }
+        });
+    }
+
+    function checkAnswers() {
+        const inputs = document.querySelectorAll('input');
+        let correct = 0;
+
+        inputs.forEach(input => {
+            const userVal = input.value.trim().toLowerCase();
+            const answer = input.getAttribute('data-ans').toLowerCase();
+
+            if (userVal === answer) {
+                input.className = 'correct';
+                correct++;
+            } else if (userVal !== "") {
+                input.className = 'incorrect';
+            }
+        });
+
+        const msg = document.getElementById('score-msg');
+        msg.innerText = `Final Score: ${correct} / 20`;
+        
+        if (correct === 20) {
+            msg.style.color = "#15803d";
+            msg.innerText += " — Perfect Performance! 🏆";
+        } else {
+            msg.style.color = "#334155";
+        }
+    }
+
+    function resetForm() {
+        if (confirm("Are you sure you want to clear all your answers?")) {
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.value = '';
+                input.placeholder = '';
+                input.className = '';
+            });
+            document.getElementById('score-msg').innerText = '';
+        }
+    }
+</script>
+
+</body>
+</html>
