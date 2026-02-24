@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospital Vocabulary — EFL Exercises</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --teal: #1e7f82;
+    --teal-light: #d4eeef;
+    --cream: #f7f4ef;
+    --white: #ffffff;
+    --correct: #2e7d52;
+    --correct-bg: #e8f5ee;
+    --wrong: #b5361e;
+    --wrong-bg: #fdecea;
+    --neutral-line: #ddd8ce;
+    --text: #222;
+    --muted: #888;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 400;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 40px 48px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--teal), #4db8bb, var(--teal));
+  }
+  .header-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #7fa8be;
+    margin-bottom: 10px;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 4vw, 40px);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+  header p {
+    margin-top: 10px;
+    font-size: 15px;
+    color: #a8c0ce;
+    font-weight: 300;
+  }
+
+  /* ── Progress bar ── */
+  .progress-wrap {
+    background: var(--white);
+    border-bottom: 1px solid var(--neutral-line);
+    padding: 14px 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .progress-label { font-size: 13px; color: var(--muted); white-space: nowrap; }
+  .progress-bar-track {
+    flex: 1;
+    height: 6px;
+    background: #e5e0d8;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), #4db8bb);
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+  .progress-score { font-size: 13px; font-weight: 600; color: var(--teal); white-space: nowrap; }
+
+  /* ── Main layout ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── Exercise card ── */
+  .exercise {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    margin-bottom: 36px;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideIn 0.5s ease forwards;
+  }
+  .exercise:nth-child(1) { animation-delay: 0.1s; }
+  .exercise:nth-child(2) { animation-delay: 0.25s; }
+  .exercise:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes slideIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .exercise-header {
+    background: var(--navy);
+    color: var(--white);
+    padding: 20px 28px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+  .ex-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--teal);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .ex-title-wrap {}
+  .ex-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 500;
+  }
+  .ex-instruction {
+    font-size: 13px;
+    color: #8fa8b8;
+    margin-top: 3px;
+    font-weight: 300;
+  }
+
+  .exercise-body { padding: 28px; }
+
+  /* ── Exercise 1: Matching ── */
+  .matching-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 620px) { .matching-grid { grid-template-columns: 1fr; } }
+
+  .match-col-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .job-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border: 2px solid var(--neutral-line);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    background: var(--white);
+  }
+  .job-item:hover { border-color: var(--teal); background: var(--teal-light); }
+  .job-item.selected { border-color: var(--teal); background: var(--teal-light); }
+  .job-item.correct { border-color: var(--correct); background: var(--correct-bg); cursor: default; }
+  .job-item.wrong { border-color: var(--wrong); background: var(--wrong-bg); animation: shake 0.3s ease; }
+  .job-label { font-weight: 600; font-size: 14px; }
+
+  .desc-item {
+    padding: 10px 14px;
+    border: 2px solid var(--neutral-line);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 13.5px;
+    line-height: 1.5;
+    background: var(--white);
+  }
+  .desc-item:hover { border-color: var(--teal); background: var(--teal-light); }
+  .desc-item.selected { border-color: var(--teal); background: var(--teal-light); }
+  .desc-item.correct { border-color: var(--correct); background: var(--correct-bg); cursor: default; }
+  .desc-item.wrong { border-color: var(--wrong); background: var(--wrong-bg); animation: shake 0.3s ease; }
+  .desc-letter {
+    font-weight: 700;
+    color: var(--teal);
+    margin-right: 6px;
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+
+  /* ── Exercise 2: Gap fill with word bank ── */
+  .word-bank {
+    background: #f0f7f7;
+    border: 1px solid #c8e4e5;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .word-chip {
+    background: var(--white);
+    border: 1.5px solid #c8e4e5;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--teal);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .word-chip:hover { background: var(--teal); color: var(--white); border-color: var(--teal); }
+  .word-chip.used { opacity: 0.35; pointer-events: none; text-decoration: line-through; }
+
+  .sentence-list { list-style: none; }
+  .sentence-item {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--neutral-line);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .sentence-item:last-child { border-bottom: none; }
+  .sent-num {
+    font-weight: 700;
+    color: var(--teal);
+    min-width: 22px;
+    font-size: 13px;
+  }
+
+  .gap-slot {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    vertical-align: bottom;
+  }
+  .gap-input {
+    border: none;
+    border-bottom: 2px solid var(--teal);
+    background: transparent;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    width: 110px;
+    outline: none;
+    padding: 2px 4px;
+    transition: border-color 0.2s;
+  }
+  .gap-input:focus { border-color: #1a5c5e; }
+  .gap-input.correct { border-color: var(--correct); color: var(--correct); }
+  .gap-input.wrong { border-color: var(--wrong); color: var(--wrong); }
+  .gap-input.filled-slot { border-style: dashed; }
+
+  /* ── Exercise 3: Open gap fill ── */
+  .passage {
+    font-size: 15px;
+    line-height: 1.9;
+    color: var(--text);
+  }
+  .open-gap {
+    display: inline-block;
+    border-bottom: 2px solid var(--teal);
+    min-width: 90px;
+    margin: 0 3px;
+    vertical-align: bottom;
+  }
+  .open-input {
+    border: none;
+    border-bottom: 2px solid var(--teal);
+    background: transparent;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+    width: 110px;
+    outline: none;
+    padding: 2px 4px;
+    transition: border-color 0.2s;
+    margin: 0 2px;
+    vertical-align: bottom;
+  }
+  .open-input:focus { border-color: #1a5c5e; }
+  .open-input.correct { border-color: var(--correct); color: var(--correct); }
+  .open-input.wrong { border-color: var(--wrong); color: var(--wrong); }
+
+  /* ── Buttons ── */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--teal);
+    color: var(--white);
+  }
+  .btn-primary:hover { background: #186466; }
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--neutral-line);
+  }
+  .btn-secondary:hover { border-color: var(--teal); color: var(--teal); }
+
+  /* ── Score badge ── */
+  .score-badge {
+    display: none;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .score-badge.show { display: flex; }
+  .score-badge.all-correct { background: var(--correct-bg); color: var(--correct); }
+  .score-badge.some-wrong { background: var(--wrong-bg); color: var(--wrong); }
+
+  /* ── Hint box ── */
+  .hint-box {
+    background: #fffbec;
+    border: 1.5px solid #e8d87a;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-top: 20px;
+    display: none;
+  }
+  .hint-box.show { display: block; }
+  .hint-box h4 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #a07c10;
+    margin-bottom: 10px;
+  }
+  .hint-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .hint-item {
+    background: var(--white);
+    border: 1.5px solid #e8d87a;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--navy);
+  }
+  .hint-item:hover { background: #fffbec; border-color: #c8a800; }
+  .hint-item.revealed { cursor: default; }
+  .hint-item .hint-num { font-weight: 700; color: #a07c10; margin-right: 4px; }
+  .hint-item .hint-letter {
+    font-weight: 700;
+    color: var(--navy);
+    display: inline-block;
+    min-width: 14px;
+  }
+  .hint-item .hint-dots { color: var(--muted); font-size: 12px; }
+
+  /* ── Answer reveal ── */
+  .answer-key {
+    display: none;
+    margin-top: 20px;
+    background: #f0f7f7;
+    border: 1px solid #c8e4e5;
+    border-radius: 8px;
+    padding: 16px 20px;
+  }
+  .answer-key.show { display: block; }
+  .answer-key h4 {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 10px;
+  }
+  .answer-key p { font-size: 13.5px; line-height: 1.7; }
+
+  /* ── Final summary ── */
+  .summary {
+    background: var(--navy);
+    color: var(--white);
+    border-radius: 12px;
+    padding: 32px 36px;
+    text-align: center;
+    display: none;
+    animation: slideIn 0.5s ease forwards;
+  }
+  .summary.show { display: block; }
+  .summary h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+  .summary p { color: #8fa8b8; font-size: 15px; }
+  .summary .big-score {
+    font-family: 'Playfair Display', serif;
+    font-size: 56px;
+    color: var(--teal);
+    line-height: 1;
+    margin: 16px 0 4px;
+  }
+  .summary .score-label { font-size: 13px; color: #7fa8be; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">Upper Intermediate EFL</div>
+  <h1>Hospital Vocabulary</h1>
+  <p>Three exercises · Jobs, actions &amp; reading comprehension</p>
+</header>
+
+<div class="progress-wrap">
+  <span class="progress-label">Progress</span>
+  <div class="progress-bar-track"><div class="progress-bar-fill" id="progressBar"></div></div>
+  <span class="progress-score" id="progressScore">0 / 33 answered</span>
+</div>
+
+<main>
+
+  <!-- ══════════════════════════════════════════
+       EXERCISE 1 — MATCHING
+  ══════════════════════════════════════════ -->
+  <div class="exercise" id="ex1">
+    <div class="exercise-header">
+      <div class="ex-number">1</div>
+      <div class="ex-title-wrap">
+        <div class="ex-title">Jobs in a Hospital</div>
+        <div class="ex-instruction">Click a job title, then click its matching description.</div>
+      </div>
+    </div>
+    <div class="exercise-body">
+      <div class="matching-grid">
+        <div>
+          <div class="match-col-title">Jobs</div>
+          <div class="job-item" data-job="ward-sister" onclick="selectJob(this)"><span class="job-label">ward sister</span></div>
+          <div class="job-item" data-job="nurse" onclick="selectJob(this)"><span class="job-label">nurse</span></div>
+          <div class="job-item" data-job="ward-orderly" onclick="selectJob(this)"><span class="job-label">ward orderly</span></div>
+          <div class="job-item" data-job="registrar" onclick="selectJob(this)"><span class="job-label">registrar</span></div>
+          <div class="job-item" data-job="consultant" onclick="selectJob(this)"><span class="job-label">consultant physician</span></div>
+          <div class="job-item" data-job="social-worker" onclick="selectJob(this)"><span class="job-label">social worker</span></div>
+          <div class="job-item" data-job="physiotherapist" onclick="selectJob(this)"><span class="job-label">physiotherapist</span></div>
+          <div class="job-item" data-job="surgeon" onclick="selectJob(this)"><span class="job-label">surgeon</span></div>
+        </div>
+        <div>
+          <div class="match-col-title">Descriptions</div>
+          <div class="desc-item" data-desc="consultant" onclick="selectDesc(this)"><span class="desc-letter">a.</span>A doctor who has completed specialist training and holds the most senior clinical role in their field. They lead a medical team and are responsible for the diagnosis and treatment of patients referred to them.</div>
+          <div class="desc-item" data-desc="registrar" onclick="selectDesc(this)"><span class="desc-letter">b.</span>A qualified doctor who is training in a specialist area. They are junior to a consultant but take on significant responsibility for day-to-day patient care and decision-making on the ward.</div>
+          <div class="desc-item" data-desc="ward-sister" onclick="selectDesc(this)"><span class="desc-letter">c.</span>A senior, experienced nurse who manages and supervises all the nursing staff on a particular ward. They are responsible for the standard of patient care in that ward.</div>
+          <div class="desc-item" data-desc="physiotherapist" onclick="selectDesc(this)"><span class="desc-letter">d.</span>A healthcare professional who helps patients recover movement, strength, and function after illness, surgery, or injury, using exercises and physical techniques.</div>
+          <div class="desc-item" data-desc="surgeon" onclick="selectDesc(this)"><span class="desc-letter">e.</span>A doctor who performs operations, treating injuries, diseases, and deformities by cutting and repairing the body.</div>
+          <div class="desc-item" data-desc="nurse" onclick="selectDesc(this)"><span class="desc-letter">f.</span>A trained healthcare professional who looks after the day-to-day needs of patients — taking observations, administering medication, and supporting patients' recovery and wellbeing.</div>
+          <div class="desc-item" data-desc="social-worker" onclick="selectDesc(this)"><span class="desc-letter">g.</span>A professional who assesses patients' personal, family, and financial circumstances and helps them access support services, both during their hospital stay and after discharge.</div>
+          <div class="desc-item" data-desc="ward-orderly" onclick="selectDesc(this)"><span class="desc-letter">h.</span>A member of the non-medical support staff who assists with practical tasks on the ward, such as transporting patients, making beds, and keeping the ward clean and tidy.</div>
+        </div>
+      </div>
+      <div class="score-badge" id="ex1-badge"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       EXERCISE 2 — SENTENCES WITH WORD BANK
+  ══════════════════════════════════════════ -->
+  <div class="exercise" id="ex2">
+    <div class="exercise-header">
+      <div class="ex-number">2</div>
+      <div class="ex-title-wrap">
+        <div class="ex-title">Vocabulary in Context</div>
+        <div class="ex-instruction">Click a word from the box, then click the gap where it belongs. Type directly into a gap if you prefer.</div>
+      </div>
+    </div>
+    <div class="exercise-body">
+      <div class="word-bank" id="wordBank">
+        <span class="word-chip" data-word="treat" onclick="selectChip(this)">treat</span>
+        <span class="word-chip" data-word="operate on" onclick="selectChip(this)">operate on</span>
+        <span class="word-chip" data-word="diagnose" onclick="selectChip(this)">diagnose</span>
+        <span class="word-chip" data-word="prescribe" onclick="selectChip(this)">prescribe</span>
+        <span class="word-chip" data-word="admit" onclick="selectChip(this)">admit</span>
+        <span class="word-chip" data-word="discharge" onclick="selectChip(this)">discharge</span>
+        <span class="word-chip" data-word="refer" onclick="selectChip(this)">refer</span>
+        <span class="word-chip" data-word="examine" onclick="selectChip(this)">examine</span>
+        <span class="word-chip" data-word="monitor" onclick="selectChip(this)">monitor</span>
+        <span class="word-chip" data-word="recover" onclick="selectChip(this)">recover</span>
+        <span class="word-chip" data-word="resuscitate" onclick="selectChip(this)">resuscitate</span>
+        <span class="word-chip" data-word="anaesthetise" onclick="selectChip(this)">anaesthetise</span>
+        <span class="word-chip" data-word="stitch up" onclick="selectChip(this)">stitch up</span>
+        <span class="word-chip" data-word="X-ray" onclick="selectChip(this)">X-ray</span>
+        <span class="word-chip" data-word="consent to" onclick="selectChip(this)">consent to</span>
+      </div>
+
+      <ol class="sentence-list" id="sentenceList">
+        <!-- sentences injected by JS -->
+      </ol>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkEx2()">Check answers</button>
+        <button class="btn btn-secondary" onclick="resetEx2()">Reset</button>
+      </div>
+      <div class="score-badge" id="ex2-badge"></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       EXERCISE 3 — OPEN GAP FILL (PASSAGE)
+  ══════════════════════════════════════════ -->
+  <div class="exercise" id="ex3">
+    <div class="exercise-header">
+      <div class="ex-number">3</div>
+      <div class="ex-title-wrap">
+        <div class="ex-title">Test Your Vocabulary</div>
+        <div class="ex-instruction">Fill each gap with ONE word. No word list this time!</div>
+      </div>
+    </div>
+    <div class="exercise-body">
+      <div class="passage" id="passage">
+        <!-- injected by JS -->
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="checkEx3()">Check answers</button>
+        <button class="btn btn-secondary" onclick="toggleHints()">💡 Hints</button>
+        <button class="btn btn-secondary" onclick="showAnswers3()">Show answers</button>
+        <button class="btn btn-secondary" onclick="resetEx3()">Reset</button>
+      </div>
+      <div class="hint-box" id="ex3-hints">
+        <h4>First-letter hints — click a gap number to reveal</h4>
+        <div class="hint-grid" id="hintGrid"></div>
+      </div>
+      <div class="score-badge" id="ex3-badge"></div>
+      <div class="answer-key" id="ex3-key">
+        <h4>Answer Key</h4>
+        <p>1. examine &nbsp;·&nbsp; 2. discharged &nbsp;·&nbsp; 3. admit &nbsp;·&nbsp; 4. ward &nbsp;·&nbsp; 5. registrar &nbsp;·&nbsp; 6. monitor &nbsp;·&nbsp; 7. X-ray &nbsp;·&nbsp; 8. surgeon &nbsp;·&nbsp; 9. anaesthetise &nbsp;·&nbsp; 10. recover</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary -->
+  <div class="summary" id="summary">
+    <h2>Well done!</h2>
+    <div class="big-score" id="summaryScore">—</div>
+    <div class="score-label">total correct answers</div>
+    <p style="margin-top:16px;">Keep practising these words in context to help them stick.</p>
+  </div>
+
+</main>
+
+<script>
+// ──────────────────────────────────────────────
+// PROGRESS TRACKING
+// ──────────────────────────────────────────────
+const TOTAL = 33; // 8 matches + 15 sentences + 10 passage gaps
+let ex1Correct = 0;
+let ex2Correct = 0;
+let ex3Correct = 0;
+
+function updateProgress() {
+  const answered = ex1Correct + ex2Correct + ex3Correct;
+  const pct = Math.round((answered / TOTAL) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressScore').textContent = answered + ' / ' + TOTAL + ' answered';
+  if (answered === TOTAL) {
+    document.getElementById('summaryScore').textContent = answered;
+    document.getElementById('summary').classList.add('show');
+    document.getElementById('summary').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+// ──────────────────────────────────────────────
+// EXERCISE 1 — MATCHING
+// ──────────────────────────────────────────────
+let selectedJob = null;
+let matchedCount = 0;
+
+function selectJob(el) {
+  if (el.classList.contains('correct')) return;
+  document.querySelectorAll('.job-item.selected').forEach(j => j.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedJob = el;
+  if (selectedDesc) tryMatch();
+}
+
+let selectedDesc = null;
+function selectDesc(el) {
+  if (el.classList.contains('correct')) return;
+  document.querySelectorAll('.desc-item.selected').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDesc = el;
+  if (selectedJob) tryMatch();
+}
+
+function tryMatch() {
+  const job = selectedJob.dataset.job;
+  const desc = selectedDesc.dataset.desc;
+  if (job === desc) {
+    selectedJob.classList.remove('selected');
+    selectedJob.classList.add('correct');
+    selectedDesc.classList.remove('selected');
+    selectedDesc.classList.add('correct');
+    matchedCount++;
+    ex1Correct++;
+    updateProgress();
+    if (matchedCount === 8) {
+      const badge = document.getElementById('ex1-badge');
+      badge.textContent = '✓ All 8 matched correctly! Excellent work.';
+      badge.className = 'score-badge show all-correct';
+    }
+  } else {
+    selectedJob.classList.add('wrong');
+    selectedDesc.classList.add('wrong');
+    setTimeout(() => {
+      selectedJob.classList.remove('wrong', 'selected');
+      selectedDesc.classList.remove('wrong', 'selected');
+    }, 600);
+  }
+  selectedJob = null;
+  selectedDesc = null;
+}
+
+// ──────────────────────────────────────────────
+// EXERCISE 2 — SENTENCE GAP FILL
+// ──────────────────────────────────────────────
+const sentences = [
+  { text: "The patient arrived at A&E in the early hours of the morning and was so seriously ill that the doctors decided to ___ him immediately rather than send him home.", answer: "admit", gap: 1 },
+  { text: "After three weeks in hospital, Mrs Patel was finally well enough to go home. The consultant was happy to ___ her that afternoon.", answer: "discharge", gap: 1 },
+  { text: "The cut on his hand was deep and still bleeding heavily, so the nurse had to ___ it ___ before applying a bandage.", answer: "stitch up", gap: 2 },
+  { text: "The doctor could not be certain what was wrong with the patient until she had carried out a number of tests. She eventually ___ him with a rare autoimmune condition.", answer: "diagnose", gap: 1 },
+  { text: "The footballer had injured her knee badly. Because the damage was so serious, surgeons decided they would have to ___ her ___ to repair the torn ligament.", answer: "operate on", gap: 2 },
+  { text: "Before the operation could begin, the anaesthetist needed to ___ the patient so that he would feel no pain during the surgery.", answer: "anaesthetise", gap: 1 },
+  { text: "Mr Hobbs had a persistent cough. His GP felt that these symptoms were beyond her expertise, so she decided to ___ him to a specialist at the local hospital.", answer: "refer", gap: 1 },
+  { text: "The drug the doctor chose to ___ was not available at the hospital pharmacy, so the patient had to take the prescription to a chemist.", answer: "prescribe", gap: 1 },
+  { text: "No procedure could begin until the patient had agreed to ___ it.", answer: "consent to", gap: 1 },
+  { text: "The chest pains could have had a number of causes, so the doctors decided to ___ his leg before doing anything else.", answer: "X-ray", gap: 1 },
+  { text: "The doctor asked the patient to remove his shirt and ___ him thoroughly, pressing gently on various parts of his chest and abdomen.", answer: "examine", gap: 1 },
+  { text: "The nursing staff needed to keep a close eye on the patient's temperature and blood pressure overnight, so they set up equipment to ___ her vital signs continuously.", answer: "monitor", gap: 1 },
+  { text: "The hospital had developed an excellent new approach to ___ing patients with Type 2 diabetes, combining medication with changes to diet and lifestyle.", answer: "treat", gap: 1 },
+  { text: "When the elderly man's heart stopped suddenly on the ward, a crash team rushed to his bedside and managed to ___ him after several minutes.", answer: "resuscitate", gap: 1 },
+  { text: "It can take many months to fully ___ from a major operation, and patients are often advised to avoid strenuous activity for some time after leaving hospital.", answer: "recover", gap: 1 },
+];
+
+let selectedChip = null;
+
+function buildEx2() {
+  const list = document.getElementById('sentenceList');
+  list.innerHTML = '';
+  sentences.forEach((s, i) => {
+    const li = document.createElement('li');
+    li.className = 'sentence-item';
+    li.innerHTML = '<span class="sent-num">' + (i + 1) + '.</span><span>' + buildSentenceHTML(s, i) + '</span>';
+    list.appendChild(li);
+  });
+}
+
+function buildSentenceHTML(s, idx) {
+  if (s.gap === 1) {
+    return s.text.replace('___', `<input class="gap-input" data-idx="${idx}" data-part="0" placeholder="..." onclick="fillFromChip(this)" oninput="chiplessInput(this)">`);
+  } else {
+    // two-part (stitch up / operate on)
+    const parts = s.text.split('___');
+    return parts[0] + `<input class="gap-input" data-idx="${idx}" data-part="0" placeholder="..." style="width:80px" onclick="fillFromChip(this)" oninput="chiplessInput(this)">` +
+           parts[1] + `<input class="gap-input" data-idx="${idx}" data-part="1" placeholder="..." style="width:50px" onclick="fillFromChip(this)" oninput="chiplessInput(this)">` +
+           parts[2];
+  }
+}
+
+function selectChip(el) {
+  document.querySelectorAll('.word-chip.selected').forEach(c => c.classList.remove('selected'));
+  if (selectedChip === el) { selectedChip = null; return; }
+  el.classList.add('selected');
+  selectedChip = el;
+}
+
+function fillFromChip(input) {
+  if (!selectedChip) return;
+  const word = selectedChip.dataset.word;
+  const idx = parseInt(input.dataset.idx);
+  const s = sentences[idx];
+
+  if (s.gap === 2) {
+    const wParts = word.split(' ');
+    const inputs = document.querySelectorAll(`.gap-input[data-idx="${idx}"]`);
+    inputs[0].value = wParts[0] || '';
+    inputs[1].value = wParts[1] || '';
+    inputs[0].classList.add('filled-slot');
+    inputs[1].classList.add('filled-slot');
+  } else {
+    input.value = word;
+    input.classList.add('filled-slot');
+  }
+
+  selectedChip.classList.remove('selected');
+  selectedChip.classList.add('used');
+  selectedChip = null;
+}
+
+function chiplessInput(input) {
+  input.classList.remove('correct', 'wrong', 'filled-slot');
+}
+
+function checkEx2() {
+  ex2Correct = 0;
+  sentences.forEach((s, i) => {
+    const inputs = document.querySelectorAll(`.gap-input[data-idx="${i}"]`);
+    if (s.gap === 2) {
+      const wParts = s.answer.split(' ');
+      const v0 = inputs[0].value.trim().toLowerCase();
+      const v1 = inputs[1].value.trim().toLowerCase();
+      const ok = v0 === wParts[0] && v1 === wParts[1];
+      inputs[0].classList.toggle('correct', ok);
+      inputs[0].classList.toggle('wrong', !ok);
+      inputs[1].classList.toggle('correct', ok);
+      inputs[1].classList.toggle('wrong', !ok);
+      if (ok) ex2Correct++;
+    } else {
+      const val = inputs[0].value.trim().toLowerCase();
+      const ok = val === s.answer.toLowerCase();
+      inputs[0].classList.toggle('correct', ok);
+      inputs[0].classList.toggle('wrong', !ok);
+      if (ok) ex2Correct++;
+    }
+  });
+  const badge = document.getElementById('ex2-badge');
+  badge.className = 'score-badge show ' + (ex2Correct === 15 ? 'all-correct' : 'some-wrong');
+  badge.textContent = ex2Correct === 15 ? '✓ All 15 correct! Outstanding.' : ex2Correct + ' / 15 correct. Review the highlighted gaps and try again.';
+  updateProgress();
+}
+
+function resetEx2() {
+  ex2Correct = 0;
+  selectedChip = null;
+  document.querySelectorAll('.word-chip').forEach(c => { c.classList.remove('used', 'selected'); });
+  buildEx2();
+  document.getElementById('ex2-badge').className = 'score-badge';
+  updateProgress();
+}
+
+// ──────────────────────────────────────────────
+// EXERCISE 3 — PASSAGE GAP FILL
+// ──────────────────────────────────────────────
+const passageData = [
+  { before: "When a patient arrives at hospital following a serious accident, a great many people are involved in their care. First, a nurse will ", answer: ["examine"], after: " the patient, checking vital signs such as heart rate and blood pressure." },
+  { before: " If the patient is well enough to go home, they will be ", answer: ["discharged"], after: " without further treatment." },
+  { before: " However, if their condition is serious, the duty doctor will ", answer: ["admit"], after: " them and they will be found a bed on an appropriate ward." },
+  { before: " The ", answer: ["ward"], after: " sister is responsible for the overall standard of care on the ward and will assign nursing staff to look after the new arrival." },
+  { before: " A junior doctor, known as a ", answer: ["registrar"], after: ", will visit the patient regularly and report back to the consultant in charge of the case." },
+  { before: " If the patient's condition changes overnight, nurses will alert the doctor immediately — this is why it is so important to ", answer: ["monitor"], after: " patients' vital signs continuously." },
+  { before: " If tests reveal a broken bone, a radiographer will ", answer: ["X-ray"], after: " the affected area." },
+  { before: " Should surgery be required, a ", answer: ["surgeon"], after: " will perform the operation," },
+  { before: " and an anaesthetist will be on hand to ", answer: ["anaesthetise"], after: " the patient beforehand." },
+  { before: " Afterwards, it may take the patient a long time to ", answer: ["recover"], after: " fully, and a physiotherapist will often play a vital role in helping them regain their strength and mobility." },
+];
+
+function buildEx3() {
+  const container = document.getElementById('passage');
+  container.innerHTML = '';
+  passageData.forEach((seg, i) => {
+    container.appendChild(document.createTextNode(seg.before));
+    const inp = document.createElement('input');
+    inp.type = 'text';
+    inp.className = 'open-input';
+    inp.dataset.idx = i;
+    inp.placeholder = '(' + (i + 1) + ')';
+    container.appendChild(inp);
+    container.appendChild(document.createTextNode(seg.after));
+  });
+}
+
+function checkEx3() {
+  ex3Correct = 0;
+  passageData.forEach((seg, i) => {
+    const inp = document.querySelector(`.open-input[data-idx="${i}"]`);
+    const val = inp.value.trim().toLowerCase();
+    const ok = seg.answer.map(a => a.toLowerCase()).includes(val);
+    inp.classList.toggle('correct', ok);
+    inp.classList.toggle('wrong', !ok);
+    if (ok) ex3Correct++;
+  });
+  const badge = document.getElementById('ex3-badge');
+  badge.className = 'score-badge show ' + (ex3Correct === 10 ? 'all-correct' : 'some-wrong');
+  badge.textContent = ex3Correct === 10 ? '✓ Perfect score! Excellent work.' : ex3Correct + ' / 10 correct. Check the highlighted gaps.';
+  updateProgress();
+}
+
+function showAnswers3() {
+  passageData.forEach((seg, i) => {
+    const inp = document.querySelector(`.open-input[data-idx="${i}"]`);
+    inp.value = seg.answer[0];
+    inp.classList.add('correct');
+    inp.classList.remove('wrong');
+  });
+  ex3Correct = 10;
+  document.getElementById('ex3-key').classList.add('show');
+  updateProgress();
+}
+
+function buildHints() {
+  const grid = document.getElementById('hintGrid');
+  grid.innerHTML = '';
+  passageData.forEach((seg, i) => {
+    const firstLetter = seg.answer[0][0].toUpperCase();
+    const div = document.createElement('div');
+    div.className = 'hint-item';
+    div.dataset.idx = i;
+    div.innerHTML = `<span class="hint-num">${i + 1}.</span><span class="hint-letter">?</span><span class="hint-dots"> _ _ _</span>`;
+    div.onclick = () => revealHint(div, firstLetter);
+    grid.appendChild(div);
+  });
+}
+
+function revealHint(el, letter) {
+  el.querySelector('.hint-letter').textContent = letter;
+  el.querySelector('.hint-dots').textContent = ' _ _ _';
+  el.classList.add('revealed');
+  el.onclick = null;
+}
+
+function toggleHints() {
+  const box = document.getElementById('ex3-hints');
+  box.classList.toggle('show');
+}
+
+function resetEx3() {
+  ex3Correct = 0;
+  document.querySelectorAll('.open-input').forEach(inp => {
+    inp.value = '';
+    inp.classList.remove('correct', 'wrong');
+  });
+  document.getElementById('ex3-badge').className = 'score-badge';
+  document.getElementById('ex3-key').classList.remove('show');
+  document.getElementById('ex3-hints').classList.remove('show');
+  buildHints();
+  updateProgress();
+}
+
+// ── Init ──
+buildEx2();
+buildEx3();
+buildHints();
+</script>
+</body>
+</html>
