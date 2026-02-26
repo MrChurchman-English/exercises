@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary Exercise – Gap Fill</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --card: #fffcf6;
+    --ink: #2c2a26;
+    --muted: #7a756a;
+    --accent: #b45309;
+    --accent-light: #fef3c7;
+    --correct: #166534;
+    --correct-bg: #dcfce7;
+    --incorrect: #991b1b;
+    --incorrect-bg: #fee2e2;
+    --border: #d6d0c4;
+    --shadow: rgba(44, 42, 38, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  header h1 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.25rem;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+
+  .word-bank {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+
+  .word-bank-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .word-tag {
+    background: var(--accent-light);
+    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 500;
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    transition: opacity 0.3s;
+  }
+
+  .word-tag.used {
+    opacity: 0.35;
+    text-decoration: line-through;
+  }
+
+  .exercise-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px var(--shadow);
+    margin-bottom: 1.5rem;
+  }
+
+  .exercise-text {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.1rem;
+    line-height: 2.2;
+    color: var(--ink);
+  }
+
+  .gap-wrapper {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    position: relative;
+  }
+
+  .gap-number {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--accent);
+    vertical-align: super;
+    margin-right: 1px;
+  }
+
+  .gap-input {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.05rem;
+    border: none;
+    border-bottom: 2px solid var(--border);
+    background: transparent;
+    color: var(--ink);
+    padding: 0 0.25rem 2px;
+    width: 120px;
+    outline: none;
+    transition: border-color 0.25s;
+  }
+
+  .gap-input:focus {
+    border-bottom-color: var(--accent);
+  }
+
+  .gap-input.correct {
+    border-bottom-color: var(--correct);
+    color: var(--correct);
+    background: var(--correct-bg);
+    border-radius: 3px 3px 0 0;
+  }
+
+  .gap-input.incorrect {
+    border-bottom-color: var(--incorrect);
+    color: var(--incorrect);
+    background: var(--incorrect-bg);
+    border-radius: 3px 3px 0 0;
+  }
+
+  .actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  button {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.7rem 1.75rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-check {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .btn-check:hover { background: #9a4408; }
+
+  .btn-reset {
+    background: transparent;
+    color: var(--muted);
+    border: 1.5px solid var(--border);
+  }
+
+  .btn-reset:hover {
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  .result-bar {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: none;
+  }
+
+  .result-bar.visible { display: block; }
+
+  .result-bar.perfect {
+    background: var(--correct-bg);
+    color: var(--correct);
+  }
+
+  .result-bar.partial {
+    background: var(--accent-light);
+    color: var(--accent);
+  }
+
+  @media (max-width: 600px) {
+    .exercise-card { padding: 1.25rem; }
+    .exercise-text { font-size: 1rem; line-height: 2.4; }
+    .gap-input { width: 100px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>Vocabulary Gap Fill</h1>
+    <p>Fill in the gaps using the correct form of the words below. Each word is used once.</p>
+  </header>
+
+  <div class="word-bank">
+    <div class="word-bank-label">Word Bank</div>
+    <div class="words" id="wordBank"></div>
+  </div>
+
+  <div id="resultBar" class="result-bar"></div>
+
+  <div class="exercise-card">
+    <div class="exercise-text" id="exerciseText"></div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-check" onclick="checkAnswers()">Check Answers</button>
+    <button class="btn-reset" onclick="resetExercise()">Reset</button>
+  </div>
+</div>
+
+<script>
+const answers = [
+  "deliver", "unforeseen", "attend", "inconvenience", "replacement",
+  "practicable", "acquainted", "brief", "outline", "adequate", "circumstances"
+];
+
+const bankWords = [
+  "outline", "attend", "inconvenience", "unforeseen", "circumstance",
+  "deliver", "brief", "acquainted", "adequate", "replacement", "practicable"
+];
+
+const textParts = [
+  `Tom was supposed to `,           // gap 1: deliver
+  ` a speech at the annual conference on Friday. Unfortunately, due to `,  // gap 2: unforeseen
+  ` circumstances, he will not be able to `,  // gap 3: attend
+  ` the event. I know this is a great `,       // gap 4: inconvenience
+  `, but we need to find a suitable `,         // gap 5: replacement
+  ` as soon as `,                               // gap 6: practicable
+  `. Laura, I was hoping you could step in. I know you are already `, // gap 7: acquainted
+  ` with the topic, so I\u2019m sure you\u2019ll do a fine job. Tom has agreed to `, // gap 8: brief
+  ` you on the key points later today. He will also `,  // gap 9: outline
+  ` the main arguments for you so that you have `, // gap 10: adequate
+  ` time to prepare. Under the `, // gap 11: circumstances
+  `, I think this is the best we can do.`
+];
+
+function buildExercise() {
+  // Word bank
+  const bankEl = document.getElementById('wordBank');
+  bankEl.innerHTML = '';
+  bankWords.forEach(w => {
+    const tag = document.createElement('span');
+    tag.className = 'word-tag';
+    tag.textContent = w;
+    tag.dataset.word = w.toLowerCase();
+    bankEl.appendChild(tag);
+  });
+
+  // Exercise text
+  const textEl = document.getElementById('exerciseText');
+  textEl.innerHTML = '';
+
+  for (let i = 0; i < answers.length; i++) {
+    const textNode = document.createElement('span');
+    textNode.innerHTML = textParts[i];
+    textEl.appendChild(textNode);
+
+    const wrapper = document.createElement('span');
+    wrapper.className = 'gap-wrapper';
+
+    const num = document.createElement('span');
+    num.className = 'gap-number';
+    num.textContent = `(${i + 1})`;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'gap-input';
+    input.dataset.index = i;
+    input.autocomplete = 'off';
+    input.spellcheck = false;
+    input.addEventListener('input', () => {
+      input.classList.remove('correct', 'incorrect');
+      updateWordBank();
+      hideResult();
+    });
+
+    wrapper.appendChild(num);
+    wrapper.appendChild(input);
+    textEl.appendChild(wrapper);
+  }
+
+  // trailing text
+  const trailing = document.createElement('span');
+  trailing.innerHTML = textParts[textParts.length - 1];
+  textEl.appendChild(trailing);
+}
+
+function normalize(s) {
+  return s.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function checkAnswers() {
+  const inputs = document.querySelectorAll('.gap-input');
+  let correct = 0;
+
+  inputs.forEach((input, i) => {
+    const val = normalize(input.value);
+    const ans = normalize(answers[i]);
+    input.classList.remove('correct', 'incorrect');
+    if (val === ans) {
+      input.classList.add('correct');
+      correct++;
+    } else if (val !== '') {
+      input.classList.add('incorrect');
+    }
+  });
+
+  const bar = document.getElementById('resultBar');
+  bar.classList.add('visible');
+  if (correct === answers.length) {
+    bar.className = 'result-bar visible perfect';
+    bar.textContent = `Excellent! All ${answers.length} answers are correct! 🎉`;
+  } else {
+    bar.className = 'result-bar visible partial';
+    bar.textContent = `${correct} of ${answers.length} correct. Keep trying!`;
+  }
+
+  updateWordBank();
+}
+
+function resetExercise() {
+  const inputs = document.querySelectorAll('.gap-input');
+  inputs.forEach(input => {
+    input.value = '';
+    input.classList.remove('correct', 'incorrect');
+  });
+  hideResult();
+  updateWordBank();
+  inputs[0]?.focus();
+}
+
+function hideResult() {
+  document.getElementById('resultBar').classList.remove('visible');
+}
+
+function updateWordBank() {
+  const inputs = document.querySelectorAll('.gap-input');
+  const usedWords = new Set();
+  inputs.forEach(input => {
+    const val = normalize(input.value);
+    if (val) usedWords.add(val);
+  });
+
+  document.querySelectorAll('.word-tag').forEach(tag => {
+    const w = tag.dataset.word;
+    // Mark as used if the word or its plural form is typed
+    const isUsed = usedWords.has(w) || usedWords.has(w + 's') || usedWords.has(w + 'e') || usedWords.has(w.replace(/e$/, ''));
+    tag.classList.toggle('used', isUsed);
+  });
+}
+
+buildExercise();
+</script>
+</body>
+</html>
