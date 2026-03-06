@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animal Groups Quiz</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f0f7f4; padding: 20px; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1, h2 { color: #2d6a4f; text-align: center; }
+        .category { margin-bottom: 30px; border: 1px solid #d8f3dc; padding: 15px; border-radius: 10px; }
+        .word-bank { font-size: 0.85em; color: #555; background: #e9f5ee; padding: 10px; border-radius: 5px; margin-bottom: 15px; }
+        .item { display: flex; align-items: center; justify-content: space-between; margin: 8px 0; }
+        select, input { padding: 8px; border-radius: 5px; border: 1px solid #ccc; width: 140px; }
+        button { display: block; width: 200px; margin: 20px auto; padding: 10px; background-color: #2d6a4f; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1em; }
+        #result { text-align: center; font-weight: bold; font-size: 1.2em; margin-top: 20px; color: #2d6a4f; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>animal groups</h1>
+    <div id="exercise-area"></div>
+    
+    <h2 style="margin-top: 40px;">final challenge</h2>
+    <div id="test-area" class="category"></div>
+    
+    <button onclick="calculateScore()">Submit Test</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    const fullData = [
+        { cat: "farm & domestic", words: ["flock", "gaggle", "herd", "colony"], pairs: { "sheep": "flock", "goose": "gaggle", "horse": "herd", "cattle": "herd", "ant": "colony" } },
+        { cat: "in the water", words: ["school", "pod", "smack", "shiver"], pairs: { "fish": "school", "whale": "pod", "jellyfish": "smack", "shark": "shiver" } },
+        { cat: "birds & sky", words: ["flock", "swarm", "parliament", "murder", "flamboyance"], pairs: { "bird": "flock", "bee": "swarm", "owl": "parliament", "crow": "murder", "flamingo": "flamboyance" } },
+        { cat: "wild & savanna", words: ["pack", "pride", "herd", "mob", "tower", "zeal"], pairs: { "wolf": "pack", "lion": "pride", "elephant": "herd", "kangaroo": "mob", "giraffe": "tower", "zebra": "zeal" } },
+        { cat: "forest & exotic", words: ["army", "colony", "kaleidoscope", "troop"], pairs: { "frog": "army", "penguin": "colony", "butterfly": "kaleidoscope", "baboon": "troop", "rhinoceros": "crash" } }
+    ];
+
+    const testPairs = { "zebra": "zeal", "butterfly": "kaleidoscope", "flamingo": "flamboyance", "giraffe": "tower", "frog": "army", "sheep": "flock", "horse": "herd", "ant": "colony", "baboon": "troop", "penguin": "colony" };
+
+    const container = document.getElementById('exercise-area');
+    fullData.forEach(group => {
+        const div = document.createElement('div');
+        div.className = 'category';
+        div.innerHTML = `<h2>${group.cat}</h2><div class="word-bank">Options: ${group.words.join(', ')}</div>`;
+        for (const [animal, correct] of Object.entries(group.pairs)) {
+            div.innerHTML += `<div class="item"><span>${animal}</span> <select class="match-input" data-correct="${correct}"><option value="">-- select --</option>${group.words.map(w => `<option value="${w}">${w}</option>`).join('')}</select></div>`;
+        }
+        container.appendChild(div);
+    });
+
+    const testArea = document.getElementById('test-area');
+    for (const [animal, correct] of Object.entries(testPairs)) {
+        testArea.innerHTML += `<div class="item"><span>${animal}</span> <input type="text" class="test-input" data-correct="${correct}"></div>`;
+    }
+
+    function calculateScore() {
+        let score = 0;
+        const inputs = document.querySelectorAll('.test-input');
+        inputs.forEach(input => {
+            if (input.value.toLowerCase().trim() === input.dataset.correct) {
+                score++;
+                input.style.backgroundColor = "#b7e4c7";
+            } else {
+                input.style.backgroundColor = "#ffadad";
+            }
+        });
+        document.getElementById('result').innerText = `You scored ${score} / ${inputs.length}!`;
+    }
+</script>
+</body>
+</html>
