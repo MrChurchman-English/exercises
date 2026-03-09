@@ -17,25 +17,19 @@
         .options-row { display: flex; gap: 20px; margin-top: 10px; flex-wrap: wrap; }
         .mc-option { cursor: pointer; padding: 5px 10px; border-radius: 4px; }
         
-        /* Inputs */
         input[type="text"] { border: none; border-bottom: 2px solid var(--secondary); background: transparent; padding: 2px 8px; font-size: 1.05rem; font-weight: bold; color: var(--primary); width: 180px; text-align: center; }
         input[type="text"]:focus { outline: none; border-bottom-color: #e67e22; }
         
-        /* Wider inputs for Transformation */
-        .trans-input { width: 550px !important; text-align: left !important; margin-top: 12px; display: block; border-bottom: 2px solid #95a5a6 !important; }
-        
+        .trans-input { width: 620px !important; text-align: left !important; margin-top: 12px; display: block; border-bottom: 2px solid #95a5a6 !important; }
         .keyword { color: #e67e22; font-weight: bold; font-size: 1.1rem; display: block; margin: 5px 0; }
 
-        /* Feedback States */
         .correct { background-color: #d4edda !important; border: 1px solid var(--success) !important; }
         .incorrect { background-color: #f8d7da !important; border: 1px solid var(--error) !important; }
         
         .controls { display: flex; gap: 20px; margin-top: 40px; }
         button { flex: 1; padding: 18px; border: none; border-radius: 8px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .btn-score { background-color: var(--primary); color: white; }
-        .btn-score:hover { background-color: #1a252f; }
         .btn-reset { background-color: #bdc3c7; color: #2c3e50; }
-        .btn-reset:hover { background-color: #95a5a6; }
         
         #results { margin-top: 40px; padding: 30px; border-radius: 12px; display: none; text-align: center; border: 3px solid var(--secondary); background: #fff; }
         .grade-display { font-size: 4rem; font-weight: bold; margin: 10px 0; }
@@ -46,7 +40,7 @@
 
 <div class="container">
     <h1>Final Exam Preview</h1>
-    <p class="instruction">Work through the exam sections below. If an item turns red, analyze why and keep trying until you get the green light!</p>
+    <p class="instruction">Work through the sections below. Remember: in the Transformation section, you must use the keyword exactly as provided.</p>
 
     <div class="exercise">
         <h2>Part 1: Multiple-Choice Cloze</h2>
@@ -102,7 +96,7 @@
         <div class="item">1. The sheer (PREDICT) <input type="text" id="p2q1"> of the weather makes planning outdoor events difficult.</div>
         <div class="item">2. The city council's plan for the (VITAL) <input type="text" id="p2q2"> of the docklands was finally approved.</div>
         <div class="item">3. There is a growing (AWARE) <input type="text" id="p2q3"> of the impact of fast fashion on the planet.</div>
-        <div class="item">4. The IT team will (SURE) <input type="text" id="p2q4"> that no unauthorised users can gain access to the server..</div>
+        <div class="item">4. The IT team will (SURE) <input type="text" id="p2q4"> that no unauthorised users can gain access to the server.</div>
         <div class="item">5. We need to (STRENGTH) <input type="text" id="p2q5"> the security protocols to prevent future breaches.</div>
     </div>
 
@@ -115,7 +109,7 @@
 
     <div class="exercise">
         <h2>Part 4: Key Word Transformation</h2>
-        <p class="instruction">(Use between 3 and 6 words, including the word given. 2 marks per item)</p>
+        <p class="instruction">(3-6 words. Keyword must be used exactly as given.)</p>
         
         <div class="item" id="p4q1-div">
             1. I regret not taking that job offer in London.<br>
@@ -143,7 +137,7 @@
 
         <div class="item" id="p4q5-div">
             5. I don't intend to tolerate such rude behavior any longer.<br>
-            <span class="keyword">PUT</span>
+            <span class="keyword">PUTTING</span>
             I have no <input type="text" id="p4q5" class="trans-input" placeholder="..."> such rude behavior any longer.
         </div>
     </div>
@@ -171,8 +165,8 @@
 <script>
 const key = {
     p1: ['a', 'b', 'c', 'a', 'b'],
-    p2: ['unpredictability', 'revitalization', 'awareness', 'ensure', 'strengthen'],
-    p3: ['no', 'has', 'which', 'whether', 'such'],
+    p2: [['unpredictability'], ['revitalisation', 'revitalization'], ['awareness'], ['ensure'], ['strengthen']],
+    p3: [['no'], ['has'], ['which'], ['whether', 'when', 'while'], ['such']],
     p4: [
         ["wish i had taken"],
         ["provided you wear", "provided that you wear"],
@@ -194,22 +188,20 @@ function scoreExam() {
         if (sel?.value === ans) { p1_s++; div.classList.add('correct'); } else { div.classList.add('incorrect'); }
     });
 
-    // Part 2 & 3
+    // Parts 2 & 3 (Arrays)
     for(let i=1; i<=5; i++) {
         const i2 = document.getElementById(`p2q${i}`);
-        if(i2.value.trim().toLowerCase() === key.p2[i-1]) { p2_s++; i2.classList.add('correct'); } else { i2.classList.add('incorrect'); }
+        if(key.p2[i-1].includes(i2.value.trim().toLowerCase())) { p2_s++; i2.classList.add('correct'); } else { i2.classList.add('incorrect'); }
         const i3 = document.getElementById(`p3q${i}`);
-        if(i3.value.trim().toLowerCase() === key.p3[i-1]) { p3_s++; i3.classList.add('correct'); } else { i3.classList.add('incorrect'); }
+        if(key.p3[i-1].includes(i3.value.trim().toLowerCase())) { p3_s++; i3.classList.add('correct'); } else { i3.classList.add('incorrect'); }
     }
 
-    // Part 4 (Transformation - 2pts)
+    // Part 4 (2pts)
     for(let i=1; i<=5; i++) {
         const i4 = document.getElementById(`p4q${i}`);
         const div4 = document.getElementById(`p4q${i}-div`);
         let v4 = i4.value.trim().toLowerCase().replace(/'/g, "");
-        let isCorrect = key.p4[i-1].some(option => option.replace(/'/g, "") === v4);
-        
-        if(isCorrect) { p4_s += 2; i4.classList.add('correct'); div4.classList.add('correct'); } 
+        if(key.p4[i-1].some(opt => opt.replace(/'/g, "") === v4)) { p4_s += 2; i4.classList.add('correct'); div4.classList.add('correct'); } 
         else { i4.classList.add('incorrect'); div4.classList.add('incorrect'); }
     }
 
@@ -217,20 +209,18 @@ function scoreExam() {
     for(let i=1; i<=5; i++) {
         const i5 = document.getElementById(`p5q${i}`);
         let v5 = i5.value.trim().toLowerCase();
-        let correctAns = key.p5[i-1];
-        if(v5 === correctAns || v5 === correctAns.replace("do not", "don't") || (i===1 && v5 === "had worked")) { p5_s++; i5.classList.add('correct'); } else { i5.classList.add('incorrect'); }
+        let ans = key.p5[i-1];
+        if(v5 === ans || v5 === ans.replace("do not", "don't") || (i===1 && v5 === "had worked")) { p5_s++; i5.classList.add('correct'); } else { i5.classList.add('incorrect'); }
     }
 
     const total = p1_s + p2_s + p3_s + p4_s + p5_s;
     const grade = (total / 30 * 5 + 1).toFixed(1);
-
     const res = document.getElementById('results');
     res.style.display = 'block';
     document.getElementById('grade-display').innerText = grade;
     document.getElementById('grade-display').style.color = grade >= 4 ? 'var(--success)' : 'var(--error)';
     document.getElementById('points-summary').innerHTML = `<strong>Total Score: ${total} / 30</strong>`;
     document.getElementById('breakdown-list').innerHTML = `
-        <strong>Section Scores:</strong><br>
         Multiple Choice: ${p1_s}/5 | Word Formation: ${p2_s}/5 | Open Cloze: ${p3_s}/5<br>
         Transformations: ${p4_s}/10 | Tenses: ${p5_s}/5
     `;
