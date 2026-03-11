@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFL Exercise: Food Deserts & Sentence Adverbs</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f7f6;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        .text-block { font-size: 1.1em; margin-bottom: 20px; text-align: justify; }
+        select {
+            padding: 5px;
+            font-size: 0.9em;
+            border: 1px solid #bdc3c7;
+            border-radius: 4px;
+            background-color: #fff;
+            cursor: pointer;
+        }
+        select.correct { border: 2px solid #27ae60; background-color: #e8f8f5; }
+        select.incorrect { border: 2px solid #e74c3c; background-color: #fdedec; }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover { background-color: #2980b9; }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        .instructions { font-style: italic; color: #7f8c8d; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>The Oasis in the Concrete Jungle</h1>
+    <p class="instructions">Choose the most appropriate sentence adverb for each gap based on the tone and logic of the text.</p>
+
+    <div class="text-block">
+        In many modern cities, a grocery store is just a five-minute walk away. 
+        <strong>(1)</strong> 
+        <select id="q1" data-answer="Unfortunately">
+            <option value="">-- select --</option>
+            <option value="Honestly">Honestly</option>
+            <option value="Unfortunately">Unfortunately</option>
+            <option value="Theoretically">Theoretically</option>
+            <option value="Coincidentally">Coincidentally</option>
+        </select>, 
+        for millions of people living in "food deserts," the reality is much bleaker. A food desert is defined as an area where residents have little to no access to fresh, healthy, and affordable food. 
+        <strong>(2)</strong> 
+        <select id="q2" data-answer="Essentially">
+            <option value="">-- select --</option>
+            <option value="Curiously">Curiously</option>
+            <option value="Naturally">Naturally</option>
+            <option value="Essentially">Essentially</option>
+            <option value="Fortunately">Fortunately</option>
+        </select>, 
+        these neighborhoods are often packed with fast-food chains and convenience stores selling processed snacks, but lack a single aisle of fresh broccoli or apples.
+        <br><br>
+        <strong>(3)</strong> 
+        <select id="q3" data-answer="Obviously">
+            <option value="">-- select --</option>
+            <option value="Obviously">Obviously</option>
+            <option value="Happily">Happily</option>
+            <option value="Ideally">Ideally</option>
+            <option value="Oddly">Oddly</option>
+        </select>, 
+        living in a food desert isn’t just an inconvenience; it’s a major public health crisis. 
+        <strong>(4)</strong> 
+        <select id="q4" data-answer="Consequently">
+            <option value="">-- select --</option>
+            <option value="Interestingly">Interestingly</option>
+            <option value="Consequently">Consequently</option>
+            <option value="Sadly">Sadly</option>
+            <option value="Paradoxically">Paradoxically</option>
+        </select>, 
+        research shows that people in these areas suffer from higher rates of obesity and diabetes. 
+        <strong>(5)</strong> 
+        <select id="q5" data-answer="Paradoxically">
+            <option value="">-- select --</option>
+            <option value="Predictably">Predictably</option>
+            <option value="Paradoxically">Paradoxically</option>
+            <option value="Luckily">Luckily</option>
+            <option value="Formally">Formally</option>
+        </select>, 
+        healthy food often costs more than junk food, meaning those with the least money are forced to pay the highest price for their health.
+        <br><br>
+        Many activists are trying to fix this. 
+        <strong>(6)</strong> 
+        <select id="q6" data-answer="Theoretically">
+            <option value="">-- select --</option>
+            <option value="Ultimately">Ultimately</option>
+            <option value="Theoretically">Theoretically</option>
+            <option value="Regrettably">Regrettably</option>
+            <option value="Clearly">Clearly</option>
+        </select>, 
+        city planners could just build more supermarkets. However, big chains often refuse to open in low-income areas because they fear low profits. 
+        <strong>(7)</strong> 
+        <select id="q7" data-answer="Thankfully">
+            <option value="">-- select --</option>
+            <option value="Thankfully">Thankfully</option>
+            <option value="Generally">Generally</option>
+            <option value="Strictly">Strictly</option>
+            <option value="Basically">Basically</option>
+        </select>, 
+        local communities have started taking matters into their own hands by starting urban gardens. 
+        <strong>(8)</strong> 
+        <select id="q8" data-answer="Interestingly">
+            <option value="">-- select --</option>
+            <option value="Supposedly">Supposedly</option>
+            <option value="Interestingly">Interestingly</option>
+            <option value="Honestly">Honestly</option>
+            <option value="Disappointingly">Disappointingly</option>
+        </select>, 
+        these gardens don't just provide food; they bring people together. 
+        <strong>(9)</strong> 
+        <select id="q9" data-answer="Clearly">
+            <option value="">-- select --</option>
+            <option value="Naturally">Naturally</option>
+            <option value="Clearly">Clearly</option>
+            <option value="Ideally">Ideally</option>
+            <option value="Traditionally">Traditionally</option>
+        </select>, 
+        it will take more than just a few community gardens to solve a systemic problem. 
+        <strong>(10)</strong> 
+        <select id="q10" data-answer="Ultimately">
+            <option value="">-- select --</option>
+            <option value="Ultimately">Ultimately</option>
+            <option value="Surprisingly">Surprisingly</option>
+            <option value="Curiously">Curiously</option>
+            <option value="Coincidentally">Coincidentally</option>
+        </select>, 
+        the goal is to ensure that "zip code" never determines a person's life expectancy.
+    </div>
+
+    <button onclick="checkAnswers()">Check My Answers</button>
+
+    <div id="result"></div>
+</div>
+
+<script>
+    function checkAnswers() {
+        let score = 0;
+        const total = 10;
+        const resultDiv = document.getElementById('result');
+
+        for (let i = 1; i <= total; i++) {
+            const select = document.getElementById('q' + i);
+            const userAnswer = select.value;
+            const correctAnswer = select.getAttribute('data-answer');
+
+            if (userAnswer === correctAnswer) {
+                score++;
+                select.className = 'correct';
+            } else {
+                select.className = 'incorrect';
+            }
+        }
+
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `You scored ${score} out of ${total}!`;
+        
+        if (score === total) {
+            resultDiv.style.backgroundColor = '#e8f8f5';
+            resultDiv.style.color = '#27ae60';
+        } else {
+            resultDiv.style.backgroundColor = '#fef9e7';
+            resultDiv.style.color = '#f39c12';
+        }
+    }
+</script>
+
+</body>
+</html>
