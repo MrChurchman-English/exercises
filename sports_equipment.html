@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EFL Sports Equipment Mastery</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background: #f0f2f5; padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 12px; shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #1a73e8; text-align: center; }
+        h2 { border-bottom: 2px solid #1a73e8; padding-bottom: 5px; color: #333; }
+        
+        /* Drag and Drop */
+        .drag-section { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; padding: 15px; background: #e8f0fe; border-radius: 8px; }
+        .draggable { padding: 8px 15px; background: #1a73e8; color: white; border-radius: 20px; cursor: move; font-weight: bold; }
+        .drop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .drop-item { padding: 15px; border: 2px dashed #ccc; border-radius: 8px; text-align: center; }
+        .drop-item.correct { border-color: #34a853; background: #e6f4ea; }
+
+        /* Gap Fill */
+        .sentence { margin-bottom: 15px; font-size: 1.1em; }
+        input { border: none; border-bottom: 2px solid #1a73e8; padding: 2px 5px; font-size: 1em; width: 100px; text-align: center; outline: none; }
+        .feedback { font-weight: bold; margin-top: 20px; text-align: center; }
+        button { display: block; width: 100%; padding: 10px; background: #1a73e8; color: white; border: none; border-radius: 5px; font-size: 1.1em; cursor: pointer; margin-top: 20px; }
+        button:hover { background: #1557b0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Sports Equipment: The Nuance Test</h1>
+    <p><i>Upper Intermediate Level (B2)</i></p>
+
+    <h2>Part 1: Match the Tool to the Sport</h2>
+    <div class="drag-section" id="draggables">
+        <div class="draggable" draggable="true" id="bat">Bat</div>
+        <div class="draggable" draggable="true" id="stick">Stick</div>
+        <div class="draggable" draggable="true" id="racket">Racket</div>
+        <div class="draggable" draggable="true" id="club">Club</div>
+        <div class="draggable" draggable="true" id="paddle">Paddle</div>
+        <div class="draggable" draggable="true" id="cue">Cue</div>
+    </div>
+
+    <div class="drop-grid">
+        <div class="drop-item" data-answer="racket">Badminton: ________</div>
+        <div class="drop-item" data-answer="stick">Ice Hockey: ________</div>
+        <div class="drop-item" data-answer="bat">Baseball: ________</div>
+        <div class="drop-item" data-answer="club">Golf: ________</div>
+        <div class="drop-item" data-answer="cue">Snooker: ________</div>
+        <div class="drop-item" data-answer="paddle">Canoeing: ________</div>
+    </div>
+
+    <hr>
+
+    <h2>Part 2: Linguistic Nuance (Gap-Fill)</h2>
+    <div class="sentence">1. In London, you play table tennis with a <b>bat</b>, but in New York, players usually call it a <input type="text" data-ans="paddle">.</div>
+    <div class="sentence">2. Unlike a tennis <input type="text" data-ans="racket">, which has strings, a baseball bat is a solid piece of wood or metal.</div>
+    <div class="sentence">3. A player uses a <input type="text" data-ans="club"> to drive a ball across a fairway, never a "stick."</div>
+    <div class="sentence">4. In sports like Pickleball, the equipment is called a <input type="text" data-ans="paddle"> because it has a solid surface rather than strings.</div>
+    <div class="sentence">5. The spelling "<input type="text" data-ans="racquet">" is often used in the context of Squash or more formal sports clubs.</div>
+
+    <button onclick="checkAnswers()">Check My Answers</button>
+    <div id="result" class="feedback"></div>
+</div>
+
+<script>
+    const draggables = document.querySelectorAll('.draggable');
+    const drops = document.querySelectorAll('.drop-item');
+
+    draggables.forEach(d => {
+        d.addEventListener('dragstart', e => { e.dataTransfer.setData('text', e.target.id); });
+    });
+
+    drops.forEach(drop => {
+        drop.addEventListener('dragover', e => e.preventDefault());
+        drop.addEventListener('drop', e => {
+            e.preventDefault();
+            const id = e.dataTransfer.getData('text');
+            if(id === drop.dataset.answer) {
+                drop.innerHTML = drop.innerHTML.split(':')[0] + ": <b>" + id.toUpperCase() + "</b> ✅";
+                drop.classList.add('correct');
+            }
+        });
+    });
+
+    function checkAnswers() {
+        let score = 0;
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => {
+            if(input.value.toLowerCase().trim() === input.dataset.ans.toLowerCase()) {
+                input.style.color = "green";
+                score++;
+            } else {
+                input.style.color = "red";
+            }
+        });
+        document.getElementById('result').innerText = "Gap-fill score: " + score + " / " + inputs.length;
+    }
+</script>
+
+</body>
+</html>
