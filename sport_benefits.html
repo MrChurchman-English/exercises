@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary Exercises — Sports & Character</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #1a1a2e;
+    --paper: #f5f0e8;
+    --accent: #c0392b;
+    --accent-light: #e74c3c;
+    --green: #27ae60;
+    --green-light: #d4efdf;
+    --gold: #d4a017;
+    --gold-light: #fef9e7;
+    --blue: #2471a3;
+    --blue-light: #d6eaf8;
+    --red-light: #fadbd8;
+    --grey: #7f8c8d;
+    --grey-light: #ecf0f1;
+    --serif: 'DM Serif Display', Georgia, serif;
+    --sans: 'Source Sans 3', 'Segoe UI', sans-serif;
+  }
+
+  body {
+    font-family: var(--sans);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* --- HEADER --- */
+  header {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 2.5rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 6px;
+    background: repeating-linear-gradient(90deg, var(--accent) 0, var(--accent) 40px, var(--gold) 40px, var(--gold) 80px, var(--blue) 80px, var(--blue) 120px);
+  }
+  header h1 {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.3rem;
+  }
+  header p {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    font-weight: 400;
+  }
+
+  /* --- LAYOUT --- */
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* --- EXERCISE SECTIONS --- */
+  .exercise {
+    margin-bottom: 3rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .exercise:nth-child(2) { animation-delay: 0.15s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .exercise-header {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.5rem;
+  }
+  .exercise-number {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .exercise-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .exercise-instruction {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 1.25rem;
+    font-style: italic;
+  }
+
+  /* --- EXERCISE 1: MATCHING --- */
+  .matching-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem 1.5rem;
+  }
+  @media (max-width: 600px) {
+    .matching-grid { grid-template-columns: 1fr; }
+  }
+
+  .match-word {
+    background: white;
+    border: 2px solid var(--ink);
+    border-radius: 6px;
+    padding: 0.7rem 1rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    position: relative;
+  }
+  .match-word:hover { background: var(--gold-light); border-color: var(--gold); }
+  .match-word.selected { background: var(--blue-light); border-color: var(--blue); box-shadow: 0 0 0 3px rgba(36,113,163,0.2); }
+  .match-word.correct { background: var(--green-light); border-color: var(--green); cursor: default; }
+  .match-word.incorrect { background: var(--red-light); border-color: var(--accent); animation: shake 0.4s ease; }
+
+  .match-def {
+    background: white;
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    color: #444;
+  }
+  .match-def:hover { border-color: var(--gold); background: var(--gold-light); }
+  .match-def.selected { border-color: var(--blue); border-style: solid; background: var(--blue-light); }
+  .match-def.correct { background: var(--green-light); border-color: var(--green); border-style: solid; cursor: default; }
+  .match-def.incorrect { background: var(--red-light); border-color: var(--accent); border-style: solid; animation: shake 0.4s ease; }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  .match-pair-row {
+    display: contents;
+  }
+
+  /* --- EXERCISE 2: GAP-FILL --- */
+  .gap-text {
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    font-size: 1rem;
+    line-height: 1.9;
+  }
+
+  .word-bank {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .bank-word {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 0.4rem 0.85rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+  .bank-word:hover { background: var(--blue); transform: translateY(-1px); }
+  .bank-word.used { opacity: 0.3; cursor: default; text-decoration: line-through; pointer-events: none; }
+  .bank-word.active { background: var(--blue); box-shadow: 0 0 0 3px rgba(36,113,163,0.3); }
+
+  .gap-slot {
+    display: inline-block;
+    min-width: 140px;
+    border-bottom: 2.5px solid var(--ink);
+    padding: 0 4px 2px;
+    margin: 0 2px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--blue);
+    transition: all 0.2s;
+    text-align: center;
+    position: relative;
+  }
+  .gap-slot:hover { border-color: var(--blue); background: var(--blue-light); }
+  .gap-slot.filled { color: var(--ink); }
+  .gap-slot.correct { color: var(--green); border-color: var(--green); background: var(--green-light); }
+  .gap-slot.incorrect { color: var(--accent); border-color: var(--accent); background: var(--red-light); animation: shake 0.4s ease; }
+
+  .gap-number {
+    font-size: 0.7rem;
+    color: var(--grey);
+    font-weight: 700;
+    vertical-align: super;
+    margin-right: 1px;
+  }
+
+  /* --- BUTTONS --- */
+  .btn-row {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 0.6rem 1.5rem;
+    border: 2px solid var(--ink);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--ink);
+  }
+  .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+
+  /* --- SCORE --- */
+  .score-bar {
+    margin-top: 1rem;
+    padding: 0.6rem 1rem;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: none;
+  }
+  .score-bar.show { display: block; }
+  .score-bar.perfect { background: var(--green-light); color: #1e8449; border-left: 4px solid var(--green); }
+  .score-bar.partial { background: var(--gold-light); color: #7d6608; border-left: 4px solid var(--gold); }
+  .score-bar.low { background: var(--red-light); color: var(--accent); border-left: 4px solid var(--accent); }
+
+  /* --- FOOTER --- */
+  footer {
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.8rem;
+    color: var(--grey);
+    border-top: 1px solid #ddd;
+    margin-top: 2rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Sports &amp; Character</h1>
+  <p>Upper-Intermediate Vocabulary Practice</p>
+</header>
+
+<div class="container">
+
+  <!-- ==================== EXERCISE 1 ==================== -->
+  <section class="exercise" id="ex1">
+    <div class="exercise-header">
+      <span class="exercise-number">1</span>
+      <span class="exercise-title">Match the Words with Their Definitions</span>
+    </div>
+    <p class="exercise-instruction">Click a word on the left, then click the matching definition on the right.</p>
+
+    <div class="matching-grid" id="matchingGrid"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="checkMatching()">Check Answers</button>
+      <button class="btn btn-secondary" onclick="resetMatching()">Try Again</button>
+    </div>
+    <div class="score-bar" id="matchScore"></div>
+  </section>
+
+  <!-- ==================== EXERCISE 2 ==================== -->
+  <section class="exercise" id="ex2">
+    <div class="exercise-header">
+      <span class="exercise-number">2</span>
+      <span class="exercise-title">Gap-Fill: The Power of Sport</span>
+    </div>
+    <p class="exercise-instruction">Click a word from the bank, then click the gap where it belongs. Click a filled gap to clear it.</p>
+
+    <div class="word-bank" id="wordBank"></div>
+
+    <div class="gap-text" id="gapText"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="checkGapFill()">Check Answers</button>
+      <button class="btn btn-secondary" onclick="resetGapFill()">Try Again</button>
+    </div>
+    <div class="score-bar" id="gapScore"></div>
+  </section>
+
+</div>
+
+<footer>Vocabulary Exercises — Sports &amp; Character</footer>
+
+<script>
+// ======================================================
+//  DATA
+// ======================================================
+const matchData = [
+  { word: "commitment",        def: "a strong dedication to a cause, activity or goal" },
+  { word: "discipline",        def: "the ability to control your behaviour and work in a structured way" },
+  { word: "self-esteem",       def: "a feeling of confidence and satisfaction in yourself" },
+  { word: "self-reliance",     def: "the ability to depend on yourself rather than on other people" },
+  { word: "self-sacrifice",    def: "giving up something important for the benefit of others" },
+  { word: "single-mindedness", def: "a strong and unwavering focus on one particular aim" },
+  { word: "fair play",         def: "honest and respectful behaviour when competing against others" },
+  { word: "stamina",           def: "the physical or mental energy to keep doing something for a long time" },
+  { word: "team spirit",       def: "a shared feeling of enthusiasm and loyalty within a group" }
+];
+
+const gapAnswers = [
+  "commitment",
+  "discipline",
+  "stamina",
+  "single-mindedness",
+  "self-esteem",
+  "self-reliance",
+  "self-sacrifice",
+  "team spirit",
+  "fair play"
+];
+
+const gapHTML = `What makes a great athlete? It takes more than just talent. First and foremost, it requires total <span class="gap-slot" data-index="0"><span class="gap-number">1</span></span> — you have to be willing to devote yourself entirely to your sport. This goes hand in hand with <span class="gap-slot" data-index="1"><span class="gap-number">2</span></span>, because without structure and self-control, even the most gifted athlete will fall behind. Long training sessions also demand incredible <span class="gap-slot" data-index="2"><span class="gap-number">3</span></span>; you need the endurance to keep going when your body tells you to stop.
+
+Top athletes are known for their <span class="gap-slot" data-index="3"><span class="gap-number">4</span></span> — once they set their eyes on a goal, nothing can distract them. Sport also builds <span class="gap-slot" data-index="4"><span class="gap-number">5</span></span>; every small victory reminds you that you are capable of great things. At the same time, training independently teaches <span class="gap-slot" data-index="5"><span class="gap-number">6</span></span>, the confidence to solve problems on your own.
+
+In team sports, athletes learn the value of <span class="gap-slot" data-index="6"><span class="gap-number">7</span></span> — putting the group's success above personal glory. This creates a strong sense of <span class="gap-slot" data-index="7"><span class="gap-number">8</span></span>, a bond that pushes every member to give their best. And through it all, the principle of <span class="gap-slot" data-index="8"><span class="gap-number">9</span></span> teaches athletes to compete with honesty and respect, both on and off the field.`;
+
+// ======================================================
+//  EXERCISE 1: MATCHING
+// ======================================================
+let selectedWord = null;
+let selectedDef = null;
+let matchResults = {};  // word -> correct/incorrect
+let matchLocked = {};   // word -> true if locked (correct)
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function initMatching() {
+  const grid = document.getElementById('matchingGrid');
+  grid.innerHTML = '';
+  matchResults = {};
+  matchLocked = {};
+  selectedWord = null;
+  selectedDef = null;
+
+  // Shuffle words and definitions independently
+  const shuffledWords = shuffle(matchData);
+  // Shuffle defs and ensure no def sits on the same row as its matching word
+  let shuffledDefItems;
+  let attempts = 0;
+  do {
+    shuffledDefItems = shuffle(matchData);
+    attempts++;
+  } while (
+    shuffledDefItems.some((d, i) => d.word === shuffledWords[i].word) && attempts < 200
+  );
+
+  for (let i = 0; i < matchData.length; i++) {
+    const wordEl = document.createElement('div');
+    wordEl.className = 'match-word';
+    wordEl.textContent = shuffledWords[i].word;
+    wordEl.dataset.word = shuffledWords[i].word;
+    wordEl.addEventListener('click', () => clickWord(wordEl));
+
+    const defEl = document.createElement('div');
+    defEl.className = 'match-def';
+    defEl.textContent = shuffledDefItems[i].def;
+    defEl.dataset.word = shuffledDefItems[i].word;
+    defEl.addEventListener('click', () => clickDef(defEl));
+
+    grid.appendChild(wordEl);
+    grid.appendChild(defEl);
+  }
+}
+
+function clickWord(el) {
+  if (matchLocked[el.dataset.word]) return;
+  document.querySelectorAll('.match-word').forEach(w => w.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedWord = el;
+  tryMatch();
+}
+
+function clickDef(el) {
+  if (el.classList.contains('correct')) return;
+  document.querySelectorAll('.match-def').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDef = el;
+  tryMatch();
+}
+
+function tryMatch() {
+  if (!selectedWord || !selectedDef) return;
+  const wordKey = selectedWord.dataset.word;
+  const defKey = selectedDef.dataset.word;
+
+  if (wordKey === defKey) {
+    selectedWord.classList.remove('selected');
+    selectedWord.classList.add('correct');
+    selectedDef.classList.remove('selected');
+    selectedDef.classList.add('correct');
+    matchLocked[wordKey] = true;
+    matchResults[wordKey] = true;
+  } else {
+    selectedWord.classList.remove('selected');
+    selectedWord.classList.add('incorrect');
+    selectedDef.classList.remove('selected');
+    selectedDef.classList.add('incorrect');
+    matchResults[wordKey] = false;
+    setTimeout(() => {
+      selectedWord.classList.remove('incorrect');
+      selectedDef.classList.remove('incorrect');
+      selectedWord = null;
+      selectedDef = null;
+    }, 600);
+    return;
+  }
+  selectedWord = null;
+  selectedDef = null;
+}
+
+function checkMatching() {
+  const total = matchData.length;
+  const correct = Object.values(matchLocked).filter(Boolean).length;
+  showScore('matchScore', correct, total);
+}
+
+function resetMatching() {
+  document.getElementById('matchScore').classList.remove('show');
+  initMatching();
+}
+
+// ======================================================
+//  EXERCISE 2: GAP-FILL
+// ======================================================
+let activeBankWord = null;
+let gapSlotValues = {};
+
+function initGapFill() {
+  // Word bank (shuffled)
+  const bank = document.getElementById('wordBank');
+  bank.innerHTML = '';
+  gapSlotValues = {};
+  activeBankWord = null;
+
+  const shuffled = [...gapAnswers].sort(() => Math.random() - 0.5);
+  shuffled.forEach(w => {
+    const el = document.createElement('span');
+    el.className = 'bank-word';
+    el.textContent = w;
+    el.dataset.word = w;
+    el.addEventListener('click', () => clickBank(el));
+    bank.appendChild(el);
+  });
+
+  // Gap text
+  document.getElementById('gapText').innerHTML = gapHTML;
+  document.querySelectorAll('.gap-slot').forEach(slot => {
+    slot.addEventListener('click', () => clickSlot(slot));
+  });
+}
+
+function clickBank(el) {
+  if (el.classList.contains('used')) return;
+  document.querySelectorAll('.bank-word').forEach(b => b.classList.remove('active'));
+  if (activeBankWord === el) {
+    activeBankWord = null;
+    return;
+  }
+  el.classList.add('active');
+  activeBankWord = el;
+}
+
+function clickSlot(slot) {
+  const idx = slot.dataset.index;
+
+  // If slot already filled, clear it
+  if (gapSlotValues[idx]) {
+    const word = gapSlotValues[idx];
+    // Restore bank word
+    document.querySelectorAll('.bank-word').forEach(b => {
+      if (b.dataset.word === word && b.classList.contains('used')) {
+        b.classList.remove('used');
+      }
+    });
+    delete gapSlotValues[idx];
+    slot.innerHTML = `<span class="gap-number">${+idx + 1}</span>`;
+    slot.classList.remove('filled', 'correct', 'incorrect');
+    return;
+  }
+
+  // Place active bank word
+  if (!activeBankWord) return;
+  const word = activeBankWord.dataset.word;
+  gapSlotValues[idx] = word;
+  slot.innerHTML = `<span class="gap-number">${+idx + 1}</span> ${word}`;
+  slot.classList.add('filled');
+  slot.classList.remove('correct', 'incorrect');
+  activeBankWord.classList.add('used');
+  activeBankWord.classList.remove('active');
+  activeBankWord = null;
+}
+
+function checkGapFill() {
+  let correct = 0;
+  const total = gapAnswers.length;
+
+  document.querySelectorAll('.gap-slot').forEach(slot => {
+    const idx = slot.dataset.index;
+    slot.classList.remove('correct', 'incorrect');
+    if (gapSlotValues[idx] === gapAnswers[idx]) {
+      slot.classList.add('correct');
+      correct++;
+    } else if (gapSlotValues[idx]) {
+      slot.classList.add('incorrect');
+    }
+  });
+
+  showScore('gapScore', correct, total);
+}
+
+function resetGapFill() {
+  document.getElementById('gapScore').classList.remove('show');
+  initGapFill();
+}
+
+// ======================================================
+//  SCORE DISPLAY
+// ======================================================
+function showScore(id, correct, total) {
+  const bar = document.getElementById(id);
+  const pct = correct / total;
+  let cls = 'low';
+  let msg = '';
+  if (pct === 1) {
+    cls = 'perfect';
+    msg = `🎉 Perfect! ${correct}/${total} — Excellent work!`;
+  } else if (pct >= 0.6) {
+    cls = 'partial';
+    msg = `👍 ${correct}/${total} correct — Good effort! Review the ones you missed and try again.`;
+  } else {
+    cls = 'low';
+    msg = `${correct}/${total} correct — Keep practising! Read the definitions carefully and try again.`;
+  }
+  bar.textContent = msg;
+  bar.className = 'score-bar show ' + cls;
+}
+
+// ======================================================
+//  INIT
+// ======================================================
+initMatching();
+initGapFill();
+</script>
+</body>
+</html>
