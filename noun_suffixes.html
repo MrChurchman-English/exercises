@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suffix Mastery Challenge</title>
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --error: #e74c3c;
+            --bg: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 { text-align: center; color: var(--primary); margin-bottom: 5px; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 25px; }
+        
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 12px 15px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-weight: bold;
+            color: #777;
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            color: var(--secondary);
+            border-bottom: 3px solid var(--secondary);
+        }
+
+        .exercise-panel { display: none; }
+        .exercise-panel.active { display: block; }
+
+        .item { 
+            margin-bottom: 12px; 
+            padding: 12px; 
+            background: #fafafa;
+            border-radius: 6px;
+            border-left: 4px solid #ddd;
+        }
+
+        input[type="text"] {
+            padding: 8px 10px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            width: 180px;
+        }
+
+        .sentence-input { width: 200px; }
+
+        button.check-btn {
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        button.check-btn:hover { background-color: #2980b9; }
+
+        .feedback { font-weight: bold; margin-left: 10px; }
+        .correct { color: var(--success); }
+        .incorrect { color: var(--error); }
+        
+        .hint { font-size: 0.8rem; color: #888; font-style: italic; display: block; margin-top: 4px; }
+
+        /* Score Dashboard Styling */
+        .score-board {
+            margin-top: 30px;
+            padding: 20px;
+            background: #2c3e50;
+            color: white;
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            text-align: center;
+        }
+
+        .score-card h4 { margin: 0 0 5px 0; font-size: 0.9rem; color: #bdc3c7; }
+        .score-val { font-size: 1.4rem; font-weight: bold; color: #f1c40f; }
+        
+        @media (max-width: 600px) {
+            input[type="text"] { width: 100%; box-sizing: border-box; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Noun Suffix Mastery</h1>
+    <p class="subtitle">Complete the 30-item challenge to boost your vocabulary accuracy.</p>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'ex1')">1. The Mechanic</button>
+        <button class="tab-btn" onclick="openTab(event, 'ex2')">2. Context</button>
+        <button class="tab-btn" onclick="openTab(event, 'ex3')">3. Proofreader</button>
+    </div>
+
+    <div id="ex1" class="exercise-panel active">
+        <p><strong>Transform the Root:</strong> Change the word into a noun.</p>
+        <div id="ex1-content"></div>
+        <button class="check-btn" onclick="checkExercise('ex1')">Check Exercise 1</button>
+    </div>
+
+    <div id="ex2" class="exercise-panel">
+        <p><strong>Contextual Clues:</strong> Use the noun form of the word in brackets.</p>
+        <div id="ex2-content"></div>
+        <button class="check-btn" onclick="checkExercise('ex2')">Check Exercise 2</button>
+    </div>
+
+    <div id="ex3" class="exercise-panel">
+        <p><strong>Proofreading:</strong> Correct the misspelled noun in each sentence.</p>
+        <div id="ex3-content"></div>
+        <button class="check-btn" onclick="checkExercise('ex3')">Check Exercise 3</button>
+    </div>
+
+    <div class="score-board">
+        <div class="score-card">
+            <h4>Ex 1 Score</h4>
+            <div id="s1" class="score-val">0 / 10</div>
+        </div>
+        <div class="score-card">
+            <h4>Ex 2 Score</h4>
+            <div id="s2" class="score-val">0 / 10</div>
+        </div>
+        <div class="score-card">
+            <h4>Ex 3 Score</h4>
+            <div id="s3" class="score-val">0 / 10</div>
+        </div>
+        <div class="score-card" style="border-left: 1px solid #555;">
+            <h4>Total Mastery</h4>
+            <div id="total-score" class="score-val">0%</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ex1Data = [
+        { root: "Maintain", ans: "maintenance", hint: "Vowel change in the middle" },
+        { root: "Organize", ans: "organization", hint: "Drop the 'e' before -ation" },
+        { root: "Refer", ans: "referral", hint: "Double the 'r' for -al" },
+        { root: "Possible", ans: "possibility", hint: "Change -le to -li before -ty" },
+        { root: "Happy", ans: "happiness", hint: "Change 'y' to 'i'" },
+        { root: "React", ans: "reaction", hint: "Standard -tion suffix" },
+        { root: "Interfere", ans: "interference", hint: "Drop the 'e' for -ence" },
+        { root: "Translate", ans: "translation", hint: "Drop the 'e' for -tion" },
+        { root: "Commit", ans: "commitment", hint: "Keep the double 'm' and 't'" },
+        { root: "Identify", ans: "identification", hint: "The 'y' becomes 'i' + 'fication'" }
+    ];
+
+    const ex2Data = [
+        { sentence: "The [develop] ______ of new tech is very fast.", ans: "development" },
+        { sentence: "She gave a detailed [describe] ______ of the robber.", ans: "description" },
+        { sentence: "I don't see any [similar] ______ between them.", ans: "similarity" },
+        { sentence: "Thomas Edison was a famous [invent] ______.", ans: "inventor" },
+        { sentence: "Do we have [permit] ______ to park here?", ans: "permission" },
+        { sentence: "The [remove] ______ of the trees caused an outcry.", ans: "removal" },
+        { sentence: "Her [appear] ______ on the show was a surprise.", ans: "appearance" },
+        { sentence: "The [solve] ______ to the puzzle was simple.", ans: "solution" },
+        { sentence: "Walking alone in the [dark] ______ can be scary.", ans: "darkness" },
+        { sentence: "The [collect] ______ of old coins is his hobby.", ans: "collection" }
+    ];
+
+    const ex3Data = [
+        { sentence: "The acter forgot his lines on stage.", ans: "actor" },
+        { sentence: "He showed great weakeness during the race.", ans: "weakness" },
+        { sentence: "The goverment announced a new tax.", ans: "government" },
+        { sentence: "I need some clarifycation on the rules.", ans: "clarification" },
+        { sentence: "The referal was sent to the specialist.", ans: "referral" },
+        { sentence: "Her performence was absolutely brilliant.", ans: "performance" },
+        { sentence: "There is a posibility of a storm tonight.", ans: "possibility" },
+        { sentence: "The argueing in the office must stop.", ans: "argument" },
+        { sentence: "The directer called for a meeting.", ans: "director" },
+        { sentence: "I was happy to get his approvel.", ans: "approval" }
+    ];
+
+    let scores = { ex1: 0, ex2: 0, ex3: 0 };
+
+    function init() {
+        const container1 = document.getElementById('ex1-content');
+        ex1Data.forEach((item, i) => {
+            container1.innerHTML += `<div class="item">${i+1}. <strong>${item.root}</strong> &rarr; <input type="text" id="ex1-ans-${i}"> <span id="ex1-feedback-${i}" class="feedback"></span><span class="hint">Hint: ${item.hint}</span></div>`;
+        });
+
+        const container2 = document.getElementById('ex2-content');
+        ex2Data.forEach((item, i) => {
+            let parts = item.sentence.split('______');
+            container2.innerHTML += `<div class="item">${i+1}. ${parts[0]} <input type="text" class="sentence-input" id="ex2-ans-${i}"> ${parts[1]} <span id="ex2-feedback-${i}" class="feedback"></span></div>`;
+        });
+
+        const container3 = document.getElementById('ex3-content');
+        ex3Data.forEach((item, i) => {
+            container3.innerHTML += `<div class="item"><em>${i+1}. "${item.sentence}"</em><br>Correction: <input type="text" id="ex3-ans-${i}"> <span id="ex3-feedback-${i}" class="feedback"></span></div>`;
+        });
+    }
+
+    function openTab(evt, tabName) {
+        let i, panels, tabs;
+        panels = document.getElementsByClassName("exercise-panel");
+        for (i = 0; i < panels.length; i++) panels[i].classList.remove("active");
+        tabs = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    function checkExercise(exId) {
+        const data = exId === 'ex1' ? ex1Data : (exId === 'ex2' ? ex2Data : ex3Data);
+        let count = 0;
+        
+        data.forEach((item, i) => {
+            const input = document.getElementById(`${exId}-ans-${i}`);
+            const feedback = document.getElementById(`${exId}-feedback-${i}`);
+            const userAns = input.value.trim().toLowerCase();
+            
+            if (userAns === item.ans.toLowerCase()) {
+                feedback.innerHTML = "✓";
+                feedback.className = "feedback correct";
+                input.style.borderColor = "var(--success)";
+                count++;
+            } else {
+                feedback.innerHTML = `✗ (${item.ans})`;
+                feedback.className = "feedback incorrect";
+                input.style.borderColor = "var(--error)";
+            }
+        });
+
+        scores[exId] = count;
+        updateScoreBoard();
+    }
+
+    function updateScoreBoard() {
+        document.getElementById('s1').innerText = `${scores.ex1} / 10`;
+        document.getElementById('s2').innerText = `${scores.ex2} / 10`;
+        document.getElementById('s3').innerText = `${scores.ex3} / 10`;
+        
+        const total = scores.ex1 + scores.ex2 + scores.ex3;
+        const percent = Math.round((total / 30) * 100);
+        document.getElementById('total-score').innerText = `${percent}%`;
+    }
+
+    init();
+</script>
+
+</body>
+</html>
