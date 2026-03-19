@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tense Challenge: The Artist's Studio</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; max-width: 850px; margin: 20px auto; padding: 20px; background-color: #f0f2f5; }
+        .container { background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: #1a73e8; border-bottom: 2px solid #e8eaed; padding-bottom: 10px; }
+        p { margin-bottom: 20px; font-size: 17px; color: #3c4043; }
+        .gap { border: none; border-bottom: 2px solid #dadce0; width: 180px; font-size: 16px; padding: 2px 5px; text-align: center; color: #1a73e8; font-weight: bold; border-radius: 4px; transition: all 0.2s; }
+        .gap:focus { outline: none; border-bottom-color: #1a73e8; background-color: #f8f9fa; }
+        .correct { border-bottom-color: #1e8e3e !important; background-color: #e6f4ea; }
+        .incorrect { border-bottom-color: #d93025 !important; background-color: #fce8e6; }
+        .btn-group { margin-top: 20px; display: flex; gap: 10px; }
+        button { padding: 12px 25px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        .btn-check { background: #1a73e8; color: white; }
+        .btn-reset { background: #dadce0; color: #3c4043; }
+        #feedback-area { margin-top: 25px; padding: 15px; border-radius: 8px; display: none; background: #fdf7e3; border: 1px solid #f1e0ad; }
+        .hint-text { color: #664d03; font-size: 15px; margin-bottom: 8px; list-style-type: none; }
+        .hint-label { font-weight: bold; color: #d93025; margin-right: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>The Artist's Studio</h2>
+    <p><em>Complete the story using <b>Past Simple</b>, <b>Present Perfect Simple</b>, or <b>Present Perfect Continuous</b>.</em></p>
+    
+    <p>
+        Ever since she was a child, Elena <b>1.</b> <input type="text" class="gap" data-ans="has wanted" data-hint="Desire that started in the past and is still true today." placeholder="(want)"> to be a painter. 
+        Last year, she finally <b>2.</b> <input type="text" class="gap" data-ans="decided" data-hint="Finished action at a specific past time." placeholder="(decide)"> to quit her job. 
+        She <b>3.</b> <input type="text" class="gap" data-ans="rented" data-hint="Specific point in the past." placeholder="(rent)"> a small studio and <b>4.</b> <input type="text" class="gap" data-ans="began" data-hint="The start of the project is a finished past event." placeholder="(begin)"> working on her collection.
+    </p>
+
+    <p>
+        Lately, she <b>5.</b> <input type="text" class="gap" data-ans="has been working" data-hint="Recent ongoing activity/effort." placeholder="(work)"> very hard. 
+        In fact, she <b>6.</b> <input type="text" class="gap" data-ans="hasn't been sleeping|has not been sleeping" data-hint="Ongoing struggle/duration over the last few days." placeholder="(not / sleep)"> well because she is so excited. 
+        So far, she <b>7.</b> <input type="text" class="gap" data-ans="has finished" data-hint="Focus on the quantity/result 'so far'." placeholder="(finish)"> four large canvases. 
+        Yesterday, a gallery owner <b>8.</b> <input type="text" class="gap" data-ans="visited" data-hint="Finished action (Yesterday)." placeholder="(visit)"> her. 
+        He <b>9.</b> <input type="text" class="gap" data-ans="looked" data-hint="Single finished action." placeholder="(look)"> at her work and <b>10.</b> <input type="text" class="gap" data-ans="said" data-hint="Finished speech act." placeholder="(say)"> it was promising.
+    </p>
+
+    <p>
+        Since that visit, Elena <b>11.</b> <input type="text" class="gap" data-ans="has been feeling" data-hint="Continuous emotion starting from a past point until now." placeholder="(feel)"> more confident. 
+        She <b>12.</b> <input type="text" class="gap" data-ans="has already invited" data-hint="Action at an unstated time before now." placeholder="(already / invite)"> her family. 
+        However, she <b>13.</b> <input type="text" class="gap" data-ans="hasn't chosen|has not chosen" data-hint="Action not yet completed." placeholder="(not / choose)"> a title yet. 
+        She <b>14.</b> <input type="text" class="gap" data-ans="spent" data-hint="Finished time period (all last night)." placeholder="(spend)"> all last night thinking of ideas, but she <b>15.</b> <input type="text" class="gap" data-ans="hasn't come up|has not come up" data-hint="The state of not having a result continues up to the present." placeholder="(not / come up)"> with anything yet.
+    </p>
+
+    <div class="btn-group">
+        <button class="btn-check" onclick="checkAnswers()">Check Work</button>
+        <button class="btn-reset" onclick="resetExercise()">Reset</button>
+    </div>
+    
+    <div id="feedback-area">
+        <strong style="display: block; margin-bottom: 10px;">Teacher's Hints:</strong>
+        <ul id="hint-list" style="padding-left: 0;"></ul>
+    </div>
+</div>
+
+<script>
+    function checkAnswers() {
+        const gaps = document.querySelectorAll('.gap');
+        const hintList = document.getElementById('hint-list');
+        const feedbackArea = document.getElementById('feedback-area');
+        hintList.innerHTML = '';
+        let allCorrect = true;
+
+        gaps.forEach((gap, index) => {
+            const userAnswer = gap.value.trim().toLowerCase().replace("’", "'");
+            const possibleAnswers = gap.getAttribute('data-ans').toLowerCase().split('|');
+            
+            if (possibleAnswers.includes(userAnswer)) {
+                gap.classList.add('correct');
+                gap.classList.remove('incorrect');
+            } else {
+                gap.classList.add('incorrect');
+                gap.classList.remove('correct');
+                allCorrect = false;
+                
+                const li = document.createElement('li');
+                li.className = 'hint-text';
+                li.innerHTML = `<span class="hint-label">Gap ${index + 1}:</span> ${gap.getAttribute('data-hint')}`;
+                hintList.appendChild(li);
+            }
+        });
+
+        feedbackArea.style.display = 'block';
+        if (allCorrect) {
+            hintList.innerHTML = '<li style="color: #1e8e3e; font-weight: bold; list-style: none;">Perfect! This version is much more idiomatic.</li>';
+        }
+    }
+
+    function resetExercise() {
+        document.querySelectorAll('.gap').forEach(gap => {
+            gap.value = '';
+            gap.classList.remove('correct', 'incorrect');
+        });
+        document.getElementById('feedback-area').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

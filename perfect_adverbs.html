@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Correction Challenge: The Messy Email</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.8; max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f4f7f6; }
+        .container { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        h2 { color: #2c3e50; border-bottom: 3px solid #3498db; display: inline-block; margin-bottom: 30px; }
+        .email-body { background: #fffcf5; padding: 25px; border: 1px dashed #d1d1d1; border-radius: 10px; font-size: 18px; }
+        .error-word { cursor: pointer; border-bottom: 2px transparent; transition: all 0.2s; padding: 0 2px; }
+        .error-word:hover { background-color: #e8f0fe; border-bottom-color: #3498db; }
+        .found { background-color: #f8d7da !important; border-bottom: 2px solid #dc3545 !important; color: #721c24; }
+        .safe { background-color: #d4edda !important; border-bottom: 2px solid #28a745 !important; color: #155724; }
+        #instruction-box { margin-bottom: 20px; color: #5f6368; font-style: italic; }
+        #feedback-panel { margin-top: 30px; padding: 20px; border-radius: 8px; min-height: 60px; display: none; }
+        .feedback-error { background-color: #fdf2f2; border-left: 5px solid #dc3545; padding: 10px; color: #9b1c1c; }
+        .feedback-success { background-color: #f3faf7; border-left: 5px solid #28a745; padding: 10px; color: #1e4620; }
+        .counter { font-weight: bold; color: #3498db; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Correction Challenge</h2>
+    <p id="instruction-box">There are <b>6 time-marker mistakes</b> in this email. Click on the words you think are wrong to investigate them!</p>
+    
+    <div class="email-body">
+        Hi Jack,<br><br>
+        I’m writing because I haven't heard from you <span class="error-word" data-status="wrong" data-msg="Error! 'Since' is for a starting point (like Monday). For a duration like 'three weeks', we use 'for'.">since</span> three weeks. 
+        I’ve <span class="error-word" data-status="correct" data-msg="Correct! 'Already' fits here perfectly to show the action is finished.">already</span> finished the first draft of our report, but I haven't started the second part <span class="error-word" data-status="wrong" data-msg="Error! We use 'already' in positive sentences. In a negative sentence ('haven't started'), we should use 'yet'.">already</span>.
+        <br><br>
+        The boss has been asking about it <span class="error-word" data-status="wrong" data-msg="Error! 'For' is for durations. Since we are talking about a specific point (last Tuesday), we need 'since'.">for</span> last Tuesday. 
+        I've been working <span class="error-word" data-status="correct" data-msg="Correct! 'For' is used for the duration of five hours.">for</span> five hours today and I’m exhausted! 
+        Have you talked to the client <span class="error-word" data-status="wrong" data-msg="Error! We use 'since' for time, but 'yet' is the marker used at the end of questions to ask if an action is done.">since</span>?
+        <br><br>
+        I have <span class="error-word" data-status="wrong" data-msg="Error! 'Yet' goes at the end of negative sentences or questions. In a middle-position positive sentence, use 'already'.">yet</span> sent you the files. Please check your inbox. 
+        I've lived in this city <span class="error-word" data-status="wrong" data-msg="Error! 'Since' is for the starting point (2010). 'For' would be used for the number of years.">for</span> 2010, so I know a great cafe where we can meet to discuss this!
+        <br><br>
+        Best, <br>Elena
+    </div>
+
+    <div id="feedback-panel"></div>
+    <div style="margin-top: 20px;">
+        Mistakes found: <span id="find-count" class="counter">0</span> / 6
+    </div>
+    <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; cursor:pointer;">Reset Challenge</button>
+</div>
+
+<script>
+    let count = 0;
+    const words = document.querySelectorAll('.error-word');
+    const panel = document.getElementById('feedback-panel');
+    const counterDisplay = document.getElementById('find-count');
+
+    words.forEach(word => {
+        word.addEventListener('click', function() {
+            if (this.classList.contains('found') || this.classList.contains('safe')) return;
+
+            const status = this.getAttribute('data-status');
+            const msg = this.getAttribute('data-msg');
+            panel.style.display = 'block';
+
+            if (status === 'wrong') {
+                this.classList.add('found');
+                panel.innerHTML = `<div class="feedback-error"><strong>Found one!</strong> ${msg}</div>`;
+                count++;
+                counterDisplay.innerText = count;
+            } else {
+                this.classList.add('safe');
+                panel.innerHTML = `<div class="feedback-success"><strong>Actually...</strong> ${msg}</div>`;
+            }
+
+            if (count === 6) {
+                panel.innerHTML = `<div class="feedback-success" style="background:#d4edda; border-color:#28a745;"><strong>Excellent!</strong> You've found all the mistakes in the email.</div>`;
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
