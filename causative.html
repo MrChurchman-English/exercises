@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Let Someone Else Do It!</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; padding: 20px; line-height: 1.6; }
+        .quiz-card { max-width: 800px; margin: auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        h2 { color: #273c75; margin-top: 0; font-size: 1.8em; }
+        .intro { background: #dcdde1; padding: 20px; border-radius: 10px; margin-bottom: 30px; color: #2f3640; }
+        .question { margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .prompt { color: #7f8c8d; font-size: 0.9em; display: block; margin-top: 10px; }
+        input { width: 100%; max-width: 500px; padding: 12px; border: 2px solid #dcdde1; border-radius: 8px; font-size: 1.05em; margin-top: 8px; transition: 0.3s; }
+        input:focus { border-color: #483d8b; outline: none; box-shadow: 0 0 8px rgba(72, 61, 139, 0.2); }
+        .correct { border-color: #44bd32 !important; background-color: #f5fff0; }
+        .wrong { border-color: #c23616 !important; background-color: #fff5f5; }
+        .controls { display: flex; gap: 15px; margin-top: 20px; }
+        button { padding: 12px 28px; border-radius: 30px; cursor: pointer; font-weight: bold; font-size: 15px; transition: 0.2s; border: none; }
+        .btn-check { background: #483d8b; color: white; }
+        .btn-check:hover { background: #3d3473; transform: translateY(-2px); }
+        .btn-hint { background: #fbc531; color: #2f3640; }
+        .btn-hint:hover { background: #e1b12c; }
+        #results { margin-top: 25px; font-weight: bold; font-size: 1.3em; color: #2f3640; }
+        .hint-text { color: #e67e22; font-weight: bold; margin-left: 10px; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="quiz-card">
+    <h2>The "I'm Too Busy!" Challenge</h2>
+    
+    <div class="intro">
+        <strong>How it works:</strong> Sometimes we are too busy (or too lazy!) to do things ourselves. Instead of doing the work, we <strong>pay a professional</strong> or <strong>ask someone else</strong> to do it for us. 
+        <br><br>
+        In English, we say we <strong>"have something done."</strong> Use the words in the brackets to show that these people organized for someone else to do the work!
+    </div>
+
+    <div id="quiz-container">
+        <div class="question">
+            1. I didn't want to fix the roof myself, so two days ago I <input type="text" class="causative" data-ans="had the roof repaired" data-tense="Past Simple">.
+            <span class="prompt">(Words to use: have / the roof / repair) <span class="hint-text"></span></span>
+        </div>
+
+        <div class="question">
+            2. Shh! I'm at the studio. I <input type="text" class="causative" data-ans="am having my portrait painted" data-tense="Present Continuous"> at the moment.
+            <span class="prompt">(Words to use: have / my portrait / paint) <span class="hint-text"></span></span>
+        </div>
+
+        <div class="question">
+            3. Your house looks amazing! <input type="text" class="causative" data-ans="Have you had the kitchen remodeled" data-tense="Present Perfect Question"> lately?
+            <span class="prompt">(Words to use: have / the kitchen / remodel) <span class="hint-text"></span></span>
+        </div>
+
+        <div class="question">
+            4. If you don't like the color, I <input type="text" class="causative" data-ans="will have the room repainted" data-tense="Future with 'will'"> for you next week.
+            <span class="prompt">(Words to use: have / the room / repaint) <span class="hint-text"></span></span>
+        </div>
+
+        <div class="question">
+            5. When the fire alarm went off, she <input type="text" class="causative" data-ans="was having her nails done" data-tense="Past Continuous"> at the salon.
+            <span class="prompt">(Words to use: have / her nails / do) <span class="hint-text"></span></span>
+        </div>
+
+        <div class="question">
+            6. By the time I arrived at the airport, he <input type="text" class="causative" data-ans="had already had his luggage checked" data-tense="Past Perfect">.
+            <span class="prompt">(Words to use: have / his luggage / already / check) <span class="hint-text"></span></span>
+        </div>
+
+        <div class="question">
+            7. That tooth looks painful. You really should <input type="text" class="causative" data-ans="have it pulled" data-tense="Modal (Should) + Base Form"> by a dentist.
+            <span class="prompt">(Words to use: have / it / pull) <span class="hint-text"></span></span>
+        </div>
+
+        <div class="question">
+            8. He is tired of <input type="text" class="causative" data-ans="having his work criticized" data-tense="Gerund (ing-form)"> by the boss every day.
+            <span class="prompt">(Words to use: have / his work / criticize) <span class="hint-text"></span></span>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-check" onclick="checkQuiz()">Check My Answers</button>
+        <button class="btn-hint" onclick="toggleHints()">I need a tense hint!</button>
+    </div>
+    <div id="results"></div>
+</div>
+
+<script>
+    function checkQuiz() {
+        const inputs = document.querySelectorAll('.causative');
+        let score = 0;
+        
+        inputs.forEach(input => {
+            const userVal = input.value.trim().toLowerCase().replace(/[.?]/g, '').replace(/\s+/g, ' ');
+            const correctVal = input.getAttribute('data-ans').toLowerCase().replace(/[.?]/g, '');
+            
+            // Flex check for 'get' as it's common in this structure
+            const altVal = correctVal.replace('having', 'getting').replace('had', 'got').replace('have', 'get');
+
+            if (userVal === correctVal || userVal === altVal) {
+                input.className = "causative correct";
+                score++;
+            } else {
+                input.className = "causative wrong";
+            }
+        });
+
+        const resDiv = document.getElementById('results');
+        resDiv.innerHTML = `You got ${score} out of 8 correct!`;
+        if(score === 8) resDiv.innerHTML += " 🌟 Excellent work!";
+    }
+
+    function toggleHints() {
+        const hints = document.querySelectorAll('.hint-text');
+        const inputs = document.querySelectorAll('.causative');
+        hints.forEach((hint, index) => {
+            if (hint.style.display === "inline") {
+                hint.style.display = "none";
+            } else {
+                hint.innerHTML = " (Use the " + inputs[index].getAttribute('data-tense') + ")";
+                hint.style.display = "inline";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
