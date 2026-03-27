@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Passive with Reporting Verbs</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --ok-bg: #ecfdf5;
+      --ok-text: #065f46;
+      --bad-bg: #fef2f2;
+      --bad-text: #991b1b;
+      --border: #d1d5db;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 32px 20px 48px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+    }
+
+    .intro {
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      font-size: 0.95rem;
+    }
+
+    .legend div {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .question-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
+    }
+
+    .meta {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .prompt {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .instruction {
+      color: var(--muted);
+      margin-bottom: 12px;
+      font-size: 0.96rem;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 80px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 1rem;
+      resize: vertical;
+      font-family: inherit;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    .check-btn, .show-btn, .retry-btn, .score-btn, .reset-btn {
+      background: var(--accent);
+      color: white;
+    }
+
+    .show-btn { background: #4b5563; }
+    .retry-btn { background: #7c3aed; }
+    .reset-btn { background: #b45309; }
+
+    .feedback, .answer-box, .grammar-box {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .feedback.correct {
+      display: block;
+      background: var(--ok-bg);
+      color: var(--ok-text);
+      border: 1px solid #a7f3d0;
+    }
+
+    .feedback.incorrect {
+      display: block;
+      background: var(--bad-bg);
+      color: var(--bad-text);
+      border: 1px solid #fecaca;
+    }
+
+    .answer-box, .grammar-box {
+      background: #f9fafb;
+      border: 1px solid var(--border);
+      color: #111827;
+    }
+
+    .answer-box.visible, .grammar-box.visible {
+      display: block;
+    }
+
+    .summary {
+      position: sticky;
+      bottom: 16px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      margin-top: 28px;
+    }
+
+    .summary strong { font-size: 1.1rem; }
+
+    .small {
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 640px) {
+      h1 { font-size: 1.6rem; }
+      .container { padding: 20px 14px 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Passive with Reporting Verbs</h1>
+    <p class="intro">
+      Complete each sentence using a passive reporting structure. Only type the missing part after the given stem.
+      Focus on whether the meaning requires an active or passive infinitive, and whether the infinitive should be simple,
+      continuous, or perfect.
+    </p>
+
+    <div class="panel">
+      <div class="legend">
+        <div><strong>Active infinitive</strong><br>He is said <em>to live</em> abroad.</div>
+        <div><strong>Continuous infinitive</strong><br>He is rumoured <em>to be living</em> abroad.</div>
+        <div><strong>Perfect infinitive</strong><br>She is believed <em>to have left</em>.</div>
+        <div><strong>Perfect passive infinitive</strong><br>The bridge was said <em>to have been destroyed</em>.</div>
+      </div>
+    </div>
+
+    <div id="exercise"></div>
+
+    <div class="summary">
+      <div class="btn-row">
+        <button class="score-btn" onclick="showScore()">Show score</button>
+        <button class="reset-btn" onclick="resetAll()">Reset all</button>
+      </div>
+      <p id="scoreOutput" class="small">No score yet.</p>
+    </div>
+  </div>
+
+  <script>
+    const reportingVerbs = ['said to', 'rumoured to', 'rumored to', 'believed to', 'expected to', 'thought to', 'known to', 'considered to', 'reported to', 'alleged to'];
+
+    const questions = [
+      {
+        id: 1,
+        type: 'Complete',
+        focus: 'active + simple',
+        prompt: 'People say that the new head teacher speaks four languages.',
+        stem: 'The new head teacher',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'is said to speak four languages.',
+        fullModel: 'The new head teacher is said to speak four languages.',
+        grammar: 'Use the passive of the reporting verb + active infinitive when the reported action is general and active: is said to speak.',
+        checks: [
+          { includes: ['is said to', 'speak', 'four languages'] }
+        ]
+      },
+      {
+        id: 2,
+        type: 'Complete',
+        focus: 'active + continuous',
+        prompt: 'People rumour that he is living in Switzerland now.',
+        stem: 'He',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'is rumoured to be living in Switzerland now.',
+        fullModel: 'He is rumoured to be living in Switzerland now.',
+        grammar: 'Use a continuous infinitive for an action in progress around now: is rumoured to be living.',
+        checks: [
+          { includes: ['is rumoured to be living', 'switzerland'] },
+          { includes: ['is rumored to be living', 'switzerland'] }
+        ]
+      },
+      {
+        id: 3,
+        type: 'Complete',
+        focus: 'passive + perfect passive',
+        prompt: 'People said that the bridge had been destroyed during the war.',
+        stem: 'The bridge',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'was said to have been destroyed during the war.',
+        fullModel: 'The bridge was said to have been destroyed during the war.',
+        grammar: 'Use a perfect passive infinitive when the action happened before the reporting verb and the subject receives the action: to have been destroyed.',
+        checks: [
+          { includes: ['was said to have been destroyed', 'during the war'] }
+        ]
+      },
+      {
+        id: 4,
+        type: 'Complete',
+        focus: 'active + perfect',
+        prompt: 'People believe that the missing climbers have reached the village safely.',
+        stem: 'The missing climbers',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'are believed to have reached the village safely.',
+        fullModel: 'The missing climbers are believed to have reached the village safely.',
+        grammar: 'Use a perfect infinitive for an earlier completed action: are believed to have reached.',
+        checks: [
+          { includes: ['are believed to have reached', 'the village', 'safely'] }
+        ]
+      },
+      {
+        id: 5,
+        type: 'Complete',
+        focus: 'passive + simple passive',
+        prompt: 'People expect that the documents will be published next week.',
+        stem: 'The documents',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'are expected to be published next week.',
+        fullModel: 'The documents are expected to be published next week.',
+        grammar: 'Use a passive infinitive when the subject receives the action in the future: are expected to be published.',
+        checks: [
+          { includes: ['are expected to be published', 'next week'] }
+        ]
+      },
+      {
+        id: 6,
+        type: 'Complete',
+        focus: 'active + continuous',
+        prompt: 'People think that she is working on a new novel at the moment.',
+        stem: 'She',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'is thought to be working on a new novel at the moment.',
+        fullModel: 'She is thought to be working on a new novel at the moment.',
+        grammar: 'Use a continuous infinitive for an action happening at the moment of reporting: is thought to be working.',
+        checks: [
+          { includes: ['is thought to be working', 'new novel'] }
+        ]
+      },
+      {
+        id: 7,
+        type: 'Complete',
+        focus: 'passive + perfect passive',
+        prompt: 'People know that several paintings were stolen before the museum reopened.',
+        stem: 'Several paintings',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'are known to have been stolen before the museum reopened.',
+        fullModel: 'Several paintings are known to have been stolen before the museum reopened.',
+        grammar: 'Use are known to have been + past participle for an earlier passive event.',
+        checks: [
+          { includes: ['are known to have been stolen', 'before the museum reopened'] }
+        ]
+      },
+      {
+        id: 8,
+        type: 'Complete',
+        focus: 'active + simple',
+        prompt: 'People consider that this restaurant serves the best pasta in town.',
+        stem: 'This restaurant',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'is considered to serve the best pasta in town.',
+        fullModel: 'This restaurant is considered to serve the best pasta in town.',
+        grammar: 'Use a simple infinitive for a general fact or repeated action: is considered to serve.',
+        checks: [
+          { includes: ['is considered to serve', 'best pasta in town'] },
+          { includes: ['is considered to have', 'best pasta in town'] }
+        ]
+      },
+      {
+        id: 9,
+        type: 'Complete',
+        focus: 'active + perfect continuous',
+        prompt: 'People say that the company has been losing money for months.',
+        stem: 'The company',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'is said to have been losing money for months.',
+        fullModel: 'The company is said to have been losing money for months.',
+        grammar: 'Use a perfect continuous infinitive for an activity that started earlier and continued over a period of time: to have been losing.',
+        checks: [
+          { includes: ['is said to have been losing', 'money', 'for months'] }
+        ]
+      },
+      {
+        id: 10,
+        type: 'Complete',
+        focus: 'passive + continuous passive',
+        prompt: 'People report that the injured players are being treated in hospital.',
+        stem: 'The injured players',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'are reported to be being treated in hospital.',
+        fullModel: 'The injured players are reported to be being treated in hospital.',
+        grammar: 'This is grammatically possible but heavy: be reported + to be being treated. It practises a continuous passive infinitive.',
+        checks: [
+          { includes: ['are reported to be being treated', 'hospital'] }
+        ]
+      },
+      {
+        id: 11,
+        type: 'Complete',
+        focus: 'active + perfect',
+        prompt: 'People allege that the minister took bribes years ago.',
+        stem: 'The minister',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'is alleged to have taken bribes years ago.',
+        fullModel: 'The minister is alleged to have taken bribes years ago.',
+        grammar: 'Use a perfect infinitive for a past completed action: is alleged to have taken.',
+        checks: [
+          { includes: ['is alleged to have taken', 'bribes'] }
+        ]
+      },
+      {
+        id: 12,
+        type: 'Complete',
+        focus: 'passive + perfect passive',
+        prompt: 'People thought that the files had been deleted by mistake.',
+        stem: 'The files',
+        instruction: 'Complete the sentence. Type only the missing part.',
+        model: 'were thought to have been deleted by mistake.',
+        fullModel: 'The files were thought to have been deleted by mistake.',
+        grammar: 'Use were thought to have been deleted because the deleting happened before the past reporting verb.',
+        checks: [
+          { includes: ['were thought to have been deleted', 'by mistake'] }
+        ]
+      }
+    ];
+
+    function normalize(text) {
+      return text
+        .toLowerCase()
+        .replace(/[’']/g, "'")
+        .replace(/[.,!?;:]/g, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+
+    function includesPhrase(text, phrase) {
+      return normalize(text).includes(normalize(phrase));
+    }
+
+    function levenshtein(a, b) {
+      const m = a.length;
+      const n = b.length;
+      const dp = Array.from({ length: m + 1 }, () => Array(n + 1).fill(0));
+
+      for (let i = 0; i <= m; i++) dp[i][0] = i;
+      for (let j = 0; j <= n; j++) dp[0][j] = j;
+
+      for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1,
+            dp[i][j - 1] + 1,
+            dp[i - 1][j - 1] + cost
+          );
+        }
+      }
+
+      return dp[m][n];
+    }
+
+    function fuzzyIncludesPhrase(text, phrase, maxDistance = 1) {
+      const textTokens = normalize(text).split(' ').filter(Boolean);
+      const phraseTokens = normalize(phrase).split(' ').filter(Boolean);
+      const windowSize = phraseTokens.length;
+
+      if (!windowSize || textTokens.length < windowSize) return false;
+
+      for (let i = 0; i <= textTokens.length - windowSize; i++) {
+        let ok = true;
+        for (let j = 0; j < windowSize; j++) {
+          if (levenshtein(textTokens[i + j], phraseTokens[j]) > maxDistance) {
+            ok = false;
+            break;
+          }
+        }
+        if (ok) return true;
+      }
+
+      return false;
+    }
+
+    function hasCoreStructure(q, userText) {
+      const lower = normalize(userText);
+
+      if (!lower.includes('to')) return false;
+
+      if (q.focus.includes('continuous') && !lower.includes('to be ')) return false;
+      if (q.focus.includes('perfect') && !lower.includes('to have')) return false;
+
+      if (q.focus.includes('passive')) {
+        if (!lower.includes('been') && !lower.includes('be published') && !lower.includes('be being treated')) {
+          return false;
+        }
+      }
+
+      return reportingVerbs.some(verb => fuzzyIncludesPhrase(lower, verb));
+    }
+
+    function matchCheck(userText, check) {
+      if (check.includes) {
+        const ok = check.includes.every(part => includesPhrase(userText, part));
+        if (!ok) return false;
+      }
+      if (check.excludes) {
+        const bad = check.excludes.some(part => includesPhrase(userText, part));
+        if (bad) return false;
+      }
+      return true;
+    }
+
+    function evaluateAnswer(q, userText) {
+      const norm = normalize(userText);
+      if (!norm) {
+        return { status: 'empty', message: 'Please type the missing part first.' };
+      }
+
+      const matched = q.checks.some(check => matchCheck(norm, check));
+      if (matched) {
+        return { status: 'correct', message: 'Correct.' };
+      }
+
+      if (hasCoreStructure(q, norm)) {
+        return {
+          status: 'almost',
+          message: 'The main reporting structure looks right. Check the other details carefully: spelling, missing words, or the information after the infinitive may still need correction.'
+        };
+      }
+
+      return { status: 'incorrect', message: buildHint(q, norm) };
+    }
+
+    function buildHint(q, userText) {
+      const lower = normalize(userText);
+
+      if (lower.includes(normalize(q.stem))) {
+        return 'You do not need to type the given beginning. Only type the missing part after the stem.';
+      }
+
+      if (!lower.includes('to')) {
+        return 'Not quite. Passive reporting structures need an infinitive: for example, is said to ..., is believed to ..., was thought to ...';
+      }
+
+      if (lower.includes('people say') || lower.includes('people believe') || lower.includes('people think') || lower.includes('people report') || lower.includes('people said') || lower.includes('people thought')) {
+        return 'You still seem to have the original active reporting clause. Rewrite it with a passive reporting verb, for example: He is said to ...';
+      }
+
+      const hasReportingVerb = reportingVerbs.some(verb => fuzzyIncludesPhrase(lower, verb));
+      if (!hasReportingVerb) {
+        return 'Check the reporting verb pattern first. You need a form such as is said to, is believed to, was thought to, or are expected to.';
+      }
+
+      if (q.focus.includes('continuous') && !lower.includes('to be ')) {
+        return 'The reporting verb looks possible, but the infinitive form is not right here. This item needs a continuous infinitive: to be + -ing, or in one case to be being + past participle.';
+      }
+
+      if (q.focus.includes('perfect') && !lower.includes('to have')) {
+        return 'The reporting verb looks possible, but this action happened earlier, so you need a perfect infinitive: to have + past participle.';
+      }
+
+      if (q.focus.includes('passive') && !lower.includes('been') && !lower.includes('be published') && !lower.includes('be being treated')) {
+        return 'The reporting verb looks possible, but check whether the subject receives the action. This item needs a passive infinitive form.';
+      }
+
+      return 'You are close. Check the wording after the reporting structure carefully: there may be a spelling mistake, a missing word, or a detail that does not match the original sentence.';
+    }
+
+    function buildExercise() {
+      const container = document.getElementById('exercise');
+      container.innerHTML = '';
+
+      questions.forEach((q, index) => {
+        const card = document.createElement('div');
+        card.className = 'question-card';
+        card.innerHTML = `
+          <div class="meta">
+            <span class="tag">Item ${index + 1}</span>
+            <span class="tag">${q.type}</span>
+            <span class="tag">${q.focus}</span>
+          </div>
+          <div class="prompt">Original sentence: ${q.prompt}</div>
+          <div class="instruction">${q.instruction}</div>
+          <div class="panel" style="padding: 14px; margin: 0 0 12px; box-shadow: none; border-radius: 12px; background: #f9fafb;">
+            <strong>${q.stem}</strong> ...
+          </div>
+          <textarea id="input-${q.id}" placeholder="Type only the missing part here..."></textarea>
+          <div class="btn-row">
+            <button class="check-btn" onclick="checkAnswer(${q.id})">Check</button>
+            <button class="show-btn" onclick="showAnswer(${q.id})">Show answer</button>
+            <button class="retry-btn" onclick="retryQuestion(${q.id})">Try again</button>
+          </div>
+          <div id="feedback-${q.id}" class="feedback"></div>
+          <div id="answer-${q.id}" class="answer-box"></div>
+          <div id="grammar-${q.id}" class="grammar-box"></div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function checkAnswer(id) {
+      const q = questions.find(item => item.id === id);
+      const input = document.getElementById(`input-${id}`);
+      const feedback = document.getElementById(`feedback-${id}`);
+      const answerBox = document.getElementById(`answer-${id}`);
+      const grammarBox = document.getElementById(`grammar-${id}`);
+      const result = evaluateAnswer(q, input.value);
+
+      if (result.status === 'empty') {
+        feedback.className = 'feedback incorrect';
+        feedback.textContent = result.message;
+        answerBox.className = 'answer-box';
+        grammarBox.className = 'grammar-box';
+        return;
+      }
+
+      feedback.className = (result.status === 'correct' || result.status === 'almost') ? 'feedback correct' : 'feedback incorrect';
+      feedback.textContent = result.message;
+      answerBox.className = 'answer-box visible';
+      grammarBox.className = 'grammar-box visible';
+      answerBox.innerHTML = `<strong>Model answer:</strong> ${q.fullModel}`;
+      grammarBox.innerHTML = `<strong>Grammar note:</strong> ${q.grammar}`;
+    }
+
+    function showAnswer(id) {
+      const q = questions.find(item => item.id === id);
+      const answerBox = document.getElementById(`answer-${id}`);
+      const grammarBox = document.getElementById(`grammar-${id}`);
+      const feedback = document.getElementById(`feedback-${id}`);
+
+      feedback.className = 'feedback incorrect';
+      feedback.textContent = 'Answer shown. Compare your ending with the model answer.';
+      answerBox.className = 'answer-box visible';
+      grammarBox.className = 'grammar-box visible';
+      answerBox.innerHTML = `<strong>Model answer:</strong> ${q.fullModel}`;
+      grammarBox.innerHTML = `<strong>Grammar note:</strong> ${q.grammar}`;
+    }
+
+    function retryQuestion(id) {
+      document.getElementById(`input-${id}`).value = '';
+      document.getElementById(`feedback-${id}`).className = 'feedback';
+      document.getElementById(`feedback-${id}`).textContent = '';
+      document.getElementById(`answer-${id}`).className = 'answer-box';
+      document.getElementById(`answer-${id}`).textContent = '';
+      document.getElementById(`grammar-${id}`).className = 'grammar-box';
+      document.getElementById(`grammar-${id}`).textContent = '';
+    }
+
+    function showScore() {
+      let correctCount = 0;
+      let attempted = 0;
+
+      questions.forEach(q => {
+        const value = document.getElementById(`input-${q.id}`).value.trim();
+        if (value) {
+          attempted++;
+          const result = evaluateAnswer(q, value);
+          if (result.status === 'correct') correctCount++;
+        }
+      });
+
+      const output = document.getElementById('scoreOutput');
+      output.innerHTML = `<strong>Score:</strong> ${correctCount} / ${questions.length}. Attempted: ${attempted} / ${questions.length}.`;
+    }
+
+    function resetAll() {
+      questions.forEach(q => retryQuestion(q.id));
+      document.getElementById('scoreOutput').textContent = 'No score yet.';
+    }
+
+    buildExercise();
+  </script>
+</body>
+</html>
