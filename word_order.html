@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Adverb Word Order</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; color: #333; padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; }
+        p.instr { font-style: italic; text-align: center; color: #666; }
+        .item { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .word-bank { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0; min-height: 40px; }
+        .word { background: #e0e7ff; border: 1px solid #4f46e5; padding: 5px 12px; border-radius: 5px; cursor: pointer; user-select: none; transition: 0.2s; }
+        .word:hover { background: #c7d2fe; }
+        .word.used { opacity: 0.4; cursor: default; background: #d1d5db; border-color: #9ca3af; }
+        .answer-area { background: #fff; border: 2px dashed #4f46e5; min-height: 45px; padding: 10px; border-radius: 5px; display: flex; flex-wrap: wrap; gap: 10px; }
+        .controls { margin-top: 20px; text-align: center; }
+        button { background: #4f46e5; color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-size: 16px; margin: 5px; }
+        button:hover { background: #4338ca; }
+        .feedback { margin-top: 10px; font-weight: bold; display: none; }
+        .correct { color: #059669; }
+        .incorrect { color: #dc2626; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Advanced Adverb Challenge</h1>
+    <p class="instr">Click the words to build a grammatical sentence. (Pay attention to the capitalization of 'I').</p>
+    <div id="quiz"></div>
+    <div class="controls">
+        <button onclick="checkAll()">Check My Answers</button>
+        <button onclick="location.reload()" style="background:#6b7280">Reset Exercise</button>
+    </div>
+</div>
+
+<script>
+    const data = [
+        { 
+            words: ["she", "hardly", "ever", "goes", "to", "the", "gym", "on", "mondays"], 
+            answers: ["she hardly ever goes to the gym on mondays", "on mondays she hardly ever goes to the gym"] 
+        },
+        { 
+            words: ["we", "have", "already", "finished", "the", "report"], 
+            answers: ["we have already finished the report", "we already have finished the report", "we have finished the report already"] 
+        },
+        { 
+            words: ["fortunately", "nobody", "was", "injured", "in", "the", "accident"], 
+            answers: ["fortunately nobody was injured in the accident", "nobody was fortunately injured in the accident", "nobody was injured in the accident fortunately"] 
+        },
+        { 
+            words: ["he", "drives", "his", "new", "car", "carefully", "through", "the", "city"], 
+            answers: [
+                "he drives his new car carefully through the city", 
+                "he carefully drives his new car through the city",
+                "he drives his new car through the city carefully"
+            ] 
+        },
+        { 
+            words: ["they", "were", "probably", "waiting", "for", "us", "outside"], 
+            answers: ["they were probably waiting for us outside", "probably they were waiting for us outside", "they were waiting for us outside probably"] 
+        },
+        { 
+            words: ["you", "should", "never", "speak", "to", "him", "like", "that", "again"], 
+            answers: ["you should never speak to him like that again", "never speak to him like that again"] 
+        },
+        { 
+            words: ["I", "searched", "everywhere", "for", "my", "lost", "keys"], 
+            answers: [
+                "I searched everywhere for my lost keys", 
+                "I searched for my lost keys everywhere",
+                "everywhere I searched for my lost keys"
+            ] 
+        },
+        { 
+            words: ["the", "students", "usually", "are", "very", "quiet", "during", "the", "exam"], 
+            answers: ["the students usually are very quiet during the exam", "the students are usually very quiet during the exam", "usually the students are very quiet during the exam"] 
+        },
+        { 
+            words: ["they", "quite", "often", "arrive", "late", "for", "the", "meeting"], 
+            answers: ["they quite often arrive late for the meeting", "quite often they arrive late for the meeting", "they arrive late for the meeting quite often"] 
+        },
+        { 
+            words: ["last", "night", "we", "quietly", "sneaked", "out", "of", "the", "house"], 
+            answers: [
+                "last night we quietly sneaked out of the house", 
+                "we quietly sneaked out of the house last night",
+                "we sneaked out of the house quietly last night",
+                "last night we sneaked out of the house quietly"
+            ] 
+        }
+    ];
+
+    function shuffle(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    const quizContainer = document.getElementById('quiz');
+
+    data.forEach((item, index) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'item';
+        const shuffled = shuffle([...item.words]);
+        let bankHtml = shuffled.map(w => `<span class="word" onclick="addWord(this, ${index})">${w}</span>`).join('');
+        
+        itemDiv.innerHTML = `
+            <h3>Item ${index + 1}</h3>
+            <div class="word-bank" id="bank-${index}">${bankHtml}</div>
+            <div class="answer-area" id="answer-${index}" onclick="resetRow(${index})"></div>
+            <div class="feedback" id="feedback-${index}"></div>
+        `;
+        quizContainer.appendChild(itemDiv);
+    });
+
+    function addWord(el, rowIndex) {
+        if (el.classList.contains('used')) return;
+        const answerArea = document.getElementById(`answer-${rowIndex}`);
+        const newWord = document.createElement('span');
+        newWord.className = 'word';
+        newWord.textContent = el.textContent;
+        answerArea.appendChild(newWord);
+        el.classList.add('used');
+    }
+
+    function resetRow(rowIndex) {
+        document.getElementById(`answer-${rowIndex}`).innerHTML = '';
+        const bank = document.getElementById(`bank-${rowIndex}`);
+        bank.querySelectorAll('.word').forEach(w => w.classList.remove('used'));
+        document.getElementById(`feedback-${rowIndex}`).style.display = 'none';
+    }
+
+    function checkAll() {
+        data.forEach((item, index) => {
+            const userAnswer = Array.from(document.getElementById(`answer-${index}`).children)
+                                    .map(span => span.textContent).join(' ');
+            const feedback = document.getElementById(`feedback-${index}`);
+            feedback.style.display = 'block';
+            
+            if (item.answers.includes(userAnswer)) {
+                feedback.textContent = "✓ Correct!";
+                feedback.className = "feedback correct";
+            } else {
+                feedback.textContent = "✗ Not quite. Check the position of your adverb/phrase.";
+                feedback.className = "feedback incorrect";
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
