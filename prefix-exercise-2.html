@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prefix Practice 2 — Upper Intermediate</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f6f1eb;
+    --card: #ffffff;
+    --ink: #2c2420;
+    --ink-light: #6b5e56;
+    --accent: #c45a3c;
+    --accent-light: #f4ddd6;
+    --green: #3a7d5c;
+    --green-bg: #e1f0e7;
+    --red: #c44040;
+    --red-bg: #fce4e4;
+    --border: #ddd4cc;
+    --input-bg: #faf7f4;
+    --shadow: 0 2px 12px rgba(44,36,32,0.06);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .container { max-width: 780px; margin: 0 auto; }
+
+  header {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  header h1 {
+    font-family: 'Source Serif 4', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  header p { color: var(--ink-light); font-size: 0.95rem; }
+
+  .prefix-bank {
+    display: flex; flex-wrap: wrap; gap: 0.5rem;
+    justify-content: center; margin-top: 1.2rem;
+  }
+
+  .prefix-tag {
+    background: var(--accent-light); color: var(--accent);
+    padding: 0.25rem 0.7rem; border-radius: 20px;
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em;
+  }
+
+  /* ---- Tabs ---- */
+  .tab-nav { display: flex; gap: 0.5rem; margin-bottom: 2rem; flex-wrap: wrap; }
+
+  .tab-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 600;
+    padding: 0.6rem 1rem; border-radius: 8px;
+    border: 1.5px solid var(--border); background: var(--card);
+    color: var(--ink-light); cursor: pointer; transition: all 0.2s;
+    flex: 1; min-width: 0; text-align: center;
+  }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+  /* ---- Sections ---- */
+  .exercise-section {
+    background: var(--card); border-radius: 12px; padding: 2rem;
+    margin-bottom: 2rem; box-shadow: var(--shadow); border: 1px solid var(--border);
+  }
+  .exercise-section.hidden { display: none; }
+
+  .exercise-section h2 {
+    font-family: 'Source Serif 4', serif; font-size: 1.35rem;
+    font-weight: 700; margin-bottom: 0.3rem; color: var(--ink);
+  }
+
+  .subtitle {
+    color: var(--ink-light); font-size: 0.88rem;
+    margin-bottom: 1.5rem; font-style: italic;
+  }
+
+  /* ---- Items ---- */
+  .exercise-item {
+    display: flex; align-items: flex-start; gap: 0.8rem;
+    padding: 0.75rem 0; border-bottom: 1px solid #f0ebe5;
+  }
+  .exercise-item:last-of-type { border-bottom: none; }
+
+  .item-number {
+    font-weight: 700; color: var(--accent); min-width: 1.8rem;
+    font-size: 0.85rem; padding-top: 0.35rem; text-align: right;
+  }
+
+  .item-body { flex: 1; font-size: 0.95rem; line-height: 1.8; }
+
+  /* ---- Highlighted phrase ---- */
+  .highlight {
+    background: #fce9c7; padding: 0.1rem 0.35rem;
+    border-radius: 4px; font-weight: 600;
+  }
+
+  /* ---- Inputs ---- */
+  input.answer-input, select.answer-select {
+    font-family: 'DM Sans', sans-serif; font-size: 0.92rem;
+    padding: 0.35rem 0.6rem; border: 1.5px solid var(--border);
+    border-radius: 6px; background: var(--input-bg); color: var(--ink);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  input.answer-input { width: 170px; }
+  select.answer-select { width: 190px; cursor: pointer; }
+
+  input.answer-input:focus, select.answer-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(196,90,60,0.12);
+  }
+
+  .correct { border-color: var(--green) !important; background: var(--green-bg) !important; color: var(--green) !important; font-weight: 600; }
+  .incorrect { border-color: var(--red) !important; background: var(--red-bg) !important; color: var(--red) !important; }
+
+  .correction {
+    display: none; font-size: 0.82rem; color: var(--green);
+    font-weight: 600; margin-left: 0.4rem;
+  }
+  .correction.show { display: inline; }
+
+  /* ---- T/F toggle ---- */
+  .tf-toggle {
+    display: inline-flex; gap: 0; border-radius: 6px;
+    overflow: hidden; border: 1.5px solid var(--border);
+    margin-top: 0.4rem;
+  }
+
+  .tf-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+    font-weight: 600; padding: 0.3rem 0.9rem; border: none;
+    background: var(--input-bg); color: var(--ink-light);
+    cursor: pointer; transition: all 0.15s;
+  }
+  .tf-btn:first-child { border-right: 1px solid var(--border); }
+  .tf-btn.selected { background: var(--accent); color: #fff; }
+  .tf-btn.correct-btn { background: var(--green) !important; color: #fff !important; }
+  .tf-btn.incorrect-btn { background: var(--red) !important; color: #fff !important; }
+
+  .tf-explanation {
+    display: none; font-size: 0.84rem; margin-top: 0.35rem;
+    padding: 0.4rem 0.7rem; border-radius: 6px;
+  }
+  .tf-explanation.show-correct {
+    display: block; background: var(--green-bg); color: var(--green);
+  }
+  .tf-explanation.show-incorrect {
+    display: block; background: var(--red-bg); color: var(--red);
+  }
+
+  /* ---- Buttons ---- */
+  .btn-row { display: flex; gap: 0.8rem; margin-top: 1.5rem; flex-wrap: wrap; }
+
+  button.btn {
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+    font-weight: 600; padding: 0.6rem 1.4rem; border-radius: 8px;
+    border: none; cursor: pointer; transition: background 0.2s, transform 0.1s;
+  }
+  button.btn:active { transform: scale(0.97); }
+
+  .btn-check { background: var(--accent); color: #fff; }
+  .btn-check:hover { background: #b04e33; }
+  .btn-reset { background: transparent; color: var(--ink-light); border: 1.5px solid var(--border) !important; }
+  .btn-reset:hover { background: var(--input-bg); }
+
+  .score-display {
+    display: none; font-size: 0.92rem; font-weight: 600;
+    padding: 0.6rem 1rem; border-radius: 8px;
+    background: var(--green-bg); color: var(--green); align-self: center;
+  }
+  .score-display.show { display: block; }
+
+  .prompt-label {
+    display: block; color: var(--ink-light); font-size: 0.82rem;
+    margin-top: 0.35rem; margin-bottom: 0.15rem;
+  }
+
+  /* ---- Odd One Out cards ---- */
+  .ooo-group {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem;
+  }
+
+  .ooo-card {
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 500;
+    padding: 0.4rem 0.9rem; border-radius: 6px;
+    border: 1.5px solid var(--border); background: var(--input-bg);
+    color: var(--ink); cursor: pointer; transition: all 0.15s;
+    user-select: none;
+  }
+  .ooo-card:hover { border-color: var(--accent); color: var(--accent); }
+  .ooo-card.selected {
+    background: var(--accent-light); border-color: var(--accent); color: var(--accent); font-weight: 600;
+  }
+  .ooo-card.correct-card {
+    background: var(--green-bg); border-color: var(--green); color: var(--green); font-weight: 600;
+  }
+  .ooo-card.incorrect-card {
+    background: var(--red-bg); border-color: var(--red); color: var(--red);
+  }
+  .ooo-card.dimmed { opacity: 0.45; }
+
+  .ooo-explanation {
+    display: none; font-size: 0.84rem; margin-top: 0.4rem;
+    padding: 0.4rem 0.7rem; border-radius: 6px;
+  }
+  .ooo-explanation.show-correct {
+    display: block; background: var(--green-bg); color: var(--green);
+  }
+  .ooo-explanation.show-incorrect {
+    display: block; background: var(--red-bg); color: var(--red);
+  }
+
+  @media (max-width: 600px) {
+    header h1 { font-size: 1.6rem; }
+    .exercise-section { padding: 1.3rem; }
+    .exercise-item { flex-direction: column; gap: 0.3rem; }
+    .item-number { text-align: left; padding-top: 0; }
+    input.answer-input { width: 150px; }
+    select.answer-select { width: 170px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>Prefix Practice 2</h1>
+    <p>Upper Intermediate &middot; 45 questions</p>
+    <div class="prefix-bank">
+      <span class="prefix-tag">semi-</span>
+      <span class="prefix-tag">under-</span>
+      <span class="prefix-tag">over-</span>
+      <span class="prefix-tag">re-</span>
+      <span class="prefix-tag">co-</span>
+      <span class="prefix-tag">inter-</span>
+      <span class="prefix-tag">in- / im- / ir- / il-</span>
+      <span class="prefix-tag">un-</span>
+      <span class="prefix-tag">dis-</span>
+      <span class="prefix-tag">mis-</span>
+    </div>
+  </header>
+
+  <nav class="tab-nav">
+    <button class="tab-btn active" onclick="showExercise(1)">1 &middot; Transformation</button>
+    <button class="tab-btn" onclick="showExercise(2)">2 &middot; True or False</button>
+    <button class="tab-btn" onclick="showExercise(3)">3 &middot; Odd One Out</button>
+  </nav>
+
+  <!-- ==================== EXERCISE 1 ==================== -->
+  <section class="exercise-section" id="ex1">
+    <h2>Exercise 1 &mdash; Sentence Transformation</h2>
+    <p class="subtitle">Replace the highlighted phrase with a single word using one of the prefixes above.</p>
+    <div id="ex1-items"></div>
+    <div class="btn-row">
+      <button class="btn btn-check" onclick="checkEx1()">Check answers</button>
+      <button class="btn btn-reset" onclick="resetEx1()">Try again</button>
+      <div class="score-display" id="score1"></div>
+    </div>
+  </section>
+
+  <!-- ==================== EXERCISE 2 ==================== -->
+  <section class="exercise-section hidden" id="ex2">
+    <h2>Exercise 2 &mdash; True or False</h2>
+    <p class="subtitle">Read each statement about a prefixed word. Is it true or false?</p>
+    <div id="ex2-items"></div>
+    <div class="btn-row">
+      <button class="btn btn-check" onclick="checkEx2()">Check answers</button>
+      <button class="btn btn-reset" onclick="resetEx2()">Try again</button>
+      <div class="score-display" id="score2"></div>
+    </div>
+  </section>
+
+  <!-- ==================== EXERCISE 3 ==================== -->
+  <section class="exercise-section hidden" id="ex3">
+    <h2>Exercise 3 &mdash; Odd One Out</h2>
+    <p class="subtitle">In each group of four words, three use a prefix in the same way. Click the odd one out — the word where the letters are <em>not</em> really acting as a prefix, or where the prefix has a different meaning.</p>
+    <div id="ex3-items"></div>
+    <div class="btn-row">
+      <button class="btn btn-check" onclick="checkEx3()">Check answers</button>
+      <button class="btn btn-reset" onclick="resetEx3()">Try again</button>
+      <div class="score-display" id="score3"></div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+// ====== TAB NAVIGATION ======
+function showExercise(num) {
+  document.querySelectorAll('.exercise-section').forEach(s => s.classList.add('hidden'));
+  document.getElementById('ex' + num).classList.remove('hidden');
+  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === num - 1);
+  });
+}
+
+// ====== EXERCISE 1: Sentence Transformation ======
+const ex1Data = [
+  { sentence: 'She <span class="highlight">judged the situation wrongly</span>.', answer: 'misjudged' },
+  { sentence: 'The workers felt they were <span class="highlight">not paid enough</span>.', answer: 'underpaid' },
+  { sentence: 'He <span class="highlight">estimated the distance too highly</span>.', answer: 'overestimated' },
+  { sentence: 'They decided to <span class="highlight">paint the kitchen again</span>.', answer: 'repaint' },
+  { sentence: 'The two authors <span class="highlight">wrote the article together</span>.', answer: 'co-wrote' },
+  { sentence: 'The <span class="highlight">trains that run between cities</span> were all delayed.', answer: 'intercity' },
+  { sentence: 'The contract was <span class="highlight">not valid</span> because nobody had signed it.', answer: 'invalid' },
+  { sentence: 'His pronunciation was <span class="highlight">not perfect</span>, but everyone understood him.', answer: 'imperfect' },
+  { sentence: 'The damage to the painting <span class="highlight">could not be repaired</span>.', answer: 'irreparable' },
+  { sentence: 'His argument was <span class="highlight">not logical</span> at all.', answer: 'illogical' },
+  { sentence: 'She was <span class="highlight">not happy</span> with the final result.', answer: 'unhappy' },
+  { sentence: 'She <span class="highlight">did not obey</span> the school rules.', answer: 'disobeyed' },
+  { sentence: 'The <span class="highlight">match before the final</span> will be played on Saturday.', answer: 'semifinal' },
+  { sentence: 'They <span class="highlight">counted the votes wrongly</span> and had to start again.', answer: 'miscounted' },
+  { sentence: 'She <span class="highlight">packed the suitcase with too many things</span> and couldn\'t close it.', answer: 'overpacked' }
+];
+
+function renderEx1() {
+  document.getElementById('ex1-items').innerHTML = ex1Data.map((item, i) => `
+    <div class="exercise-item">
+      <span class="item-number">${i + 1}.</span>
+      <div class="item-body">
+        <div>${item.sentence}</div>
+        <span class="prompt-label">Your word:</span>
+        <input type="text" class="answer-input" id="ex1-${i}" autocomplete="off" autocapitalize="off" spellcheck="false">
+        <span class="correction" id="ex1-corr-${i}"></span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function norm(s) { return s.toLowerCase().replace(/[\s\-]/g, '').trim(); }
+
+function checkEx1() {
+  let score = 0;
+  ex1Data.forEach((item, i) => {
+    const input = document.getElementById('ex1-' + i);
+    const corr = document.getElementById('ex1-corr-' + i);
+    if (norm(input.value) === norm(item.answer)) {
+      score++;
+      input.classList.add('correct'); input.classList.remove('incorrect');
+      input.value = item.answer;
+      corr.classList.remove('show');
+    } else {
+      input.classList.add('incorrect'); input.classList.remove('correct');
+      corr.textContent = '→ ' + item.answer;
+      corr.classList.add('show');
+    }
+    input.setAttribute('readonly', true);
+  });
+  const s = document.getElementById('score1');
+  s.textContent = score + ' / ' + ex1Data.length;
+  s.classList.add('show');
+}
+
+function resetEx1() {
+  ex1Data.forEach((_, i) => {
+    const input = document.getElementById('ex1-' + i);
+    const corr = document.getElementById('ex1-corr-' + i);
+    input.value = ''; input.classList.remove('correct', 'incorrect');
+    input.removeAttribute('readonly'); corr.classList.remove('show');
+  });
+  document.getElementById('score1').classList.remove('show');
+}
+
+// ====== EXERCISE 2: True or False ======
+const ex2Data = [
+  { statement: 'If you <strong>oversleep</strong>, you don\'t sleep enough.', correct: false, explanation: 'To oversleep means to sleep too much or longer than intended.' },
+  { statement: 'To <strong>misjudge</strong> someone means to judge them wrongly.', correct: true, explanation: 'Correct! Mis- means "wrongly" or "badly".' },
+  { statement: 'A <strong>semi-final</strong> is the last match in a competition.', correct: false, explanation: 'A semi-final is the match before the final. Semi- means "half" or "partly".' },
+  { statement: 'If something is <strong>irreversible</strong>, it can easily be changed back.', correct: false, explanation: 'Irreversible means it cannot be reversed or changed back. Ir- means "not".' },
+  { statement: 'To <strong>cooperate</strong> means to work together with someone.', correct: true, explanation: 'Correct! Co- means "together" or "jointly".' },
+  { statement: 'If you\'re <strong>underpaid</strong>, you earn too much money.', correct: false, explanation: 'If you\'re underpaid, you earn too little. Under- means "not enough".' },
+  { statement: 'An <strong>international</strong> event involves people from different countries.', correct: true, explanation: 'Correct! Inter- means "between" or "among".' },
+  { statement: 'If you <strong>rebuild</strong> something, you build it again.', correct: true, explanation: 'Correct! Re- means "again".' },
+  { statement: 'Someone who is <strong>dishonest</strong> cannot be trusted.', correct: true, explanation: 'Correct! Dis- makes the word negative — dishonest means not honest.' },
+  { statement: 'If something is <strong>invisible</strong>, you can see it clearly.', correct: false, explanation: 'Invisible means it cannot be seen. In- means "not".' },
+  { statement: 'To <strong>misplace</strong> something means to put it in the wrong place or lose it temporarily.', correct: true, explanation: 'Correct! Mis- means "wrongly" or "in the wrong way".' },
+  { statement: 'If you <strong>overcharge</strong> someone, you charge them too little.', correct: false, explanation: 'To overcharge means to charge too much. Over- means "too much" or "excessively".' },
+  { statement: 'If something is <strong>unlikely</strong>, it will probably happen.', correct: false, explanation: 'Unlikely means it probably won\'t happen. Un- means "not".' },
+  { statement: 'A <strong>semi-detached</strong> house shares no walls with other buildings.', correct: false, explanation: 'A semi-detached house shares one wall with a neighbouring building. Semi- means "half" or "partly".' },
+  { statement: 'To <strong>disconnect</strong> something means to connect it again.', correct: false, explanation: 'To disconnect means to break or end a connection. Dis- means "reverse" or "opposite". Reconnect means to connect again.' }
+];
+
+function renderEx2() {
+  document.getElementById('ex2-items').innerHTML = ex2Data.map((item, i) => `
+    <div class="exercise-item">
+      <span class="item-number">${i + 1}.</span>
+      <div class="item-body">
+        <div>${item.statement}</div>
+        <div class="tf-toggle" id="tf-toggle-${i}">
+          <button class="tf-btn" onclick="selectTF(${i}, true)">True</button>
+          <button class="tf-btn" onclick="selectTF(${i}, false)">False</button>
+        </div>
+        <div class="tf-explanation" id="ex2-expl-${i}"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+const tfSelections = {};
+
+function selectTF(i, val) {
+  tfSelections[i] = val;
+  const btns = document.querySelectorAll('#tf-toggle-' + i + ' .tf-btn');
+  btns[0].classList.toggle('selected', val === true);
+  btns[1].classList.toggle('selected', val === false);
+}
+
+function checkEx2() {
+  let score = 0;
+  ex2Data.forEach((item, i) => {
+    const btns = document.querySelectorAll('#tf-toggle-' + i + ' .tf-btn');
+    const expl = document.getElementById('ex2-expl-' + i);
+    const userAnswer = tfSelections[i];
+
+    // disable buttons
+    btns.forEach(b => b.style.pointerEvents = 'none');
+
+    if (userAnswer === undefined) {
+      // not answered
+      btns.forEach(b => { b.classList.remove('selected', 'correct-btn', 'incorrect-btn'); });
+      expl.textContent = item.explanation;
+      expl.className = 'tf-explanation show-incorrect';
+    } else if (userAnswer === item.correct) {
+      score++;
+      const idx = item.correct ? 0 : 1;
+      btns[idx].classList.add('correct-btn');
+      expl.textContent = item.explanation;
+      expl.className = 'tf-explanation show-correct';
+    } else {
+      const idx = userAnswer ? 0 : 1;
+      btns[idx].classList.add('incorrect-btn');
+      // show correct one
+      const corrIdx = item.correct ? 0 : 1;
+      btns[corrIdx].classList.add('correct-btn');
+      expl.textContent = item.explanation;
+      expl.className = 'tf-explanation show-incorrect';
+    }
+  });
+  const s = document.getElementById('score2');
+  s.textContent = score + ' / ' + ex2Data.length;
+  s.classList.add('show');
+}
+
+function resetEx2() {
+  ex2Data.forEach((_, i) => {
+    delete tfSelections[i];
+    const btns = document.querySelectorAll('#tf-toggle-' + i + ' .tf-btn');
+    btns.forEach(b => {
+      b.classList.remove('selected', 'correct-btn', 'incorrect-btn');
+      b.style.pointerEvents = '';
+    });
+    const expl = document.getElementById('ex2-expl-' + i);
+    expl.className = 'tf-explanation';
+    expl.textContent = '';
+  });
+  document.getElementById('score2').classList.remove('show');
+}
+
+// ====== EXERCISE 3: Odd One Out ======
+const ex3Data = [
+  {
+    words: ['impossible', 'impolite', 'import', 'immature'],
+    answer: 'import',
+    explanation: '"Import" just happens to start with im-. In the other three words, im- is a prefix meaning "not".'
+  },
+  {
+    words: ['uncle', 'unhappy', 'unfair', 'unlikely'],
+    answer: 'uncle',
+    explanation: '"Uncle" just happens to start with un-. In the other three, un- is a prefix meaning "not".'
+  },
+  {
+    words: ['discover', 'disappear', 'disagree', 'dislike'],
+    answer: 'discover',
+    explanation: 'You can\'t take dis- away from "discover" to leave a meaningful root. The other three clearly reverse their root words.'
+  },
+  {
+    words: ['reply', 'rebuild', 'recycle', 'rewrite'],
+    answer: 'reply',
+    explanation: '"Reply" doesn\'t mean "ply again." In the other three, re- clearly means "again".'
+  },
+  {
+    words: ['interest', 'international', 'interconnect', 'interactive'],
+    answer: 'interest',
+    explanation: '"Interest" just starts with the letters inter-. In the others, inter- is a prefix meaning "between" or "mutually".'
+  },
+  {
+    words: ['seminar', 'semicircle', 'semifinal', 'semi-detached'],
+    answer: 'seminar',
+    explanation: '"Seminar" has nothing to do with "half." In the others, semi- means "half" or "partly".'
+  },
+  {
+    words: ['mislead', 'miserable', 'misfortune', 'misjudge'],
+    answer: 'miserable',
+    explanation: '"Miserable" doesn\'t mean "erable in the wrong way"! In the others, mis- means "wrongly" or "badly".'
+  },
+  {
+    words: ['understand', 'underpaid', 'undercooked', 'underestimate'],
+    answer: 'understand',
+    explanation: '"Understand" doesn\'t mean "stand under" or "not enough standing." In the others, under- means "not enough".'
+  },
+  {
+    words: ['irritate', 'irregular', 'irresponsible', 'irrelevant'],
+    answer: 'irritate',
+    explanation: '"Irritate" just starts with ir-. In the others, ir- is a prefix meaning "not".'
+  },
+  {
+    words: ['copy', 'coexist', 'cooperate', 'co-author'],
+    answer: 'copy',
+    explanation: '"Copy" just happens to start with co-. In the other three, co- means "together" or "jointly".'
+  },
+  {
+    words: ['illustrate', 'illegal', 'illegible', 'illiterate'],
+    answer: 'illustrate',
+    explanation: '"Illustrate" just starts with the letters il-. In the others, il- is a prefix meaning "not".'
+  },
+  {
+    words: ['include', 'incomplete', 'invisible', 'informal'],
+    answer: 'include',
+    explanation: 'The in- in "include" means "in/into", not "not." The other three all use in- to mean "not".'
+  },
+  {
+    words: ['overlook', 'overdue', 'overreact', 'overcharge'],
+    answer: 'overlook',
+    explanation: '"Overlook" means "fail to notice" — a different sense of over-. The other three all use over- to mean "too much."'
+  },
+  {
+    words: ['remind', 'rearrange', 'reconsider', 'rewrite'],
+    answer: 'remind',
+    explanation: '"Remind" doesn\'t mean "mind again." In the others, re- clearly means "again" or "once more".'
+  },
+  {
+    words: ['uniform', 'unusual', 'uncomfortable', 'unbelievable'],
+    answer: 'uniform',
+    explanation: '"Uniform" comes from Latin uni- (one) + form. It doesn\'t use un- as a negative prefix like the other three.'
+  }
+];
+
+const oooSelections = {};
+
+function renderEx3() {
+  document.getElementById('ex3-items').innerHTML = ex3Data.map((item, i) => `
+    <div class="exercise-item">
+      <span class="item-number">${i + 1}.</span>
+      <div class="item-body">
+        <div class="ooo-group" id="ooo-group-${i}">
+          ${item.words.map(w => `<span class="ooo-card" onclick="selectOOO(${i}, '${w}')">${w}</span>`).join('')}
+        </div>
+        <div class="ooo-explanation" id="ex3-expl-${i}"></div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function selectOOO(i, word) {
+  oooSelections[i] = word;
+  const cards = document.querySelectorAll('#ooo-group-' + i + ' .ooo-card');
+  cards.forEach(c => c.classList.toggle('selected', c.textContent === word));
+}
+
+function checkEx3() {
+  let score = 0;
+  ex3Data.forEach((item, i) => {
+    const cards = document.querySelectorAll('#ooo-group-' + i + ' .ooo-card');
+    const expl = document.getElementById('ex3-expl-' + i);
+    const userAnswer = oooSelections[i];
+
+    cards.forEach(c => {
+      c.style.pointerEvents = 'none';
+      c.classList.remove('selected');
+      if (c.textContent === item.answer) {
+        c.classList.add('correct-card');
+      } else if (c.textContent === userAnswer && userAnswer !== item.answer) {
+        c.classList.add('incorrect-card');
+      } else {
+        c.classList.add('dimmed');
+      }
+    });
+
+    if (userAnswer === item.answer) {
+      score++;
+      expl.textContent = item.explanation;
+      expl.className = 'ooo-explanation show-correct';
+    } else {
+      expl.textContent = item.explanation;
+      expl.className = 'ooo-explanation show-incorrect';
+    }
+  });
+  const s = document.getElementById('score3');
+  s.textContent = score + ' / ' + ex3Data.length;
+  s.classList.add('show');
+}
+
+function resetEx3() {
+  ex3Data.forEach((_, i) => {
+    delete oooSelections[i];
+    const cards = document.querySelectorAll('#ooo-group-' + i + ' .ooo-card');
+    cards.forEach(c => {
+      c.classList.remove('selected', 'correct-card', 'incorrect-card', 'dimmed');
+      c.style.pointerEvents = '';
+    });
+    const expl = document.getElementById('ex3-expl-' + i);
+    expl.className = 'ooo-explanation';
+    expl.textContent = '';
+  });
+  document.getElementById('score3').classList.remove('show');
+}
+
+// ====== KEYBOARD NAV ======
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.target.classList.contains('answer-input')) {
+    const m = e.target.id.match(/ex(\d+)-(\d+)/);
+    if (m) {
+      const next = document.getElementById('ex' + m[1] + '-' + (parseInt(m[2]) + 1));
+      if (next) next.focus();
+    }
+  }
+});
+
+// ====== INIT ======
+renderEx1();
+renderEx2();
+renderEx3();
+</script>
+
+</body>
+</html>
