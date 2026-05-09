@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prefix Mastery Exercise</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .correct { border-color: #10b981 !important; background-color: #ecfdf5; }
+        .incorrect { border-color: #ef4444 !important; background-color: #fef2f2; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl p-6 md:p-10">
+        <header class="text-center mb-10 border-b pb-6">
+            <h1 class="text-3xl font-bold text-slate-800">Prefix Workshop</h1>
+            <p class="text-slate-500 mt-2">Practice: semi-, under-, over-, re-, co-, inter-, in-, un-, dis-, mis-</p>
+        </header>
+
+        <!-- Exercise 1: Multiple Choice -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold text-blue-600 mb-4">Exercise 1: Contextual Logic</h2>
+            <p class="text-sm text-slate-600 mb-6 italic">Choose the most appropriate prefix for the bold word.</p>
+            <div id="ex1" class="space-y-4"></div>
+        </section>
+
+        <hr class="my-10">
+
+        <!-- Exercise 2: Spelling the 'In-' Variants -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold text-blue-600 mb-4">Exercise 2: The 'In-' Family</h2>
+            <p class="text-sm text-slate-600 mb-6 italic">Fill in the correct prefix: <b>in-, im-, il-,</b> or <b>ir-</b>.</p>
+            <div id="ex2" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        </section>
+
+        <hr class="my-10">
+
+        <!-- Exercise 3: Sentence Completion -->
+        <section class="mb-12">
+            <h2 class="text-xl font-semibold text-blue-600 mb-4">Exercise 3: Mix & Match</h2>
+            <p class="text-sm text-slate-600 mb-6 italic">Type the full word (prefix + root) to complete the sentence.</p>
+            <div id="ex3" class="space-y-4"></div>
+        </section>
+
+        <div class="text-center pt-6">
+            <button onclick="checkAll()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-all shadow-lg">
+                Check My Answers
+            </button>
+            <p id="scoreDisplay" class="mt-4 text-lg font-medium text-slate-700"></p>
+        </div>
+    </div>
+
+    <script>
+        const data1 = [
+            { q: "The boss was ___paid, so he quit.", options: ["under", "over", "re"], a: "under" },
+            { q: "The two countries signed an ___national treaty.", options: ["semi", "inter", "co"], a: "inter" },
+            { q: "The plane's ___pilot took over the controls.", options: ["co", "mis", "un"], a: "co" },
+            { q: "I need to ___write this essay; it's a mess.", options: ["re", "dis", "over"], a: "re" },
+            { q: "The movie was ___rated; it wasn't that good.", options: ["over", "under", "semi"], a: "over" },
+            { q: "We sat in a ___circle for the discussion.", options: ["semi", "inter", "re"], a: "semi" },
+            { q: "Don't ___understand me, I like the idea!", options: ["mis", "un", "dis"], a: "mis" },
+            { q: "The magician made the rabbit ___appear.", options: ["dis", "in", "mis"], a: "dis" },
+            { q: "It is ___possible to finish this in one hour.", options: ["im", "un", "dis"], a: "im" },
+            { q: "They were ___happy with the service.", options: ["un", "mis", "in"], a: "un" },
+            { q: "The milk is ___cooked and smells burnt.", options: ["over", "under", "re"], a: "over" },
+            { q: "The city has an ___connected train system.", options: ["inter", "semi", "co"], a: "inter" },
+            { q: "He was ___employed for six months.", options: ["un", "dis", "in"], a: "un" },
+            { q: "The students ___behaved during the trip.", options: ["mis", "dis", "un"], a: "mis" },
+            { q: "The team reached the ___finals.", options: ["semi", "over", "re"], a: "semi" }
+        ];
+
+        const data2 = [
+            { root: "legal", a: "il" }, { root: "patient", a: "im" }, { root: "regular", a: "ir" },
+            { root: "expensive", a: "in" }, { root: "logical", a: "il" }, { root: "polite", a: "im" },
+            { root: "responsible", a: "ir" }, { root: "active", a: "in" }, { root: "literate", a: "il" },
+            { root: "perfect", a: "im" }, { root: "relevant", a: "ir" }, { root: "correct", a: "in" },
+            { root: "mobile", a: "im" }, { root: "resistible", a: "ir" }, { root: "legible", a: "il" }
+        ];
+
+        const data3 = [
+            { q: "He had to (open) ___ the shop early.", a: "reopen" },
+            { q: "Walking alone at night can be (safe) ___.", a: "unsafe" },
+            { q: "I (agree) ___ with your opinion.", a: "disagree" },
+            { q: "She (placed) ___ her keys and can't find them.", a: "misplaced" },
+            { q: "The project was (finished) ___; half was missing.", a: "unfinished" },
+            { q: "They (exist) ___ peacefully in the same area.", a: "coexist" },
+            { q: "The athlete is (trained) ___ and needs more practice.", a: "undertrained" },
+            { q: "The internet (connects) ___ the whole world.", a: "interconnects" },
+            { q: "The food was (frozen) ___ in the middle.", a: "semifrozen" },
+            { q: "You (read) ___ the instructions and did it wrong.", a: "misread" },
+            { q: "The team had to (build) ___ the bridge.", a: "rebuild" },
+            { q: "He is (honest) ___ and often tells lies.", a: "dishonest" },
+            { q: "The soup was (salted) ___ and tasted terrible.", a: "oversalted" },
+            { q: "It's (usual) ___ to see snow in the desert.", a: "unusual" },
+            { q: "The workers are (paid) ___ for their hard work.", a: "underpaid" }
+        ];
+
+        function init() {
+            const ex1 = document.getElementById('ex1');
+            data1.forEach((item, i) => {
+                let html = `<div class="p-3 bg-slate-100 rounded-lg flex flex-wrap items-center gap-3">
+                    <span class="font-bold w-6">${i+1}.</span>
+                    <span class="flex-grow">${item.q}</span>
+                    <select id="q1-${i}" class="p-1 rounded border-2 border-slate-300">
+                        <option value="">--select--</option>
+                        ${item.options.map(o => `<option value="${o}">${o}</option>`).join('')}
+                    </select>
+                </div>`;
+                ex1.innerHTML += html;
+            });
+
+            const ex2 = document.getElementById('ex2');
+            data2.forEach((item, i) => {
+                ex2.innerHTML += `<div class="flex items-center gap-2 p-2 border-b">
+                    <span class="w-6 font-bold text-slate-400">${i+1}.</span>
+                    <input type="text" id="q2-${i}" class="w-12 p-1 border-2 border-slate-300 rounded text-center font-mono">
+                    <span class="text-lg">${item.root}</span>
+                </div>`;
+            });
+
+            const ex3 = document.getElementById('ex3');
+            data3.forEach((item, i) => {
+                ex3.innerHTML += `<div class="p-3 bg-slate-50 border-l-4 border-blue-200 rounded">
+                    <span class="font-bold mr-2">${i+1}.</span>
+                    <span>${item.q.split('___')[0]}</span>
+                    <input type="text" id="q3-${i}" class="border-b-2 border-slate-400 bg-transparent focus:outline-none focus:border-blue-500 px-2 w-32">
+                    <span>${item.q.split('___')[1]}</span>
+                </div>`;
+            });
+        }
+
+        function checkAll() {
+            let score = 0;
+            let total = 45;
+
+            data1.forEach((item, i) => {
+                const el = document.getElementById(`q1-${i}`);
+                if(el.value === item.a) { score++; el.className = "p-1 rounded border-2 correct"; }
+                else { el.className = "p-1 rounded border-2 incorrect"; }
+            });
+
+            data2.forEach((item, i) => {
+                const el = document.getElementById(`q2-${i}`);
+                if(el.value.toLowerCase().trim() === item.a) { score++; el.classList.add('correct'); el.classList.remove('incorrect'); }
+                else { el.classList.add('incorrect'); el.classList.remove('correct'); }
+            });
+
+            data3.forEach((item, i) => {
+                const el = document.getElementById(`q3-${i}`);
+                if(el.value.toLowerCase().trim() === item.a) { score++; el.classList.add('correct'); el.classList.remove('incorrect'); }
+                else { el.classList.add('incorrect'); el.classList.remove('correct'); }
+            });
+
+            document.getElementById('scoreDisplay').innerText = `Your Score: ${score} / ${total}`;
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+
+        init();
+    </script>
+</body>
+</html>
