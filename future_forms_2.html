@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Future Tenses Exercise</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f7f6;
+            color: #333;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .instructions {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 0 4px 4px 0;
+        }
+        .exercise-item {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .sentence {
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        input[type="text"] {
+            padding: 6px 10px;
+            font-size: 1em;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            width: 220px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        input[type="text"]:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        .correct {
+            border-color: #2ecc71 !important;
+            background-color: #e8f8f5;
+        }
+        .incorrect {
+            border-color: #e74c3c !important;
+            background-color: #fdedec;
+        }
+        .feedback {
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-top: 5px;
+            display: none;
+        }
+        .feedback.correct-text {
+            color: #27ae60;
+            display: block;
+        }
+        .feedback.incorrect-text {
+            color: #c0392b;
+            display: block;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result-container {
+            margin-top: 25px;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: none;
+            padding: 15px;
+            border-radius: 4px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Grammar Practice: Advanced Future Tenses</h1>
+    <div class="instructions">
+        <strong>Instructions:</strong> Complete the sentences using the correct future form of the verb in brackets. Use either the <strong>Future Continuous</strong>, <strong>Future Perfect Simple</strong>, or <strong>Future Perfect Continuous</strong>. Use contractions where appropriate (e.g., <em>won't</em>), though full forms are also accepted.
+    </div>
+
+    <form id="quiz-form">
+        <div class="exercise-item">
+            <div class="sentence">1. Don't phone me between 8:00 and 9:00 PM tonight because I <input type="text" id="q1" data-answers='["will be watching", "will be viewing", "\u0027ll be watching"]'> (watch) the championship match.</div>
+            <div class="feedback" id="f1"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">2. By the time the professor finishes his lecture, the students <input type="text" id="q2" data-answers='["will have been listening", "\u0027ll have been listening"]'> (listen) to him for over three hours.</div>
+            <div class="feedback" id="f2"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">3. I've already bought the materials, so by this weekend, I <input type="text" id="q3" data-answers='["will have built", "\u0027ll have built"]'> (build) the new garden shed.</div>
+            <div class="feedback" id="f3"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">4. This time next week, we <input type="text" id="q4" data-answers='["will be sunbathing", "\u0027ll be sunbathing"]'> (sunbathe) on a beautiful beach in Bali!</div>
+            <div class="feedback" id="f4"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">5. Call me at 6:00 PM. I <input type="text" id="q5" data-answers='["will have arrived", "\u0027ll have arrived", "will have got home"]'> (arrive) home from work by then.</div>
+            <div class="feedback" id="f5"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">6. By December, Sarah <input type="text" id="q6" data-answers='["will have been working", "\u0027ll have been working"]'> (work) at this company for exactly ten years.</div>
+            <div class="feedback" id="f6"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">7. Please don't come over at midnight. I <input type="text" id="q7" data-answers='["will be sleeping", "\u0027ll be sleeping"]'> (sleep) soundly by that time.</div>
+            <div class="feedback" id="f7"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">8. If Mark doesn't speed up, the movie <input type="text" id="q8" data-answers='["will have started", "\u0027ll have started"]'> (start) before he even reaches the cinema.</div>
+            <div class="feedback" id="f8"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">9. Next month, my parents <input type="text" id="q9" data-answers='["will have been married", "will have been", "\u0027ll have been married"]'> (be married) for thirty years.</div>
+            <div class="feedback" id="f9"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">10. At 3:00 PM tomorrow, the engineers <input type="text" id="q10" data-answers='["will be testing", "\u0027ll be testing"]'> (test) the new software system.</div>
+            <div class="feedback" id="f10"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">11. By midnight, the novelists <input type="text" id="q11" data-answers='["will have been writing", "\u0027ll have been writing"]'> (write) for twelve consecutive hours to meet their deadline.</div>
+            <div class="feedback" id="f11"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">12. Do you think you <input type="text" id="q12" data-answers='["will have finished", "will have completed"]'> (finish) writing the annual report by Friday morning?</div>
+            <div class="feedback" id="f12"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">13. Don't worry about finding us; we <input type="text" id="q13" data-answers='["will be wearing", "\u0027ll be wearing"]'> (wear) bright red jackets so you can spot us easily.</div>
+            <div class="feedback" id="f13"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">14. When the clock strikes noon, the chefs <input type="text" id="q14" data-answers='["will have been cooking", "\u0027ll have been cooking"]'> (cook) the banquet dinner for five hours.</div>
+            <div class="feedback" id="f14"></div>
+        </div>
+
+        <div class="exercise-item">
+            <div class="sentence">15. Hopefully, scientists <input type="text" id="q15" data-answers='["will have found", "\u0027ll have found"]'> (find) a definitive cure for the disease by the end of the decade.</div>
+            <div class="feedback" id="f15"></div>
+        </div>
+
+        <button type="button" onclick="checkAnswers()">Check Answers</button>
+    </form>
+
+    <div id="result-container"></div>
+</div>
+
+<script>
+    function checkAnswers() {
+        let score = 0;
+        const totalItems = 15;
+
+        for (let i = 1; i <= totalItems; i++) {
+            const inputField = document.getElementById('q' + i);
+            const feedbackField = document.getElementById('f' + i);
+            const studentAnswer = inputField.value.trim().toLowerCase().replace(/’/g, "'"); // Normalize smart quotes
+            const acceptableAnswers = JSON.parse(inputField.getAttribute('data-answers'));
+            
+            // Lowercase acceptable answers for comparison
+            const targetAnswers = acceptableAnswers.map(ans => ans.toLowerCase());
+
+            if (targetAnswers.includes(studentAnswer)) {
+                inputField.className = "correct";
+                feedbackField.textContent = "Correct!";
+                feedbackField.className = "feedback correct-text";
+                score++;
+            } else {
+                inputField.className = "incorrect";
+                // Show the first acceptable version (usually the full form) as the correct key
+                feedbackField.textContent = "Incorrect. Correct answer: " + acceptableAnswers[0];
+                feedbackField.className = "feedback incorrect-text";
+            }
+        }
+
+        const resultDiv = document.getElementById('result-container');
+        resultDiv.style.display = "block";
+        resultDiv.textContent = `You scored ${score} out of ${totalItems}.`;
+        
+        if (score === totalItems) {
+            resultDiv.style.backgroundColor = "#e8f8f5";
+            resultDiv.style.color = "#27ae60";
+        } else if (score >= totalItems * 0.7) {
+            resultDiv.style.backgroundColor = "#fef9e7";
+            resultDiv.style.color = "#d35400";
+        } else {
+            resultDiv.style.backgroundColor = "#fdedec";
+            resultDiv.style.color = "#c0392b";
+        }
+        
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
