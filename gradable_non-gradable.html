@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradable & Non-Gradable Adjectives Practice</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #16a34a;
+            --error: #dc2626;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
+        }
+
+        h1 { color: var(--primary); margin-bottom: 10px; }
+        h2 { color: var(--primary); margin-top: 0; }
+        
+        .instructions {
+            font-style: italic;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+
+        .exercise-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 35px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid var(--border);
+        }
+
+        ol { padding-left: 20px; }
+        li { margin-bottom: 18px; padding-bottom: 10px; }
+
+        input[type="text"] {
+            padding: 6px 10px;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 180px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        input.correct {
+            border-color: var(--success) !important;
+            background-color: #f0fdf4;
+        }
+
+        input.incorrect {
+            border-color: var(--error) !important;
+            background-color: #fef2f2;
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-right: 10px;
+        }
+
+        button:hover { background-color: var(--primary-hover); }
+        
+        .btn-hint {
+            background-color: #e2e8f0;
+            color: #475569;
+            padding: 4px 8px;
+            font-size: 0.85rem;
+            margin-left: 8px;
+        }
+        .btn-hint:hover { background-color: #cbd5e1; }
+
+        .hint-text {
+            display: none;
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .feedback-summary {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Sorting specific styles */
+        .sorting-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 280px;
+            background: #f1f5f9;
+            border-radius: 8px;
+            padding: 20px;
+            border: 2px dashed #cbd5e1;
+            min-height: 200px;
+        }
+
+        .column h3 { text-align: center; margin-top: 0; color: #475569; }
+
+        .words-pool {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            min-height: 50px;
+        }
+
+        .draggable-item {
+            background: var(--primary);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: grab;
+            font-weight: 500;
+            user-select: none;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .draggable-item.placed-correct { background-color: var(--success); cursor: default; }
+        .draggable-item.placed-incorrect { background-color: var(--error); }
+
+        .wide-input { width: 280px !important; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Gradable & Non-Gradable Adjectives</h1>
+        <p>Upper-Intermediate (B2) Contextual Practice</p>
+    </header>
+
+    <!-- EXERCISE 1 -->
+    <div class="exercise-card" id="ex1">
+        <h2>Exercise 1: The Collocation Upgrade</h2>
+        <p class="instructions">Complete the sentences using an appropriate strong adverb (e.g., absolutely, completely, utterly) or upgrade the weak modifier/adjective in brackets to a powerful non-gradable adjective.</p>
+        
+        <ol>
+            <li>The audience was rather surprised by the twist, but the leading critic was absolutely <input type="text" id="ex1_1" data-answers='["astonished","speechless","stunned","flabbergasted"]'> (very surprised). <button class="btn-hint" onclick="toggleHint('h1_1')">Hint</button><div id="h1_1" class="hint-text">First two letters: as...</div></li>
+            <li>The weather during our cycling holiday was <input type="text" id="ex1_2" data-answers='["absolutely","completely","utterly","totally"]'> awful; it didn't stop raining for a single day. <button class="btn-hint" onclick="toggleHint('h1_2')">Hint</button><div id="h1_2" class="hint-text">First two letters: ab...</div></li>
+            <li>After riding 100 kilometers into a stiff headwind, the entire team was utterly <input type="text" id="ex1_3" data-answers='["exhausted","shattered","spent"]'> (very tired). <button class="btn-hint" onclick="toggleHint('h1_3')">Hint</button><div id="h1_3" class="hint-text">First two letters: ex...</div></li>
+            <li>I'm afraid your business proposal is <input type="text" id="ex1_4" data-answers='["absolutely","completely","utterly","totally","perfectly"]'> ridiculous; there is no way the board will approve it. <button class="btn-hint" onclick="toggleHint('h1_4')">Hint</button><div id="h1_4" class="hint-text">First two letters: ri...</div></li>
+            <li>The view from the mountain summit was absolutely <input type="text" id="ex1_5" data-answers='["breathtaking","stunning","magnificent","gorgeous","beautiful"]'> (very beautiful), making the grueling climb worth it. <button class="btn-hint" onclick="toggleHint('h1_5')">Hint</button><div id="h1_5" class="hint-text">First two letters: br...</div></li>
+            <li>The kitchen in the old, abandoned cottage was <input type="text" id="ex1_6" data-answers='["absolutely","completely","utterly","totally"]'> filthy when we first moved in. <button class="btn-hint" onclick="toggleHint('h1_6')">Hint</button><div id="h1_6" class="hint-text">First two letters: ab...</div></li>
+            <li>By the time the rescue team found the lost hikers, they were completely <input type="text" id="ex1_7" data-answers='["freezing","frozen"]'> (very cold). <button class="btn-hint" onclick="toggleHint('h1_7')">Hint</button><div id="h1_7" class="hint-text">First two letters: fr...</div></li>
+            <li>It is <input type="text" id="ex1_8" data-answers='["absolutely","completely","utterly","totally"]'> vital that you lock the lab doors behind you to ensure security. <button class="btn-hint" onclick="toggleHint('h1_8')">Hint</button><div id="h1_8" class="hint-text">First two letters: ab...</div></li>
+            <li>The look on his face when he dropped his phone into the lake was <input type="text" id="ex1_9" data-answers='["absolutely","completely","utterly","totally"]'> hilarious. <button class="btn-hint" onclick="toggleHint('h1_9')">Hint</button><div id="h1_9" class="hint-text">First two letters: ab...</div></li>
+            <li>The modern art gallery was filled with items that looked absolutely <input type="text" id="ex1_10" data-answers='["hideous","awful","terrible","bizarre","weird"]'> (very ugly/strange). <button class="btn-hint" onclick="toggleHint('h1_10')">Hint</button><div id="h1_10" class="hint-text">First two letters: hi...</div></li>
+        </ol>
+        
+        <button onclick="checkExercise1()">Check Exercise 1</button>
+        <span id="ex1_feedback" class="feedback-summary"></span>
+    </div>
+
+    <!-- EXERCISE 2 -->
+    <div class="exercise-card" id="ex2">
+        <h2>Exercise 2: Interactive Sorting Challenge</h2>
+        <p class="instructions">Drag each adjective into its correct category based on whether it pairs naturally with <em>"very / extremely"</em> (Gradable) or <em>"absolutely / totally"</em> (Non-Gradable).</p>
+        
+        <div class="words-pool" id="wordsPool" ondragover="allowDrop(event)" ondrop="drop(event)">
+        </div>
+
+        <div class="sorting-container">
+            <div class="column" id="gradableCol" ondragover="allowDrop(event)" ondrop="drop(event, 'gradable')">
+                <h3>Gradable<br><small style="font-weight:normal; font-size:0.8rem; color:var(--text-light)">(very / extremely...)</small></h3>
+            </div>
+            <div class="column" id="nonGradableCol" ondragover="allowDrop(event)" ondrop="drop(event, 'nongradable')">
+                <h3>Non-Gradable<br><small style="font-weight:normal; font-size:0.8rem; color:var(--text-light)">(absolutely / totally...)</small></h3>
+            </div>
+        </div>
+        
+        <button style="margin-top: 20px;" onclick="checkExercise2()">Check Exercise 2</button>
+        <span id="ex2_feedback" class="feedback-summary"></span>
+    </div>
+
+    <!-- EXERCISE 3 -->
+    <div class="exercise-card" id="ex3">
+        <h2>Exercise 3: Error Correction</h2>
+        <p class="instructions">Identify and correct the erroneous modifier-adjective collocation in each sentence. Write out the corrected 2-word phrase. If the sentence contains a valid combination, type <strong>"Correct"</strong>.</p>
+        
+        <ol>
+            <li>The comedy show was reasonably hilarious, though some sketches fell flat.<br>
+                Correction: <input type="text" class="wide-input" id="ex3_1" data-answers='["absolutely hilarious","completely hilarious","utterly hilarious","totally hilarious","reasonably funny"]'></li>
+            <li>By the time we walked back to camp, our jackets were slightly soaked.<br>
+                Correction: <input type="text" class="wide-input" id="ex3_2" data-answers='["completely soaked","absolutely soaked","utterly soaked","totally soaked","slightly wet"]'></li>
+            <li>The local seafood pasta was incredibly delicious, and we ordered it twice.<br>
+                Correction: <input type="text" class="wide-input" id="ex3_3" data-answers='["correct"]'></li>
+            <li>It is totally vital that you verify the passport numbers before booking the flights.<br>
+                Correction: <input type="text" class="wide-input" id="ex3_4" data-answers='["correct"]'></li>
+            <li>Her performance as Lady Macbeth was very magnificent; she received a standing ovation.<br>
+                Correction: <input type="text" class="wide-input" id="ex3_5" data-answers='["absolutely magnificent","completely magnificent","utterly magnificent","totally magnificent","very good","very impressive"]'></li>
+            <li>The final exam paper was completely difficult, and many students failed to finish it.<br>
+                Correction: <input type="text" class="wide-input" id="ex3_6" data-answers='["extremely difficult","very difficult","completely impossible","absolutely impossible"]'></li>
+            <li>We were both highly terrified when the engine suddenly stopped mid-flight.<br>
+                Correction: <input type="text" class="wide-input" id="ex3_7" data-answers='["absolutely terrified","completely terrified","utterly terrified","totally terrified","highly frightened"]'></li>
+            <li>After scrubbing the vintage racing frame for hours, it was perfectly clean.<br>
+                Correction: <input type="text" class="wide-input" id="ex3_8" data-answers='["correct"]'></li>
+            <li>The teacher became absolutely angry when the students ignored the safety rules.<br>
+                Correction: <input type="text" class="wide-input" id="ex3_9" data-answers='["absolutely furious","very angry","extremely angry","completely furious","utterly furious","totally furious"]'></li>
+            <li>The ancient ruins were slightly ancient, dating back over three thousand years.<br>
+                Correction: <input type="text" class="wide-input" id="ex3_10" data-answers='["absolutely ancient","completely ancient","utterly ancient","totally ancient","slightly old"]'></li>
+        </ol>
+        
+        <button onclick="checkExercise3()">Check Exercise 3</button>
+        <span id="ex3_feedback" class="feedback-summary"></span>
+    </div>
+</div>
+
+<script>
+    function toggleHint(id) {
+        const hint = document.getElementById(id);
+        hint.style.display = hint.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function checkExercise1() {
+        let correctCount = 0;
+        const total = 10;
+        
+        for (let i = 1; i <= total; i++) {
+            const input = document.getElementById(`ex1_${i}`);
+            const val = input.value.trim().toLowerCase();
+            const validAnswers = JSON.parse(input.getAttribute('data-answers'));
+            
+            if (validAnswers.includes(val)) {
+                input.className = 'correct';
+                correctCount++;
+            } else {
+                input.className = 'incorrect';
+            }
+        }
+        
+        const feedback = document.getElementById('ex1_feedback');
+        feedback.textContent = `Score: ${correctCount}/${total}`;
+        feedback.style.color = correctCount === total ? 'var(--success)' : 'var(--text)';
+    }
+
+    const adjectiveData = [
+        { word: 'Angry', type: 'gradable' },
+        { word: 'Furious', type: 'nongradable' },
+        { word: 'Cold', type: 'gradable' },
+        { word: 'Freezing', type: 'nongradable' },
+        { word: 'Dirty', type: 'gradable' },
+        { word: 'Filthy', type: 'nongradable' },
+        { word: 'Frightened', type: 'gradable' },
+        { word: 'Terrified', type: 'nongradable' },
+        { word: 'Tasty', type: 'gradable' },
+        { word: 'Delicious', type: 'nongradable' }
+    ];
+
+    const pool = document.getElementById('wordsPool');
+    
+    function shuffle(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    shuffle(adjectiveData).forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'draggable-item';
+        div.id = `drag_${index}`;
+        div.draggable = true;
+        div.textContent = item.word;
+        div.setAttribute('data-type', item.type);
+        
+        div.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('text/plain', e.target.id);
+        });
+        
+        pool.appendChild(div);
+    });
+
+    function allowDrop(e) { e.preventDefault(); }
+
+    function drop(e, targetCol) {
+        e.preventDefault();
+        const id = e.dataTransfer.getData('text/plain');
+        const draggedElement = document.getElementById(id);
+        
+        if (targetCol) {
+            document.getElementById(targetCol === 'gradable' ? 'gradableCol' : 'nonGradableCol').appendChild(draggedElement);
+        } else {
+            document.getElementById('wordsPool').appendChild(draggedElement);
+        }
+        draggedElement.classList.remove('placed-correct', 'placed-incorrect');
+    }
+
+    function checkExercise2() {
+        const gradColItems = document.getElementById('gradableCol').getElementsByClassName('draggable-item');
+        const nonGradColItems = document.getElementById('nonGradableCol').getElementsByClassName('draggable-item');
+        let correctCount = 0;
+        const total = adjectiveData.length;
+
+        for (let item of gradColItems) {
+            if (item.getAttribute('data-type') === 'gradable') {
+                item.className = 'draggable-item placed-correct';
+                correctCount++;
+            } else {
+                item.className = 'draggable-item placed-incorrect';
+            }
+        }
+
+        for (let item of nonGradColItems) {
+            if (item.getAttribute('data-type') === 'nongradable') {
+                item.className = 'draggable-item placed-correct';
+                correctCount++;
+            } else {
+                item.className = 'draggable-item placed-incorrect';
+            }
+        }
+
+        const feedback = document.getElementById('ex2_feedback');
+        feedback.textContent = `Score: ${correctCount}/${total} correctly sorted.`;
+        feedback.style.color = correctCount === total ? 'var(--success)' : 'var(--text)';
+    }
+
+    function checkExercise3() {
+        let correctCount = 0;
+        const total = 10;
+        
+        for (let i = 1; i <= total; i++) {
+            const input = document.getElementById(`ex3_${i}`);
+            const val = input.value.trim().toLowerCase().replace(/\s+/g, ' ');
+            const validAnswers = JSON.parse(input.getAttribute('data-answers'));
+            
+            if (validAnswers.includes(val)) {
+                input.className = 'wide-input correct';
+                correctCount++;
+            } else {
+                input.className = 'wide-input incorrect';
+            }
+        }
+        
+        const feedback = document.getElementById('ex3_feedback');
+        feedback.textContent = `Score: ${correctCount}/${total}`;
+        feedback.style.color = correctCount === total ? 'var(--success)' : 'var(--text)';
+    }
+</script>
+
+</body>
+</html>
