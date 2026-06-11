@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Formation — Prefixes &amp; Noun Suffixes (B1/B2)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3F5F8;
+    --card:#FFFFFF;
+    --ink:#16243A;
+    --ink-soft:#5A6880;
+    --line:#D9DEE7;
+    --accent:#FFD43B;
+    --accent-soft:#FFF3C2;
+    --blue:#1D5BD8;
+    --blue-soft:#E8EFFC;
+    --green:#1F8A4C;
+    --green-soft:#E3F4EA;
+    --red:#C8412F;
+    --red-soft:#FBE9E6;
+    --radius:10px;
+    --shadow:0 1px 2px rgba(22,36,58,.08), 0 4px 14px rgba(22,36,58,.06);
+    --font-display:"Bricolage Grotesque", system-ui, sans-serif;
+    --font-body:"Atkinson Hyperlegible", system-ui, sans-serif;
+    --font-mono:"IBM Plex Mono", ui-monospace, monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:17px;
+    line-height:1.55;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:28px 20px 80px}
+
+  /* ---------- Header ---------- */
+  header{padding:18px 0 26px}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);margin:0 0 14px;
+  }
+  .tile-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  .tile{
+    font-family:var(--font-mono);font-weight:600;font-size:20px;
+    background:var(--card);border:2px solid var(--ink);border-radius:8px;
+    padding:6px 14px;box-shadow:3px 3px 0 var(--ink);
+  }
+  .tile.affix{background:var(--accent)}
+  .tile-plus{font-family:var(--font-mono);font-size:18px;color:var(--ink-soft)}
+  .tile-eq{font-family:var(--font-mono);font-size:18px;color:var(--ink-soft)}
+  .tile.result{background:var(--ink);color:#fff;border-color:var(--ink);box-shadow:3px 3px 0 var(--accent)}
+  @media (prefers-reduced-motion: no-preference){
+    .tile-row > *{opacity:0;transform:translateY(8px);animation:pop .45s ease forwards}
+    .tile-row > *:nth-child(1){animation-delay:.05s}
+    .tile-row > *:nth-child(2){animation-delay:.2s}
+    .tile-row > *:nth-child(3){animation-delay:.35s}
+    .tile-row > *:nth-child(4){animation-delay:.5s}
+    .tile-row > *:nth-child(5){animation-delay:.65s}
+    .tile-row > *:nth-child(6){animation-delay:.85s}
+    .tile-row > *:nth-child(7){animation-delay:1.05s}
+    @keyframes pop{to{opacity:1;transform:none}}
+  }
+  h1{
+    font-family:var(--font-display);font-weight:800;
+    font-size:clamp(28px,5vw,40px);line-height:1.12;margin:0 0 8px;
+  }
+  .sub{color:var(--ink-soft);margin:0;max-width:62ch}
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    position:sticky;top:0;z-index:30;
+    background:var(--paper);
+    display:flex;flex-wrap:wrap;gap:8px;
+    padding:10px 0 12px;margin-bottom:18px;
+    border-bottom:2px solid var(--line);
+  }
+  .tab-btn{
+    font-family:var(--font-display);font-weight:700;font-size:15px;
+    border:2px solid var(--ink);background:var(--card);color:var(--ink);
+    border-radius:999px;padding:7px 16px;cursor:pointer;white-space:nowrap;
+    display:flex;align-items:center;gap:8px;
+  }
+  .tab-btn[aria-selected="true"]{background:var(--ink);color:#fff}
+  .tab-btn .badge{
+    font-family:var(--font-mono);font-weight:600;font-size:12px;
+    background:var(--accent);color:var(--ink);
+    border-radius:999px;padding:1px 8px;display:none;
+  }
+  .tab-btn .badge.show{display:inline-block}
+  .tab-btn:focus-visible,button:focus-visible,input:focus-visible,[tabindex]:focus-visible{
+    outline:3px solid var(--blue);outline-offset:2px;
+  }
+
+  /* ---------- Sections ---------- */
+  section.ex{display:none;background:var(--card);border:1.5px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 26px 22px;margin-bottom:26px}
+  section.ex.active{display:block}
+  .ex h2{font-family:var(--font-display);font-weight:800;font-size:23px;margin:0 0 4px}
+  .ex .kind{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink);background:var(--accent-soft);border:1px solid var(--accent);
+    border-radius:6px;padding:2px 8px;display:inline-block;margin-bottom:10px;
+  }
+  .ex .instr{color:var(--ink-soft);margin:0 0 20px;max-width:68ch}
+
+  /* ---------- Shared item styles ---------- */
+  ol.items{margin:0;padding-left:26px;display:grid;gap:14px}
+  ol.items li{padding-left:4px}
+  .gap-input{
+    font-family:var(--font-body);font-size:16.5px;color:var(--ink);
+    border:none;border-bottom:2.5px solid var(--ink);
+    background:var(--blue-soft);border-radius:6px 6px 0 0;
+    padding:3px 10px;width:170px;text-align:center;
+  }
+  .gap-input.small{width:140px}
+  .hintword{font-family:var(--font-mono);font-weight:600;font-size:14px;color:var(--ink-soft)}
+  .ok-mark,.bad-mark{font-weight:700;margin-left:6px}
+  li.ok > .ok-mark::after, span.checked.ok .ok-mark::after{content:"✓";color:var(--green)}
+  .gap-input.ok{background:var(--green-soft);border-bottom-color:var(--green)}
+  .gap-input.bad{background:var(--red-soft);border-bottom-color:var(--red)}
+
+  /* ---------- Controls ---------- */
+  .controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:24px;
+    border-top:1.5px solid var(--line);padding-top:16px}
+  .btn{
+    font-family:var(--font-display);font-weight:700;font-size:15px;
+    border-radius:8px;padding:9px 18px;cursor:pointer;border:2px solid var(--ink);
+  }
+  .btn.primary{background:var(--ink);color:#fff;box-shadow:3px 3px 0 var(--accent)}
+  .btn.primary:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--accent)}
+  .btn.ghost{background:var(--card);color:var(--ink)}
+  .score{font-family:var(--font-mono);font-weight:600;font-size:15px;margin-left:auto}
+  .score .good{color:var(--green)} .score .meh{color:var(--ink)}
+  .keybox{
+    display:none;margin-top:16px;background:var(--accent-soft);
+    border:1.5px dashed var(--ink);border-radius:8px;padding:12px 16px;
+    font-size:15.5px;
+  }
+  .keybox.show{display:block}
+  .keybox strong{font-family:var(--font-display)}
+
+  /* ---------- Exercise 1: sorting ---------- */
+  .bank{
+    display:flex;flex-wrap:wrap;gap:9px;
+    background:var(--paper);border:1.5px dashed var(--line);
+    border-radius:var(--radius);padding:14px;min-height:56px;margin-bottom:18px;
+  }
+  .chip{
+    font-family:var(--font-mono);font-weight:500;font-size:15px;
+    background:var(--card);border:2px solid var(--ink);border-radius:8px;
+    padding:4px 12px;cursor:grab;user-select:none;box-shadow:2px 2px 0 var(--ink);
+  }
+  .chip.selected{background:var(--accent);transform:translateY(-2px)}
+  .chip.ok{border-color:var(--green);box-shadow:2px 2px 0 var(--green);background:var(--green-soft)}
+  .chip.bad{border-color:var(--red);box-shadow:2px 2px 0 var(--red);background:var(--red-soft)}
+  .cols{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  @media (max-width:640px){.cols{grid-template-columns:repeat(2,1fr)}}
+  .col{
+    border:2px solid var(--ink);border-radius:var(--radius);
+    background:var(--card);min-height:120px;padding:8px;
+  }
+  .col.dragover{background:var(--blue-soft)}
+  .col h3{
+    font-family:var(--font-mono);font-weight:600;font-size:16px;margin:0 0 8px;
+    background:var(--accent);border-radius:6px;padding:2px 8px;display:inline-block;
+  }
+  .col .drop{display:flex;flex-wrap:wrap;gap:8px;min-height:60px}
+  .sort-hint{font-size:14px;color:var(--ink-soft);margin:0 0 12px}
+
+  /* ---------- Exercise 4: text ---------- */
+  .ftext{
+    background:var(--paper);border-left:4px solid var(--accent);
+    border-radius:0 var(--radius) var(--radius) 0;
+    padding:18px 22px;font-size:17px;line-height:2.15;
+  }
+  .ftext .gnum{font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);vertical-align:super}
+  .ftext-title{font-family:var(--font-display);font-weight:800;font-size:19px;margin:0 0 10px}
+
+  /* ---------- Exercise 5: wrong word ---------- */
+  .w{cursor:pointer;border-radius:4px;padding:1px 2px}
+  .w:hover{background:var(--accent-soft)}
+  .w.marked{background:var(--accent);box-shadow:0 2px 0 var(--ink)}
+  .w.was-wrong{background:var(--red-soft);text-decoration:line-through;text-decoration-color:var(--red)}
+  .fixline{display:inline-flex;align-items:center;gap:8px;margin-left:10px}
+  .fixline label{font-size:14px;color:var(--ink-soft)}
+
+  /* ---------- Exercise 6: builder ---------- */
+  .banks{display:grid;gap:10px;margin-bottom:20px}
+  .bankrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .bankrow .lbl{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-soft);width:64px;flex-shrink:0;
+  }
+  .ptile{
+    font-family:var(--font-mono);font-weight:600;font-size:15px;
+    border:2px solid var(--ink);border-radius:8px;padding:3px 11px;
+    background:var(--accent);cursor:pointer;box-shadow:2px 2px 0 var(--ink);
+  }
+  .ptile.root{background:var(--card)}
+  .ptile:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+  .builder-hint{font-size:14px;color:var(--ink-soft);margin:0 0 14px}
+
+  footer{margin-top:8px;color:var(--ink-soft);font-size:14px;text-align:center}
+  @media (max-width:560px){
+    .gap-input{width:140px}
+    section.ex{padding:20px 16px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Word Formation · B1/B2 · Prefixes &amp; Noun Suffixes</p>
+  <div class="tile-row" aria-hidden="true">
+    <span class="tile affix">un</span><span class="tile-plus">+</span><span class="tile">employ</span><span class="tile-plus">+</span><span class="tile affix">ment</span><span class="tile-eq">=</span><span class="tile result">unemployment</span>
+  </div>
+  <h1>Build the word.</h1>
+  <p class="sub">Six exercises on prefixes (semi-, under-, over-, re-, co-, inter-, in-/im-/ir-/il-, un-, dis-, mis-) and noun suffixes (-tion, -ment, -ness, -ity, -er/-or, -ance/-ence, -al). Check your answers as you go — green means correct, red means try again.</p>
+</header>
+
+<nav class="tabs" role="tablist" aria-label="Exercises">
+  <button class="tab-btn" role="tab" aria-selected="true" data-tab="1">1 · Sort the prefixes <span class="badge" id="badge1"></span></button>
+  <button class="tab-btn" role="tab" aria-selected="false" data-tab="2">2 · Choose the prefix <span class="badge" id="badge2"></span></button>
+  <button class="tab-btn" role="tab" aria-selected="false" data-tab="3">3 · Make the noun <span class="badge" id="badge3"></span></button>
+  <button class="tab-btn" role="tab" aria-selected="false" data-tab="4">4 · Story gaps <span class="badge" id="badge4"></span></button>
+  <button class="tab-btn" role="tab" aria-selected="false" data-tab="5">5 · Fix the word <span class="badge" id="badge5"></span></button>
+  <button class="tab-btn" role="tab" aria-selected="false" data-tab="6">6 · Word builder <span class="badge" id="badge6"></span></button>
+</nav>
+
+<main>
+
+<section class="ex active" id="ex1">
+  <span class="kind">Drag &amp; drop</span>
+  <h2>Sort the negative prefixes</h2>
+  <p class="instr">Each adjective takes one negative prefix. Drag it into the correct box — or tap a word, then tap a box. Tap the word bank to send a word back.</p>
+  <div class="bank" id="bank1" aria-label="Word bank"></div>
+  <div class="cols" id="cols1"></div>
+  <div class="controls">
+    <button class="btn primary" data-check="1">Check answers</button>
+    <button class="btn ghost" data-key="1">Show answers</button>
+    <button class="btn ghost" data-reset="1">Reset</button>
+    <span class="score" id="score1"></span>
+  </div>
+  <div class="keybox" id="key1"></div>
+</section>
+
+<section class="ex" id="ex2">
+  <span class="kind">Gap-fill</span>
+  <h2>Choose the right prefix</h2>
+  <p class="instr">Complete each sentence with <strong>re-, co-, inter-, semi-, over-, under-</strong> or <strong>mis-</strong> + the word in CAPITALS. Type the whole word.</p>
+  <ol class="items" id="list2"></ol>
+  <div class="controls">
+    <button class="btn primary" data-check="2">Check answers</button>
+    <button class="btn ghost" data-key="2">Show answers</button>
+    <button class="btn ghost" data-reset="2">Reset</button>
+    <span class="score" id="score2"></span>
+  </div>
+  <div class="keybox" id="key2"></div>
+</section>
+
+<section class="ex" id="ex3">
+  <span class="kind">Transformation</span>
+  <h2>Make the noun</h2>
+  <p class="instr">Write the noun form of each word. Watch out — some items need two different nouns!</p>
+  <ol class="items" id="list3"></ol>
+  <div class="controls">
+    <button class="btn primary" data-check="3">Check answers</button>
+    <button class="btn ghost" data-key="3">Show answers</button>
+    <button class="btn ghost" data-reset="3">Reset</button>
+    <span class="score" id="score3"></span>
+  </div>
+  <div class="keybox" id="key3"></div>
+</section>
+
+<section class="ex" id="ex4">
+  <span class="kind">Word formation text</span>
+  <h2>Story gaps</h2>
+  <p class="instr">Complete the story with the correct <strong>noun</strong> form of each word in CAPITALS.</p>
+  <p class="ftext-title">A New Beginning</p>
+  <p class="ftext" id="text4"></p>
+  <div class="controls">
+    <button class="btn primary" data-check="4">Check answers</button>
+    <button class="btn ghost" data-key="4">Show answers</button>
+    <button class="btn ghost" data-reset="4">Reset</button>
+    <span class="score" id="score4"></span>
+  </div>
+  <div class="keybox" id="key4"></div>
+</section>
+
+<section class="ex" id="ex5">
+  <span class="kind">Error correction</span>
+  <h2>Find and fix the wrong prefix</h2>
+  <p class="instr">One word in each sentence has the wrong prefix. Click (or tap) the wrong word, then type the correct word in the box that appears.</p>
+  <ol class="items" id="list5"></ol>
+  <div class="controls">
+    <button class="btn primary" data-check="5">Check answers</button>
+    <button class="btn ghost" data-key="5">Show answers</button>
+    <button class="btn ghost" data-reset="5">Reset</button>
+    <span class="score" id="score5"></span>
+  </div>
+  <div class="keybox" id="key5"></div>
+</section>
+
+<section class="ex" id="ex6">
+  <span class="kind">Word builder</span>
+  <h2>Build the word</h2>
+  <p class="instr">Make one word for each definition using a prefix, a root and a suffix from the tiles. Use each root once. The spelling may change a little when the parts join!</p>
+  <p class="builder-hint">Tip: click a box below first, then tap tiles to add them — or just type.</p>
+  <div class="banks" id="banks6"></div>
+  <ol class="items" id="list6"></ol>
+  <div class="controls">
+    <button class="btn primary" data-check="6">Check answers</button>
+    <button class="btn ghost" data-key="6">Show answers</button>
+    <button class="btn ghost" data-reset="6">Reset</button>
+    <span class="score" id="score6"></span>
+  </div>
+  <div class="keybox" id="key6"></div>
+</section>
+
+</main>
+
+<footer>Word Formation Practice · Exercises 1–6 · Check, reset and retry as often as you like.</footer>
+</div>
+<script>
+"use strict";
+
+/* ---------------- Data ---------------- */
+const EX1_COLS = [
+  {key:"un", label:"un-"}, {key:"in", label:"in-"}, {key:"im", label:"im-"},
+  {key:"ir", label:"ir-"}, {key:"il", label:"il-"}, {key:"dis", label:"dis-"}
+];
+const EX1_WORDS = [
+  {w:"fair",p:"un"},{w:"employed",p:"un"},{w:"likely",p:"un"},
+  {w:"correct",p:"in"},{w:"formal",p:"in"},{w:"visible",p:"in"},
+  {w:"patient",p:"im"},{w:"possible",p:"im"},{w:"polite",p:"im"},
+  {w:"regular",p:"ir"},{w:"responsible",p:"ir"},
+  {w:"legal",p:"il"},{w:"logical",p:"il"},
+  {w:"honest",p:"dis"},{w:"organised",p:"dis"},{w:"loyal",p:"dis"}
+];
+
+const EX2 = [
+  {pre:"I failed my driving test, so I'll have to ", post:" it next month.", hint:"TAKE", ans:["retake"]},
+  {pre:"They live in a ", post:" house — they share one wall with their neighbours.", hint:"DETACHED", ans:["semidetached"]},
+  {pre:"Sorry, I ", post:" your message — I thought you said Tuesday, not Thursday.", hint:"UNDERSTOOD", ans:["misunderstood"]},
+  {pre:"This steak is ", post:" — it's completely dry.", hint:"COOKED", ans:["overcooked"]},
+  {pre:"Many nurses feel ", post:" for the difficult work they do.", hint:"PAID", ans:["underpaid"]},
+  {pre:"The two scientists decided to ", post:" on the project.", hint:"OPERATE", ans:["cooperate"]},
+  {pre:"You can catch ", post:" flights to over forty countries from this airport.", hint:"NATIONAL", ans:["international"]},
+  {pre:"I missed the bus this morning because I ", post:".", hint:"SLEPT", ans:["overslept"]},
+  {pre:"Don't ", post:" how hard the exam is — you need to study seriously.", hint:"ESTIMATE", ans:["underestimate"]},
+  {pre:"Please ", post:" your plastic bottles instead of throwing them away.", hint:"CYCLE", ans:["recycle"]}
+];
+
+const EX3 = [
+  {prompt:"decide", gaps:[{label:"", ans:["decision"]}]},
+  {prompt:"improve", gaps:[{label:"", ans:["improvement"]}]},
+  {prompt:"happy", gaps:[{label:"", ans:["happiness"]}]},
+  {prompt:"able", gaps:[{label:"", ans:["ability"]}]},
+  {prompt:"perform", gaps:[{label:"(thing)", ans:["performance"]},{label:"(person)", ans:["performer"]}]},
+  {prompt:"prefer", gaps:[{label:"", ans:["preference"]}]},
+  {prompt:"arrive", gaps:[{label:"", ans:["arrival"]}]},
+  {prompt:"popular", gaps:[{label:"", ans:["popularity"]}]},
+  {prompt:"direct", gaps:[{label:"(person)", ans:["director"]}]},
+  {prompt:"ill", gaps:[{label:"", ans:["illness"]}]},
+  {prompt:"refuse", gaps:[{label:"", ans:["refusal"]}]},
+  {prompt:"appear", gaps:[{label:"", ans:["appearance"]}]},
+  {prompt:"educate", gaps:[{label:"", ans:["education"]}]},
+  {prompt:"employ", gaps:[{label:"(person who gives jobs)", ans:["employer"]},{label:"(state of having a job)", ans:["employment"]}]}
+];
+
+const EX4 = [
+  {t:"Last year I made an important "},{g:1,hint:"DECIDE",ans:["decision"]},
+  {t:" to change my life. I had worked as a "},{g:2,hint:"MANAGE",ans:["manager"]},
+  {t:" in a bank for ten years, but the job gave me no real "},{g:3,hint:"HAPPY",ans:["happiness"]},
+  {t:". Then one evening I saw an advertisement for a national singing "},{g:4,hint:"COMPETE",ans:["competition"]},
+  {t:". My first "},{g:5,hint:"PERFORM",ans:["performance"]},
+  {t:" wasn't perfect, but the judges saw my "},{g:6,hint:"ABLE",ans:["ability"]},
+  {t:" and sent me to the next round. After my "},{g:7,hint:"ARRIVE",ans:["arrival"]},
+  {t:" in the final, everything changed quickly. I received an "},{g:8,hint:"INVITE",ans:["invitation"]},
+  {t:" to record a song, and a music journalist wrote about the big "},{g:9,hint:"DIFFER",ans:["difference"]},
+  {t:" between my old life and my new one. My parents' "},{g:10,hint:"KIND",ans:["kindness"]},
+  {t:" and support helped me through it all."}
+];
+
+const EX5 = [
+  {s:"The film was so boring that it was inpossible to stay awake.", wrong:8, ans:["impossible"]},
+  {s:"Don't be so unpatient — the bus will come soon.", wrong:3, ans:["impatient"]},
+  {s:"Parking on this street is unlegal.", wrong:5, ans:["illegal"]},
+  {s:"I'm sorry, I completely disunderstood your email.", wrong:4, ans:["misunderstood"]},
+  {s:"My alarm didn't ring and I underslept this morning.", wrong:6, ans:["overslept"]},
+  {s:"The waiter undercharged us — we paid far too much!", wrong:2, ans:["overcharged"]},
+  {s:"The two authors interwrote the novel together.", wrong:3, ans:["cowrote"]},
+  {s:"Please remember to uncycle your old newspapers.", wrong:3, ans:["recycle"]},
+  {s:"I don't trust him at all — he's completely unhonest.", wrong:9, ans:["dishonest"]},
+  {s:"Our team reached the half-final of the cup.", wrong:4, ans:["semifinal"]}
+];
+
+const EX6_BANKS = [
+  {lbl:"Prefix", cls:"", tiles:["un-","dis-","mis-","co-","re-","in-"]},
+  {lbl:"Root", cls:"root", tiles:["employ","agree","manage","operate","appear","depend"]},
+  {lbl:"Suffix", cls:"", tiles:["-ment","-ance","-ence","-ation","-tion"]}
+];
+const EX6 = [
+  {def:"the state of not having a job", ans:["unemployment"]},
+  {def:"when two people have different opinions", ans:["disagreement"]},
+  {def:"bad or careless management of something", ans:["mismanagement"]},
+  {def:"working together (noun)", ans:["cooperation"]},
+  {def:"when something appears again", ans:["reappearance"]},
+  {def:"freedom from control by other people", ans:["independence"]}
+];
+
+const KEYS = {
+  1:"<strong>un-</strong>: fair, employed, likely &nbsp;·&nbsp; <strong>in-</strong>: correct, formal, visible &nbsp;·&nbsp; <strong>im-</strong>: patient, possible, polite &nbsp;·&nbsp; <strong>ir-</strong>: regular, responsible &nbsp;·&nbsp; <strong>il-</strong>: legal, logical &nbsp;·&nbsp; <strong>dis-</strong>: honest, organised, loyal",
+  2:"1 retake · 2 semi-detached · 3 misunderstood · 4 overcooked · 5 underpaid · 6 co-operate / cooperate · 7 international · 8 overslept · 9 underestimate · 10 recycle",
+  3:"1 decision · 2 improvement · 3 happiness · 4 ability · 5 performance / performer · 6 preference · 7 arrival · 8 popularity · 9 director · 10 illness · 11 refusal · 12 appearance · 13 education · 14 employer / employment",
+  4:"1 decision · 2 manager · 3 happiness · 4 competition · 5 performance · 6 ability · 7 arrival · 8 invitation · 9 difference · 10 kindness",
+  5:"1 impossible · 2 impatient · 3 illegal · 4 misunderstood · 5 overslept · 6 overcharged · 7 co-wrote · 8 recycle · 9 dishonest · 10 semi-final",
+  6:"1 unemployment · 2 disagreement · 3 mismanagement · 4 co-operation / cooperation · 5 reappearance · 6 independence"
+};
+
+/* ---------------- Helpers ---------------- */
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+const norm = s => (s||"").toLowerCase().trim().replace(/[\s\-\u2010\u2011\u2013\u2014']/g,"");
+const shuffle = arr => { const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+
+function makeInput(answers, extraClass){
+  const inp = document.createElement("input");
+  inp.type = "text";
+  inp.className = "gap-input" + (extraClass ? " " + extraClass : "");
+  inp.autocomplete = "off"; inp.autocapitalize = "off"; inp.spellcheck = false;
+  inp.dataset.ans = JSON.stringify(answers.map(norm));
+  inp.addEventListener("input", () => inp.classList.remove("ok","bad"));
+  return inp;
+}
+function gradeInput(inp){
+  const ok = JSON.parse(inp.dataset.ans).includes(norm(inp.value));
+  inp.classList.toggle("ok", ok);
+  inp.classList.toggle("bad", !ok);
+  return ok;
+}
+function setScore(ex, ok, total){
+  const s = $("#score"+ex);
+  s.innerHTML = '<span class="'+(ok===total?"good":"meh")+'">'+ok+" / "+total+"</span>";
+  const b = $("#badge"+ex);
+  b.textContent = ok+"/"+total;
+  b.classList.add("show");
+}
+
+/* ---------------- Exercise 1 ---------------- */
+let selectedChip = null;
+function renderEx1(){
+  selectedChip = null;
+  const bank = $("#bank1"), cols = $("#cols1");
+  bank.innerHTML = ""; cols.innerHTML = "";
+  shuffle(EX1_WORDS).forEach((item,i) => {
+    const c = document.createElement("button");
+    c.type = "button";
+    c.className = "chip";
+    c.textContent = item.w;
+    c.dataset.p = item.p;
+    c.draggable = true;
+    c.id = "chip-"+i;
+    c.addEventListener("click", ev => {
+      ev.stopPropagation();
+      if(selectedChip === c){ c.classList.remove("selected"); selectedChip = null; return; }
+      if(selectedChip) selectedChip.classList.remove("selected");
+      selectedChip = c; c.classList.add("selected");
+    });
+    c.addEventListener("dragstart", ev => ev.dataTransfer.setData("text/plain", c.id));
+    bank.appendChild(c);
+  });
+  EX1_COLS.forEach(col => {
+    const d = document.createElement("div");
+    d.className = "col";
+    d.innerHTML = '<h3>'+col.label+'</h3><div class="drop" data-p="'+col.key+'"></div>';
+    cols.appendChild(d);
+  });
+  const placeChip = (chip, zone) => {
+    chip.classList.remove("selected","ok","bad");
+    zone.appendChild(chip);
+    if(selectedChip === chip) selectedChip = null;
+  };
+  $$("#cols1 .col").forEach(colEl => {
+    const zone = $(".drop", colEl);
+    colEl.addEventListener("click", () => { if(selectedChip) placeChip(selectedChip, zone); });
+    colEl.addEventListener("dragover", ev => { ev.preventDefault(); colEl.classList.add("dragover"); });
+    colEl.addEventListener("dragleave", () => colEl.classList.remove("dragover"));
+    colEl.addEventListener("drop", ev => {
+      ev.preventDefault(); colEl.classList.remove("dragover");
+      const chip = document.getElementById(ev.dataTransfer.getData("text/plain"));
+      if(chip) placeChip(chip, zone);
+    });
+  });
+  bank.addEventListener("click", () => { if(selectedChip) placeChip(selectedChip, bank); });
+  bank.addEventListener("dragover", ev => ev.preventDefault());
+  bank.addEventListener("drop", ev => {
+    ev.preventDefault();
+    const chip = document.getElementById(ev.dataTransfer.getData("text/plain"));
+    if(chip) placeChip(chip, bank);
+  });
+}
+function checkEx1(){
+  let ok = 0;
+  $$("#ex1 .chip").forEach(chip => {
+    const zone = chip.closest(".drop");
+    const correct = !!zone && zone.dataset.p === chip.dataset.p;
+    chip.classList.toggle("ok", correct);
+    chip.classList.toggle("bad", !correct);
+    if(correct) ok++;
+  });
+  setScore(1, ok, EX1_WORDS.length);
+}
+
+/* ---------------- Exercise 2 ---------------- */
+function renderEx2(){
+  const list = $("#list2"); list.innerHTML = "";
+  EX2.forEach(item => {
+    const li = document.createElement("li");
+    li.append(document.createTextNode(item.pre));
+    li.append(makeInput(item.ans));
+    li.append(document.createTextNode(item.post + " "));
+    const h = document.createElement("span");
+    h.className = "hintword"; h.textContent = "(" + item.hint + ")";
+    li.append(h);
+    list.appendChild(li);
+  });
+}
+
+/* ---------------- Exercise 3 ---------------- */
+function renderEx3(){
+  const list = $("#list3"); list.innerHTML = "";
+  EX3.forEach(item => {
+    const li = document.createElement("li");
+    const p = document.createElement("strong");
+    p.textContent = item.prompt;
+    li.append(p, document.createTextNode(" \u2192 "));
+    item.gaps.forEach((gap, i) => {
+      if(i > 0) li.append(document.createTextNode("  /  "));
+      li.append(makeInput(gap.ans));
+      if(gap.label) {
+        const lab = document.createElement("span");
+        lab.className = "hintword"; lab.textContent = " " + gap.label;
+        li.append(lab);
+      }
+    });
+    list.appendChild(li);
+  });
+}
+
+/* ---------------- Exercise 4 ---------------- */
+function renderEx4(){
+  const p = $("#text4"); p.innerHTML = "";
+  EX4.forEach(seg => {
+    if(seg.t !== undefined){ p.append(document.createTextNode(seg.t)); return; }
+    const n = document.createElement("span");
+    n.className = "gnum"; n.textContent = "(" + seg.g + ") ";
+    p.append(n, makeInput(seg.ans, "small"), document.createTextNode(" "));
+    const h = document.createElement("span");
+    h.className = "hintword"; h.textContent = "(" + seg.hint + ")";
+    p.append(h);
+  });
+}
+
+/* ---------------- Exercise 5 ---------------- */
+function renderEx5(){
+  const list = $("#list5"); list.innerHTML = "";
+  EX5.forEach(item => {
+    const li = document.createElement("li");
+    const sent = document.createElement("span");
+    sent.className = "sent";
+    item.s.split(" ").forEach((tok, idx) => {
+      const w = document.createElement("span");
+      w.className = "w"; w.textContent = tok; w.dataset.idx = idx;
+      w.tabIndex = 0;
+      w.setAttribute("role","button");
+      const mark = () => {
+        $$(".w", sent).forEach(x => x.classList.remove("marked"));
+        w.classList.add("marked");
+        fix.hidden = false;
+        inp.focus();
+      };
+      w.addEventListener("click", mark);
+      w.addEventListener("keydown", ev => { if(ev.key==="Enter"||ev.key===" "){ ev.preventDefault(); mark(); } });
+      sent.append(w, document.createTextNode(" "));
+    });
+    const fix = document.createElement("span");
+    fix.className = "fixline"; fix.hidden = true;
+    const lab = document.createElement("label"); lab.textContent = "Correction:";
+    const inp = makeInput(item.ans, "small");
+    fix.append(lab, inp);
+    li.dataset.wrong = item.wrong;
+    li.append(sent, fix);
+    list.appendChild(li);
+  });
+}
+function checkEx5(){
+  let ok = 0;
+  $$("#list5 > li").forEach(li => {
+    const marked = $(".w.marked", li);
+    const inp = $(".gap-input", li);
+    const pickedRight = !!marked && marked.dataset.idx === li.dataset.wrong;
+    const typedRight = JSON.parse(inp.dataset.ans).includes(norm(inp.value));
+    $$(".w", li).forEach(x => x.classList.remove("was-wrong"));
+    if(marked && pickedRight) marked.classList.add("was-wrong");
+    const correct = pickedRight && typedRight;
+    inp.classList.toggle("ok", correct);
+    inp.classList.toggle("bad", !correct);
+    if(correct) ok++;
+  });
+  setScore(5, ok, EX5.length);
+}
+
+/* ---------------- Exercise 6 ---------------- */
+let lastFocused6 = null;
+function renderEx6(){
+  lastFocused6 = null;
+  const banks = $("#banks6"); banks.innerHTML = "";
+  EX6_BANKS.forEach(row => {
+    const r = document.createElement("div");
+    r.className = "bankrow";
+    const l = document.createElement("span");
+    l.className = "lbl"; l.textContent = row.lbl;
+    r.append(l);
+    row.tiles.forEach(t => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "ptile" + (row.cls ? " " + row.cls : "");
+      b.textContent = t;
+      b.addEventListener("click", () => {
+        if(!lastFocused6) lastFocused6 = $("#list6 .gap-input");
+        if(!lastFocused6) return;
+        lastFocused6.value += t.replace(/-/g,"");
+        lastFocused6.classList.remove("ok","bad");
+        lastFocused6.focus();
+      });
+      r.append(b);
+    });
+    banks.appendChild(r);
+  });
+  const list = $("#list6"); list.innerHTML = "";
+  EX6.forEach(item => {
+    const li = document.createElement("li");
+    li.append(document.createTextNode(item.def + ": "));
+    const inp = makeInput(item.ans);
+    inp.addEventListener("focus", () => { lastFocused6 = inp; });
+    li.append(inp);
+    list.appendChild(li);
+  });
+}
+
+/* ---------------- Generic check for input-only exercises ---------------- */
+function checkInputs(ex){
+  const inputs = $$("#ex"+ex+" .gap-input");
+  let ok = 0;
+  inputs.forEach(inp => { if(gradeInput(inp)) ok++; });
+  setScore(ex, ok, inputs.length);
+}
+
+/* ---------------- Tabs & controls ---------------- */
+const renderers = {1:renderEx1, 2:renderEx2, 3:renderEx3, 4:renderEx4, 5:renderEx5, 6:renderEx6};
+const checkers  = {1:checkEx1, 2:()=>checkInputs(2), 3:()=>checkInputs(3), 4:()=>checkInputs(4), 5:checkEx5, 6:()=>checkInputs(6)};
+
+$$(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    $$(".tab-btn").forEach(b => b.setAttribute("aria-selected", b===btn ? "true" : "false"));
+    $$("section.ex").forEach(s => s.classList.remove("active"));
+    $("#ex"+btn.dataset.tab).classList.add("active");
+    window.scrollTo({top:0, behavior:"smooth"});
+  });
+});
+
+document.addEventListener("click", ev => {
+  const t = ev.target.closest("button");
+  if(!t) return;
+  if(t.dataset.check) checkers[t.dataset.check]();
+  if(t.dataset.reset){
+    const ex = t.dataset.reset;
+    renderers[ex]();
+    $("#score"+ex).textContent = "";
+    $("#key"+ex).classList.remove("show");
+    const b = $("#badge"+ex); b.textContent = ""; b.classList.remove("show");
+  }
+  if(t.dataset.key){
+    const box = $("#key"+t.dataset.key);
+    box.innerHTML = "<strong>Answer key:</strong> " + KEYS[t.dataset.key];
+    box.classList.toggle("show");
+  }
+});
+
+/* ---------------- Init ---------------- */
+Object.values(renderers).forEach(fn => fn());
+</script>
+</body>
+</html>
