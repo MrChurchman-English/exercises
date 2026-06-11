@@ -234,6 +234,7 @@
   <button class="tab-btn" role="tab" aria-selected="false" data-tab="4">4 · Story gaps <span class="badge" id="badge4"></span></button>
   <button class="tab-btn" role="tab" aria-selected="false" data-tab="5">5 · Fix the word <span class="badge" id="badge5"></span></button>
   <button class="tab-btn" role="tab" aria-selected="false" data-tab="6">6 · Word builder <span class="badge" id="badge6"></span></button>
+  <button class="tab-btn" role="tab" aria-selected="false" data-tab="7">7 · Double challenge <span class="badge" id="badge7"></span></button>
 </nav>
 
 <main>
@@ -324,6 +325,22 @@
     <span class="score" id="score6"></span>
   </div>
   <div class="keybox" id="key6"></div>
+</section>
+
+<section class="ex" id="ex7">
+  <span class="kind">Challenge</span>
+  <h2>Double transformation</h2>
+  <p class="instr">Complete each sentence with the correct form of the word in CAPITALS. You must add <strong>both a prefix and a suffix</strong> — and watch out, the spelling often changes!</p>
+  <ol class="items" id="list7"></ol>
+  <div class="controls">
+    <button class="btn primary" data-check="7">Check answers</button>
+    <button class="btn ghost" data-hint="7">Hint</button>
+    <button class="btn ghost" data-key="7">Show answers</button>
+    <button class="btn ghost" data-reset="7">Reset</button>
+    <span class="score" id="score7"></span>
+  </div>
+  <div class="keybox" id="hint7">💡 <strong>Hint:</strong> each prefix — <strong>dis-, in-, re-, over-, im-, co-, mis-, under-, semi-</strong> and <strong>ir-</strong> — is used <strong>exactly once</strong> in this exercise. If you're stuck, think about which prefixes you haven't used yet.</div>
+  <div class="keybox" id="key7"></div>
 </section>
 
 </main>
@@ -418,13 +435,27 @@ const EX6 = [
   {def:"freedom from control by other people", ans:["independence"]}
 ];
 
+const EX7 = [
+  {pre:"My parents shook their heads in strong ", post:" when I told them about my plan.", hint:"APPROVE", ans:["disapproval"]},
+  {pre:"The report criticises the growing ", post:" between rich and poor.", hint:"EQUAL", ans:["inequality"]},
+  {pre:"Our goalkeeper is injured, so the club needs to find a ", post:" before Saturday's match.", hint:"PLACE", ans:["replacement"]},
+  {pre:"The ", post:" of cheap clothes causes serious damage to the environment.", hint:"PRODUCE", ans:["overproduction"]},
+  {pre:"He looked at his watch with growing ", post:" as the train got later and later.", hint:"PATIENT", ans:["impatience"]},
+  {pre:"She's not just a ", post:" — after ten years in the same office, she's one of my closest friends.", hint:"WORK", ans:["coworker"]},
+  {pre:"The teacher gently corrected his ", post:" of the word \u201Cvegetable\u201D.", hint:"PRONOUNCE", ans:["mispronunciation"]},
+  {pre:"The manager lost his job because of the team's ", post:" this season.", hint:"PERFORM", ans:["underperformance"]},
+  {pre:"We sat in ", post:" because half the lights in the cinema had already gone out.", hint:"DARK", ans:["semidarkness"]},
+  {pre:"Leaving a small child alone in the car shows complete ", post:".", hint:"RESPONSIBLE", ans:["irresponsibility"]}
+];
+
 const KEYS = {
   1:"<strong>un-</strong>: fair, employed, likely &nbsp;·&nbsp; <strong>in-</strong>: correct, formal, visible &nbsp;·&nbsp; <strong>im-</strong>: patient, possible, polite &nbsp;·&nbsp; <strong>ir-</strong>: regular, responsible &nbsp;·&nbsp; <strong>il-</strong>: legal, logical &nbsp;·&nbsp; <strong>dis-</strong>: honest, organised, loyal",
   2:"1 retake · 2 semi-detached · 3 misunderstood · 4 overcooked · 5 underpaid · 6 co-operate / cooperate · 7 international · 8 overslept · 9 underestimate · 10 recycle",
   3:"1 decision · 2 improvement · 3 happiness · 4 ability · 5 performance / performer · 6 preference · 7 arrival · 8 popularity · 9 director · 10 illness · 11 refusal · 12 appearance · 13 education · 14 employer / employment",
   4:"1 decision · 2 manager · 3 happiness · 4 competition · 5 performance · 6 ability · 7 arrival · 8 invitation · 9 difference · 10 kindness",
   5:"1 impossible · 2 impatient · 3 illegal · 4 misunderstood · 5 overslept · 6 overcharged · 7 co-wrote · 8 recycle · 9 dishonest · 10 semi-final",
-  6:"1 unemployment · 2 disagreement · 3 mismanagement · 4 co-operation / cooperation · 5 reappearance · 6 independence"
+  6:"1 unemployment · 2 disagreement · 3 mismanagement · 4 co-operation / cooperation · 5 reappearance · 6 independence",
+  7:"1 disapproval · 2 inequality · 3 replacement · 4 overproduction · 5 impatience · 6 co-worker · 7 mispronunciation · 8 underperformance · 9 semi-darkness · 10 irresponsibility"
 };
 
 /* ---------------- Helpers ---------------- */
@@ -521,10 +552,10 @@ function checkEx1(){
   setScore(1, ok, EX1_WORDS.length);
 }
 
-/* ---------------- Exercise 2 ---------------- */
-function renderEx2(){
-  const list = $("#list2"); list.innerHTML = "";
-  EX2.forEach(item => {
+/* ---------------- Exercises 2 & 7 (sentence gap-fill) ---------------- */
+function renderGapFill(listSel, data){
+  const list = $(listSel); list.innerHTML = "";
+  data.forEach(item => {
     const li = document.createElement("li");
     li.append(document.createTextNode(item.pre));
     li.append(makeInput(item.ans));
@@ -535,6 +566,8 @@ function renderEx2(){
     list.appendChild(li);
   });
 }
+function renderEx2(){ renderGapFill("#list2", EX2); }
+function renderEx7(){ renderGapFill("#list7", EX7); }
 
 /* ---------------- Exercise 3 ---------------- */
 function renderEx3(){
@@ -667,8 +700,8 @@ function checkInputs(ex){
 }
 
 /* ---------------- Tabs & controls ---------------- */
-const renderers = {1:renderEx1, 2:renderEx2, 3:renderEx3, 4:renderEx4, 5:renderEx5, 6:renderEx6};
-const checkers  = {1:checkEx1, 2:()=>checkInputs(2), 3:()=>checkInputs(3), 4:()=>checkInputs(4), 5:checkEx5, 6:()=>checkInputs(6)};
+const renderers = {1:renderEx1, 2:renderEx2, 3:renderEx3, 4:renderEx4, 5:renderEx5, 6:renderEx6, 7:renderEx7};
+const checkers  = {1:checkEx1, 2:()=>checkInputs(2), 3:()=>checkInputs(3), 4:()=>checkInputs(4), 5:checkEx5, 6:()=>checkInputs(6), 7:()=>checkInputs(7)};
 
 $$(".tab-btn").forEach(btn => {
   btn.addEventListener("click", () => {
@@ -683,11 +716,13 @@ document.addEventListener("click", ev => {
   const t = ev.target.closest("button");
   if(!t) return;
   if(t.dataset.check) checkers[t.dataset.check]();
+  if(t.dataset.hint) $("#hint"+t.dataset.hint).classList.toggle("show");
   if(t.dataset.reset){
     const ex = t.dataset.reset;
     renderers[ex]();
     $("#score"+ex).textContent = "";
     $("#key"+ex).classList.remove("show");
+    const h = $("#hint"+ex); if(h) h.classList.remove("show");
     const b = $("#badge"+ex); b.textContent = ""; b.classList.remove("show");
   }
   if(t.dataset.key){
