@@ -188,7 +188,8 @@
   .w{cursor:pointer;border-radius:4px;padding:1px 2px}
   .w:hover{background:var(--accent-soft)}
   .w.marked{background:var(--accent);box-shadow:0 2px 0 var(--ink)}
-  .w.was-wrong{background:var(--red-soft);text-decoration:line-through;text-decoration-color:var(--red)}
+  .w.pick-ok{background:var(--green-soft);box-shadow:0 2px 0 var(--green);text-decoration:line-through;text-decoration-color:var(--green)}
+  .w.pick-bad{background:var(--red-soft);box-shadow:0 2px 0 var(--red)}
   .fixline{display:inline-flex;align-items:center;gap:8px;margin-left:10px}
   .fixline label{font-size:14px;color:var(--ink-soft)}
 
@@ -461,7 +462,7 @@ const KEYS = {
 /* ---------------- Helpers ---------------- */
 const $ = (sel, root=document) => root.querySelector(sel);
 const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-const norm = s => (s||"").toLowerCase().trim().replace(/[\s\-\u2010\u2011\u2013\u2014']/g,"");
+const norm = s => (s||"").toLowerCase().trim().replace(/[\s\-\u2010\u2011\u2013\u2014'.,!?;:"\u2018\u2019\u201C\u201D]/g,"");
 const shuffle = arr => { const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
 
 function makeInput(answers, extraClass){
@@ -617,7 +618,7 @@ function renderEx5(){
       w.tabIndex = 0;
       w.setAttribute("role","button");
       const mark = () => {
-        $$(".w", sent).forEach(x => x.classList.remove("marked"));
+        $$(".w", sent).forEach(x => x.classList.remove("marked","pick-ok","pick-bad"));
         w.classList.add("marked");
         fix.hidden = false;
         inp.focus();
@@ -643,12 +644,11 @@ function checkEx5(){
     const inp = $(".gap-input", li);
     const pickedRight = !!marked && marked.dataset.idx === li.dataset.wrong;
     const typedRight = JSON.parse(inp.dataset.ans).includes(norm(inp.value));
-    $$(".w", li).forEach(x => x.classList.remove("was-wrong"));
-    if(marked && pickedRight) marked.classList.add("was-wrong");
-    const correct = pickedRight && typedRight;
-    inp.classList.toggle("ok", correct);
-    inp.classList.toggle("bad", !correct);
-    if(correct) ok++;
+    $$(".w", li).forEach(x => x.classList.remove("pick-ok","pick-bad"));
+    if(marked) marked.classList.add(pickedRight ? "pick-ok" : "pick-bad");
+    inp.classList.toggle("ok", typedRight);
+    inp.classList.toggle("bad", !typedRight);
+    if(pickedRight && typedRight) ok++;
   });
   setScore(5, ok, EX5.length);
 }
