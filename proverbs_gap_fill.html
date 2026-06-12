@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proverbs — Gap-fill</title>
+<style>
+  :root{
+    --parchment:#f4ead2;
+    --parchment-deep:#ecdfc0;
+    --ink:#2c2014;
+    --rubric:#8a2417;
+    --gold:#a8842f;
+    --moss:#4d6b3c;
+    --line:#c9b487;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(168,132,47,.10), transparent 55%),
+      radial-gradient(ellipse at 90% 100%, rgba(138,36,23,.07), transparent 50%),
+      var(--parchment);
+    color:var(--ink);
+    font-family:Palatino, "Palatino Linotype", "Book Antiqua", Georgia, serif;
+    min-height:100vh;
+    padding:2.5rem 1rem 4rem;
+    line-height:1.55;
+  }
+  .scroll{
+    max-width:760px;margin:0 auto;
+    background:var(--parchment-deep);
+    border:2px solid var(--rubric);
+    outline:1px solid var(--gold);
+    outline-offset:5px;
+    padding:2.4rem clamp(1.2rem,5vw,3rem) 2.8rem;
+    position:relative;
+    box-shadow:0 18px 40px -22px rgba(44,32,20,.45);
+  }
+  .corner{position:absolute;width:34px;height:34px;color:var(--rubric);opacity:.85;}
+  .corner svg{width:100%;height:100%;}
+  .tl{top:10px;left:10px;} .tr{top:10px;right:10px;transform:scaleX(-1);}
+  .bl{bottom:10px;left:10px;transform:scaleY(-1);} .br{bottom:10px;right:10px;transform:scale(-1,-1);}
+
+  header{text-align:center;margin-bottom:1.6rem;}
+  h1{
+    font-size:clamp(2rem,6vw,2.8rem);
+    color:var(--rubric);
+    font-weight:700;
+    letter-spacing:.02em;
+  }
+  h1::after{
+    content:"";display:block;width:130px;height:2px;margin:.55rem auto 0;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  }
+  .lede{font-style:italic;color:#5d4a33;max-width:46ch;margin:.8rem auto 0;font-size:1.02rem;}
+
+  /* progress seals */
+  .seals{display:flex;justify-content:center;gap:.45rem;flex-wrap:wrap;margin:1.5rem 0 2rem;}
+  .seal{
+    width:22px;height:22px;border-radius:50%;
+    border:1.5px solid var(--rubric);
+    background:transparent;
+    transition:background .35s, transform .35s, box-shadow .35s;
+    position:relative;
+  }
+  .seal.done{
+    background:radial-gradient(circle at 35% 30%, #b8412c, var(--rubric) 70%);
+    box-shadow:inset 0 0 0 2px rgba(244,234,210,.35), 0 2px 4px rgba(44,32,20,.3);
+    transform:scale(1.12);
+  }
+  .scoreline{text-align:center;font-variant:small-caps;letter-spacing:.14em;color:#6a553b;font-size:.95rem;margin-top:-.9rem;margin-bottom:1.6rem;}
+  .scoreline strong{color:var(--rubric);font-size:1.1rem;letter-spacing:.05em;}
+
+  .item{
+    border-top:1px solid var(--line);
+    padding:1.15rem .2rem 1.05rem;
+    display:flex;gap:1rem;align-items:flex-start;
+  }
+  .item:last-of-type{border-bottom:1px solid var(--line);}
+  .num{
+    flex:0 0 2.1rem;height:2.1rem;
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.25rem;font-weight:700;color:var(--rubric);
+    border:1px solid var(--gold);
+    background:rgba(168,132,47,.08);
+  }
+  .body{flex:1;min-width:0;}
+  .sentence{font-size:1.12rem;}
+  .gap{
+    font:inherit;color:var(--ink);
+    background:transparent;
+    border:none;border-bottom:2px solid var(--rubric);
+    width:7.5ch;text-align:center;
+    padding:0 .15rem 1px;
+    transition:border-color .25s, background .25s;
+  }
+  .gap:focus{outline:none;border-bottom-color:var(--gold);background:rgba(168,132,47,.10);}
+  .gap.correct{
+    border-bottom-color:var(--moss);
+    color:var(--moss);font-weight:700;
+    background:transparent;
+  }
+  .gap.wrong{border-bottom-color:#b3361f;background:rgba(179,54,31,.08);animation:shake .3s;}
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-3px);}
+    75%{transform:translateX(3px);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .gap.wrong{animation:none;}
+    .seal,.seal.done{transition:none;transform:none;}
+    .reveal{transition:none;}
+  }
+
+  .controls{margin-top:.45rem;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;}
+  button{
+    font-family:inherit;font-size:.85rem;
+    cursor:pointer;
+    border:1px solid var(--rubric);
+    background:transparent;color:var(--rubric);
+    padding:.22rem .75rem;
+    transition:background .2s,color .2s;
+  }
+  button:hover{background:var(--rubric);color:var(--parchment);}
+  button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+  button:disabled{opacity:.4;cursor:default;}
+  button:disabled:hover{background:transparent;color:var(--rubric);}
+  .feedback{font-size:.88rem;font-style:italic;color:#6a553b;min-height:1.2em;}
+  .feedback.ok{color:var(--moss);font-weight:700;font-style:normal;}
+
+  .reveal{
+    max-height:0;overflow:hidden;
+    transition:max-height .5s ease, margin .5s ease;
+    margin-top:0;
+  }
+  .reveal.open{max-height:200px;margin-top:.7rem;}
+  .reveal-inner{
+    border-left:3px solid var(--gold);
+    background:rgba(168,132,47,.09);
+    padding:.55rem .8rem;
+    font-size:.92rem;
+  }
+  .reveal-inner .de{color:var(--rubric);font-weight:700;}
+  .reveal-inner .label{font-variant:small-caps;letter-spacing:.1em;color:#6a553b;font-size:.8rem;}
+
+  .finish{
+    text-align:center;margin-top:2rem;
+    max-height:0;overflow:hidden;opacity:0;
+    transition:max-height .6s, opacity .6s;
+  }
+  .finish.show{max-height:200px;opacity:1;}
+  .finish .big{font-size:1.5rem;color:var(--rubric);font-weight:700;}
+  .finish .sub{font-style:italic;color:#5d4a33;}
+  .resetwrap{text-align:center;margin-top:1.6rem;}
+</style>
+</head>
+<body>
+<div class="scroll">
+  <span class="corner tl" aria-hidden="true"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 32 V10 Q2 2 10 2 H32"/><path d="M8 26 Q8 12 22 10" stroke-width="1.2"/><circle cx="24" cy="9" r="2.4" fill="currentColor" stroke="none"/></svg></span>
+  <span class="corner tr" aria-hidden="true"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 32 V10 Q2 2 10 2 H32"/><path d="M8 26 Q8 12 22 10" stroke-width="1.2"/><circle cx="24" cy="9" r="2.4" fill="currentColor" stroke="none"/></svg></span>
+  <span class="corner bl" aria-hidden="true"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 32 V10 Q2 2 10 2 H32"/><path d="M8 26 Q8 12 22 10" stroke-width="1.2"/><circle cx="24" cy="9" r="2.4" fill="currentColor" stroke="none"/></svg></span>
+  <span class="corner br" aria-hidden="true"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 32 V10 Q2 2 10 2 H32"/><path d="M8 26 Q8 12 22 10" stroke-width="1.2"/><circle cx="24" cy="9" r="2.4" fill="currentColor" stroke="none"/></svg></span>
+
+  <header>
+    <h1>Proverbs</h1>
+    <p class="lede">Complete each proverb with the missing word, then press Enter. Solve one to uncover its meaning — and its German cousin.</p>
+  </header>
+
+  <div class="seals" id="seals" aria-hidden="true"></div>
+  <p class="scoreline">Solved <strong id="score">0</strong> of 15</p>
+
+  <main id="items"></main>
+
+  <div class="finish" id="finish" role="status">
+    <p class="big">All&rsquo;s well that ends well!</p>
+    <p class="sub" id="finishSub"></p>
+  </div>
+
+  <div class="resetwrap">
+    <button id="resetBtn" type="button">Start again</button>
+  </div>
+</div>
+
+<script>
+const ITEMS = [
+  {before:"People who live in glass ", after:" shouldn't throw stones.", answer:"houses",
+   meaning:"Don't criticise others for faults you have yourself.",
+   de:"Wer im Glashaus sitzt, soll nicht mit Steinen werfen."},
+  {before:"All that glitters is not ", after:".", answer:"gold",
+   meaning:"Appearances can be deceptive — not everything attractive is valuable.",
+   de:"Es ist nicht alles Gold, was glänzt."},
+  {before:"Don't put off until tomorrow what you can do ", after:".", answer:"today",
+   meaning:"Don't procrastinate.",
+   de:"Was du heute kannst besorgen, das verschiebe nicht auf morgen."},
+  {before:"Time flies when you're having ", after:".", answer:"fun",
+   meaning:"Enjoyable hours seem to pass very quickly.",
+   de:"Die Zeit vergeht wie im Flug."},
+  {before:"Home is where the ", after:" is.", answer:"heart",
+   meaning:"Your true home is wherever the people you love are.",
+   de:"Zuhause ist, wo das Herz ist."},
+  {before:"All's well that ", after:" well.", answer:"ends",
+   meaning:"If the outcome is good, earlier problems don't matter.",
+   de:"Ende gut, alles gut."},
+  {before:"I'll cross that ", after:" when I come to it.", answer:"bridge",
+   meaning:"I'll deal with that problem when it actually arises.",
+   de:"Kommt Zeit, kommt Rat."},
+  {before:"He who laughs ", after:" laughs longest.", answer:"last",
+   meaning:"The one who succeeds in the end is the real winner.",
+   de:"Wer zuletzt lacht, lacht am besten."},
+  {before:"He who pays the ", after:" calls the tune.", answer:"piper",
+   meaning:"Whoever provides the money makes the decisions.",
+   de:"Wer zahlt, befiehlt."},
+  {before:"What doesn't ", after:" you makes you stronger.", answer:"kill",
+   meaning:"Hard experiences toughen you.",
+   de:"Was dich nicht umbringt, macht dich stärker."},
+  {before:"When in ", after:", do as the Romans do.", answer:"Rome",
+   meaning:"Adapt to the customs of the place you're in.",
+   de:"Andere Länder, andere Sitten."},
+  {before:"When the cat's away, the ", after:" will play.", answer:"mice",
+   meaning:"People take liberties when no one is watching.",
+   de:"Ist die Katze aus dem Haus, tanzen die Mäuse."},
+  {before:"Where there's a ", after:", there's a way.", answer:"will",
+   meaning:"Determination will find a solution.",
+   de:"Wo ein Wille ist, ist auch ein Weg."},
+  {before:"Where there's ", after:", there's fire.", answer:"smoke",
+   meaning:"Rumours usually have some basis in truth.",
+   de:"Wo Rauch ist, ist auch Feuer."},
+  {before:"Don't bite the hand that ", after:" you.", answer:"feeds",
+   meaning:"Don't harm the people who help or support you.",
+   de:"Man beißt nicht die Hand, die einen füttert."}
+];
+
+const itemsEl = document.getElementById("items");
+const sealsEl = document.getElementById("seals");
+const scoreEl = document.getElementById("score");
+const finishEl = document.getElementById("finish");
+const finishSub = document.getElementById("finishSub");
+let solved = 0;
+let hintsUsed = 0;
+
+function build(){
+  itemsEl.innerHTML = "";
+  sealsEl.innerHTML = "";
+  solved = 0; hintsUsed = 0;
+  scoreEl.textContent = "0";
+  finishEl.classList.remove("show");
+
+  ITEMS.forEach((it, i) => {
+    const seal = document.createElement("span");
+    seal.className = "seal";
+    seal.id = "seal-" + i;
+    sealsEl.appendChild(seal);
+
+    const row = document.createElement("div");
+    row.className = "item";
+    row.innerHTML = `
+      <div class="num" aria-hidden="true">${i+1}</div>
+      <div class="body">
+        <p class="sentence">
+          <span>${it.before}</span><input class="gap" type="text" autocomplete="off"
+            autocapitalize="off" spellcheck="false"
+            aria-label="Missing word for proverb ${i+1}"
+            data-i="${i}"><span>${it.after}</span>
+        </p>
+        <div class="controls">
+          <button type="button" class="checkBtn" data-i="${i}">Check</button>
+          <button type="button" class="hintBtn" data-i="${i}">Hint</button>
+          <button type="button" class="showBtn" data-i="${i}" hidden>Show answer</button>
+          <span class="feedback" data-i="${i}" aria-live="polite"></span>
+        </div>
+        <div class="reveal" data-i="${i}">
+          <div class="reveal-inner">
+            <span class="label">Meaning</span> — ${it.meaning}<br>
+            <span class="label">Auf Deutsch</span> — <span class="de">${it.de}</span>
+          </div>
+        </div>
+      </div>`;
+    itemsEl.appendChild(row);
+  });
+}
+
+function norm(s){ return s.trim().toLowerCase(); }
+
+function check(i){
+  const input = document.querySelector(`.gap[data-i="${i}"]`);
+  if (input.disabled) return;
+  const fb = document.querySelector(`.feedback[data-i="${i}"]`);
+  const it = ITEMS[i];
+  if (norm(input.value) === norm(it.answer)){
+    input.value = it.answer;
+    input.classList.remove("wrong");
+    input.classList.add("correct");
+    input.disabled = true;
+    fb.textContent = "Well said!";
+    fb.classList.add("ok");
+    document.querySelector(`.checkBtn[data-i="${i}"]`).disabled = true;
+    document.querySelector(`.hintBtn[data-i="${i}"]`).disabled = true;
+    document.querySelector(`.showBtn[data-i="${i}"]`).hidden = true;
+    document.querySelector(`.reveal[data-i="${i}"]`).classList.add("open");
+    document.getElementById("seal-" + i).classList.add("done");
+    solved++;
+    scoreEl.textContent = solved;
+    if (solved === ITEMS.length) finishWell();
+    else {
+      const next = document.querySelector(`.gap[data-i="${i+1}"]`);
+      if (next && !next.disabled) next.focus();
+    }
+  } else if (input.value.trim() === ""){
+    fb.textContent = "Type the missing word first.";
+  } else {
+    input.classList.remove("wrong");
+    void input.offsetWidth; /* restart animation */
+    input.classList.add("wrong");
+    input.dataset.tries = (Number(input.dataset.tries||0) + 1);
+    fb.textContent = "Not quite — try again.";
+    if (Number(input.dataset.tries) >= 3){
+      document.querySelector(`.showBtn[data-i="${i}"]`).hidden = false;
+      fb.textContent = "Not quite — need a way out?";
+    }
+  }
+}
+
+function hint(i){
+  const input = document.querySelector(`.gap[data-i="${i}"]`);
+  if (input.disabled) return;
+  const fb = document.querySelector(`.feedback[data-i="${i}"]`);
+  const ans = ITEMS[i].answer;
+  hintsUsed++;
+  fb.classList.remove("ok");
+  fb.textContent = `It starts with “${ans[0]}” and has ${ans.length} letters.`;
+  input.focus();
+}
+
+function showAnswer(i){
+  const input = document.querySelector(`.gap[data-i="${i}"]`);
+  input.value = ITEMS[i].answer;
+  hintsUsed++;
+  check(i);
+}
+
+function finishWell(){
+  finishSub.textContent = hintsUsed === 0
+    ? "A perfect run — not a single hint. Practice makes perfect."
+    : `You used ${hintsUsed} hint${hintsUsed===1?"":"s"} along the way — try again from memory?`;
+  finishEl.classList.add("show");
+  finishEl.scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+itemsEl.addEventListener("click", e => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  const i = Number(b.dataset.i);
+  if (b.classList.contains("checkBtn")) check(i);
+  else if (b.classList.contains("hintBtn")) hint(i);
+  else if (b.classList.contains("showBtn")) showAnswer(i);
+});
+itemsEl.addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.classList.contains("gap")){
+    e.preventDefault();
+    check(Number(e.target.dataset.i));
+  }
+});
+itemsEl.addEventListener("input", e => {
+  if (e.target.classList.contains("gap")) e.target.classList.remove("wrong");
+});
+document.getElementById("resetBtn").addEventListener("click", build);
+
+build();
+</script>
+</body>
+</html>
