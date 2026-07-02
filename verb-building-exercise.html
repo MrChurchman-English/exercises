@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verb Building — Choose the right affix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F3F6;
+    --surface:#FFFFFF;
+    --ink:#1E2230;
+    --muted:#5C6675;
+    --line:#DfE3EA;
+    --accent:#3B3E98;
+    --accent-soft:#E7E8F6;
+    --ok:#1F7A5C;
+    --ok-soft:#E4F2EC;
+    --no:#B4482B;
+    --no-soft:#F8E9E3;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,34,48,.05),0 8px 24px rgba(30,34,48,.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:32px 20px 80px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+
+  /* Header */
+  header{margin-bottom:28px;}
+  .eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 10px;
+  }
+  h1{
+    font-family:"Fraunces",serif;font-weight:600;
+    font-size:clamp(30px,6vw,44px);line-height:1.05;letter-spacing:-.01em;
+    margin:0 0 12px;
+  }
+  .lede{color:var(--muted);font-size:16px;margin:0 0 22px;max-width:56ch;}
+
+  /* Affix bank */
+  .bank{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px 20px;margin-bottom:22px;
+  }
+  .bank h2{
+    font-family:"Inter",sans-serif;font-size:12px;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 12px;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:"Fraunces",serif;font-size:18px;font-weight:500;
+    background:var(--accent-soft);color:var(--accent);
+    padding:6px 14px;border-radius:999px;white-space:nowrap;
+  }
+  .chip small{font-family:"Inter",sans-serif;font-size:12px;color:var(--muted);font-weight:500;}
+
+  /* Progress */
+  .progress{
+    display:flex;align-items:center;gap:14px;
+    position:sticky;top:0;z-index:5;
+    background:var(--paper);padding:12px 0;margin-bottom:8px;
+  }
+  .bar{flex:1;height:8px;background:var(--line);border-radius:999px;overflow:hidden;}
+  .bar span{display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .35s ease;}
+  .score{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px;color:var(--ink);white-space:nowrap;}
+  .reset{
+    font-family:"Inter",sans-serif;font-size:13px;font-weight:500;color:var(--muted);
+    background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:8px;
+  }
+  .reset:hover{color:var(--accent);background:var(--accent-soft);}
+
+  /* Section */
+  section{margin-top:30px;}
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:0 0 4px;}
+  .sec-head h3{font-family:"Fraunces",serif;font-weight:600;font-size:24px;margin:0;}
+  .sec-head p{color:var(--muted);font-size:14px;margin:0;}
+
+  /* Items */
+  .item{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:14px 16px;margin-top:12px;
+    transition:border-color .2s ease,background .2s ease;
+  }
+  .item.correct{border-color:var(--ok);background:var(--ok-soft);}
+  .item.wrong{border-color:var(--no);}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .num{
+    font-variant-numeric:tabular-nums;font-weight:600;font-size:13px;color:var(--muted);
+    min-width:24px;
+  }
+  .base{
+    font-family:"Fraunces",serif;font-size:22px;font-weight:500;
+    min-width:118px;flex:0 0 auto;
+  }
+  .base .prompt{color:var(--muted);font-family:"Inter",sans-serif;font-size:15px;font-weight:400;}
+  .sentence{
+    flex:1 1 260px;font-size:16px;line-height:1.55;min-width:0;
+  }
+  .sentence .blank{color:var(--accent);font-weight:600;border-bottom:2px solid var(--accent-soft);padding:0 20px;}
+  .sentence .hint{color:var(--muted);font-family:"Fraunces",serif;font-style:italic;}
+  .answer{display:flex;gap:8px;flex:1 1 200px;min-width:180px;}
+  input[type=text]{
+    flex:1;min-width:0;font-family:"Inter",sans-serif;font-size:16px;color:var(--ink);
+    padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;
+    transition:border-color .15s ease,box-shadow .15s ease;
+  }
+  input[type=text]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  input[type=text]:disabled{background:#fff;color:var(--ok);font-weight:600;-webkit-text-fill-color:var(--ok);opacity:1;border-color:transparent;}
+  .check{
+    font-family:"Inter",sans-serif;font-size:14px;font-weight:600;color:#fff;background:var(--accent);
+    border:none;border-radius:10px;padding:10px 16px;cursor:pointer;white-space:nowrap;
+    transition:background .15s ease,transform .05s ease;
+  }
+  .check:hover{background:#31348a;}
+  .check:active{transform:translateY(1px);}
+  .check:disabled{background:var(--ok);cursor:default;}
+
+  /* Feedback */
+  .fb{margin-top:10px;font-size:14px;display:none;}
+  .item.correct .fb,.item.wrong .fb{display:block;}
+  .fb.miss{color:var(--no);}
+  .breakdown{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .morph{
+    font-family:"Fraunces",serif;font-size:16px;font-weight:500;
+    background:#fff;border:1px solid var(--ok);color:var(--ok);
+    padding:3px 10px;border-radius:8px;
+  }
+  .morph.affix{background:var(--ok);color:#fff;border-color:var(--ok);}
+  .plus{color:var(--muted);font-weight:600;}
+  .note{color:var(--muted);font-size:13px;font-style:italic;font-family:"Fraunces",serif;margin-left:4px;}
+  .reveal{
+    background:none;border:none;color:var(--no);font-weight:600;font-size:13px;
+    cursor:pointer;padding:0;margin-left:2px;text-decoration:underline;
+  }
+
+  @media (max-width:520px){
+    .base{min-width:100%;}
+    .answer{flex-basis:100%;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Word formation</p>
+    <h1>Building verbs</h1>
+    <p class="lede">Each word below can become a verb — but only one affix fits. Decide <em>which</em> one, then spell it correctly. Mind the changes at the join.</p>
+
+    <div class="bank">
+      <h2>Your toolbox</h2>
+      <div class="chips">
+        <span class="chip">-en</span>
+        <span class="chip">-ify / -fy</span>
+        <span class="chip">-ise <small>/ -ize</small></span>
+        <span class="chip">-ate</span>
+        <span class="chip">en- <small>→ em- before b, p</small></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress">
+    <div class="bar"><span id="fill"></span></div>
+    <div class="score" id="score">0 / 28</div>
+    <button class="reset" id="reset" type="button">Reset</button>
+  </div>
+
+  <section id="partA">
+    <div class="sec-head">
+      <h3>Part A</h3>
+      <p>Make a verb from each word.</p>
+    </div>
+    <div id="listA"></div>
+  </section>
+
+  <section id="partB">
+    <div class="sec-head">
+      <h3>Part B</h3>
+      <p>Complete each sentence with a verb built from the word in brackets.</p>
+    </div>
+    <div id="listB"></div>
+  </section>
+</div>
+
+<script>
+// ---- Data ------------------------------------------------------------
+// answer = canonical (British). affix + base drive the morphology breakdown.
+// note = spelling point to surface on a correct answer.
+const partA = [
+  {base:"danger",  answer:"endanger",   affix:"en-", pos:"pre"},
+  {base:"pure",    answer:"purify",     affix:"-ify", pos:"suf", note:"drop the -e"},
+  {base:"sharp",   answer:"sharpen",    affix:"-en",  pos:"suf"},
+  {base:"modern",  answer:"modernise",  affix:"-ise", pos:"suf"},
+  {base:"valid",   answer:"validate",   affix:"-ate", pos:"suf"},
+  {base:"body",    answer:"embody",     affix:"em-",  pos:"pre", note:"em- before b"},
+  {base:"simple",  answer:"simplify",   affix:"-ify", pos:"suf", note:"drop the -e"},
+  {base:"large",   answer:"enlarge",    affix:"en-",  pos:"pre"},
+  {base:"standard",answer:"standardise",affix:"-ise", pos:"suf"},
+  {base:"origin",  answer:"originate",  affix:"-ate", pos:"suf"},
+  {base:"beauty",  answer:"beautify",   affix:"-ify", pos:"suf", note:"y → i"},
+  {base:"rich",    answer:"enrich",     affix:"en-",  pos:"pre"},
+  {base:"active",  answer:"activate",   affix:"-ate", pos:"suf", note:"drop the -e"},
+  {base:"symbol",  answer:"symbolise",  affix:"-ise", pos:"suf"},
+  {base:"strength",answer:"strengthen", affix:"-en",  pos:"suf"},
+  {base:"power",   answer:"empower",    affix:"em-",  pos:"pre", note:"em- before p"},
+  {base:"class",   answer:"classify",   affix:"-ify", pos:"suf"},
+  {base:"wide",    answer:"widen",      affix:"-en",  pos:"suf", note:"drop the -e"},
+  {base:"pollen",  answer:"pollinate",  affix:"-ate", pos:"suf", note:"pollen → pollin-"},
+  {base:"special", answer:"specialise", affix:"-ise", pos:"suf"}
+];
+
+const partB = [
+  {before:"Reading every day will",           after:"your vocabulary.",                          hint:"strength", answer:"strengthen", affix:"-en",  pos:"suf"},
+  {before:"We need to",                        after:"the instructions so everyone understands.", hint:"simple",   answer:"simplify",   affix:"-ify", pos:"suf", note:"drop the -e"},
+  {before:"The company plans to",              after:"its old computer system.",                  hint:"modern",   answer:"modernise",  affix:"-ise", pos:"suf"},
+  {before:"Click the link in the email to",    after:"your account.",                             hint:"active",   answer:"activate",   affix:"-ate", pos:"suf", note:"drop the -e"},
+  {before:"The new policy is meant to",        after:"employees to make their own decisions.",    hint:"power",    answer:"empower",    affix:"em-",  pos:"pre", note:"em- before p"},
+  {before:"Cutting down the forest could",     after:"several rare species.",                     hint:"danger",   answer:"endanger",   affix:"en-",  pos:"pre"},
+  {before:"Bees",                              after:"the flowers as they move between them.",    hint:"pollen",   answer:"pollinate",  affix:"-ate", pos:"suf", note:"pollen → pollin-"},
+  {before:"A good editor knows how to",        after:"a long, confusing paragraph.",              hint:"simple",   answer:"simplify",   affix:"-ify", pos:"suf", note:"drop the -e"}
+];
+
+const TOTAL = partA.length + partB.length;
+let solved = new Set();
+
+// Accept British -ise and American/Oxford -ize.
+function accepts(answer, guess){
+  const g = guess.trim().toLowerCase();
+  const variants = new Set([answer]);
+  if(answer.endsWith("ise")) variants.add(answer.slice(0,-3)+"ize");
+  return variants.has(g);
+}
+
+// Build the morphology chips shown on a correct answer.
+function breakdown(item){
+  const affix = `<span class="morph affix">${item.affix.replace(/-/g,'')}</span>`;
+  const base  = `<span class="morph">${item.base}</span>`;
+  const inner = item.pos==="pre" ? `${affix}<span class="plus">+</span>${base}`
+                                 : `${base}<span class="plus">+</span>${affix}`;
+  const note  = item.note ? `<span class="note">${item.note}</span>` : "";
+  return `<div class="breakdown">${inner}${note}</div>`;
+}
+
+function updateProgress(){
+  const n = solved.size;
+  document.getElementById("score").textContent = `${n} / ${TOTAL}`;
+  document.getElementById("fill").style.width = (n/TOTAL*100)+"%";
+}
+
+function makeItem(item, idx, kind){
+  const id = kind+idx;
+  const wrap = document.createElement("div");
+  wrap.className = "item";
+  wrap.dataset.tries = "0";
+
+  const lead = kind==="a"
+    ? `<div class="base">${item.base} <span class="prompt">→</span></div>`
+    : `<div class="sentence">${item.before} <span class="blank"></span> ${item.after} <span class="hint">(${item.hint})</span></div>`;
+
+  wrap.innerHTML = `
+    <div class="row">
+      <div class="num">${idx+1}</div>
+      ${lead}
+      <div class="answer">
+        <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your verb for item ${idx+1}">
+        <button class="check" type="button">Check</button>
+      </div>
+    </div>
+    <div class="fb"></div>`;
+
+  const input = wrap.querySelector("input");
+  const btn = wrap.querySelector(".check");
+  const fb = wrap.querySelector(".fb");
+
+  function check(){
+    if(wrap.classList.contains("correct")) return;
+    const val = input.value;
+    if(!val.trim()) return;
+    if(accepts(item.answer, val)){
+      wrap.classList.remove("wrong");
+      wrap.classList.add("correct");
+      input.value = item.answer;
+      input.disabled = true;
+      btn.disabled = true;
+      btn.textContent = "Correct";
+      fb.className = "fb hit";
+      fb.innerHTML = breakdown(item);
+      solved.add(id);
+      updateProgress();
+    }else{
+      wrap.classList.add("wrong");
+      const tries = (parseInt(wrap.dataset.tries)||0)+1;
+      wrap.dataset.tries = tries;
+      fb.className = "fb miss";
+      if(tries>=2){
+        fb.innerHTML = `Not yet — check which affix fits, and the spelling. <button class="reveal" type="button">Show answer</button>`;
+        fb.querySelector(".reveal").onclick = ()=>{
+          input.value = item.answer;
+          input.focus();
+        };
+      }else{
+        fb.textContent = "Not yet — try again.";
+      }
+    }
+  }
+
+  btn.addEventListener("click", check);
+  input.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); check(); }});
+  input.addEventListener("input", ()=>{ if(wrap.classList.contains("wrong")){ wrap.classList.remove("wrong"); fb.className="fb"; fb.textContent=""; }});
+
+  return wrap;
+}
+
+const listA = document.getElementById("listA");
+const listB = document.getElementById("listB");
+partA.forEach((it,i)=> listA.appendChild(makeItem(it,i,"a")));
+partB.forEach((it,i)=> listB.appendChild(makeItem(it,i,"b")));
+
+document.getElementById("reset").addEventListener("click", ()=>{
+  solved.clear();
+  updateProgress();
+  document.querySelectorAll(".item").forEach(el=>{
+    el.classList.remove("correct","wrong");
+    el.dataset.tries="0";
+    const inp = el.querySelector("input");
+    inp.disabled=false; inp.value="";
+    const b = el.querySelector(".check"); b.disabled=false; b.textContent="Check";
+    const f = el.querySelector(".fb"); f.className="fb"; f.textContent="";
+  });
+  document.querySelector("input").focus();
+});
+
+updateProgress();
+</script>
+</body>
+</html>
