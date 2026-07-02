@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Formation Challenge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F3F6;
+    --surface:#FFFFFF;
+    --ink:#1E2230;
+    --muted:#5C6675;
+    --line:#DFE3EA;
+    --accent:#3B3E98;
+    --accent-soft:#E7E8F6;
+    --ok:#1F7A5C;
+    --ok-soft:#E4F2EC;
+    --no:#B4482B;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,34,48,.05),0 8px 24px rgba(30,34,48,.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:32px 20px 80px;
+  }
+  .wrap{max-width:740px;margin:0 auto;}
+
+  header{margin-bottom:24px;}
+  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px;}
+  h1{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(30px,6vw,44px);line-height:1.05;letter-spacing:-.01em;margin:0 0 12px;}
+  .lede{color:var(--muted);font-size:16px;margin:0;max-width:62ch;}
+  .lede strong{color:var(--ink);}
+
+  .progress{
+    display:flex;align-items:center;gap:14px;
+    position:sticky;top:0;z-index:5;
+    background:var(--paper);padding:12px 0;margin:18px 0 8px;
+  }
+  .bar{flex:1;height:8px;background:var(--line);border-radius:999px;overflow:hidden;}
+  .bar span{display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .35s ease;}
+  .score{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px;white-space:nowrap;}
+  .reset{font-size:13px;font-weight:500;color:var(--muted);background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:8px;}
+  .reset:hover{color:var(--accent);background:var(--accent-soft);}
+
+  article{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:30px 30px 34px;
+  }
+  article h2{
+    font-family:"Fraunces",serif;font-weight:600;font-size:26px;margin:0 0 18px;
+  }
+  article p{
+    font-size:17px;line-height:2.15;margin:0 0 20px;
+  }
+  article p:last-child{margin-bottom:0;}
+
+  .gap{display:inline-flex;align-items:center;gap:4px;vertical-align:baseline;margin:0 2px;}
+  .gnum{
+    font-size:11px;font-weight:600;color:var(--accent);
+    font-variant-numeric:tabular-nums;align-self:flex-start;margin-top:2px;
+  }
+  .gap input{
+    font-family:"Inter",sans-serif;font-size:15.5px;color:var(--ink);
+    width:150px;padding:4px 8px;border:1.5px solid var(--line);border-radius:8px;background:#fff;
+    transition:border-color .15s ease,box-shadow .15s ease,width .15s ease;
+  }
+  .gap input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  .gap.correct input{
+    border-color:transparent;background:var(--ok-soft);color:var(--ok);font-weight:600;
+    -webkit-text-fill-color:var(--ok);opacity:1;
+  }
+  .gap.wrong input{border-color:var(--no);}
+  .gbtn{
+    font-family:"Inter",sans-serif;font-size:13px;font-weight:600;line-height:1;
+    color:#fff;background:var(--accent);border:none;border-radius:8px;
+    padding:7px 9px;cursor:pointer;
+    transition:background .15s ease;
+  }
+  .gbtn:hover{background:#31348a;}
+  .gap.correct .gbtn{background:var(--ok);cursor:default;}
+  .cue{
+    font-family:"Fraunces",serif;font-style:italic;font-size:14px;color:var(--muted);
+    white-space:nowrap;
+  }
+  .morphline{
+    font-family:"Fraunces",serif;font-size:13px;color:var(--ok);white-space:nowrap;
+  }
+  .missline{font-size:13px;color:var(--no);white-space:nowrap;}
+  .reveal{
+    background:none;border:none;color:var(--no);font-weight:600;font-size:12px;
+    cursor:pointer;padding:0;text-decoration:underline;font-family:"Inter",sans-serif;
+  }
+
+  footer{margin-top:20px;color:var(--muted);font-size:13px;}
+
+  @media (max-width:560px){
+    article{padding:22px 18px;}
+    article p{font-size:16px;line-height:2.3;}
+    .gap input{width:128px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Word formation · advanced</p>
+    <h1>Word Formation Challenge</h1>
+    <p class="lede">Complete the text with the correct form of the word in <em>italics</em>. You may need a prefix, a suffix, or both — <strong>ten of the twenty gaps need both</strong>. Let the context tell you what kind of word is missing. Press Enter or ✓ to check a gap.</p>
+  </header>
+
+  <div class="progress">
+    <div class="bar"><span id="fill"></span></div>
+    <div class="score" id="score">0 / 20</div>
+    <button class="reset" id="reset" type="button">Reset</button>
+  </div>
+
+  <article id="text">
+    <h2>The rebirth of Greywick</h2>
+    <p>When the textile mill closed in 2015, the small town of Greywick entered a period of great {{1}}. {{2}} rose to nearly thirty per cent, and many young families moved away. The local {{3}} seemed unable to act, and for two years every proposal ended in {{4}}.</p>
+    <p>The turning point came when a group of residents decided to stop waiting. Working in close {{5}} with two nearby universities, they drew up an ambitious plan for the {{6}} of the mill district. Their aim was not simply to {{7}} the old buildings, but to {{8}} the entire local economy. Sceptics dismissed the whole idea as an {{9}}, and warned the town not to {{10}} the enormous costs. Others feared the {{11}} of the town's industrial character — that the past would simply be erased.</p>
+    <p>The planners listened carefully. Their first {{12}} was to protect the historic facades; in fact, the council made it {{13}} to demolish any building more than a hundred years old. They also agreed to {{14}} the narrow riverside path and turn it into a promenade, and for {{15}} reasons, cars were banned from the old centre entirely.</p>
+    <p>Today, the mill houses artists' studios, a science museum and a concert hall. {{16}} come from all over the region, and an annual design {{17}} now attracts entries from abroad. Teachers praise the {{18}} of the school curriculum, made possible by partnerships with the museum, and social workers point to the {{19}} of local people, who now run many of the projects themselves. Perhaps most importantly, the daily {{20}} between old and new residents has given Greywick back the one thing it had truly lost: confidence in its own future.</p>
+  </article>
+
+  <footer>Accepted spellings include British and American variants (e.g. -ise / -ize) and hyphenated forms where standard (e.g. co-operation).</footer>
+</div>
+
+<script>
+// n: gap number · cue: word in capitals · answer: canonical form
+// morph: breakdown shown on success · alts: accepted alternatives
+const gaps = {
+  1:  {cue:"CERTAIN",  answer:"uncertainty",    morph:"un + certain + ty"},
+  2:  {cue:"EMPLOY",   answer:"unemployment",   morph:"un + employ + ment"},
+  3:  {cue:"GOVERN",   answer:"government",     morph:"govern + ment — keep the n"},
+  4:  {cue:"AGREE",    answer:"disagreement",   morph:"dis + agree + ment"},
+  5:  {cue:"OPERATE",  answer:"cooperation",    morph:"co + operate + ation", alts:["co-operation"]},
+  6:  {cue:"NEW",      answer:"renewal",        morph:"re + new + al"},
+  7:  {cue:"MODERN",   answer:"modernise",      morph:"modern + ise"},
+  8:  {cue:"STRENGTH", answer:"strengthen",     morph:"strength + en"},
+  9:  {cue:"POSSIBLE", answer:"impossibility",  morph:"im + possible + ity"},
+  10: {cue:"ESTIMATE", answer:"underestimate",  morph:"under + estimate"},
+  11: {cue:"APPEAR",   answer:"disappearance",  morph:"dis + appear + ance"},
+  12: {cue:"DECIDE",   answer:"decision",       morph:"decide → decision"},
+  13: {cue:"LEGAL",    answer:"illegal",        morph:"il + legal — double l"},
+  14: {cue:"WIDE",     answer:"widen",          morph:"wide + en — drop the -e"},
+  15: {cue:"SAFE",     answer:"safety",         morph:"safe + ty"},
+  16: {cue:"VISIT",    answer:"visitors",       morph:"visit + or + s — plural!"},
+  17: {cue:"COMPETE",  answer:"competition",    morph:"compete + ition — drop the -e"},
+  18: {cue:"RICH",     answer:"enrichment",     morph:"en + rich + ment"},
+  19: {cue:"POWER",    answer:"empowerment",    morph:"em + power + ment — em- before p"},
+  20: {cue:"ACT",      answer:"interaction",    morph:"inter + act + tion"}
+};
+
+const TOTAL = Object.keys(gaps).length;
+let solved = new Set();
+
+function accepts(g, guess){
+  const v = guess.trim().toLowerCase();
+  const variants = new Set([g.answer]);
+  if(g.answer.endsWith("ise")) variants.add(g.answer.slice(0,-3)+"ize");
+  (g.alts||[]).forEach(a=>variants.add(a.toLowerCase()));
+  return variants.has(v);
+}
+
+function updateProgress(){
+  document.getElementById("score").textContent = `${solved.size} / ${TOTAL}`;
+  document.getElementById("fill").style.width = (solved.size/TOTAL*100)+"%";
+}
+
+function buildGap(n){
+  const g = gaps[n];
+  const span = document.createElement("span");
+  span.className = "gap";
+  span.dataset.tries = "0";
+  span.innerHTML = `
+    <span class="gnum">${n}</span>
+    <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Gap ${n}, base word ${g.cue}">
+    <button class="gbtn" type="button" aria-label="Check gap ${n}">✓</button>
+    <span class="cue">(${g.cue.toLowerCase()})</span>
+    <span class="fbspot"></span>`;
+
+  const input = span.querySelector("input");
+  const btn = span.querySelector(".gbtn");
+  const fb = span.querySelector(".fbspot");
+
+  function check(){
+    if(span.classList.contains("correct")) return;
+    if(!input.value.trim()) return;
+    if(accepts(g, input.value)){
+      span.classList.remove("wrong");
+      span.classList.add("correct");
+      input.value = input.value.trim().toLowerCase();
+      input.disabled = true;
+      btn.disabled = true;
+      fb.innerHTML = `<span class="morphline">${g.morph}</span>`;
+      solved.add(n);
+      updateProgress();
+    }else{
+      span.classList.add("wrong");
+      const tries = (parseInt(span.dataset.tries)||0)+1;
+      span.dataset.tries = tries;
+      if(tries>=2){
+        fb.innerHTML = `<span class="missline">Not yet. <button class="reveal" type="button">Show</button></span>`;
+        fb.querySelector(".reveal").onclick = ()=>{ input.value = g.answer; input.focus(); };
+      }else{
+        fb.innerHTML = `<span class="missline">Not yet — try again.</span>`;
+      }
+    }
+  }
+
+  btn.addEventListener("click", check);
+  input.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); check(); }});
+  input.addEventListener("input", ()=>{ if(span.classList.contains("wrong")){ span.classList.remove("wrong"); fb.innerHTML=""; }});
+  return span;
+}
+
+// Replace {{n}} placeholders with gap widgets.
+const article = document.getElementById("text");
+article.querySelectorAll("p").forEach(p=>{
+  const parts = p.innerHTML.split(/\{\{(\d+)\}\}/g);
+  p.innerHTML = "";
+  parts.forEach((part,i)=>{
+    if(i % 2 === 0){
+      p.insertAdjacentHTML("beforeend", part);
+    }else{
+      p.appendChild(buildGap(parseInt(part)));
+    }
+  });
+});
+
+document.getElementById("reset").addEventListener("click", ()=>{
+  solved.clear();
+  updateProgress();
+  document.querySelectorAll(".gap").forEach(el=>{
+    el.classList.remove("correct","wrong");
+    el.dataset.tries="0";
+    const inp = el.querySelector("input"); inp.disabled=false; inp.value="";
+    el.querySelector(".gbtn").disabled=false;
+    el.querySelector(".fbspot").innerHTML="";
+  });
+  window.scrollTo({top:0});
+});
+
+updateProgress();
+</script>
+</body>
+</html>
