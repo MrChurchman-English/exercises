@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Building 2 — Prefixes and noun suffixes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F1F3F6;
+    --surface:#FFFFFF;
+    --ink:#1E2230;
+    --muted:#5C6675;
+    --line:#DFE3EA;
+    --accent:#3B3E98;
+    --accent-soft:#E7E8F6;
+    --ok:#1F7A5C;
+    --ok-soft:#E4F2EC;
+    --no:#B4482B;
+    --no-soft:#F8E9E3;
+    --radius:14px;
+    --shadow:0 1px 2px rgba(30,34,48,.05),0 8px 24px rgba(30,34,48,.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    padding:32px 20px 80px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+
+  header{margin-bottom:28px;}
+  .eyebrow{
+    font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);margin:0 0 10px;
+  }
+  h1{
+    font-family:"Fraunces",serif;font-weight:600;
+    font-size:clamp(30px,6vw,44px);line-height:1.05;letter-spacing:-.01em;
+    margin:0 0 12px;
+  }
+  .lede{color:var(--muted);font-size:16px;margin:0 0 22px;max-width:60ch;}
+
+  .bank{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px 20px;margin-bottom:14px;
+  }
+  .bank h2{
+    font-size:12px;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 12px;
+  }
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:"Fraunces",serif;font-size:17px;font-weight:500;
+    background:var(--accent-soft);color:var(--accent);
+    padding:5px 13px;border-radius:999px;white-space:nowrap;
+  }
+  .chip small{font-family:"Inter",sans-serif;font-size:12px;color:var(--muted);font-weight:500;}
+
+  .progress{
+    display:flex;align-items:center;gap:14px;
+    position:sticky;top:0;z-index:5;
+    background:var(--paper);padding:12px 0;margin-bottom:8px;
+  }
+  .bar{flex:1;height:8px;background:var(--line);border-radius:999px;overflow:hidden;}
+  .bar span{display:block;height:100%;width:0;background:var(--accent);border-radius:999px;transition:width .35s ease;}
+  .score{font-variant-numeric:tabular-nums;font-weight:600;font-size:14px;white-space:nowrap;}
+  .reset{
+    font-size:13px;font-weight:500;color:var(--muted);
+    background:none;border:none;cursor:pointer;padding:4px 6px;border-radius:8px;
+  }
+  .reset:hover{color:var(--accent);background:var(--accent-soft);}
+
+  section{margin-top:34px;}
+  .sec-head h3{font-family:"Fraunces",serif;font-weight:600;font-size:24px;margin:0 0 4px;}
+  .sec-head p{color:var(--muted);font-size:14px;margin:0 0 4px;}
+  .sec-head .rule{
+    font-size:13px;color:var(--accent);background:var(--accent-soft);
+    display:inline-block;padding:4px 12px;border-radius:8px;margin-top:6px;
+  }
+  .group-label{
+    font-family:"Fraunces",serif;font-size:18px;font-weight:600;margin:22px 0 2px;
+  }
+  .group-note{color:var(--muted);font-size:13px;margin:0 0 4px;}
+
+  .item{
+    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:14px 16px;margin-top:12px;
+    transition:border-color .2s ease,background .2s ease;
+  }
+  .item.correct{border-color:var(--ok);background:var(--ok-soft);}
+  .item.wrong{border-color:var(--no);}
+  .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .num{font-variant-numeric:tabular-nums;font-weight:600;font-size:13px;color:var(--muted);min-width:24px;}
+  .base{
+    font-family:"Fraunces",serif;font-size:21px;font-weight:500;
+    min-width:130px;flex:0 0 auto;
+  }
+  .base .prompt{color:var(--muted);font-family:"Inter",sans-serif;font-size:15px;font-weight:400;}
+  .meaning{
+    flex:1 1 200px;font-size:15px;color:var(--ink);min-width:0;
+  }
+  .meaning em{font-family:"Fraunces",serif;}
+  .sentence{flex:1 1 260px;font-size:16px;line-height:1.55;min-width:0;}
+  .sentence .blank{color:var(--accent);font-weight:600;border-bottom:2px solid var(--accent-soft);padding:0 20px;}
+  .sentence .hint{color:var(--muted);font-family:"Fraunces",serif;font-style:italic;}
+  .answer{display:flex;gap:8px;flex:1 1 200px;min-width:180px;}
+  input[type=text]{
+    flex:1;min-width:0;font-size:16px;color:var(--ink);
+    padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;
+    font-family:"Inter",sans-serif;
+    transition:border-color .15s ease,box-shadow .15s ease;
+  }
+  input[type=text]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  input[type=text]:disabled{background:#fff;color:var(--ok);font-weight:600;-webkit-text-fill-color:var(--ok);opacity:1;border-color:transparent;}
+  .check{
+    font-size:14px;font-weight:600;color:#fff;background:var(--accent);
+    border:none;border-radius:10px;padding:10px 16px;cursor:pointer;white-space:nowrap;
+    font-family:"Inter",sans-serif;
+    transition:background .15s ease,transform .05s ease;
+  }
+  .check:hover{background:#31348a;}
+  .check:active{transform:translateY(1px);}
+  .check:disabled{background:var(--ok);cursor:default;}
+
+  .fb{margin-top:10px;font-size:14px;display:none;}
+  .item.correct .fb,.item.wrong .fb{display:block;}
+  .fb.miss{color:var(--no);}
+  .breakdown{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+  .morph{
+    font-family:"Fraunces",serif;font-size:16px;font-weight:500;
+    background:#fff;border:1px solid var(--ok);color:var(--ok);
+    padding:3px 10px;border-radius:8px;
+  }
+  .morph.affix{background:var(--ok);color:#fff;border-color:var(--ok);}
+  .plus{color:var(--muted);font-weight:600;}
+  .note{color:var(--muted);font-size:13px;font-style:italic;font-family:"Fraunces",serif;margin-left:4px;}
+  .reveal{
+    background:none;border:none;color:var(--no);font-weight:600;font-size:13px;
+    cursor:pointer;padding:0;margin-left:2px;text-decoration:underline;
+  }
+
+  @media (max-width:520px){
+    .base{min-width:100%;}
+    .answer{flex-basis:100%;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Word formation</p>
+    <h1>Word Building 2</h1>
+    <p class="lede">Prefixes change meaning; suffixes change word class. In each part, build the right word — and mind the spelling where the pieces join.</p>
+
+    <div class="bank">
+      <h2>Prefixes</h2>
+      <div class="chips">
+        <span class="chip">un-</span>
+        <span class="chip">in- <small>→ im- / il- / ir-</small></span>
+        <span class="chip">dis-</span>
+        <span class="chip">mis-</span>
+        <span class="chip">semi-</span>
+        <span class="chip">under-</span>
+        <span class="chip">over-</span>
+        <span class="chip">re-</span>
+        <span class="chip">co-</span>
+        <span class="chip">inter-</span>
+      </div>
+    </div>
+    <div class="bank">
+      <h2>Noun suffixes</h2>
+      <div class="chips">
+        <span class="chip">-tion / -sion / -ation / -ition</span>
+        <span class="chip">-ment</span>
+        <span class="chip">-ance / -ence</span>
+        <span class="chip">-er / -or</span>
+        <span class="chip">-al</span>
+        <span class="chip">-ness</span>
+        <span class="chip">-ity / -ty</span>
+      </div>
+    </div>
+    <div class="bank">
+      <h2>Verb affixes <small style="text-transform:none;letter-spacing:0;">— revision, needed in Part E</small></h2>
+      <div class="chips">
+        <span class="chip">-en</span>
+        <span class="chip">-ify / -fy</span>
+        <span class="chip">-ise <small>/ -ize</small></span>
+        <span class="chip">-ate</span>
+        <span class="chip">en- <small>→ em- before b, p</small></span>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress">
+    <div class="bar"><span id="fill"></span></div>
+    <div class="score" id="score">0 / 0</div>
+    <button class="reset" id="reset" type="button">Reset</button>
+  </div>
+
+  <div id="app"></div>
+</div>
+
+<script>
+// ---------------------------------------------------------------
+// Data. type: "base" (word → word), "meaning" (definition + base),
+// "sentence" (gap-fill). Each item: answer, affix, pos (pre/suf),
+// stem (what to show as the base chip), optional note, optional alts.
+// ---------------------------------------------------------------
+const sections = [
+  {
+    title:"Part A — Negative and reversal prefixes",
+    intro:"Make the negative or opposite form. Choose from: un- · in- (→ im- / il- / ir-) · dis- · mis-",
+    rule:"il- before l · im- before m, p, b · ir- before r · in- elsewhere",
+    groups:[{items:[
+      {type:"base", stem:"legal",       answer:"illegal",       affix:"il-",  pos:"pre", note:"il- + l = double l"},
+      {type:"base", stem:"happy",       answer:"unhappy",       affix:"un-",  pos:"pre"},
+      {type:"base", stem:"possible",    answer:"impossible",    affix:"im-",  pos:"pre", note:"im- before p"},
+      {type:"base", stem:"agree",       answer:"disagree",      affix:"dis-", pos:"pre"},
+      {type:"base", stem:"understand",  answer:"misunderstand", affix:"mis-", pos:"pre"},
+      {type:"base", stem:"regular",     answer:"irregular",     affix:"ir-",  pos:"pre", note:"ir- + r = double r"},
+      {type:"base", stem:"honest",      answer:"dishonest",     affix:"dis-", pos:"pre"},
+      {type:"base", stem:"correct",     answer:"incorrect",     affix:"in-",  pos:"pre"},
+      {type:"base", stem:"polite",      answer:"impolite",      affix:"im-",  pos:"pre", note:"im- before p"},
+      {type:"base", stem:"logical",     answer:"illogical",     affix:"il-",  pos:"pre", note:"il- + l = double l"},
+      {type:"base", stem:"responsible", answer:"irresponsible", affix:"ir-",  pos:"pre", note:"ir- + r = double r"},
+      {type:"base", stem:"mature",      answer:"immature",      affix:"im-",  pos:"pre", note:"im- + m = double m"},
+      {type:"base", stem:"fair",        answer:"unfair",        affix:"un-",  pos:"pre"},
+      {type:"base", stem:"obey",        answer:"disobey",       affix:"dis-", pos:"pre"},
+      {type:"base", stem:"spell",       answer:"misspell",      affix:"mis-", pos:"pre", note:"mis- + s = double s"},
+      {type:"base", stem:"visible",     answer:"invisible",     affix:"in-",  pos:"pre"}
+    ]}]
+  },
+  {
+    title:"Part B — Prefixes of degree, time and relation",
+    intro:"Build the word from the meaning given. Choose from: semi- · under- · over- · re- · co- · inter-",
+    rule:"semi- half · under- too little / below · over- too much / above · re- again · co- together · inter- between",
+    groups:[{items:[
+      {type:"meaning", meaning:"cook too much",                 stem:"cook",     answer:"overcook",      affix:"over-",  pos:"pre"},
+      {type:"meaning", meaning:"between nations",               stem:"national", answer:"international", affix:"inter-", pos:"pre"},
+      {type:"meaning", meaning:"judge too low",                 stem:"estimate", answer:"underestimate", affix:"under-", pos:"pre"},
+      {type:"meaning", meaning:"write again",                   stem:"write",    answer:"rewrite",       affix:"re-",    pos:"pre"},
+      {type:"meaning", meaning:"half a circle",                 stem:"circle",   answer:"semicircle",    affix:"semi-",  pos:"pre"},
+      {type:"meaning", meaning:"work together",                 stem:"operate",  answer:"cooperate",     affix:"co-",    pos:"pre", alts:["co-operate"]},
+      {type:"meaning", meaning:"sleep too long",                stem:"sleep",    answer:"oversleep",     affix:"over-",  pos:"pre"},
+      {type:"meaning", meaning:"act with one another",          stem:"act",      answer:"interact",      affix:"inter-", pos:"pre"},
+      {type:"meaning", meaning:"the round before the final",    stem:"final",    answer:"semifinal",     affix:"semi-",  pos:"pre", alts:["semi-final"]},
+      {type:"meaning", meaning:"below the ground",              stem:"ground",   answer:"underground",   affix:"under-", pos:"pre"},
+      {type:"meaning", meaning:"build again",                   stem:"build",    answer:"rebuild",       affix:"re-",    pos:"pre"},
+      {type:"meaning", meaning:"live together at the same time",stem:"exist",    answer:"coexist",       affix:"co-",    pos:"pre", alts:["co-exist"]}
+    ]}]
+  },
+  {
+    title:"Part C — Making nouns from verbs",
+    intro:"Make a noun from each verb — but this time YOU choose the suffix: -tion / -sion / -ation / -ition · -ment · -ance / -ence · -er / -or · -al. Unmarked items want the action, state or thing. Items marked \u201Ca person who \u2026\u201D want the person.",
+    rule:"Choose the suffix yourself — and mind the spelling at the join",
+    groups:[{items:[
+      {type:"base",    stem:"educate",  answer:"education",   affix:"-tion",  pos:"suf", note:"drop the -e"},
+      {type:"meaning", meaning:"a person who teaches",     stem:"teach",     answer:"teacher",    affix:"-er", pos:"suf"},
+      {type:"base",    stem:"decide",   answer:"decision",    affix:"-sion",  pos:"suf", note:"decide → decision"},
+      {type:"base",    stem:"develop",  answer:"development", affix:"-ment",  pos:"suf"},
+      {type:"base",    stem:"perform",  answer:"performance", affix:"-ance",  pos:"suf"},
+      {type:"base",    stem:"arrive",   answer:"arrival",     affix:"-al",    pos:"suf", note:"drop the -e"},
+      {type:"meaning", meaning:"a person who acts",        stem:"act",       answer:"actor",      affix:"-or", pos:"suf"},
+      {type:"base",    stem:"argue",    answer:"argument",    affix:"-ment",  pos:"suf", note:"drop the -e: argument"},
+      {type:"base",    stem:"explain",  answer:"explanation", affix:"-ation", pos:"suf", note:"no i: explanation"},
+      {type:"base",    stem:"exist",    answer:"existence",   affix:"-ence",  pos:"suf"},
+      {type:"base",    stem:"refuse",   answer:"refusal",     affix:"-al",    pos:"suf", note:"drop the -e"},
+      {type:"base",    stem:"govern",   answer:"government",  affix:"-ment",  pos:"suf", note:"keep the n: government"},
+      {type:"meaning", meaning:"a person who writes",      stem:"write",     answer:"writer",     affix:"-er", pos:"suf", note:"drop the -e"},
+      {type:"base",    stem:"inform",   answer:"information", affix:"-ation", pos:"suf"},
+      {type:"base",    stem:"differ",   answer:"difference",  affix:"-ence",  pos:"suf"},
+      {type:"base",    stem:"propose",  answer:"proposal",    affix:"-al",    pos:"suf", note:"drop the -e", alts:["proposition"]},
+      {type:"meaning", meaning:"a person who visits",      stem:"visit",     answer:"visitor",    affix:"-or", pos:"suf"},
+      {type:"base",    stem:"compete",  answer:"competition", affix:"-ition", pos:"suf", note:"drop the -e"},
+      {type:"base",    stem:"achieve",  answer:"achievement", affix:"-ment",  pos:"suf"},
+      {type:"base",    stem:"accept",   answer:"acceptance",  affix:"-ance",  pos:"suf"},
+      {type:"base",    stem:"deny",     answer:"denial",      affix:"-al",    pos:"suf", note:"y → i: denial"},
+      {type:"meaning", meaning:"a person who invents",     stem:"invent",    answer:"inventor",   affix:"-or", pos:"suf"},
+      {type:"base",    stem:"discuss",  answer:"discussion",  affix:"-sion",  pos:"suf"},
+      {type:"base",    stem:"withdraw", answer:"withdrawal",  affix:"-al",    pos:"suf", note:"keep both a's: withdrawal"},
+      {type:"meaning", meaning:"a person who translates",  stem:"translate", answer:"translator", affix:"-or", pos:"suf", note:"drop the -e"}
+    ]}]
+  },
+  {
+    title:"Part D — Making nouns from adjectives",
+    intro:"Make a noun from each adjective — again, YOU choose the suffix: -ness · -ity / -ty. Mind the spelling at the join.",
+    rule:"Choose the suffix yourself",
+    groups:[{items:[
+      {type:"base", stem:"happy",    answer:"happiness",    affix:"-ness", pos:"suf", note:"y → i"},
+      {type:"base", stem:"able",     answer:"ability",      affix:"-ity",  pos:"suf", note:"able → ability"},
+      {type:"base", stem:"dark",     answer:"darkness",     affix:"-ness", pos:"suf"},
+      {type:"base", stem:"active",   answer:"activity",     affix:"-ity",  pos:"suf", note:"drop the -e"},
+      {type:"base", stem:"safe",     answer:"safety",       affix:"-ty",   pos:"suf", note:"just -ty: safety"},
+      {type:"base", stem:"kind",     answer:"kindness",     affix:"-ness", pos:"suf"},
+      {type:"base", stem:"possible", answer:"possibility",  affix:"-ity",  pos:"suf", note:"possible → possibility"},
+      {type:"base", stem:"ill",      answer:"illness",      affix:"-ness", pos:"suf"},
+      {type:"base", stem:"real",     answer:"reality",      affix:"-ity",  pos:"suf"},
+      {type:"base", stem:"weak",     answer:"weakness",     affix:"-ness", pos:"suf"},
+      {type:"base", stem:"cruel",    answer:"cruelty",      affix:"-ty",   pos:"suf", note:"just -ty: cruelty"},
+      {type:"base", stem:"aware",    answer:"awareness",    affix:"-ness", pos:"suf"},
+      {type:"base", stem:"popular",  answer:"popularity",   affix:"-ity",  pos:"suf"},
+      {type:"base", stem:"careless", answer:"carelessness", affix:"-ness", pos:"suf", note:"double s in the middle"},
+      {type:"base", stem:"creative", answer:"creativity",   affix:"-ity",  pos:"suf", note:"drop the -e"}
+    ]}]
+  },
+  {
+    title:"Part E — Mixed challenge",
+    intro:"Nothing is grouped now. Build the right word from the base in brackets — prefix, suffix, or both. It may be a verb, a noun, or a negative form. This part also revises the verb affixes from the last exercise.",
+    groups:[{items:[
+      {type:"sentence", before:"It's easy to", after:"instructions that are badly written.", stem:"understand", answer:"misunderstand", affix:"mis-",  pos:"pre"},
+      {type:"sentence", before:"Bees", after:"the flowers as they move between them.",        stem:"pollen",     answer:"pollinate",     affix:"-ate",  pos:"suf", note:"pollen → pollin-"},
+      {type:"sentence", before:"There has been huge", after:"in technology recently.",        stem:"develop",    answer:"development",   affix:"-ment", pos:"suf"},
+      {type:"sentence", before:"Reading widely will", after:"your vocabulary.",               stem:"strength",   answer:"strengthen",    affix:"-en",   pos:"suf"},
+      {type:"sentence", before:"It is", after:"to park here; you will get a fine.",           stem:"legal",      answer:"illegal",       affix:"il-",   pos:"pre", note:"il- + l = double l"},
+      {type:"sentence", before:"The two companies agreed to", after:"on the project.",        stem:"operate",    answer:"cooperate",     affix:"co-",   pos:"pre", alts:["co-operate"]},
+      {type:"sentence", before:"The scientist's latest", after:"could change medicine.",      stem:"invent",     answer:"invention",     affix:"-tion", pos:"suf"},
+      {type:"sentence", before:"I set two alarms because I didn't want to", after:".",        stem:"sleep",      answer:"oversleep",     affix:"over-", pos:"pre"},
+      {type:"sentence", before:"The new manager wants to", after:"the whole filing system.",  stem:"modern",     answer:"modernise",     affix:"-ise",  pos:"suf"},
+      {type:"sentence", before:"Everyone was surprised by his", after:"to help.",             stem:"refuse",     answer:"refusal",       affix:"-al",   pos:"suf", note:"drop the -e"},
+      {type:"sentence", before:"We must not", after:"how hard this task will be.",            stem:"estimate",   answer:"underestimate", affix:"under-",pos:"pre"},
+      {type:"sentence", before:"Her sudden", after:"at the door startled us.",                stem:"appear",     answer:"appearance",    affix:"-ance", pos:"suf"}
+    ]}]
+  }
+];
+
+// ---------------------------------------------------------------
+let TOTAL = 0;
+sections.forEach(s=>s.groups.forEach(g=>TOTAL+=g.items.length));
+let solved = new Set();
+
+function accepts(item, guess){
+  const g = guess.trim().toLowerCase();
+  const variants = new Set([item.answer]);
+  if(item.answer.endsWith("ise")) variants.add(item.answer.slice(0,-3)+"ize");
+  (item.alts||[]).forEach(a=>variants.add(a));
+  return variants.has(g);
+}
+
+function breakdown(item){
+  const affix = `<span class="morph affix">${item.affix.replace(/-/g,'')}</span>`;
+  const base  = `<span class="morph">${item.stem}</span>`;
+  const inner = item.pos==="pre" ? `${affix}<span class="plus">+</span>${base}`
+                                 : `${base}<span class="plus">+</span>${affix}`;
+  const note  = item.note ? `<span class="note">${item.note}</span>` : "";
+  return `<div class="breakdown">${inner}${note}</div>`;
+}
+
+function updateProgress(){
+  const n = solved.size;
+  document.getElementById("score").textContent = `${n} / ${TOTAL}`;
+  document.getElementById("fill").style.width = (n/TOTAL*100)+"%";
+}
+
+let itemCounter = 0;
+function makeItem(item, numInSection){
+  const id = "q"+(itemCounter++);
+  const wrap = document.createElement("div");
+  wrap.className = "item";
+  wrap.dataset.tries = "0";
+
+  let lead;
+  if(item.type==="base"){
+    lead = `<div class="base">${item.stem} <span class="prompt">→</span></div>`;
+  }else if(item.type==="meaning"){
+    lead = `<div class="meaning">${item.meaning} <em>(${item.stem})</em></div>`;
+  }else{
+    lead = `<div class="sentence">${item.before} <span class="blank"></span> ${item.after} <span class="hint">(${item.stem})</span></div>`;
+  }
+
+  wrap.innerHTML = `
+    <div class="row">
+      <div class="num">${numInSection}</div>
+      ${lead}
+      <div class="answer">
+        <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your word">
+        <button class="check" type="button">Check</button>
+      </div>
+    </div>
+    <div class="fb"></div>`;
+
+  const input = wrap.querySelector("input");
+  const btn = wrap.querySelector(".check");
+  const fb = wrap.querySelector(".fb");
+
+  function check(){
+    if(wrap.classList.contains("correct")) return;
+    const val = input.value;
+    if(!val.trim()) return;
+    if(accepts(item, val)){
+      wrap.classList.remove("wrong");
+      wrap.classList.add("correct");
+      input.value = item.answer;
+      input.disabled = true;
+      btn.disabled = true;
+      btn.textContent = "Correct";
+      fb.className = "fb hit";
+      fb.innerHTML = breakdown(item);
+      solved.add(id);
+      updateProgress();
+    }else{
+      wrap.classList.add("wrong");
+      const tries = (parseInt(wrap.dataset.tries)||0)+1;
+      wrap.dataset.tries = tries;
+      fb.className = "fb miss";
+      if(tries>=2){
+        fb.innerHTML = `Not yet — check the affix and the spelling at the join. <button class="reveal" type="button">Show answer</button>`;
+        fb.querySelector(".reveal").onclick = ()=>{ input.value = item.answer; input.focus(); };
+      }else{
+        fb.textContent = "Not yet — try again.";
+      }
+    }
+  }
+
+  btn.addEventListener("click", check);
+  input.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); check(); }});
+  input.addEventListener("input", ()=>{ if(wrap.classList.contains("wrong")){ wrap.classList.remove("wrong"); fb.className="fb"; fb.textContent=""; }});
+  return wrap;
+}
+
+const app = document.getElementById("app");
+sections.forEach(sec=>{
+  const s = document.createElement("section");
+  let head = `<div class="sec-head"><h3>${sec.title}</h3><p>${sec.intro}</p>`;
+  if(sec.rule) head += `<span class="rule">${sec.rule}</span>`;
+  head += `</div>`;
+  s.innerHTML = head;
+  sec.groups.forEach(g=>{
+    if(g.label){
+      const gl = document.createElement("div");
+      gl.className="group-label";
+      gl.textContent=g.label;
+      s.appendChild(gl);
+    }
+    let n = 0;
+    g.items.forEach(it=>{ n++; s.appendChild(makeItem(it, n)); });
+  });
+  app.appendChild(s);
+});
+
+document.getElementById("reset").addEventListener("click", ()=>{
+  solved.clear();
+  updateProgress();
+  document.querySelectorAll(".item").forEach(el=>{
+    el.classList.remove("correct","wrong");
+    el.dataset.tries="0";
+    const inp = el.querySelector("input"); inp.disabled=false; inp.value="";
+    const b = el.querySelector(".check"); b.disabled=false; b.textContent="Check";
+    const f = el.querySelector(".fb"); f.className="fb"; f.textContent="";
+  });
+  window.scrollTo({top:0});
+});
+
+updateProgress();
+</script>
+</body>
+</html>
