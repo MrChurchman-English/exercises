@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case File 11–26 · Crime and justice vocabulary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14191e;
+    --ink-soft:#4a545c;
+    --paper:#c9d0c6;
+    --sheet:#eef0ea;
+    --rule:#a4ada0;
+    --stamp:#9e2119;
+    --tag:#8a6a12;
+    --ok:#2c5a38;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    background-image:repeating-linear-gradient(180deg,rgba(20,25,30,.035) 0 1px,transparent 1px 34px);
+    color:var(--ink);
+    font-family:"IBM Plex Serif",Georgia,serif;
+    padding:28px 16px 96px;
+    -webkit-text-size-adjust:100%;
+  }
+  .sheet{
+    max-width:760px;margin:0 auto;background:var(--sheet);
+    border:1px solid var(--ink);
+    box-shadow:6px 6px 0 rgba(20,25,30,.14);
+    position:relative;
+  }
+  header{border-bottom:1px solid var(--ink);padding:18px 26px 16px}
+  .strip{
+    display:flex;flex-wrap:wrap;gap:10px 22px;align-items:baseline;
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  h1{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-weight:600;font-size:clamp(22px,4.6vw,31px);
+    letter-spacing:-.01em;margin:10px 0 0;line-height:1.15;
+  }
+  .brief{
+    margin:12px 0 0;font-size:15px;line-height:1.5;color:var(--ink-soft);max-width:56ch;
+  }
+  .brief b{color:var(--ink);font-weight:600}
+  main{padding:26px 26px 30px;font-size:18px;line-height:2.15}
+  main p{margin:0 0 18px}
+  main p:last-child{margin-bottom:0}
+
+  .gap{white-space:nowrap;position:relative}
+  .num{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:10px;vertical-align:.75em;color:var(--ink-soft);margin-right:2px;letter-spacing:.04em;
+  }
+  .pre,.gap input{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:16px;color:var(--ink);
+  }
+  .pre{border-bottom:2px solid var(--ink);padding-bottom:1px}
+  .gap input{
+    background:transparent;border:0;border-bottom:2px solid var(--rule);
+    padding:0 2px 1px;outline:0;
+  }
+  .gap input:focus{border-bottom-color:var(--ink);background:rgba(138,106,18,.12)}
+  .gap input:focus-visible{outline:2px solid var(--tag);outline-offset:3px;border-radius:1px}
+  .gap.ok .pre,.gap.ok input{color:var(--ok);border-bottom-color:var(--ok)}
+  .gap.no .pre,.gap.no input{color:var(--stamp);border-bottom-color:var(--stamp)}
+  .mark{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:12px;margin-left:3px;
+  }
+  .gap.ok .mark::after{content:"✓";color:var(--ok)}
+  .gap.no .mark::after{content:"✗";color:var(--stamp)}
+
+  .hint{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:10px;
+    margin-left:3px;padding:1px 4px;cursor:pointer;
+    background:transparent;color:var(--tag);
+    border:1px solid var(--tag);border-radius:2px;line-height:1.3;vertical-align:.35em;
+  }
+  .hint:hover{background:var(--tag);color:var(--sheet)}
+  .hint:focus-visible{outline:2px solid var(--tag);outline-offset:2px}
+  .gap.assisted .pre{background:rgba(138,106,18,.18)}
+
+  footer{
+    border-top:1px solid var(--ink);padding:16px 26px;
+    display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+  }
+  .count{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+  }
+  .actions{display:flex;gap:10px;flex-wrap:wrap}
+  button.act{
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+    padding:10px 16px;cursor:pointer;border:1px solid var(--ink);border-radius:2px;
+    background:var(--ink);color:var(--sheet);
+  }
+  button.act.ghost{background:transparent;color:var(--ink)}
+  button.act:hover{background:var(--stamp);border-color:var(--stamp);color:var(--sheet)}
+  button.act:focus-visible{outline:2px solid var(--tag);outline-offset:2px}
+
+  #stamp{
+    position:absolute;right:14px;bottom:74px;
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    color:var(--stamp);border:3px double var(--stamp);border-radius:3px;
+    padding:8px 14px;text-align:center;text-transform:uppercase;letter-spacing:.1em;
+    transform:rotate(-7deg) scale(1.6);opacity:0;pointer-events:none;
+    transition:transform .22s cubic-bezier(.2,.9,.3,1.2),opacity .22s ease;
+    background:rgba(238,240,234,.55);
+  }
+  #stamp.show{opacity:.92;transform:rotate(-7deg) scale(1)}
+  #stamp .big{display:block;font-size:26px;font-weight:600;line-height:1}
+  #stamp .small{display:block;font-size:10px;margin-top:4px}
+  .note{
+    max-width:760px;margin:14px auto 0;
+    font-family:"IBM Plex Mono",ui-monospace,monospace;
+    font-size:11px;letter-spacing:.08em;color:var(--ink-soft);text-align:center;
+  }
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  @media (max-width:560px){
+    main{padding:20px 18px 24px;font-size:17px;line-height:2.3}
+    header,footer{padding-left:18px;padding-right:18px}
+    #stamp{right:10px;bottom:auto;top:8px;transform:rotate(-7deg) scale(1.4)}
+    #stamp.show{transform:rotate(-7deg) scale(.85)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    #stamp{transition:opacity .2s ease;transform:rotate(-7deg)}
+    #stamp.show{transform:rotate(-7deg)}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <header>
+    <div class="strip"><span>Case file 11–26</span><span>Robbery · Station Road</span><span>Test revision</span></div>
+    <h1>The Man Who Forgot His Gloves</h1>
+    <p class="brief">Twenty words are missing from the report. The <b>first letter is given</b> — type the rest of the word. Stuck? Press <b>?</b> to release the second letter.</p>
+  </header>
+
+  <main>
+    <p>On a wet Tuesday in October, Marcus Neill <span class="gap" data-gap="0"></span> the crime that changed his life. He walked into a bank on Station Road, threatened the cashier and left with 80,000 francs in a sports bag. A student waiting at the bus stop opposite <span class="gap" data-gap="1"></span> the whole thing and phoned the police. Officers <span class="gap" data-gap="2"></span> Neill three days later at his flat and <span class="gap" data-gap="3"></span> him with armed robbery. They also questioned his girlfriend Erin, because they believed she had driven the car and had therefore been his <span class="gap" data-gap="4"></span>.</p>
+
+    <p>Detectives spent two days at the <span class="gap" data-gap="5"></span>, where they collected a surprising amount of <span class="gap" data-gap="6"></span>. Neill had worn no gloves, so his <span class="gap" data-gap="7"></span> were all over the counter and the door handle, and a hair on the floor gave the laboratory some DNA evidence as well. By the end of the week the police were confident that they had <span class="gap" data-gap="8"></span> that Neill was the robber.</p>
+
+    <p>The case came to <span class="gap" data-gap="9"></span> in March, and the two of them were <span class="gap" data-gap="10"></span> together. Both of them <span class="gap" data-gap="11"></span> not guilty. Their lawyer did her best to <span class="gap" data-gap="12"></span> them, but the <span class="gap" data-gap="13"></span> lawyer produced a very strong case, and the trial did not last long.</p>
+
+    <p>The jury's <span class="gap" data-gap="14"></span> were unusually short, and they passed <span class="gap" data-gap="15"></span> on the two of them before lunch. Neill was found guilty and was <span class="gap" data-gap="16"></span> of robbery. Erin, however, was innocent, and the court <span class="gap" data-gap="17"></span> her of any involvement in the robbery, because nobody could show that she had known about the plan.</p>
+
+    <p>The judge <span class="gap" data-gap="18"></span> Neill to five years in jail and ordered him to pay a large fine as well. In the end he served three years and eight months and was <span class="gap" data-gap="19"></span> from prison early. He got time off for good behaviour, and he has not committed a crime since.</p>
+  </main>
+
+  <div id="stamp" aria-hidden="true"><span class="big"></span><span class="small"></span></div>
+
+  <footer>
+    <div class="count" id="count">20 gaps · not checked · 0 letters released</div>
+    <div class="actions">
+      <button class="act" id="check" type="button">Check answers</button>
+      <button class="act ghost" id="reset" type="button">Start again</button>
+    </div>
+  </footer>
+</div>
+<p class="note">Answers are not stored on this page. Ask your teacher to confirm anything still marked unresolved.</p>
+<div class="sr" id="live" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var d = function(s){ return atob(s).split("").reverse().join(""); };
+
+  var GAPS = [
+    {w:["ZGV0dGltbW9j"]},
+    {w:["ZGVzc2VudGl3"]},
+    {w:["ZGV0c2VycmE="]},
+    {w:["ZGVncmFoYw=="]},
+    {w:["ZWNpbHBtb2NjYQ=="]},
+    {w:["ZW1pcmM=","ZW5lY3M="]},
+    {w:["ZWNuZWRpdmU="]},
+    {w:["c3RuaXJwcmVnbmlm"]},
+    {w:["Zm9vcnA="]},
+    {w:["dHJ1b2M="]},
+    {w:["ZGVpcnQ="]},
+    {w:["ZGVkYWVscA=="], alts:["ZGVscA=="]},
+    {w:["ZG5lZmVk"]},
+    {w:["Z25pdHVjZXNvcnA="]},
+    {w:["c25vaXRhcmViaWxlZA=="]},
+    {w:["dGNpZHJldg=="]},
+    {w:["ZGV0Y2l2bm9j"]},
+    {w:["ZGV0dGl1cWNh"]},
+    {w:["ZGVjbmV0bmVz"]},
+    {w:["ZGVzYWVsZXI="]}
+  ].map(function(g,i){
+    return {
+      n:i+1,
+      words:g.w.map(d),
+      alts:(g.alts||[]).map(d),
+      shown:1,
+      inputs:[],
+      el:null
+    };
+  });
+
+  var TOTAL = GAPS.length;
+  var hintsUsed = 0, checked = false;
+
+  function widthFor(g, wi){
+    var left = Math.max(3, g.words[wi].length - g.shown);
+    return (left * 0.98 + 0.9).toFixed(2) + "ch";
+  }
+
+  function build(g){
+    var host = document.querySelector('.gap[data-gap="' + (g.n - 1) + '"]');
+    g.el = host;
+    host.innerHTML = "";
+
+    var num = document.createElement("span");
+    num.className = "num";
+    num.textContent = g.n;
+    host.appendChild(num);
+
+    g.words.forEach(function(word, wi){
+      if (wi > 0) host.appendChild(document.createTextNode(" "));
+      var pre = document.createElement("span");
+      pre.className = "pre";
+      pre.textContent = word.slice(0, g.shown);
+      host.appendChild(pre);
+
+      var inp = document.createElement("input");
+      inp.type = "text";
+      inp.autocapitalize = "off";
+      inp.autocomplete = "off";
+      inp.spellcheck = false;
+      inp.setAttribute("aria-label", "Gap " + g.n + (g.words.length > 1 ? ", word " + (wi + 1) : "") + ", starting with " + word.slice(0, g.shown).toUpperCase());
+      inp.style.width = widthFor(g, wi);
+      inp.addEventListener("input", function(){ clearMark(g); });
+      inp.addEventListener("keydown", function(e){ if (e.key === "Enter") document.getElementById("check").click(); });
+      host.appendChild(inp);
+      g.inputs.push({pre:pre, input:inp, wi:wi});
+    });
+
+    var mark = document.createElement("span");
+    mark.className = "mark";
+    host.appendChild(mark);
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "hint";
+    btn.textContent = "?";
+    btn.setAttribute("aria-label", "Release the second letter of gap " + g.n);
+    btn.addEventListener("click", function(){ reveal(g, btn); });
+    host.appendChild(btn);
+  }
+
+  function reveal(g, btn){
+    if (g.shown >= 2) return;
+    g.shown = 2;
+    hintsUsed++;
+    g.inputs.forEach(function(f){
+      var word = g.words[f.wi];
+      var letter = word.charAt(1);
+      f.pre.textContent = word.slice(0, 2);
+      if (f.input.value.charAt(0).toLowerCase() === letter.toLowerCase()){
+        f.input.value = f.input.value.slice(1);
+      }
+      f.input.style.width = widthFor(g, f.wi);
+      f.input.setAttribute("aria-label", "Gap " + g.n + ", starting with " + word.slice(0,2).toUpperCase());
+    });
+    g.el.classList.add("assisted");
+    btn.remove();
+    clearMark(g);
+    say("Second letter released for gap " + g.n + ".");
+    tally();
+  }
+
+  function typed(g){
+    return g.inputs.map(function(f){
+      return (f.pre.textContent + f.input.value).trim().toLowerCase().replace(/\s+/g, " ");
+    }).join(" ");
+  }
+
+  function isRight(g){
+    var got = typed(g);
+    if (got === g.words.join(" ").toLowerCase()) return true;
+    return g.alts.some(function(a){ return got === a.toLowerCase(); });
+  }
+
+  function clearMark(g){
+    g.el.classList.remove("ok", "no");
+    if (checked){
+      checked = false;
+      document.getElementById("stamp").classList.remove("show");
+      tally();
+    }
+  }
+
+  function tally(){
+    var right = GAPS.filter(function(g){ return g.el.classList.contains("ok"); }).length;
+    document.getElementById("count").textContent =
+      TOTAL + " gaps · " + (checked ? right + " confirmed" : "not checked") +
+      " · " + hintsUsed + " letter" + (hintsUsed === 1 ? "" : "s") + " released";
+  }
+
+  function say(msg){ document.getElementById("live").textContent = msg; }
+
+  GAPS.forEach(build);
+
+  document.getElementById("check").addEventListener("click", function(){
+    var right = 0;
+    GAPS.forEach(function(g){
+      var ok = isRight(g);
+      g.el.classList.toggle("ok", ok);
+      g.el.classList.toggle("no", !ok);
+      if (ok) right++;
+    });
+    checked = true;
+    var stamp = document.getElementById("stamp");
+    stamp.querySelector(".big").textContent = right + " / " + TOTAL;
+    stamp.querySelector(".small").textContent = right === TOTAL ? "case closed" : (TOTAL - right) + " unresolved";
+    stamp.classList.add("show");
+    tally();
+    say(right + " of " + TOTAL + " confirmed. " + (TOTAL - right) + " still unresolved.");
+  });
+
+  document.getElementById("reset").addEventListener("click", function(){
+    hintsUsed = 0;
+    checked = false;
+    document.getElementById("stamp").classList.remove("show");
+    GAPS.forEach(function(g){
+      g.shown = 1;
+      g.inputs.length = 0;
+      g.el.className = "gap";
+      build(g);
+    });
+    tally();
+    say("Report cleared. All " + TOTAL + " gaps are open again.");
+    var first = document.querySelector(".gap input");
+    if (first) first.focus();
+  });
+
+  tally();
+})();
+</script>
+</body>
+</html>
