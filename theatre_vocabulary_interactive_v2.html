@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>At the Theatre – Vocabulary Challenge</title>
+<style>
+  :root{
+    --burgundy:#651d32;
+    --burgundy-dark:#3f1020;
+    --gold:#d5ad58;
+    --gold-soft:#f3e4bf;
+    --paper:#fffaf0;
+    --ink:#29231f;
+    --muted:#746b63;
+    --green:#25734f;
+    --red:#a23a3a;
+    --line:#dfd2bd;
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    font-family: Georgia, "Times New Roman", serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 20% 0%, rgba(213,173,88,.12), transparent 28rem),
+      linear-gradient(180deg,#f1e8dc 0%,#fbf7ef 100%);
+    min-height:100vh;
+  }
+
+  .page{
+    width:min(980px, calc(100% - 28px));
+    margin:28px auto 56px;
+  }
+
+  .marquee{
+    position:relative;
+    overflow:hidden;
+    border-radius:24px 24px 12px 12px;
+    padding:36px 28px 30px;
+    text-align:center;
+    color:#fff8e8;
+    background:
+      linear-gradient(135deg,rgba(255,255,255,.05),transparent 45%),
+      var(--burgundy);
+    border:1px solid #4a1225;
+    box-shadow:0 18px 45px rgba(69,31,30,.16);
+  }
+
+  .marquee::before,
+  .marquee::after{
+    content:"";
+    position:absolute;
+    top:0;
+    width:86px;
+    height:100%;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,.02) 0 10px,
+        rgba(0,0,0,.08) 10px 20px
+      );
+    opacity:.75;
+  }
+
+  .marquee::before{left:0}
+  .marquee::after{right:0; transform:scaleX(-1)}
+
+  .kicker{
+    font-family: Arial, Helvetica, sans-serif;
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    font-size:.78rem;
+    color:var(--gold-soft);
+    margin-bottom:10px;
+  }
+
+  h1{
+    margin:0;
+    font-size:clamp(2rem,5vw,3.6rem);
+    line-height:1;
+    font-weight:700;
+  }
+
+  .subtitle{
+    margin:12px auto 0;
+    max-width:650px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:1rem;
+    line-height:1.5;
+    color:#f6ead2;
+  }
+
+  .gold-rule{
+    width:150px;
+    height:3px;
+    margin:18px auto 0;
+    border-radius:99px;
+    background:var(--gold);
+  }
+
+  .statusbar{
+    display:grid;
+    grid-template-columns:1fr auto auto;
+    gap:14px;
+    align-items:center;
+    margin-top:14px;
+    padding:14px 16px;
+    border:1px solid #eadbc5;
+    border-radius:14px;
+    background:rgba(255,250,240,.88);
+    box-shadow:0 8px 24px rgba(60,39,28,.07);
+    font-family:Arial,Helvetica,sans-serif;
+  }
+
+  .progress-track{
+    height:10px;
+    background:#eadfce;
+    border-radius:99px;
+    overflow:hidden;
+  }
+
+  .progress-fill{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,var(--burgundy),#9a3d58);
+    border-radius:99px;
+    transition:width .25s ease;
+  }
+
+  .status-pill{
+    white-space:nowrap;
+    font-size:.9rem;
+    color:var(--burgundy-dark);
+    font-weight:700;
+  }
+
+  .sheet{
+    margin-top:16px;
+    border:1px solid var(--line);
+    border-radius:16px;
+    background:var(--paper);
+    box-shadow:0 16px 40px rgba(63,42,28,.09);
+    overflow:hidden;
+  }
+
+  .sheet-head{
+    display:flex;
+    justify-content:space-between;
+    gap:18px;
+    align-items:flex-start;
+    padding:24px 28px 18px;
+    border-bottom:1px solid #e7dac7;
+    background:
+      linear-gradient(90deg,rgba(213,173,88,.10),transparent 48%),
+      #fffdf8;
+  }
+
+  .sheet-head h2{
+    margin:0 0 6px;
+    font-size:1.35rem;
+  }
+
+  .sheet-head p{
+    margin:0;
+    max-width:700px;
+    font-family:Arial,Helvetica,sans-serif;
+    color:var(--muted);
+    line-height:1.55;
+    font-size:.95rem;
+  }
+
+  .ticket{
+    flex:0 0 auto;
+    border:1px dashed #bd9a51;
+    border-radius:10px;
+    padding:9px 12px;
+    color:var(--burgundy);
+    background:#fff8e8;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:.78rem;
+    font-weight:700;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+
+  .reading{
+    padding:28px;
+    font-size:1.08rem;
+    line-height:2.15;
+  }
+
+  .reading p{
+    margin:0 0 1.15em;
+  }
+
+  .gap{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    vertical-align:baseline;
+    margin:0 2px;
+    font-family:Arial,Helvetica,sans-serif;
+  }
+
+  .gap-num{
+    font-size:.72rem;
+    color:#8c8177;
+    vertical-align:super;
+    margin-right:1px;
+  }
+
+  .prefix{
+    font-weight:800;
+    color:var(--burgundy);
+    letter-spacing:.02em;
+  }
+
+  .answer{
+    width:7.2rem;
+    border:none;
+    border-bottom:2px solid #b9aa95;
+    outline:none;
+    background:transparent;
+    color:var(--ink);
+    font:600 1rem/1.2 Arial,Helvetica,sans-serif;
+    padding:2px 3px 3px;
+    transition:border-color .18s ease, background .18s ease;
+  }
+
+  .answer:focus{
+    border-bottom-color:var(--burgundy);
+    background:rgba(213,173,88,.08);
+  }
+
+  .gap.correct .answer{
+    border-bottom-color:var(--green);
+  }
+
+  .gap.wrong{
+    background:#fbe9e9;
+    border:1px solid #d98d8d;
+    border-radius:8px;
+    padding:2px 5px;
+    box-shadow:0 0 0 2px rgba(162,58,58,.08);
+    animation:wrongFlash .28s ease-in-out;
+  }
+
+  .gap.wrong .answer{
+    border-bottom-color:var(--red);
+    color:#8b2323;
+  }
+
+  .mark{
+    width:22px;
+    height:22px;
+    display:inline-grid;
+    place-items:center;
+    border-radius:50%;
+    font-size:.82rem;
+    font-weight:900;
+    text-align:center;
+    font-family:Arial,Helvetica,sans-serif;
+  }
+
+  .gap.correct .mark{
+    color:#fff;
+    background:var(--green);
+  }
+
+  .gap.wrong .mark{
+    color:#fff;
+    background:var(--red);
+  }
+
+  @keyframes wrongFlash{
+    0%{transform:translateX(0)}
+    35%{transform:translateX(-3px)}
+    70%{transform:translateX(3px)}
+    100%{transform:translateX(0)}
+  }
+
+  .hint-btn{
+    border:1px solid #d4c4ae;
+    border-radius:999px;
+    background:#fffdf8;
+    color:#6e5a42;
+    font:700 .72rem/1 Arial,Helvetica,sans-serif;
+    padding:5px 7px;
+    cursor:pointer;
+    transition:.15s ease;
+  }
+
+  .hint-btn:hover{
+    border-color:#b99650;
+    color:var(--burgundy);
+    background:#fff6df;
+  }
+
+  .hint-btn:disabled{
+    cursor:default;
+    opacity:.55;
+  }
+
+  .actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+    padding:20px 28px 26px;
+    border-top:1px solid #e7dac7;
+    background:#fffdf8;
+    font-family:Arial,Helvetica,sans-serif;
+  }
+
+  button.main,
+  button.secondary{
+    border-radius:10px;
+    padding:11px 17px;
+    font:700 .95rem/1 Arial,Helvetica,sans-serif;
+    cursor:pointer;
+  }
+
+  button.main{
+    color:#fffaf0;
+    background:var(--burgundy);
+    border:1px solid var(--burgundy-dark);
+  }
+
+  button.main:hover{background:#7c2640}
+
+  button.secondary{
+    color:var(--burgundy-dark);
+    background:#fffaf0;
+    border:1px solid #cdbda8;
+  }
+
+  button.secondary:hover{background:#f7ecd9}
+
+  .message{
+    margin-left:auto;
+    min-width:240px;
+    color:var(--muted);
+    font-size:.9rem;
+    line-height:1.4;
+    text-align:right;
+  }
+
+  .message strong{color:var(--burgundy-dark)}
+
+  .teacher-note{
+    margin-top:14px;
+    padding:14px 16px;
+    border-left:4px solid var(--gold);
+    border-radius:8px;
+    background:rgba(255,250,240,.72);
+    color:#665b51;
+    font: .88rem/1.5 Arial,Helvetica,sans-serif;
+  }
+
+  @media (max-width:720px){
+    .page{width:min(100% - 18px,980px);margin-top:12px}
+    .marquee{padding:28px 18px 24px}
+    .statusbar{grid-template-columns:1fr 1fr}
+    .progress-track{grid-column:1 / -1; order:3}
+    .sheet-head{padding:20px; flex-direction:column}
+    .ticket{align-self:flex-start}
+    .reading{padding:22px 20px;font-size:1rem;line-height:2.2}
+    .actions{padding:18px 20px}
+    .message{width:100%;margin-left:0;text-align:left}
+    .answer{width:6rem}
+  }
+
+  @media print{
+    body{background:white}
+    .page{width:100%;margin:0}
+    .marquee,.statusbar,.hint-btn,.actions{display:none !important}
+    .sheet{box-shadow:none;border:none}
+    .sheet-head{padding:0 0 16px}
+    .reading{padding:0;font-size:12pt}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="marquee">
+    <div class="kicker">Vocabulary Challenge</div>
+    <h1>At the Theatre</h1>
+    <p class="subtitle">Complete each gap with one word. The first letter is already shown. If you get stuck, you may reveal one more letter.</p>
+    <div class="gold-rule"></div>
+  </header>
+
+  <div class="statusbar" aria-label="Exercise progress">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="status-pill" id="score">0 / 20 correct</div>
+    <div class="status-pill" id="hints">0 hints used</div>
+  </div>
+
+  <main class="sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>Theatre Night</h2>
+        <p>Type the missing part of each word after the letter shown. Press <strong>Check answers</strong> whenever you are ready. Incorrect answers are highlighted clearly in red but are never replaced by the solution.</p>
+      </div>
+      <div class="ticket">Upper-intermediate</div>
+    </div>
+
+    <section class="reading" id="exercise">
+      <p>
+        Last Saturday, our class went to see a new play at the Grand Theatre. We arrived early and waited in the
+        <span class="gap" data-i="0"><sup class="gap-num">1</sup><span class="prefix">f</span><input class="answer" aria-label="Gap 1" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>
+        until the doors opened. A few people were still collecting their tickets from the box
+        <span class="gap" data-i="1"><sup class="gap-num">2</sup><span class="prefix">o</span><input class="answer" aria-label="Gap 2" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>.
+        Our seats were downstairs in the
+        <span class="gap" data-i="2"><sup class="gap-num">3</sup><span class="prefix">s</span><input class="answer" aria-label="Gap 3" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>,
+        while another school group was sitting upstairs in the
+        <span class="gap" data-i="3"><sup class="gap-num">4</sup><span class="prefix">c</span><input class="answer" aria-label="Gap 4" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>.
+      </p>
+
+      <p>
+        An usher showed us down the
+        <span class="gap" data-i="4"><sup class="gap-num">5</sup><span class="prefix">a</span><input class="answer" aria-label="Gap 5" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>
+        and helped us find the correct
+        <span class="gap" data-i="5"><sup class="gap-num">6</sup><span class="prefix">r</span><input class="answer" aria-label="Gap 6" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>.
+        From our seats we had an excellent view of the
+        <span class="gap" data-i="6"><sup class="gap-num">7</sup><span class="prefix">s</span><input class="answer" aria-label="Gap 7" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>.
+        On one side of the theatre, we could also see a small private
+        <span class="gap" data-i="7"><sup class="gap-num">8</sup><span class="prefix">b</span><input class="answer" aria-label="Gap 8" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>
+        containing only four seats.
+      </p>
+
+      <p>
+        Before the play began, our teacher told us a little about how the production had been created. The
+        <span class="gap" data-i="8"><sup class="gap-num">9</sup><span class="prefix">p</span><input class="answer" aria-label="Gap 9" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>
+        had written the play several years earlier, but this was the first time it had been performed professionally. The
+        <span class="gap" data-i="9"><sup class="gap-num">10</sup><span class="prefix">d</span><input class="answer" aria-label="Gap 10" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>
+        had spent months preparing the production and choosing the right
+        <span class="gap" data-i="10"><sup class="gap-num">11</sup><span class="prefix">c</span><input class="answer" aria-label="Gap 11" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>.
+      </p>
+
+      <p>
+        More than fifty actors had attended the
+        <span class="gap" data-i="11"><sup class="gap-num">12</sup><span class="prefix">a</span><input class="answer" aria-label="Gap 12" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>,
+        hoping to get one of the main
+        <span class="gap" data-i="12"><sup class="gap-num">13</sup><span class="prefix">p</span><input class="answer" aria-label="Gap 13" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>.
+        Once the actors had been chosen, they spent six weeks in
+        <span class="gap" data-i="13"><sup class="gap-num">14</sup><span class="prefix">r</span><input class="answer" aria-label="Gap 14" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>.
+        Before each performance, they put on their costumes and make-up in the dressing
+        <span class="gap" data-i="14"><sup class="gap-num">15</sup><span class="prefix">r</span><input class="answer" aria-label="Gap 15" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>
+        and then waited
+        <span class="gap" data-i="15"><sup class="gap-num">16</sup><span class="prefix">b</span><input class="answer" aria-label="Gap 16" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>
+        until it was time to appear.
+      </p>
+
+      <p>
+        The first
+        <span class="gap" data-i="16"><sup class="gap-num">17</sup><span class="prefix">n</span><input class="answer" aria-label="Gap 17" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>
+        was completely sold out. At the end, the
+        <span class="gap" data-i="17"><sup class="gap-num">18</sup><span class="prefix">a</span><input class="answer" aria-label="Gap 18" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>
+        stood up and gave the actors enormous
+        <span class="gap" data-i="18"><sup class="gap-num">19</sup><span class="prefix">a</span><input class="answer" aria-label="Gap 19" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>.
+        The newspaper
+        <span class="gap" data-i="19"><sup class="gap-num">20</sup><span class="prefix">r</span><input class="answer" aria-label="Gap 20" autocomplete="off" spellcheck="false"><button class="hint-btn" type="button" title="Reveal one more letter">+1 letter</button><span class="mark" aria-live="polite"></span></span>
+        the following morning were extremely positive, so it looks as though the play may be a great success.
+      </p>
+    </section>
+
+    <div class="actions">
+      <button class="main" id="checkBtn" type="button">Check answers</button>
+      <button class="secondary" id="resetBtn" type="button">Start again</button>
+      <div class="message" id="message" aria-live="polite">Your answers stay private on this page. No solution list is shown.</div>
+    </div>
+  </main>
+
+
+</div>
+
+<script>
+  const hashes = [
+    "92aebb27a9b79e225fd342e113981e8a53a1ec7550778f57efd91f1228fda4f3",
+    "5cc3f82838ba7260203e4590ce03d00e1663d41f6a5167144f5c95d6be2166a0",
+    "198277ccf45f2fd4615db586a9abfb63c3132420d4cdb5d2072f1afceb2914c4",
+    "8a39178d327e72a92d3b9800e55c5e95930f7ef61605464fe8cb43899abd1367",
+    "0145be012aa0a4428a20b444e690b1ec82267db40d5c460762fd99fd0585a04b",
+    "634768dae1474506e4bf7d341890542b09987d7e6aea5d446c02e37581a56954",
+    "c7ff6dcd94d7161eff5da0585684a8d16fb00090c0f38336d31950819e2f2003",
+    "26f8567f2569182294c3fa5b9f9cb2270b554eef628b4c149cf82a42888ff4ae",
+    "7827e8eb2cb3b95f4d0ffac324b65208ff813b66884d08327ab0abb04fe780fb",
+    "ef7d74898c22a4bf0be437d30987bc945310dcdf1ddb48a6bce085f376b302ae",
+    "603705cc260e946d130a1ceb6b6d9bfcd20312da055292ae3c16c7a3d693b410",
+    "4b85c418ea8f98f3dadb210146c60a9e7231aed446db4b1ddd3f6a69927ad5d5",
+    "d887db09649dab0d83951d8d5d69b2e7d8bb70e79daa2a3a279b4fd6b8346cea",
+    "3afcf68d5ff19b9b05bd66681b553f0f4b3bbf171ee442bc9883330262c5fc72",
+    "1f1c5b2fad778434024f1537986346927917f4755a6e7d3fd91f22653b7c3132",
+    "c28ad2ec11288e23220ebfd6c47288a28ce6f68ef887b061a7b0a5e683a9a118",
+    "176473d7313395b6e209bc6b1d57aa160b628706860aa0554d7af60a1d40ab87",
+    "adf0e0999386dae758e1d6ae48e7a28a1acfb26dd73dbc91ad134cec70ca7aa0",
+    "e1dad7c250f5ba7b435b5bb368ba8fb97aa6d1d794ae2b38e24e06c716fd66ed",
+    "5464105120381493fb3350e3554d1897ba619abe196feed632a60ebc969f734c"
+  ];
+
+  const firstLetters = ["f","o","s","c","a","r","s","b","p","d","c","a","p","r","r","b","n","a","a","r"];
+  const secondLetters = ["o","f","t","i","i","o","t","o","l","i","a","u","a","e","o","a","i","u","p","e"];
+  const hinted = new Array(20).fill(false);
+  const gaps = [...document.querySelectorAll(".gap")];
+  let hintsUsed = 0;
+
+  async function sha256(text){
+    const data = new TextEncoder().encode(text);
+    const digest = await crypto.subtle.digest("SHA-256", data);
+    return [...new Uint8Array(digest)]
+      .map(b => b.toString(16).padStart(2,"0"))
+      .join("");
+  }
+
+  function candidateFor(i){
+    const gap = gaps[i];
+    const prefix = gap.querySelector(".prefix").textContent.toLowerCase();
+    const typed = gap.querySelector(".answer").value.trim().toLowerCase();
+    if (!typed) return "";
+    if (typed.startsWith(prefix)) return typed;
+    return prefix + typed;
+  }
+
+  async function checkOne(i){
+    const gap = gaps[i];
+    const input = gap.querySelector(".answer");
+    const mark = gap.querySelector(".mark");
+    gap.classList.remove("correct","wrong");
+    mark.textContent = "";
+
+    const candidate = candidateFor(i);
+    if (!candidate) return false;
+
+    const ok = (await sha256(candidate)) === hashes[i];
+    gap.classList.add(ok ? "correct" : "wrong");
+    mark.textContent = ok ? "✓" : "✕";
+    mark.setAttribute("aria-label", ok ? "Correct" : "Incorrect — try again");
+    mark.title = ok ? "Correct" : "Incorrect — try again";
+    return ok;
+  }
+
+  async function checkAll(){
+    const results = await Promise.all(gaps.map((_,i) => checkOne(i)));
+    const correct = results.filter(Boolean).length;
+    document.getElementById("score").textContent = `${correct} / 20 correct`;
+    document.getElementById("progressFill").style.width = `${correct * 5}%`;
+
+    const message = document.getElementById("message");
+    if (correct === 20){
+      message.innerHTML = "<strong>Excellent!</strong> You have all 20 correct.";
+    } else if (correct >= 15){
+      message.innerHTML = `<strong>Very good.</strong> ${20-correct} gap${20-correct===1?"":"s"} still need attention. Incorrect answers are highlighted in red.`;
+    } else if (correct >= 10){
+      message.innerHTML = "<strong>Good progress.</strong> The incorrect answers are highlighted in red — try those gaps again.";
+    } else {
+      message.innerHTML = "<strong>Keep going.</strong> Incorrect answers are highlighted in red. Use a +1 letter hint only where you really need it.";
+    }
+  }
+
+  gaps.forEach((gap,i) => {
+    const input = gap.querySelector(".answer");
+    const button = gap.querySelector(".hint-btn");
+
+    input.addEventListener("input", () => {
+      gap.classList.remove("correct","wrong");
+      gap.querySelector(".mark").textContent = "";
+    });
+
+    input.addEventListener("keydown", e => {
+      if (e.key === "Enter"){
+        e.preventDefault();
+        checkOne(i);
+      }
+    });
+
+    button.addEventListener("click", () => {
+      if (hinted[i]) return;
+
+      const currentPrefix = gap.querySelector(".prefix");
+      let typed = input.value.trim();
+
+      if (typed && typed[0].toLowerCase() === secondLetters[i]){
+        input.value = typed.slice(1);
+      }
+
+      currentPrefix.textContent = firstLetters[i] + secondLetters[i];
+      hinted[i] = true;
+      hintsUsed++;
+      button.textContent = "hint used";
+      button.disabled = true;
+      document.getElementById("hints").textContent =
+        `${hintsUsed} hint${hintsUsed===1?"":"s"} used`;
+      input.focus();
+    });
+  });
+
+  document.getElementById("checkBtn").addEventListener("click", checkAll);
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    gaps.forEach((gap,i) => {
+      gap.querySelector(".prefix").textContent = firstLetters[i];
+      gap.querySelector(".answer").value = "";
+      gap.querySelector(".mark").textContent = "";
+      gap.classList.remove("correct","wrong");
+      const btn = gap.querySelector(".hint-btn");
+      btn.textContent = "+1 letter";
+      btn.disabled = false;
+      hinted[i] = false;
+    });
+    hintsUsed = 0;
+    document.getElementById("score").textContent = "0 / 20 correct";
+    document.getElementById("hints").textContent = "0 hints used";
+    document.getElementById("progressFill").style.width = "0%";
+    document.getElementById("message").textContent =
+      "Your answers stay private on this page. No solution list is shown.";
+    gaps[0].querySelector(".answer").focus();
+  });
+</script>
+</body>
+</html>
