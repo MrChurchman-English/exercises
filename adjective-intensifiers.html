@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Adjective intensifiers — gap-fill</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E9ECEF;
+    --card:#FBFCFD;
+    --ink:#151E27;
+    --ink-soft:#5A6874;
+    --rule:#CFD6DC;
+    --frost:#2E6FA7;
+    --ember:#C2410C;
+    --right:#0F6E60;
+    --wrong:#A8241C;
+    --display:"Fraunces",Georgia,"Iowan Old Style",serif;
+    --body:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.55;
+    padding:32px 20px 64px;
+  }
+  .sheet{max-width:760px;margin:0 auto}
+
+  /* ---------- header ---------- */
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:var(--display);
+    font-weight:600;
+    font-size:clamp(30px,6vw,46px);
+    line-height:1.05;
+    letter-spacing:-.015em;
+    margin:0 0 14px;
+  }
+  h1 em{font-style:italic;color:var(--frost)}
+  .lede{max-width:52ch;color:var(--ink-soft);margin:0 0 26px}
+
+  /* ---------- progress rail ---------- */
+  .rail{
+    position:sticky;top:0;z-index:5;
+    background:var(--paper);
+    padding:10px 0 14px;
+    margin-bottom:22px;
+    border-bottom:1px solid var(--rule);
+  }
+  .rail-track{height:5px;background:var(--rule);border-radius:99px;overflow:hidden}
+  .rail-fill{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--frost),var(--ember));
+    transition:width .45s cubic-bezier(.4,1.3,.4,1);
+  }
+  .rail-label{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-family:var(--mono);font-size:12px;letter-spacing:.06em;
+    color:var(--ink-soft);margin-top:8px;
+  }
+  .rail-label b{color:var(--ink);font-weight:600}
+
+  /* ---------- items ---------- */
+  ol{list-style:none;margin:0;padding:0}
+  li{
+    display:grid;
+    grid-template-columns:34px 1fr;
+    gap:4px 12px;
+    padding:16px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  li:last-child{border-bottom:none}
+  .num{
+    font-family:var(--mono);font-size:13px;font-weight:600;
+    color:var(--ink-soft);padding-top:5px;
+  }
+  .sentence{font-size:17px}
+  .actions{grid-column:2;display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+
+  /* ---------- the gap ---------- */
+  .gap{
+    display:inline-flex;align-items:stretch;vertical-align:baseline;
+    border:1px solid var(--ink);border-radius:5px;overflow:hidden;
+    background:var(--card);margin:0 2px;
+    transition:border-color .18s,box-shadow .18s;
+  }
+  .given{
+    font-family:var(--mono);font-weight:600;font-size:15px;
+    background:var(--ink);color:var(--card);
+    padding:3px 7px;display:flex;align-items:center;gap:1px;
+    letter-spacing:.06em;
+  }
+  .given span{display:inline-block}
+  .given .fresh{animation:drop .32s cubic-bezier(.3,1.5,.5,1)}
+  @keyframes drop{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+  .fill{
+    font:500 16px/1 var(--mono);
+    border:0;background:transparent;color:var(--ink);
+    padding:4px 8px;min-width:60px;
+    letter-spacing:.04em;
+  }
+  .fill::placeholder{color:#B4BEC6;letter-spacing:.22em}
+  .fill:focus{outline:none}
+  .gap:focus-within{border-color:var(--frost);box-shadow:0 0 0 3px rgba(46,111,167,.16)}
+  .gap.wrong{border-color:var(--wrong);animation:shake .3s}
+  .gap.wrong .given{background:var(--wrong)}
+  .gap.wrong .fill{color:var(--wrong)}
+  @keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+  .gap.right{border-color:var(--right);background:rgba(15,110,96,.07)}
+  .gap.right .given{background:var(--right)}
+  .gap.right .fill{color:var(--right);font-weight:600}
+
+  /* ---------- buttons ---------- */
+  button{
+    font-family:var(--body);font-size:13.5px;font-weight:500;
+    padding:6px 13px;border-radius:99px;cursor:pointer;
+    border:1px solid var(--ink);background:var(--ink);color:var(--card);
+    transition:transform .12s,opacity .18s,background .18s;
+  }
+  button.ghost{background:transparent;color:var(--ink);border-color:var(--rule)}
+  button.ghost:hover{border-color:var(--ink)}
+  button:hover{transform:translateY(-1px)}
+  button:active{transform:none}
+  button:disabled{opacity:.34;cursor:default;transform:none}
+  button:focus-visible,.fill:focus-visible{outline:2px solid var(--frost);outline-offset:2px}
+  .solved-tag{
+    font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--right);
+  }
+  .note{font-size:13.5px;color:var(--ink-soft)}
+
+  footer{
+    margin-top:34px;padding-top:18px;border-top:1px solid var(--rule);
+    display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+    font-size:13.5px;color:var(--ink-soft);
+  }
+  @media (max-width:520px){
+    body{font-size:16px;padding:22px 14px 48px}
+    li{grid-template-columns:26px 1fr}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important}
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+  <p class="eyebrow">Spoken English · Collocation</p>
+  <h1>How to make an adjective <em>dead</em> strong</h1>
+  <p class="lede">Each sentence is missing its intensifier. The first letter is given, and the dots show how many letters are still to come. If you get stuck, you may ask for one more letter — one only, and no answers.</p>
+
+  <div class="rail">
+    <div class="rail-track"><div class="rail-fill" id="fill"></div></div>
+    <p class="rail-label"><span><b id="done">0</b> of 20 solved</span><span id="hints">0 letters borrowed</span></p>
+  </div>
+
+  <ol id="list"></ol>
+
+  <footer>
+    <span>Write one word in each gap. Capital letters don't matter.</span>
+    <button class="ghost" id="reset">Start again</button>
+  </footer>
+</main>
+
+<script>
+const DATA = [
+ {a:"Careful with the soup — it's ",b:" hot!",n:7,g:"b",h:"o",k:[1780814809]},
+ {a:"These trainers are ",b:" new; I only bought them yesterday.",n:5,g:"b",h:"r",k:[384017821]},
+ {a:"Don't touch that knife, it's ",b:" sharp.",n:5,g:"r",h:"a",k:[3642939201]},
+ {a:"There were no streetlights and it was ",b:" black outside.",n:5,g:"p",h:"i",k:[1642074060]},
+ {a:"She's only thirty, but her hair has already gone ",b:" white.",n:4,g:"s",h:"n",k:[1243260698]},
+ {a:"He's easy to recognise — tall, with ",b:" black hair.",n:3,g:"j",h:"e",k:[2002770135]},
+ {a:"We got the flights ",b:" cheap, about thirty francs each.",n:4,g:"d",h:"i",k:[1746830150]},
+ {a:"Ever since he sold the company, he's been ",b:" rich.",n:6,g:"f",h:"i",k:[2150492670]},
+ {a:"If you leave the bread out overnight it goes ",b:" hard.",n:4,g:"r",h:"o",k:[610601120]},
+ {a:"The waiter cut the ham into ",b:" thin slices.",n:5,g:"p",h:"a",k:[897631058]},
+ {a:"Let me make one thing ",b:" clear: this is the last time.",n:7,g:"c",h:"r",k:[2692707966]},
+ {a:"It hasn't rained since May and the river bed is ",b:" dry.",n:4,g:"b",h:"o",k:[1731558619]},
+ {a:"I forgot my umbrella and came home ",b:" wet.",n:7,g:"s",h:"o",k:[3311509868,2148023544]},
+ {a:"He scrubbed the kitchen until it was ",b:" clean.",n:7,g:"s",h:"q",k:[2608905006]},
+ {a:"Can we put the heating on? It's ",b:" cold in here.",n:8,g:"f",h:"r",k:[2242695838]},
+ {a:"Don't worry about the test, it's ",b:" easy.",n:4,g:"d",h:"e",k:[1625878271]},
+ {a:"I had a coffee at ten and now I'm ",b:" awake.",n:4,g:"w",h:"i",k:[886825229]},
+ {a:"Be quiet — the baby's finally ",b:" asleep.",n:4,g:"f",h:"a",k:[2478740077]},
+ {a:"You'll have to shout — he's ",b:" deaf in one ear.",n:5,g:"s",h:"t",k:[574738387]},
+ {a:"A ",b:" big dog came running across the field towards us.",n:5,g:"g",h:"r",k:[3453303444]}
+];
+
+const hash = (s,i) => {
+  let h = 2166136261;
+  for (const c of s + "|" + i) { h ^= c.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; }
+  return h;
+};
+const dots = n => "·".repeat(Math.max(n,1));
+
+const list = document.getElementById("list");
+const state = DATA.map(() => ({shown:1, solved:false, hinted:false}));
+
+DATA.forEach((d,i) => {
+  const li = document.createElement("li");
+  li.innerHTML = `
+    <span class="num">${String(i+1).padStart(2,"0")}</span>
+    <p class="sentence">${d.a}<span class="gap" id="gap${i}"><span class="given" id="given${i}">${d.g}</span><input class="fill" id="in${i}" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"
+      placeholder="${dots(d.n-1)}" style="width:${Math.max(d.n,5)*0.72}em" aria-label="Sentence ${i+1}: missing word beginning with ${d.g}"></span>${d.b}</p>
+    <span class="actions" id="act${i}">
+      <button data-check="${i}">Check</button>
+      <button class="ghost" data-hint="${i}">One more letter</button>
+    </span>`;
+  list.appendChild(li);
+});
+
+function refresh(){
+  const done = state.filter(s => s.solved).length;
+  const hinted = state.filter(s => s.hinted).length;
+  document.getElementById("done").textContent = done;
+  document.getElementById("fill").style.width = (done/DATA.length*100) + "%";
+  document.getElementById("hints").textContent =
+    hinted === 0 ? "no letters borrowed" : hinted + (hinted === 1 ? " letter borrowed" : " letters borrowed");
+}
+
+function check(i){
+  const d = DATA[i], s = state[i];
+  if (s.solved) return;
+  const box = document.getElementById("in"+i);
+  const gap = document.getElementById("gap"+i);
+  const typed = box.value.toLowerCase().replace(/[^a-z]/g,"");
+  if (!typed) { box.focus(); return; }
+  const prefix = (d.g + d.h).slice(0, s.shown);
+  const word = typed.startsWith(prefix) ? typed : prefix + typed;
+  if (d.k.includes(hash(word, i))) {
+    s.solved = true;
+    gap.classList.remove("wrong");
+    gap.classList.add("right");
+    box.value = word.slice(s.shown);
+    box.readOnly = true;
+    document.getElementById("act"+i).innerHTML = '<span class="solved-tag">Correct</span>';
+  } else {
+    gap.classList.remove("wrong");
+    void gap.offsetWidth;
+    gap.classList.add("wrong");
+    box.focus();
+    box.select();
+  }
+  refresh();
+}
+
+function hint(i){
+  const d = DATA[i], s = state[i];
+  if (s.solved || s.hinted) return;
+  s.hinted = true; s.shown = 2;
+  const given = document.getElementById("given"+i);
+  const letter = document.createElement("span");
+  letter.className = "fresh";
+  letter.textContent = d.h;
+  given.appendChild(letter);
+  const box = document.getElementById("in"+i);
+  if (box.value.toLowerCase().startsWith(d.h)) box.value = box.value.slice(1);
+  box.placeholder = dots(d.n-2);
+  document.querySelector(`[data-hint="${i}"]`).disabled = true;
+  document.getElementById("gap"+i).classList.remove("wrong");
+  box.focus();
+  refresh();
+}
+
+document.addEventListener("click", e => {
+  const c = e.target.dataset?.check, h = e.target.dataset?.hint;
+  if (c !== undefined) check(+c);
+  if (h !== undefined) hint(+h);
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter" && e.target.classList.contains("fill")) {
+    e.preventDefault();
+    check(+e.target.id.replace("in",""));
+  }
+});
+document.getElementById("reset").addEventListener("click", () => location.reload());
+refresh();
+</script>
+</body>
+</html>
