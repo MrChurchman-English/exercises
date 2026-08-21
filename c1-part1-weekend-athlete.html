@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C1 Advanced — Reading and Use of English, Part 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F8F8;
+  --card:#FFFFFF;
+  --ink:#171B1D;
+  --ink-soft:#5A6469;
+  --graphite:#40454C;
+  --dropout:#6FC7DE;
+  --dropout-deep:#1E7E9B;
+  --dropout-tint:#E7F4F9;
+  --dropout-tint-2:#D3EBF3;
+  --red:#B4342A;
+  --red-tint:#FBEDEC;
+  --green:#14795A;
+  --green-tint:#E9F5F1;
+  --rule:#C9D6DA;
+  --display:"Archivo Narrow","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.sheet{max-width:1160px;margin:0 auto;padding:0 20px 90px}
+
+/* masthead */
+.masthead{border-top:7px solid var(--dropout-deep);padding-top:18px}
+.eyebrow{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--dropout-deep);margin:0 0 6px}
+.masthead h1{font-family:var(--display);font-weight:700;font-size:clamp(28px,5vw,42px);
+  letter-spacing:-.01em;margin:0;line-height:1.05}
+.masthead-row{display:flex;flex-wrap:wrap;gap:12px 26px;align-items:baseline;
+  border-bottom:1px solid var(--rule);padding-bottom:16px;margin-bottom:26px}
+.masthead-row .part{font-family:var(--display);font-weight:600;font-size:15px;
+  letter-spacing:.04em;color:var(--ink-soft);margin:0}
+.masthead-row .marks{margin-left:auto;font-family:var(--display);font-weight:600;font-size:13px;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);
+  border:1px solid var(--rule);border-radius:2px;padding:4px 10px;background:var(--card)}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:44px;align-items:start}
+
+/* passage */
+.rubric{font-family:var(--display);font-size:15px;line-height:1.5;color:var(--ink);
+  background:var(--card);border:1px solid var(--rule);border-left:4px solid var(--dropout);
+  padding:14px 18px;margin:0 0 30px}
+.passage-title{font-family:var(--display);font-weight:700;text-transform:uppercase;
+  letter-spacing:.09em;font-size:clamp(19px,2.6vw,25px);margin:0 0 4px;line-height:1.2}
+.standfirst{font-family:var(--display);font-size:14px;letter-spacing:.03em;color:var(--ink-soft);
+  margin:0 0 26px;padding-bottom:16px;border-bottom:1px solid var(--rule)}
+.passage p{margin:0 0 1.15em}
+.passage p:first-of-type::first-letter{font-family:var(--display);font-weight:700;
+  font-size:3.1em;line-height:.82;float:left;padding:.06em .12em 0 0;color:var(--dropout-deep)}
+
+/* gaps */
+.gap{display:inline;white-space:nowrap;font:inherit;color:inherit;background:none;
+  border:0;padding:0;margin:0;cursor:pointer}
+.gap-n{font-family:var(--display);font-weight:700;font-size:11px;color:var(--dropout-deep);
+  background:var(--dropout-tint);border:1px solid var(--dropout);border-radius:2px;
+  padding:1px 4px;margin-right:4px;vertical-align:.18em;line-height:1}
+.gap-fill{display:inline-block;min-width:5.2em;text-align:center;
+  border-bottom:1.5px solid var(--graphite);color:var(--graphite);
+  transition:background-color .18s ease,border-color .18s ease}
+.gap:hover .gap-fill{background:var(--dropout-tint)}
+.gap:focus-visible{outline:2px solid var(--dropout-deep);outline-offset:3px;border-radius:2px}
+.gap.is-active .gap-n{background:var(--graphite);color:#fff;border-color:var(--graphite)}
+.gap.is-active .gap-fill{background:var(--dropout-tint-2)}
+.gap.is-right .gap-fill{color:var(--green);border-bottom-color:var(--green);font-weight:600}
+.gap.is-wrong .gap-fill{color:var(--red);border-bottom-color:var(--red);font-weight:600}
+.gap .struck{color:var(--ink-soft);text-decoration:line-through;font-weight:400;margin-right:.35em}
+.gap.is-example .gap-n{background:var(--graphite);color:#fff;border-color:var(--graphite)}
+.gap.is-example .gap-fill{color:var(--graphite);font-weight:600}
+
+/* options */
+.options{margin-top:38px;border-top:1px solid var(--rule);padding-top:24px}
+.options h2{font-family:var(--display);font-weight:700;text-transform:uppercase;
+  letter-spacing:.13em;font-size:13px;color:var(--dropout-deep);margin:0 0 4px}
+.options .hint{font-family:var(--display);font-size:13.5px;color:var(--ink-soft);margin:0 0 20px}
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:8px 20px}
+.qblock{border:1.5px solid transparent;border-radius:3px;padding:8px 10px 6px;
+  transition:background-color .18s ease,border-color .18s ease}
+.qblock.is-active{background:var(--dropout-tint);border-color:var(--dropout)}
+.qblock > .qn{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.06em;
+  color:var(--ink-soft);margin:0 0 5px;font-variant-numeric:tabular-nums}
+.qblock.is-active > .qn{color:var(--dropout-deep)}
+.opt{display:flex;align-items:center;gap:9px;width:100%;text-align:left;
+  background:none;border:0;padding:2px 4px;margin:0 0 1px;border-radius:3px;cursor:pointer;
+  font-family:var(--body);font-size:16px;color:var(--ink);line-height:1.35;
+  transition:background-color .15s ease}
+.opt:hover{background:var(--dropout-tint-2)}
+.opt:focus-visible{outline:2px solid var(--dropout-deep);outline-offset:1px}
+.loz{width:34px;height:20px;border-radius:10px;border:1.5px solid var(--dropout);
+  background:#fff;color:var(--dropout-deep);flex:none;
+  font-family:var(--display);font-weight:700;font-size:11.5px;letter-spacing:.04em;
+  display:flex;align-items:center;justify-content:center;
+  transition:background-color .15s ease,color .15s ease,border-color .15s ease}
+.opt[aria-checked="true"] .loz,.omr .loz[aria-checked="true"]{
+  color:#fff;border-color:var(--graphite);background-color:var(--graphite);
+  background-image:repeating-linear-gradient(114deg,rgba(255,255,255,.14) 0 1.5px,transparent 1.5px 4px)}
+.opt[aria-checked="true"] .word{font-weight:600}
+.opt .verdict{margin-left:auto;font-family:var(--display);font-weight:700;font-size:14px}
+.opt.marked-key{background:var(--green-tint)}
+.opt.marked-key .word{color:var(--green);font-weight:600}
+.opt.marked-key .loz{border-color:var(--green);color:var(--green)}
+.opt.marked-key[aria-checked="true"] .loz{background-color:var(--green);border-color:var(--green);color:#fff}
+.opt.marked-key .verdict{color:var(--green)}
+.opt.marked-miss{background:var(--red-tint)}
+.opt.marked-miss .word{color:var(--red);text-decoration:line-through}
+.opt.marked-miss .loz{background-color:var(--red);border-color:var(--red);color:#fff;background-image:none}
+.opt.marked-miss .verdict{color:var(--red)}
+.opt.marked-out{opacity:.45}
+.opt:disabled{cursor:default}
+.opt:disabled:hover{background:none}
+.opt.marked-key:disabled:hover{background:var(--green-tint)}
+.opt.marked-miss:disabled:hover{background:var(--red-tint)}
+.qwhy{font-size:14.5px;line-height:1.45;color:var(--ink);margin:6px 0 0;padding-top:6px;
+  border-top:1px solid var(--rule);display:none}
+.qwhy.show{display:block}
+.tag{display:inline-block;font-family:var(--display);font-weight:600;font-size:10px;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--dropout-deep);
+  background:var(--dropout-tint);border:1px solid var(--dropout);border-radius:2px;
+  padding:1px 5px;margin-bottom:4px}
+
+/* answer sheet */
+.answers{position:sticky;top:16px}
+.omr{background:var(--dropout-tint);border:1.5px solid var(--dropout);border-radius:3px;padding:16px}
+.omr h2{font-family:var(--display);font-weight:700;text-transform:uppercase;letter-spacing:.14em;
+  font-size:12px;color:var(--dropout-deep);margin:0 0 2px}
+.omr .instruct{font-family:var(--display);font-size:12.5px;color:var(--ink-soft);margin:0 0 12px;
+  padding-bottom:10px;border-bottom:1px solid var(--dropout)}
+.progress{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--dropout-deep);margin:0 0 8px}
+.bar{height:3px;background:#fff;border-radius:2px;overflow:hidden;margin-bottom:14px}
+.bar span{display:block;height:100%;width:0;background:var(--graphite);transition:width .3s ease}
+.omr .row{display:flex;align-items:center;gap:7px;margin-bottom:4px}
+.omr .row-n{font-family:var(--display);font-weight:700;font-size:12.5px;color:var(--ink-soft);
+  width:18px;text-align:right;flex:none;font-variant-numeric:tabular-nums}
+.omr .lozenges{display:flex;gap:4px}
+.omr .loz{cursor:pointer;width:32px;height:19px}
+.omr .loz:hover{border-color:var(--graphite)}
+.omr .loz:focus-visible{outline:2px solid var(--graphite);outline-offset:2px}
+.omr .row.is-active .row-n{color:var(--ink)}
+.omr .row.example .loz{cursor:default;opacity:.7}
+.omr .mark{font-family:var(--display);font-weight:700;font-size:14px;width:12px;flex:none;text-align:center}
+.mark.ok{color:var(--green)}
+.mark.no{color:var(--red)}
+.omr .row.example .mark{color:var(--ink-soft);font-size:9.5px;letter-spacing:.08em;width:auto}
+.actions{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+button.act{font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.1em;
+  text-transform:uppercase;padding:11px 14px;border-radius:2px;cursor:pointer;
+  border:1.5px solid var(--graphite);background:var(--graphite);color:#fff}
+button.act:hover{background:#000;border-color:#000}
+button.act.ghost{background:transparent;color:var(--graphite)}
+button.act.ghost:hover{background:var(--graphite);color:#fff}
+button.act:disabled{opacity:.5;cursor:default}
+button.act:disabled:hover{background:var(--graphite);border-color:var(--graphite)}
+button.act:focus-visible{outline:2px solid var(--dropout-deep);outline-offset:2px}
+.score{background:var(--card);border:1.5px solid var(--graphite);border-radius:3px;
+  padding:14px 16px;margin-top:14px;display:none}
+.score.show{display:block}
+.score .num{font-family:var(--display);font-weight:700;font-size:38px;line-height:1;letter-spacing:-.02em}
+.score .num small{font-size:17px;color:var(--ink-soft);font-weight:600}
+.score .verdict{font-family:var(--display);font-size:13px;color:var(--ink-soft);margin-top:4px}
+.colophon{margin-top:30px;font-family:var(--display);font-size:12px;letter-spacing:.03em;
+  color:var(--ink-soft);border-top:1px solid var(--rule);padding-top:14px}
+
+@media (max-width:920px){
+  .grid{grid-template-columns:1fr;gap:30px}
+  .answers{position:static;order:2}
+  .omr{display:flex;flex-direction:column}
+  .omr .rows-wrap{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:0 14px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header class="masthead">
+    <p class="eyebrow">Cambridge English · Practice task</p>
+    <h1>Reading and Use of English</h1>
+    <div class="masthead-row">
+      <p class="part">Part 1 · Multiple-choice cloze</p>
+      <span class="marks">15 marks · 15 minutes</span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section>
+      <p class="rubric">For questions <strong>1–15</strong>, read the text below and decide which answer — <strong>A</strong>, <strong>B</strong>, <strong>C</strong> or <strong>D</strong> — best fits each gap. There is an example at the beginning <strong>(0)</strong>.</p>
+
+      <h2 class="passage-title">The rise of the weekend athlete</h2>
+      <p class="standfirst">Why the fastest-growing group in endurance sport is nothing like the one you picture</p>
+
+      <div class="passage" id="passage">
+        <p>Twenty years ago, few people would have <button class="gap is-example" data-q="0" tabindex="-1" aria-hidden="true"><span class="gap-n">0</span><span class="gap-fill">predicted</span></button> that jogging around a local park at eight o'clock on a Saturday morning would become a national habit. <button class="gap" data-q="1"><span class="gap-n">1</span><span class="gap-fill">&nbsp;</span></button> to popular belief, the typical competitor at a mass-participation running event today is not a lean twenty-year-old in expensive kit, but a middle-aged parent with a full-time job. Amateur endurance sport has become a genuine growth <button class="gap" data-q="2"><span class="gap-n">2</span><span class="gap-fill">&nbsp;</span></button> over the past decade, and the numbers show no sign of falling.</p>
+
+        <p>For most people, it starts with a burning <button class="gap" data-q="3"><span class="gap-n">3</span><span class="gap-fill">&nbsp;</span></button> to prove something to themselves. What almost nobody admits is that running rarely <button class="gap" data-q="4"><span class="gap-n">4</span><span class="gap-fill">&nbsp;</span></button> naturally at first. Beginners are nowhere <button class="gap" data-q="5"><span class="gap-n">5</span><span class="gap-fill">&nbsp;</span></button> as fit as they imagine, and the initial few weeks can <button class="gap" data-q="6"><span class="gap-n">6</span><span class="gap-fill">&nbsp;</span></button> a considerable toll on both the body and the ego.</p>
+
+        <p>The advice from sports scientists is usually less dramatic than the advice found online. Nobody needs to <button class="gap" data-q="7"><span class="gap-n">7</span><span class="gap-fill">&nbsp;</span></button> out entire food groups, and nobody needs to train twice a day. What matters is consistency: it typically takes six weeks or more before the benefits of regular exercise begin to <button class="gap" data-q="8"><span class="gap-n">8</span><span class="gap-fill">&nbsp;</span></button> in, and most people abandon the habit long before that point. The old belief that more miles automatically produce better results has now been <button class="gap" data-q="9"><span class="gap-n">9</span><span class="gap-fill">&nbsp;</span></button> disproved, and much of the current thinking on recovery <button class="gap" data-q="10"><span class="gap-n">10</span><span class="gap-fill">&nbsp;</span></button> from research carried out in the 1990s.</p>
+
+        <p>The real challenge, then, is to strike a <button class="gap" data-q="11"><span class="gap-n">11</span><span class="gap-fill">&nbsp;</span></button> between training seriously and living a normal life. Runners who try to keep <button class="gap" data-q="12"><span class="gap-n">12</span><span class="gap-fill">&nbsp;</span></button> with rivals half their age tend to pick up injuries, while those who accept their limits improve steadily for years. Dr Elena Marsh, a physiologist who has <button class="gap" data-q="13"><span class="gap-n">13</span><span class="gap-fill">&nbsp;</span></button> much of her career to the study of ageing athletes, notes that participation always falls in January, when temperatures <button class="gap" data-q="14"><span class="gap-n">14</span><span class="gap-fill">&nbsp;</span></button> and enthusiasm fades with them.</p>
+
+        <p>Those who survive the winter, however, describe the experience in surprisingly emotional terms. Crossing a finish line, for many, is less about the time on the clock than about the chance to <button class="gap" data-q="15"><span class="gap-n">15</span><span class="gap-fill">&nbsp;</span></button> an ambition they have carried quietly for most of their adult lives.</p>
+      </div>
+
+      <section class="options">
+        <h2>Options</h2>
+        <p class="hint">Example: <strong>0</strong> &nbsp;A predicted &nbsp;B watched &nbsp;C noticed &nbsp;D regarded &nbsp;— answer <strong>A</strong>.</p>
+        <div class="qgrid" id="qgrid"></div>
+        <p class="colophon">Target language: fixed phrases, verb and noun collocations, phrasal verbs, easily confused words and dependent prepositions.</p>
+      </section>
+    </section>
+
+    <aside class="answers">
+      <div class="omr">
+        <h2>Answer sheet</h2>
+        <p class="instruct">Shade a lozenge here or choose a word below — the two stay in step.</p>
+        <p class="progress" id="progressText">0 of 15 shaded</p>
+        <div class="bar"><span id="progressBar"></span></div>
+        <div class="rows-wrap" id="rows"></div>
+        <div class="actions">
+          <button class="act" id="checkBtn">Check answers</button>
+          <button class="act ghost" id="resetBtn">Start again</button>
+        </div>
+        <div class="score" id="score">
+          <div class="num"><span id="scoreNum">0</span><small> / 15</small></div>
+          <div class="verdict" id="verdict"></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<script>
+const LETTERS = ['A','B','C','D'];
+
+const QUESTIONS = [
+  {n:1,  opts:['Opposing','Contrary','Contrasting','Distinctive'], key:1, tag:'Preposition',
+   why:'<em>Contrary to popular belief</em> is a fixed phrase. None of the other three takes <em>to</em> here.'},
+  {n:2,  opts:['trade','commerce','industry','corporation'], key:2, tag:'Collocation',
+   why:'<em>A growth industry</em> is the set collocation for a fast-expanding sector.'},
+  {n:3,  opts:['demand','desire','appetite','craving'], key:1, tag:'Fixed phrase',
+   why:'<em>A burning desire to do something</em>. <em>Burning</em> fixes the choice.'},
+  {n:4,  opts:['appears','comes','arrives','develops'], key:1, tag:'Collocation',
+   why:'<em>Something comes naturally (to somebody)</em> = you can do it without effort.'},
+  {n:5,  opts:['close','near','like','approaching'], key:1, tag:'Collocation',
+   why:'<em>Nowhere near</em> + adjective. <em>Nowhere close</em> would need <em>to</em>.'},
+  {n:6,  opts:['make','put','take','give'], key:2, tag:'Collocation',
+   why:'<em>Take a toll on something</em> = cause damage over time.'},
+  {n:7,  opts:['block','cut','shut','bar'], key:1, tag:'Phrasal verb',
+   why:'<em>Cut something out</em> = stop eating or using it.'},
+  {n:8,  opts:['shoot','kick','jump','hit'], key:1, tag:'Phrasal verb',
+   why:'<em>Kick in</em> = begin to take effect, usually after a delay.'},
+  {n:9,  opts:['systematically','comprehensively','broadly','exhaustively'], key:1, tag:'Easily confused',
+   why:'<em>Comprehensively</em> describes how completely it was disproved; the others describe method, not extent.'},
+  {n:10, opts:['appears','approaches','creates','stems'], key:3, tag:'Phrasal verb',
+   why:'<em>Stem from something</em> = originate in it. Only <em>stem</em> takes <em>from</em>.'},
+  {n:11, opts:['balance','stability','level','division'], key:0, tag:'Fixed phrase',
+   why:'<em>Strike a balance between X and Y</em> = find a sensible compromise.'},
+  {n:12, opts:['pace','speed','rate','step'], key:0, tag:'Fixed phrase',
+   why:'<em>Keep pace with somebody</em>. <em>In step with</em> exists but needs a different structure.'},
+  {n:13, opts:['specialised','insisted','dedicated','concentrated'], key:2, tag:'Preposition',
+   why:'<em>Dedicate something to something</em>. The others take <em>in</em> or <em>on</em>, so the preposition decides it.'},
+  {n:14, opts:['plunge','dive','crash','collapse'], key:0, tag:'Easily confused',
+   why:'Temperatures <em>plunge</em>. <em>Crash</em> and <em>collapse</em> go with prices or markets.'},
+  {n:15, opts:['conclude','complete','fulfil','finalise'], key:2, tag:'Collocation',
+   why:'<em>Fulfil an ambition</em> = achieve something you have long wanted.'}
+];
+
+const state = {answers:{}, checked:false, active:1};
+const gaps = {};
+document.querySelectorAll('.gap').forEach(g => gaps[g.dataset.q] = g);
+
+/* ---------- options list ---------- */
+const qgrid = document.getElementById('qgrid');
+QUESTIONS.forEach(q => {
+  const block = document.createElement('div');
+  block.className = 'qblock'; block.dataset.q = q.n;
+  const h = document.createElement('p');
+  h.className = 'qn'; h.textContent = q.n;
+  block.appendChild(h);
+  const group = document.createElement('div');
+  group.setAttribute('role','radiogroup');
+  group.setAttribute('aria-label','Question ' + q.n);
+  q.opts.forEach((w,i) => {
+    const b = document.createElement('button');
+    b.className = 'opt'; b.type = 'button';
+    b.setAttribute('role','radio'); b.setAttribute('aria-checked','false');
+    b.dataset.q = q.n; b.dataset.i = i;
+    b.innerHTML = '<span class="loz">' + LETTERS[i] + '</span><span class="word">' + w +
+      '</span><span class="verdict"></span>';
+    group.appendChild(b);
+  });
+  block.appendChild(group);
+  const why = document.createElement('p');
+  why.className = 'qwhy';
+  why.innerHTML = '<span class="tag">' + q.tag + '</span><br>' + q.why;
+  block.appendChild(why);
+  qgrid.appendChild(block);
+});
+
+/* ---------- answer sheet ---------- */
+const rowsEl = document.getElementById('rows');
+function omrLoz(q,i,disabled){
+  const b = document.createElement('button');
+  b.className = 'loz'; b.type = 'button';
+  b.textContent = LETTERS[i];
+  b.setAttribute('role','radio'); b.setAttribute('aria-checked','false');
+  b.setAttribute('aria-label','Question ' + q + ', option ' + LETTERS[i]);
+  b.dataset.q = q; b.dataset.i = i;
+  if (disabled) b.disabled = true;
+  return b;
+}
+const exRow = document.createElement('div');
+exRow.className = 'row example';
+exRow.innerHTML = '<span class="row-n">0</span>';
+const exLoz = document.createElement('div');
+exLoz.className = 'lozenges';
+LETTERS.forEach((L,i) => {
+  const b = omrLoz(0,i,true);
+  if (i === 0) b.setAttribute('aria-checked','true');
+  exLoz.appendChild(b);
+});
+exRow.appendChild(exLoz);
+const exMark = document.createElement('span');
+exMark.className = 'mark'; exMark.textContent = 'EG';
+exRow.appendChild(exMark);
+rowsEl.appendChild(exRow);
+
+QUESTIONS.forEach(q => {
+  const row = document.createElement('div');
+  row.className = 'row'; row.dataset.q = q.n;
+  row.innerHTML = '<span class="row-n">' + q.n + '</span>';
+  const wrap = document.createElement('div');
+  wrap.className = 'lozenges';
+  wrap.setAttribute('role','radiogroup');
+  wrap.setAttribute('aria-label','Answer sheet, question ' + q.n);
+  q.opts.forEach((_,i) => wrap.appendChild(omrLoz(q.n,i,false)));
+  row.appendChild(wrap);
+  const mark = document.createElement('span');
+  mark.className = 'mark';
+  row.appendChild(mark);
+  rowsEl.appendChild(row);
+});
+
+/* ---------- interaction ---------- */
+function choose(q,i){
+  if (state.checked) return;
+  q = Number(q); i = Number(i);
+  state.answers[q] = (state.answers[q] === i) ? undefined : i;
+  if (state.answers[q] === undefined) delete state.answers[q];
+  state.active = q;
+  render();
+}
+
+document.addEventListener('click', e => {
+  const opt = e.target.closest('.opt');
+  if (opt && !opt.disabled){ choose(opt.dataset.q, opt.dataset.i); return; }
+  const loz = e.target.closest('.omr .loz');
+  if (loz && !loz.disabled){ choose(loz.dataset.q, loz.dataset.i); return; }
+  const gap = e.target.closest('.gap');
+  if (gap && gap.dataset.q !== '0'){
+    state.active = Number(gap.dataset.q);
+    render();
+    const block = qgrid.querySelector('.qblock[data-q="' + state.active + '"]');
+    if (block) block.scrollIntoView({block:'center', behavior:'smooth'});
+  }
+});
+
+document.addEventListener('keydown', e => {
+  const el = e.target.closest('.opt, .omr .loz');
+  if (!el || el.disabled) return;
+  const sibs = el.parentElement.querySelectorAll(el.classList.contains('opt') ? '.opt' : '.loz');
+  const i = Number(el.dataset.i);
+  let next = null;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (i+1) % 4;
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   next = (i+3) % 4;
+  if (next !== null){ e.preventDefault(); sibs[next].focus(); }
+});
+
+/* ---------- render ---------- */
+function render(){
+  const answered = Object.keys(state.answers).length;
+  document.getElementById('progressText').textContent = answered + ' of 15 shaded';
+  document.getElementById('progressBar').style.width = (answered/15*100) + '%';
+
+  QUESTIONS.forEach(q => {
+    const chosen = state.answers[q.n];
+    const ok = chosen === q.key;
+
+    const block = qgrid.querySelector('.qblock[data-q="' + q.n + '"]');
+    block.classList.toggle('is-active', state.active === q.n && !state.checked);
+    block.querySelector('.qwhy').classList.toggle('show', state.checked);
+    block.querySelectorAll('.opt').forEach((b,i) => {
+      b.setAttribute('aria-checked', chosen === i ? 'true' : 'false');
+      b.disabled = state.checked;
+      b.classList.remove('marked-key','marked-miss','marked-out');
+      const v = b.querySelector('.verdict');
+      v.textContent = '';
+      if (state.checked){
+        if (i === q.key){ b.classList.add('marked-key'); v.textContent = '✓'; }
+        else if (i === chosen){ b.classList.add('marked-miss'); v.textContent = '✗'; }
+        else b.classList.add('marked-out');
+      }
+    });
+
+    const row = rowsEl.querySelector('.row[data-q="' + q.n + '"]');
+    row.classList.toggle('is-active', state.active === q.n && !state.checked);
+    row.querySelectorAll('.loz').forEach((b,i) => {
+      b.setAttribute('aria-checked', chosen === i ? 'true' : 'false');
+      b.disabled = state.checked;
+    });
+    const mark = row.querySelector('.mark');
+    mark.textContent = state.checked ? (ok ? '✓' : '✗') : '';
+    mark.className = 'mark' + (state.checked ? (ok ? ' ok' : ' no') : '');
+
+    const gap = gaps[q.n];
+    const fill = gap.querySelector('.gap-fill');
+    gap.className = 'gap';
+    if (state.checked){
+      gap.classList.add(ok ? 'is-right' : 'is-wrong');
+      if (ok || chosen === undefined) fill.textContent = q.opts[q.key];
+      else fill.innerHTML = '<span class="struck">' + q.opts[chosen] + '</span>' + q.opts[q.key];
+    } else {
+      if (state.active === q.n) gap.classList.add('is-active');
+      fill.textContent = chosen === undefined ? '\u00A0' : q.opts[chosen];
+    }
+  });
+
+  const btn = document.getElementById('checkBtn');
+  btn.textContent = state.checked ? 'Answers shown'
+    : (answered === 15 ? 'Check answers' : 'Check answers (' + (15-answered) + ' left)');
+  btn.disabled = state.checked;
+}
+
+document.getElementById('checkBtn').onclick = () => {
+  state.checked = true;
+  let score = 0;
+  QUESTIONS.forEach(q => { if (state.answers[q.n] === q.key) score++; });
+  document.getElementById('scoreNum').textContent = score;
+  document.getElementById('verdict').textContent =
+      score >= 13 ? 'Comfortably at C1 for this task.'
+    : score >= 10 ? 'A solid pass. Read the notes on the ones that slipped.'
+    : score >= 7  ? 'On the way. Reread the notes and try again tomorrow.'
+    : 'Worth going back to the word lists before a second attempt.';
+  document.getElementById('score').classList.add('show');
+  render();
+};
+
+document.getElementById('resetBtn').onclick = () => {
+  state.answers = {}; state.checked = false; state.active = 1;
+  document.getElementById('score').classList.remove('show');
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+};
+
+render();
+</script>
+</body>
+</html>
