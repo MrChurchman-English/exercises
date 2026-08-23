@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thursday, double geometry — classroom vocabulary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#16283C;
+    --ink-soft:#5D6E7E;
+    --paper:#FDFDFB;
+    --board:#EDF1F3;
+    --grid:#DEE8EF;
+    --rule:#C7D5E0;
+    --blue:#2B5FA8;
+    --blue-dark:#1E4780;
+    --right:#0F7A5A;
+    --near:#B0700A;
+    --wrong:#B23A2E;
+    --shadow:0 1px 2px rgba(22,40,60,.06), 0 8px 24px rgba(22,40,60,.07);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--board);
+    color:var(--ink);
+    font-family:"Literata",Georgia,serif;
+    font-size:17px;
+    line-height:1.75;
+    padding:28px 18px 132px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sheet{
+    max-width:760px;
+    margin:0 auto;
+    background:var(--paper);
+    border:1px solid var(--rule);
+    border-radius:3px;
+    box-shadow:var(--shadow);
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size:23px 23px;
+    background-position:-1px -1px;
+  }
+
+  /* ---------- header ---------- */
+  header{
+    display:flex;
+    gap:24px;
+    align-items:flex-start;
+    justify-content:space-between;
+    padding:34px 40px 26px;
+    border-bottom:2px solid var(--ink);
+    background:linear-gradient(180deg, rgba(253,253,251,.96), rgba(253,253,251,.82));
+  }
+  .eyebrow{
+    font-family:"Space Mono",monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--blue);
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:"Bricolage Grotesque","Literata",sans-serif;
+    font-weight:800;
+    font-size:clamp(26px,4.6vw,40px);
+    line-height:1.05;
+    letter-spacing:-.02em;
+    margin:0 0 12px;
+  }
+  .rubric{
+    margin:0;
+    font-size:15px;
+    color:var(--ink-soft);
+    max-width:38ch;
+  }
+  .rubric b{color:var(--ink);font-weight:600}
+
+  /* ---------- protractor (signature) ---------- */
+  .protractor{flex:0 0 auto;width:186px}
+  .protractor svg{display:block;width:100%;height:auto;overflow:visible}
+  .p-tick{stroke:var(--rule);stroke-width:2;transition:stroke .45s ease}
+  .p-tick.done{stroke:var(--right)}
+  .p-arc{fill:none;stroke:var(--ink);stroke-width:1.5}
+  .p-face{fill:rgba(43,95,168,.05)}
+  .p-needle{
+    stroke:var(--blue);stroke-width:2.5;stroke-linecap:round;
+    transform-origin:100px 92px;
+    transition:transform .6s cubic-bezier(.34,1.3,.64,1);
+  }
+  .p-hub{fill:var(--blue)}
+  .p-count{
+    font-family:"Bricolage Grotesque",sans-serif;font-weight:800;
+    font-size:27px;fill:var(--ink);text-anchor:middle;
+  }
+  .p-label{
+    font-family:"Space Mono",monospace;font-size:9.5px;letter-spacing:.14em;
+    fill:var(--ink-soft);text-anchor:middle;
+  }
+
+  /* ---------- text ---------- */
+  .text{padding:30px 40px 42px}
+  .text > p{margin:0 0 1.25em}
+  .text > p:last-child{margin-bottom:0}
+  .dateline{
+    font-family:"Space Mono",monospace;
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--ink-soft);
+    border-bottom:1px solid var(--rule);
+    padding-bottom:8px;margin-bottom:26px !important;
+  }
+
+  /* ---------- gaps ---------- */
+  .gap{
+    display:inline-flex;align-items:baseline;gap:5px;
+    white-space:nowrap;position:relative;
+  }
+  .num{
+    font-family:"Space Mono",monospace;font-size:11px;font-weight:700;
+    color:var(--blue);vertical-align:super;line-height:0;
+  }
+  .slot{display:inline-flex;align-items:center}
+  .gap input{
+    font-family:"Space Mono",monospace;
+    font-size:15px;
+    color:var(--ink);
+    background:rgba(43,95,168,.045);
+    border:0;border-bottom:2px solid var(--blue);
+    border-radius:2px 2px 0 0;
+    padding:1px 6px 2px;
+    width:12ch;
+    outline:none;
+    transition:background .18s ease,border-color .18s ease,color .18s ease;
+  }
+  .gap input::placeholder{color:transparent}
+  .gap input:focus{background:rgba(43,95,168,.12)}
+  .gap input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .mark{
+    font-size:12px;line-height:1;width:0;
+    color:var(--right);opacity:0;
+    transition:opacity .25s ease,width .25s ease;
+  }
+  .gap.is-right .mark{opacity:1;width:14px;padding-left:4px}
+  .hint-btn{
+    font-family:"Space Mono",monospace;font-size:11px;font-weight:700;
+    width:19px;height:19px;flex:0 0 auto;
+    align-self:center;
+    border:1px solid var(--rule);border-radius:50%;
+    background:var(--paper);color:var(--ink-soft);
+    cursor:pointer;padding:0;line-height:1;
+    transition:all .16s ease;
+  }
+  .hint-btn:hover:not(:disabled){border-color:var(--near);color:var(--near);background:rgba(176,112,10,.09)}
+  .hint-btn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .hint-btn:disabled{opacity:.35;cursor:default}
+
+  .gap.is-right input{border-color:var(--right);background:rgba(15,122,90,.1);color:var(--right);font-weight:700}
+  .gap.is-wrong input{border-color:var(--wrong);background:rgba(178,58,46,.09);color:var(--wrong)}
+  .gap.is-near input{border-color:var(--near);background:rgba(176,112,10,.1);color:var(--near)}
+  .gap.is-hinted input{border-color:var(--near)}
+  .gap.is-hinted.is-right input{border-color:var(--right)}
+
+  @keyframes nudge{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+  .shake{animation:nudge .28s ease}
+
+  .flag{
+    position:absolute;left:50%;top:calc(100% + 4px);transform:translateX(-50%);
+    font-family:"Bricolage Grotesque",sans-serif;font-size:11.5px;font-weight:700;
+    white-space:nowrap;background:var(--ink);color:#fff;
+    padding:3px 9px;border-radius:3px;z-index:5;
+    box-shadow:0 4px 12px rgba(22,40,60,.22);
+  }
+  .flag.near{background:var(--near)}
+  .flag.wrong{background:var(--wrong)}
+  .flag::before{
+    content:"";position:absolute;left:50%;top:-4px;margin-left:-4px;
+    border:4px solid transparent;border-top:0;border-bottom-color:inherit;
+  }
+
+  /* ---------- colophon ---------- */
+  .colophon{
+    margin:0 40px;
+    padding:20px 0 30px;
+    border-top:1px solid var(--rule);
+    font-family:"Space Mono",monospace;
+    font-size:11.5px;
+    line-height:1.85;
+    color:var(--ink-soft);
+  }
+  .colophon .who{
+    display:block;
+    color:var(--blue);
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:10px;
+    margin-bottom:7px;
+  }
+  .colophon b{color:var(--ink);font-weight:700}
+
+  /* ---------- toolbar ---------- */
+  .toolbar{
+    position:fixed;left:0;right:0;bottom:0;z-index:20;
+    background:rgba(253,253,251,.94);
+    backdrop-filter:blur(8px);
+    border-top:2px solid var(--ink);
+  }
+  .toolbar-in{
+    max-width:760px;margin:0 auto;
+    padding:13px 40px;
+    display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  }
+  .status{
+    font-family:"Space Mono",monospace;font-size:12px;
+    color:var(--ink-soft);margin-right:auto;line-height:1.5;
+  }
+  .status b{color:var(--ink);font-weight:700}
+  .status .sep{opacity:.4;padding:0 7px}
+  button.action{
+    font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:14px;
+    padding:10px 20px;border-radius:3px;cursor:pointer;
+    border:1.5px solid var(--ink);
+    transition:transform .12s ease,background .16s ease,color .16s ease;
+  }
+  button.action:active{transform:translateY(1px)}
+  button.action:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .primary{background:var(--blue);border-color:var(--blue);color:#fff}
+  .primary:hover{background:var(--blue-dark);border-color:var(--blue-dark)}
+  .ghost{background:transparent;color:var(--ink)}
+  .ghost:hover{background:rgba(22,40,60,.07)}
+
+  .toast{
+    max-width:760px;margin:0 auto;padding:0 40px;
+    overflow:hidden;max-height:0;transition:max-height .3s ease;
+  }
+  .toast.show{max-height:70px}
+  .toast p{
+    margin:0 0 12px;font-size:14.5px;color:var(--ink);
+    border-left:3px solid var(--blue);padding-left:12px;
+  }
+  .toast p.win{border-left-color:var(--right);color:var(--right);font-weight:600}
+
+  @media (max-width:660px){
+    body{padding:14px 10px 150px}
+    header{flex-direction:column-reverse;align-items:flex-start;padding:26px 22px 20px;gap:14px}
+    .protractor{width:158px;align-self:flex-end;margin-top:-6px}
+    .text{padding:24px 22px 32px}
+    .toolbar-in{padding:11px 22px}
+    .toast{padding:0 22px}
+    .status{width:100%;margin-right:0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important;transition:none !important}
+  }
+</style>
+</head>
+<body>
+
+<main class="sheet">
+  <header>
+    <div>
+      <p class="eyebrow">Vocabulary &middot; In the classroom</p>
+      <h1>Thursday,<br>double geometry</h1>
+      <p class="rubric">Fill in the missing words. The <b>first letter</b> is already there. Stuck? Press <b>?</b> next to a gap and the <b>second letter</b> appears.</p>
+    </div>
+    <div class="protractor">
+      <svg viewBox="0 0 200 108" role="img" aria-labelledby="pTitle">
+        <title id="pTitle">Progress: gaps completed</title>
+        <path class="p-face" d="M12 92 A88 88 0 0 1 188 92 Z"></path>
+        <path class="p-arc" d="M12 92 A88 88 0 0 1 188 92"></path>
+        <line class="p-arc" x1="12" y1="92" x2="188" y2="92"></line>
+        <g id="pTicks"></g>
+        <line class="p-needle" id="pNeedle" x1="100" y1="92" x2="100" y2="20"></line>
+        <circle class="p-hub" cx="100" cy="92" r="4.5"></circle>
+        <text class="p-count" id="pCount" x="100" y="76">0</text>
+        <text class="p-label" x="100" y="88">OF 20 CORRECT</text>
+      </svg>
+    </div>
+  </header>
+
+  <section class="text">
+    <p class="dateline">Read the whole text first &mdash; some gaps only make sense at the end.</p>
+
+    <p>&ldquo;<span class="gap" data-n="1"></span> off, please &mdash; I don&rsquo;t want to hear a single one,&rdquo; said Mr Keller. &ldquo;And Luca, in this room we don&rsquo;t speak Italian.&rdquo;</p>
+
+    <p>He was setting up at the front, writing the date on the board with a piece of <span class="gap" data-n="2"></span>. The old <span class="gap" data-n="3"></span> on the ceiling was broken again, so he was using the <span class="gap" data-n="4"></span> instead, the one with the little camera on an arm that shows the page on the wall. &ldquo;Copy this into your books,&rdquo; he said. &ldquo;Then <span class="gap" data-n="5"></span> the text with your hand and see how much you can remember.&rdquo;</p>
+
+    <p>&ldquo;You&rsquo;ll need two things today,&rdquo; he went on. &ldquo;Something to draw a circle with, and something to measure an angle with.&rdquo; So: a pair of <span class="gap" data-n="6"></span> and a <span class="gap" data-n="7"></span>. Mine were somewhere at the bottom of my <span class="gap" data-n="8"></span>, under my gym kit.</p>
+
+    <p>Of course my pencil was blunt and I&rsquo;d left my <span class="gap" data-n="9"></span> at home, so I couldn&rsquo;t do anything about it. Then I got the first answer wrong, and instead of using a <span class="gap" data-n="10"></span> I just had to <span class="gap" data-n="11"></span> it <span class="gap" data-n="12"></span> neatly &mdash; Mr Keller hates messy work. Lea passed me her yellow <span class="gap" data-n="13"></span> so I could mark the formula, and a roll of sticky <span class="gap" data-n="14"></span> to stick the worksheet in.</p>
+
+    <p>&ldquo;Right, now <span class="gap" data-n="15"></span> in <span class="gap" data-n="16"></span>,&rdquo; he said. &ldquo;Ask and answer the questions on the handout, then <span class="gap" data-n="17"></span> the correct box and <span class="gap" data-n="18"></span> the key words.&rdquo;</p>
+
+    <p>At the end, each pair had to draw two triangles, cut them out with a pair of <span class="gap" data-n="19"></span> and fix them together &mdash; and since nobody had a <span class="gap" data-n="20"></span>, we used a glue stick.</p>
+  </section>
+
+  <footer class="colophon">
+    <span class="who">How this exercise was made</span>
+    <b>Mr Churchman</b> and <b>Claude</b> (an AI assistant made by Anthropic) wrote this together in August 2026.
+    The twenty words come from our classroom vocabulary list &mdash; I chose them. Claude wrote the story around
+    them and built this page; I set the task, changed what needed changing, and checked every answer myself.
+    If a gap marks your answer wrong and you think you are right, tell me &mdash; that is my mistake, not the computer&rsquo;s.
+  </footer>
+</main>
+
+<div class="toolbar">
+  <div class="toast" id="toast"><p id="toastText"></p></div>
+  <div class="toolbar-in">
+    <div class="status">
+      <b id="sRight">0</b>/20 correct<span class="sep">|</span><b id="sFilled">0</b> filled<span class="sep">|</span><b id="sHints">0</b> hints used
+    </div>
+    <button class="action ghost" id="btnClear">Start again</button>
+    <button class="action primary" id="btnCheck">Check answers</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var K = [["c2VsaWJvTQ=="],["a2xhaGM="],["cm90Y2Vqb3Jw"],["cmVzaWxhdXNpdg==","cmV6aWxhdXNpdg=="],["cmV2b2M="],["c2Vzc2FwbW9j"],["cm90Y2FydG9ycA=="],["bGVoY3Rhcw=="],["cmVuZXByYWhz"],["cmViYnVy"],["c3NvcmM="],["dHVv"],["cmV0aGdpbGhnaWg="],["ZXBhdA=="],["a3Jvdw=="],["c3JpYXA="],["a2NpdA=="],["ZW5pbHJlZG51"],["c3Jvc3NpY3M="],["cmVscGF0cw=="]];
+  var d = function(s){ return atob(s).split("").reverse().join(""); };
+
+  var norm = function(s){
+    return s.toLowerCase().trim()
+            .replace(/[\u2018\u2019]/g,"'")
+            .replace(/\s+/g," ");
+  };
+
+  var lev = function(a,b){
+    var m=a.length,n=b.length,prev=[],cur=[],i,j;
+    for(j=0;j<=n;j++) prev[j]=j;
+    for(i=1;i<=m;i++){
+      cur[0]=i;
+      for(j=1;j<=n;j++){
+        cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));
+      }
+      prev=cur.slice();
+    }
+    return prev[n];
+  };
+
+  var gaps=[], hintsUsed=0;
+
+  document.querySelectorAll(".gap").forEach(function(el){
+    var n = parseInt(el.dataset.n,10);
+    var accepted = K[n-1].map(d);
+    var word = accepted[0];
+    var prefix = word.slice(0,1);
+
+    var slot=document.createElement("span"); slot.className="slot";
+    var input=document.createElement("input");
+    input.type="text";
+    input.autocomplete="off"; input.autocapitalize="off";
+    input.spellcheck=false;
+    input.value=prefix;
+    input.setAttribute("aria-label","Gap "+n);
+    var mark=document.createElement("span");
+    mark.className="mark"; mark.setAttribute("aria-hidden","true");
+    mark.textContent="\u2713";
+    slot.appendChild(input); slot.appendChild(mark);
+
+    var num=document.createElement("span");
+    num.className="num"; num.textContent=n;
+
+    var hint=document.createElement("button");
+    hint.type="button"; hint.className="hint-btn"; hint.textContent="?";
+    hint.title="Show the second letter";
+    hint.setAttribute("aria-label","Hint for gap "+n+": show the second letter");
+
+    el.appendChild(num); el.appendChild(slot); el.appendChild(hint);
+
+    var g={el:el,input:input,hint:hint,word:word,accepted:accepted,
+           prefix:prefix,revealed:1,solved:false,n:n};
+    gaps.push(g);
+
+    input.addEventListener("input",function(){
+      if(g.solved){ input.value=g.word; return; }
+      var v=input.value;
+      if(v.length<g.prefix.length || norm(v).indexOf(norm(g.prefix))!==0){
+        input.value=g.prefix;
+      }
+      el.classList.remove("is-wrong","is-near");
+      clearFlag(g);
+      tally();
+    });
+    input.addEventListener("keydown",function(e){
+      if(e.key==="Enter"){ e.preventDefault(); judge(g,true); }
+    });
+    hint.addEventListener("click",function(){ giveHint(g); });
+  });
+
+  function giveHint(g){
+    if(g.solved || g.revealed>=2) return;
+    g.revealed=2;
+    hintsUsed++;
+    g.prefix=g.word.slice(0,2);
+    var rest=g.input.value.slice(2);
+    g.input.value=g.prefix+rest;
+    g.el.classList.add("is-hinted");
+    g.el.classList.remove("is-wrong","is-near");
+    g.hint.disabled=true;
+    g.hint.title="Second letter shown";
+    flag(g,"It starts with \u201c"+g.prefix+"\u201d","near");
+    g.input.focus();
+    var v=g.input.value; g.input.value=""; g.input.value=v;
+    tally();
+  }
+
+  function clearFlag(g){
+    var f=g.el.querySelector(".flag");
+    if(f) f.remove();
+  }
+  function flag(g,text,type){
+    clearFlag(g);
+    var f=document.createElement("span");
+    f.className="flag "+type; f.textContent=text;
+    g.el.appendChild(f);
+    setTimeout(function(){ if(f.parentNode) f.remove(); },2600);
+  }
+
+  function judge(g,solo){
+    if(g.solved) return true;
+    var v=norm(g.input.value);
+    if(v.length<=1) return false;
+    var hit=g.accepted.some(function(a){ return norm(a)===v; });
+    if(hit){
+      g.solved=true;
+      g.input.value=g.word;
+      g.input.readOnly=true;
+      g.hint.disabled=true;
+      g.el.classList.remove("is-wrong","is-near");
+      g.el.classList.add("is-right");
+      clearFlag(g);
+      tally();
+      return true;
+    }
+    var near=g.accepted.some(function(a){ return lev(norm(a),v)<=1; });
+    g.el.classList.remove("is-right");
+    g.el.classList.toggle("is-near",near);
+    g.el.classList.toggle("is-wrong",!near);
+    g.el.classList.add("shake");
+    setTimeout(function(){ g.el.classList.remove("shake"); },300);
+    if(solo) flag(g, near?"So close — check the spelling":"Not this word — try again", near?"near":"wrong");
+    tally();
+    return false;
+  }
+
+  var ticks=document.getElementById("pTicks");
+  for(var i=0;i<20;i++){
+    var ang=(-90+(i+0.5)*9)*Math.PI/180;
+    var l=document.createElementNS("http://www.w3.org/2000/svg","line");
+    l.setAttribute("x1",100+Math.sin(ang)*70); l.setAttribute("y1",92-Math.cos(ang)*70);
+    l.setAttribute("x2",100+Math.sin(ang)*84); l.setAttribute("y2",92-Math.cos(ang)*84);
+    l.setAttribute("class","p-tick");
+    ticks.appendChild(l);
+  }
+  var tickEls=ticks.querySelectorAll(".p-tick");
+
+  function tally(){
+    var right=0,filled=0;
+    gaps.forEach(function(g){
+      if(g.solved) right++;
+      if(norm(g.input.value).length>1) filled++;
+    });
+    document.getElementById("sRight").textContent=right;
+    document.getElementById("sFilled").textContent=filled;
+    document.getElementById("sHints").textContent=hintsUsed;
+    document.getElementById("pCount").textContent=right;
+    for(var i=0;i<20;i++) tickEls[i].classList.toggle("done",i<right);
+    document.getElementById("pNeedle").style.transform="rotate("+(-90+right*9)+"deg)";
+    return right;
+  }
+
+  var toast=document.getElementById("toast"), toastText=document.getElementById("toastText");
+  function say(msg,win){
+    toastText.textContent=msg;
+    toastText.classList.toggle("win",!!win);
+    toast.classList.add("show");
+    clearTimeout(say._t);
+    say._t=setTimeout(function(){ toast.classList.remove("show"); },5200);
+  }
+
+  document.getElementById("btnCheck").addEventListener("click",function(){
+    var attempted=0,newly=0,stillWrong=0;
+    gaps.forEach(function(g){
+      if(g.solved) return;
+      if(norm(g.input.value).length<=1) return;
+      attempted++;
+      if(judge(g,false)) newly++; else stillWrong++;
+    });
+    var right=tally();
+    if(right===20){
+      say("All twenty. Nothing left to fix — well done.",true);
+    } else if(attempted===0){
+      say("Nothing new to check yet. Type an answer, then press Check answers.");
+    } else if(stillWrong===0){
+      say(newly+" more correct. Keep going — "+(20-right)+" gaps to go.");
+    } else {
+      say(newly+" more correct. "+stillWrong+" still to fix — the coloured gaps are the ones to look at again.");
+    }
+  });
+
+  document.getElementById("btnClear").addEventListener("click",function(){
+    gaps.forEach(function(g){
+      g.solved=false; g.revealed=1; g.prefix=g.word.slice(0,1);
+      g.input.readOnly=false; g.input.value=g.prefix;
+      g.hint.disabled=false; g.hint.title="Show the second letter";
+      g.el.className="gap";
+      clearFlag(g);
+    });
+    hintsUsed=0; tally();
+    toast.classList.remove("show");
+    gaps[0].input.focus();
+  });
+
+  tally();
+})();
+</script>
+</body>
+</html>
