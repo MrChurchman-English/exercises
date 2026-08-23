@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Who Wants to Be a Millionaire? — Shakespeare's Life and Times</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Spectral:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#080B1C;
+    --night-2:#141A38;
+    --panel:#0E1430;
+    --gold:#E3B23C;
+    --gold-dim:#8C6D2A;
+    --parchment:#EFE6D2;
+    --parchment-dim:#A9A08C;
+    --crimson:#A32B3B;
+    --verdigris:#2E8B72;
+    --display:"Cormorant Garamond", Garamond, "Times New Roman", serif;
+    --body:"Spectral", Georgia, serif;
+    --util:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    min-height:100vh;
+    background:
+      radial-gradient(120% 80% at 50% 0%, #1B2350 0%, var(--night-2) 45%, var(--night) 100%);
+    background-attachment:fixed;
+    color:var(--parchment);
+    font-family:var(--body);
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:clamp(16px,3vw,36px) clamp(14px,3vw,28px) 28px}
+
+  /* ---------- shared bits ---------- */
+  .rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent);border:0;margin:18px 0}
+  .eyebrow{font-family:var(--util);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-dim)}
+  button{font-family:inherit;font-size:inherit;color:inherit;cursor:pointer}
+  button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+
+  /* ---------- title page (First Folio treatment) ---------- */
+  #start{text-align:center;padding:clamp(20px,5vw,56px) 0 10px}
+  .folio{
+    border:1px solid var(--gold-dim);
+    padding:clamp(24px,5vw,54px) clamp(16px,4vw,48px);
+    background:linear-gradient(180deg, rgba(227,178,60,.05), transparent 60%);
+  }
+  .folio .ornament{color:var(--gold);letter-spacing:.5em;font-size:14px;margin-bottom:18px}
+  .folio h1{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(30px,6.2vw,62px);
+    line-height:1.02;
+    margin:.15em 0;
+    letter-spacing:.01em;
+  }
+  .folio h1 .small{display:block;font-size:.42em;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-family:var(--util);font-weight:400;margin-bottom:14px}
+  .folio .sub{font-family:var(--display);font-style:italic;font-size:clamp(17px,2.6vw,24px);color:var(--parchment-dim);margin:18px auto 0;max-width:34ch}
+  .folio .meta{font-family:var(--util);font-size:12px;color:var(--parchment-dim);letter-spacing:.06em;margin-top:26px;line-height:2}
+  .cta{
+    margin-top:30px;background:var(--gold);color:#1A1405;border:0;
+    padding:15px 34px;border-radius:2px;font-family:var(--util);font-weight:600;
+    letter-spacing:.12em;text-transform:uppercase;font-size:13px;
+    transition:transform .15s ease, box-shadow .15s ease;
+    box-shadow:0 0 0 rgba(227,178,60,0);
+  }
+  .cta:hover{transform:translateY(-1px);box-shadow:0 6px 24px rgba(227,178,60,.28)}
+
+  /* ---------- game layout ---------- */
+  #game{display:none}
+  .topbar{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .topbar .title{font-family:var(--display);font-size:clamp(19px,3vw,26px);font-weight:600}
+  .topbar .now{font-family:var(--util);font-size:13px;color:var(--gold)}
+  .cols{display:grid;grid-template-columns:1fr 210px;gap:clamp(16px,3vw,32px);align-items:start}
+  @media (max-width:820px){.cols{grid-template-columns:1fr}}
+
+  /* stage arch — the "heavens" above the question */
+  .arch{display:block;width:100%;height:34px;margin-bottom:-6px;opacity:.75}
+
+  .qcard{
+    background:linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.015));
+    border:1px solid rgba(227,178,60,.28);
+    border-radius:3px;
+    padding:clamp(18px,3.4vw,30px);
+  }
+  .qnum{font-family:var(--util);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);margin-bottom:12px}
+  .qtext{font-family:var(--display);font-size:clamp(21px,3.5vw,31px);line-height:1.25;font-weight:600;margin:0}
+
+  .answers{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+  @media (max-width:640px){.answers{grid-template-columns:1fr}}
+  .ans{
+    display:flex;align-items:center;gap:12px;text-align:left;width:100%;
+    background:rgba(10,14,36,.72);
+    border:1px solid rgba(227,178,60,.35);
+    padding:14px 16px;border-radius:2px;
+    font-family:var(--body);font-size:clamp(15px,2.1vw,17px);line-height:1.35;
+    transition:background .18s ease, border-color .18s ease, transform .12s ease;
+    clip-path:polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+  }
+  @media (max-width:640px){.ans{clip-path:none}}
+  .ans .letter{font-family:var(--util);color:var(--gold);font-weight:600;font-size:14px;flex:0 0 auto}
+  .ans:hover:not(:disabled){background:rgba(227,178,60,.12);border-color:var(--gold)}
+  .ans:disabled{cursor:default}
+  .ans.gone{opacity:.16;border-color:transparent}
+  .ans.picked{background:rgba(227,178,60,.22);border-color:var(--gold);animation:flicker 1.1s ease-in-out infinite}
+  .ans.right{background:rgba(46,139,114,.35);border-color:var(--verdigris);animation:none}
+  .ans.wrong{background:rgba(163,43,59,.35);border-color:var(--crimson);animation:none}
+  @keyframes flicker{0%,100%{box-shadow:0 0 12px rgba(227,178,60,.25)}50%{box-shadow:0 0 26px rgba(227,178,60,.55)}}
+  @media (prefers-reduced-motion:reduce){.ans.picked{animation:none;box-shadow:0 0 18px rgba(227,178,60,.4)}}
+
+  .controls{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;align-items:center}
+  .btn{
+    background:transparent;border:1px solid var(--gold-dim);color:var(--parchment);
+    padding:11px 20px;border-radius:2px;font-family:var(--util);font-size:12px;
+    letter-spacing:.1em;text-transform:uppercase;transition:.18s ease;
+  }
+  .btn:hover:not(:disabled){border-color:var(--gold);background:rgba(227,178,60,.1)}
+  .btn.primary{background:var(--gold);color:#1A1405;border-color:var(--gold);font-weight:600}
+  .btn.primary:hover{box-shadow:0 4px 18px rgba(227,178,60,.3)}
+  .btn:disabled{opacity:.3;cursor:default}
+
+  .note{
+    margin-top:18px;padding:14px 16px;border-left:2px solid var(--gold-dim);
+    background:rgba(227,178,60,.06);font-size:15px;color:var(--parchment);
+    display:none;
+  }
+  .note.show{display:block}
+  .note b{font-family:var(--util);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:6px;font-weight:400}
+
+  /* lifelines */
+  .lifelines{display:flex;gap:10px;margin:0 0 16px;flex-wrap:wrap}
+  .ll{
+    flex:1 1 auto;min-width:118px;background:rgba(10,14,36,.6);border:1px solid var(--gold-dim);
+    color:var(--parchment);padding:10px 12px;border-radius:2px;
+    font-family:var(--util);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+    transition:.18s ease;
+  }
+  .ll:hover:not(:disabled){border-color:var(--gold);background:rgba(227,178,60,.12)}
+  .ll:disabled{opacity:.28;text-decoration:line-through;cursor:default}
+
+  /* ladder */
+  .ladder{border:1px solid rgba(227,178,60,.22);border-radius:3px;padding:10px;background:rgba(8,11,28,.5)}
+  .ladder h2{font-family:var(--util);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);margin:4px 0 10px;text-align:center;font-weight:400}
+  .step{display:flex;justify-content:space-between;gap:8px;padding:5px 9px;font-family:var(--util);font-size:12px;color:var(--parchment-dim);border-radius:2px}
+  .step .lv{opacity:.55}
+  .step.safe{color:var(--gold-dim)}
+  .step.done{color:var(--verdigris)}
+  .step.here{background:var(--gold);color:#1A1405;font-weight:600}
+  .step.here .lv{opacity:.7}
+  .ladder-toggle{display:none}
+  @media (max-width:820px){
+    .ladder-toggle{display:block;width:100%;margin-bottom:12px}
+    .ladder{display:none}
+    .ladder.open{display:block}
+  }
+
+  /* modal for lifeline output */
+  .modal{position:fixed;inset:0;background:rgba(4,6,16,.82);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+  .modal.open{display:flex}
+  .modal .box{background:var(--panel);border:1px solid var(--gold-dim);max-width:440px;width:100%;padding:26px}
+  .modal h3{font-family:var(--display);font-size:24px;margin:0 0 12px;font-weight:600}
+  .bar{display:flex;align-items:center;gap:10px;margin:9px 0;font-family:var(--util);font-size:12px}
+  .bar .k{width:16px;color:var(--gold)}
+  .bar .track{flex:1;height:14px;background:rgba(255,255,255,.07)}
+  .bar .fill{height:100%;background:var(--gold);opacity:.75}
+  .bar .v{width:42px;text-align:right;color:var(--parchment-dim)}
+  .friend{font-family:var(--display);font-style:italic;font-size:19px;line-height:1.45}
+
+  /* end screen */
+  #end{display:none;text-align:center}
+  #end .amount{font-family:var(--display);font-size:clamp(40px,9vw,84px);font-weight:700;color:var(--gold);line-height:1;margin:10px 0}
+  #end .verdict{font-family:var(--display);font-style:italic;font-size:clamp(18px,3vw,24px);color:var(--parchment-dim)}
+  .review{text-align:left;margin-top:34px}
+  .review h3{font-family:var(--util);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dim);font-weight:400}
+  .rev{border-top:1px solid rgba(227,178,60,.16);padding:14px 0}
+  .rev .q{font-family:var(--display);font-size:19px;font-weight:600;line-height:1.3}
+  .rev .a{font-size:15px;margin-top:6px}
+  .rev .a .mark{font-family:var(--util);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-right:8px}
+  .rev .a .mark.ok{color:var(--verdigris)}
+  .rev .a .mark.no{color:var(--crimson)}
+  .rev .n{font-size:14px;color:var(--parchment-dim);margin-top:5px;font-style:italic}
+
+  footer{
+    max-width:1080px;margin:46px auto 0;padding:0 clamp(14px,3vw,28px) 34px;
+  }
+  footer .inner{border-top:1px solid rgba(227,178,60,.18);padding-top:14px}
+  footer p{font-family:var(--util);font-size:11px;line-height:1.8;color:#7C7565;margin:0;max-width:75ch}
+  footer b{color:#958D79;font-weight:600;display:block;letter-spacing:.14em;text-transform:uppercase;font-size:10px;margin-bottom:6px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ======== TITLE PAGE ======== -->
+  <section id="start">
+    <div class="folio">
+      <div class="ornament">❦ ❦ ❦</div>
+      <h1><span class="small">Who Wants to Be a Millionaire?</span>Shakespeare<br>His Life and Times</h1>
+      <hr class="rule">
+      <p class="sub">Fifteen questions, dealt from a pool of eighty. Nothing repeats until the pool runs dry. Three lifelines, no timer.</p>
+      <div class="meta">
+        Stratford &amp; London · 1564–1616<br>
+        Playhouses, patrons, plague and Early Modern English
+      </div>
+      <button class="cta" id="begin">Begin the ascent</button>
+    </div>
+  </section>
+
+  <!-- ======== GAME ======== -->
+  <section id="game">
+    <div class="topbar">
+      <div class="title">Shakespeare — His Life and Times</div>
+      <div class="now" id="nowPlaying">Playing for £100</div>
+    </div>
+    <hr class="rule" style="margin-top:6px">
+
+    <div class="cols">
+      <div>
+        <div class="lifelines">
+          <button class="ll" id="ll50">50 : 50</button>
+          <button class="ll" id="llAudience">Ask the class</button>
+          <button class="ll" id="llFriend">Phone a friend</button>
+        </div>
+
+        <svg class="arch" viewBox="0 0 600 34" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 33 Q300 -14 600 33" fill="none" stroke="#8C6D2A" stroke-width="1"/>
+          <circle cx="150" cy="14" r="1.2" fill="#E3B23C"/><circle cx="300" cy="6" r="1.6" fill="#E3B23C"/>
+          <circle cx="450" cy="14" r="1.2" fill="#E3B23C"/><circle cx="225" cy="9" r="1" fill="#E3B23C"/>
+          <circle cx="375" cy="9" r="1" fill="#E3B23C"/>
+        </svg>
+
+        <div class="qcard">
+          <div class="qnum" id="qnum">Question 1 of 15</div>
+          <p class="qtext" id="qtext">…</p>
+          <div class="answers" id="answers"></div>
+          <div class="note" id="note"><b>Worth knowing</b><span id="noteText"></span></div>
+          <div class="controls">
+            <button class="btn primary" id="confirm" disabled>Final answer</button>
+            <button class="btn" id="next" style="display:none">Next question</button>
+            <button class="btn" id="walk">Walk away</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button class="btn ladder-toggle" id="ladderToggle">Show prize ladder</button>
+        <div class="ladder" id="ladder"><h2>Prize ladder</h2><div id="ladderSteps"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== END ======== -->
+  <section id="end">
+    <div class="eyebrow" id="endEyebrow">Curtain</div>
+    <div class="amount" id="endAmount">£0</div>
+    <p class="verdict" id="endVerdict"></p>
+    <button class="cta" id="again">Play again — new questions</button>
+    <div class="review">
+      <h3>Your questions, with the answers</h3>
+      <div id="reviewList"></div>
+    </div>
+  </section>
+</div>
+
+<!-- lifeline modal -->
+<div class="modal" id="modal">
+  <div class="box">
+    <h3 id="modalTitle"></h3>
+    <div id="modalBody"></div>
+    <button class="btn" id="modalClose" style="margin-top:18px">Close</button>
+  </div>
+</div>
+
+<footer>
+  <div class="inner">
+    <p><b>How this quiz was made</b>
+    Mr Churchman and Claude (an AI assistant made by Anthropic) made this together in August 2026. I chose the topic and decided what the questions should cover; Claude wrote the questions and built this page; I set the task, changed what needed changing, and checked the facts and answers myself. If the quiz marks your answer wrong and you think you are right, tell me — that is my mistake, not the computer's.</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   QUESTION POOL — 77 questions in five tiers of difficulty.
+   t = tier (1 easiest … 5 hardest), c = index of correct answer,
+   n = the note shown after answering.
+   ============================================================ */
+const POOL = [
+/* ---------- TIER 1 ---------- */
+{t:1,q:"In which English town was Shakespeare born?",a:["Stratford-upon-Avon","Warwick","Canterbury","Oxford"],c:0,n:"A market town in Warwickshire, about 160 km north-west of London."},
+{t:1,q:"In which century was Shakespeare born?",a:["The 16th","The 14th","The 17th","The 18th"],c:0,n:"He was born in 1564 and died in 1616, so his life straddles two centuries."},
+{t:1,q:"Which queen was on the English throne when Shakespeare began writing?",a:["Elizabeth I","Victoria","Mary II","Anne"],c:0,n:"Elizabeth I reigned from 1558 to 1603 — hence the term 'Elizabethan theatre'."},
+{t:1,q:"What was the name of the famous London theatre Shakespeare's company built?",a:["The Globe","The Rose","The Swan","The Crown"],c:0,n:"The Rose and the Swan were real playhouses too — but they belonged to other companies."},
+{t:1,q:"What was Shakespeare's wife called?",a:["Anne Hathaway","Mary Arden","Judith Quiney","Elizabeth Burbage"],c:0,n:"Mary Arden was his mother; Judith was his daughter's married name."},
+{t:1,q:"How many children did William and Anne Shakespeare have?",a:["Three","One","Five","Seven"],c:0,n:"Susanna, and then the twins Hamnet and Judith."},
+{t:1,q:"Which river runs through Shakespeare's home town?",a:["The Avon","The Thames","The Severn","The Trent"],c:0,n:"'Avon' comes from a Celtic word simply meaning 'river'."},
+{t:1,q:"As well as plays, Shakespeare wrote 154 of which kind of poem?",a:["Sonnets","Odes","Ballads","Limericks"],c:0,n:"A Shakespearean sonnet has 14 lines and ends with a rhyming couplet."},
+{t:1,q:"In Shakespeare's theatre, who played the female roles?",a:["Boys and young men","Women","Nobody — they were cut","Only foreign actresses"],c:0,n:"Women were not allowed on the English public stage until 1660."},
+{t:1,q:"What form of the English language did Shakespeare write in?",a:["Early Modern English","Old English","Middle English","Latin"],c:0,n:"Old English is Beowulf; Middle English is Chaucer. Shakespeare is much closer to us than either."},
+{t:1,q:"Besides writing, what else did Shakespeare do in the theatre?",a:["He acted and part-owned the company","He only sold tickets","He painted the scenery","He conducted the orchestra"],c:0,n:"Being a part-owner, not the writing, is what made him rich."},
+{t:1,q:"Roughly how old was Shakespeare when he died?",a:["52","32","72","82"],c:0,n:"He died in 1616, aged 52 — not old even by the standards of the day."},
+{t:1,q:"Which city did Shakespeare move to in order to work in the theatre?",a:["London","Edinburgh","Dublin","Bristol"],c:0,n:"He kept his family in Stratford and travelled back and forth for some twenty years."},
+{t:1,q:"Which date is traditionally celebrated as Shakespeare's birthday?",a:["23 April","1 January","25 December","14 February"],c:0,n:"It is also the date of his death in 1616, and St George's Day."},
+
+/* ---------- TIER 2 ---------- */
+{t:2,q:"What was the trade of Shakespeare's father, John?",a:["Glove-maker","Blacksmith","Schoolmaster","Ship's captain"],c:0,n:"He worked with leather, and for a time did well enough to hold high office in the town."},
+{t:2,q:"What was the maiden name of Shakespeare's mother, Mary?",a:["Arden","Whateley","Hart","Hall"],c:0,n:"Mary Arden came from a farming family in nearby Wilmcote."},
+{t:2,q:"How much did a 'groundling' pay to stand and watch a play at the Globe?",a:["One penny","One shilling","One pound","Nothing"],c:0,n:"A penny bought you a place standing in the yard — roughly an hour's wage for a labourer."},
+{t:2,q:"When did performances at the Globe take place?",a:["In the afternoon, in daylight","At midnight","Only on Sundays","Before dawn"],c:0,n:"There was no stage lighting, so open-air theatres depended on the sun."},
+{t:2,q:"What was the name of Shakespeare's only son?",a:["Hamnet","Hamlet","Edmund","Richard"],c:0,n:"Hamnet — spelled with an 'n'. Whether the name influenced the play is much argued about."},
+{t:2,q:"Shakespeare's two daughters were called Judith and …?",a:["Susanna","Juliet","Joan","Jane"],c:0,n:"Susanna was the eldest of the three children, born in 1583."},
+{t:2,q:"Which company of players did Shakespeare join in 1594?",a:["The Lord Chamberlain's Men","The Admiral's Men","The Queen's Men","Pembroke's Men"],c:0,n:"Acting companies needed a noble patron; without one, actors counted as vagabonds."},
+{t:2,q:"What happened to the Globe theatre in 1613?",a:["It burned down","It was flooded","It was sold to the church","It was moved to Oxford"],c:0,n:"It was rebuilt the following year, with a tiled roof instead of thatch."},
+{t:2,q:"Why were London's theatres sometimes shut for months at a time?",a:["Outbreaks of plague","Heavy snow","War with Spain","A shortage of actors"],c:0,n:"Crowds spread infection, so the authorities closed the playhouses when deaths rose."},
+{t:2,q:"What was the roof over the galleries of the first Globe made of?",a:["Thatch","Slate","Lead","Glass"],c:0,n:"Which is exactly why the theatre burned so quickly in 1613."},
+{t:2,q:"In Shakespeare's English, what does 'thou' mean?",a:["You (one person, familiar)","They","We","Your"],c:0,n:"Like German 'du' or French 'tu'. English later lost the distinction altogether."},
+{t:2,q:"Complete the Shakespearean phrase: 'thou ___' meaning 'you are'.",a:["art","is","be","hast"],c:0,n:"'Hast' means 'have': thou hast, thou art, thou canst."},
+{t:2,q:"Who became king of England after Elizabeth I died in 1603?",a:["James I","Charles I","Henry VIII","William III"],c:0,n:"James VI of Scotland became James I of England, uniting the two crowns."},
+{t:2,q:"When the new king became their patron, Shakespeare's company was renamed …?",a:["The King's Men","The Royal Shakespeare Company","The Court Players","The King's Chamber"],c:0,n:"A considerable promotion: they now wore royal livery and played often at court."},
+{t:2,q:"What kind of building was the Globe?",a:["A round, open-air playhouse","A square indoor hall","A stone castle courtyard","A converted church"],c:0,n:"Polygonal, three galleries high, with a yard open to the sky in the middle."},
+{t:2,q:"What was Shakespeare's Stratford home town mainly known for?",a:["Markets and farming","Coal mining","Shipbuilding","Wool weaving alone"],c:0,n:"A busy country market town of perhaps 1,500 to 2,000 people."},
+
+/* ---------- TIER 3 ---------- */
+{t:3,q:"Shakespeare was baptised on 26 April 1564. Why is 23 April given as his birthday?",a:["Babies were usually baptised a few days after birth","He wrote the date in a letter","The parish register states it","It is the date on his coat of arms"],c:0,n:"It is a tradition, not a record — helped along by the fact that he died on 23 April."},
+{t:3,q:"How old was Anne Hathaway when she married the 18-year-old Shakespeare?",a:["26","16","18","40"],c:0,n:"She was already expecting Susanna, who was born about six months after the wedding."},
+{t:3,q:"What was the name of the large Stratford house Shakespeare bought in 1597?",a:["New Place","Hall's Croft","Charlecote Park","Clopton Manor"],c:0,n:"The second-largest house in the town — proof of how well the theatre had paid."},
+{t:3,q:"What did Shakespeare famously leave his wife in his will?",a:["His second-best bed","All his money","His share of the Globe","Nothing whatsoever"],c:0,n:"Probably the marital bed rather than an insult — but it has been argued over for centuries."},
+{t:3,q:"Which rival writer sneered at Shakespeare as an 'upstart crow' in 1592?",a:["Robert Greene","Christopher Marlowe","Ben Jonson","Thomas Kyd"],c:0,n:"It is also the first surviving evidence that Shakespeare was working in London."},
+{t:3,q:"What metre did Shakespeare mostly write his plays in?",a:["Iambic pentameter","Rhyming couplets throughout","Free verse","Hexameter"],c:0,n:"An unstressed-stressed pattern repeated five times: de-DUM de-DUM de-DUM de-DUM de-DUM."},
+{t:3,q:"How many syllables are there in a regular line of iambic pentameter?",a:["Ten","Eight","Twelve","Five"],c:0,n:"Five feet of two syllables each."},
+{t:3,q:"What is 'blank verse'?",a:["Unrhymed iambic pentameter","Lines left deliberately empty","Ordinary prose","Verse with a strict rhyme scheme"],c:0,n:"The standard vehicle for serious speech on the Elizabethan stage."},
+{t:3,q:"Which characters in Shakespeare's plays most often speak in prose rather than verse?",a:["Lower-class and comic characters","Kings","Ghosts","Foreigners"],c:0,n:"A useful rule of thumb — though he breaks it whenever it suits him."},
+{t:3,q:"Which official had to license a play before it could be performed?",a:["The Master of the Revels","The Lord Mayor","The Archbishop of Canterbury","The Sheriff of London"],c:0,n:"Censorship was real: politics and religion on stage could land a company in prison."},
+{t:3,q:"Why were playhouses like the Globe built outside the City of London?",a:["The City authorities disapproved of theatres","Rents inside the City were too low","Actors had to live by the river","The Queen ordered it"],c:0,n:"Beyond the City walls, the players were out of reach of the Lord Mayor."},
+{t:3,q:"Who was the leading actor of Shakespeare's company?",a:["Richard Burbage","Edward Alleyn","Will Kemp","Ben Jonson"],c:0,n:"Burbage created Hamlet, Lear and Othello. Alleyn was the star of the rival company; Kemp was the clown."},
+{t:3,q:"In Shakespeare's English, what verb ending goes with 'he', 'she' or 'it' — as in 'he goeth'?",a:["-eth","-est","-en","-eth and -s were never used"],c:0,n:"The modern -s ending was already spreading; Shakespeare uses both."},
+{t:3,q:"Which verb ending usually follows 'thou'?",a:["-est","-eth","-s","No ending at all"],c:0,n:"Thou goest, thou knowest, thou hast."},
+{t:3,q:"In which year was the First Folio published?",a:["1623","1600","1616","1650"],c:0,n:"Seven years after Shakespeare's death."},
+{t:3,q:"How long did an afternoon performance at the Globe typically last?",a:["About two to three hours","About thirty minutes","About six hours","All day"],c:0,n:"Plays ran without an interval, ending in time for the audience to get home before dark."},
+
+/* ---------- TIER 4 ---------- */
+{t:4,q:"Who collected and published the First Folio?",a:["Two fellow actors, Heminges and Condell","His daughter Susanna","Ben Jonson, alone","The King's official printer"],c:0,n:"Without them, we would probably have lost half the plays."},
+{t:4,q:"Roughly how many plays does the First Folio contain?",a:["36","12","60","154"],c:0,n:"Divided into comedies, histories and tragedies — a grouping we still use."},
+{t:4,q:"Why does the First Folio matter so much?",a:["About half its plays had never been printed before","It was the first book printed in England","It contained the sonnets","It was written in his own hand"],c:0,n:"Macbeth, Twelfth Night and The Tempest survive only because of it."},
+{t:4,q:"Before the Globe, Shakespeare's company played at a Shoreditch playhouse called …?",a:["The Theatre","The Fortune","The Hope","The Red Bull"],c:0,n:"Built by James Burbage in 1576, it was England's first purpose-built public playhouse."},
+{t:4,q:"What became of the timbers of that Shoreditch playhouse in 1598–99?",a:["They were carried across the Thames to build the Globe","They were burned","They were sold to a shipyard","They were used to repair a church"],c:0,n:"The company dismantled the building in a dispute over the lease on the land."},
+{t:4,q:"Which indoor theatre did the King's Men begin using in 1608?",a:["The Blackfriars","The Whitehall","The Middle Temple","The Cockpit"],c:0,n:"Candlelit, roofed and far more expensive — it changed how plays were written."},
+{t:4,q:"What caused the Globe fire of 1613?",a:["A stage cannon set the thatch alight","An overturned candle","A lightning strike","A riot in the audience"],c:0,n:"It happened during a performance of Henry VIII. Nobody was killed."},
+{t:4,q:"What position in his company made Shakespeare a wealthy man?",a:["He was a sharer, or part-owner","He was paid a fee for each play","He was a servant of the Queen","He owned the land the Globe stood on"],c:0,n:"Sharers split the profits — playwrights were usually paid a flat sum and no more."},
+{t:4,q:"What is the name for a stage that juts out into the standing audience?",a:["A thrust stage","A proscenium stage","An arena stage","A traverse stage"],c:0,n:"It puts the audience on three sides — which is why soliloquies feel so direct."},
+{t:4,q:"The painted canopy above the Globe's stage, showing sun, moon and stars, was called …?",a:["The heavens","The gallery","The tiring house","The pit"],c:0,n:"Gods descended from it; trapdoors in the stage led to hell below."},
+{t:4,q:"What was the 'tiring house'?",a:["The backstage area where actors changed","A rest room for the audience","The ticket office","The tavern next door"],c:0,n:"From 'attiring' — that is, dressing."},
+{t:4,q:"Roughly how many people could the Globe hold?",a:["About 3,000","About 300","About 10,000","About 500"],c:0,n:"A remarkable number for a city of some 200,000 people."},
+{t:4,q:"Which long-running sound change was still reshaping English vowels in Shakespeare's day?",a:["The Great Vowel Shift","Grimm's Law","The Norman Shift","Verner's Law"],c:0,n:"It is why English spelling and pronunciation no longer match: the spellings froze, the vowels moved."},
+{t:4,q:"Shakespeare is credited with the first recorded use of roughly how many English words?",a:["About 1,700","About 100","About 15,000","About 50"],c:0,n:"'First recorded' is not the same as 'invented' — he may simply be the earliest writer we have."},
+{t:4,q:"How was English spelling handled in Shakespeare's lifetime?",a:["There was no fixed standard; spelling varied freely","It was fixed by act of Parliament","Only Latin spellings were permitted","A dictionary set the rules"],c:0,n:"His own surname appears spelled in many different ways, including by himself."},
+{t:4,q:"Which company was Shakespeare's main rival, playing at the Rose?",a:["The Admiral's Men","The King's Men","The Chamberlain's Men","The Children of the Chapel"],c:0,n:"Their star was Edward Alleyn, and their great playwright Christopher Marlowe."},
+{t:4,q:"What did Shakespeare invest much of his theatre money in?",a:["Land and grain in Stratford","Ships trading with the Indies","Gold mines in Wales","Printing presses"],c:0,n:"He was a careful businessman — there are court records of him chasing small debts."},
+
+/* ---------- TIER 5 ---------- */
+{t:5,q:"What civic office did John Shakespeare hold in Stratford in 1568?",a:["Bailiff, the equivalent of mayor","Sheriff of Warwickshire","Town crier","Master of the grammar school"],c:0,n:"His later financial troubles may explain why William left school and married so young."},
+{t:5,q:"Shakespeare's son Hamnet died in 1596 at what age?",a:["Eleven","Two","Twenty","Seven"],c:0,n:"The cause is unknown. Roughly a third of children died before adulthood."},
+{t:5,q:"The trade name 'whittawer' — one of John Shakespeare's occupations — means a worker in what?",a:["White leather","Wheat","Barrels","Candles"],c:0,n:"Tawing is treating skins with alum rather than tanning them with bark."},
+{t:5,q:"The years 1585–1592, for which almost no record of Shakespeare survives, are known as …?",a:["The lost years","The silent decade","The dark age","The missing summers"],c:0,n:"Theories include soldier, sailor, law clerk, and country schoolmaster. Nobody knows."},
+{t:5,q:"Who called Shakespeare the 'sweet swan of Avon' in the First Folio?",a:["Ben Jonson","John Milton","John Heminges","King James"],c:0,n:"Jonson's tribute poem also says Shakespeare was 'not of an age, but for all time'."},
+{t:5,q:"Shakespeare's last direct descendant, his granddaughter Elizabeth, died in which year?",a:["1670","1700","1616","1640"],c:0,n:"She had no children, so the family line ended barely fifty years after his death."},
+{t:5,q:"What motto appears on the coat of arms granted to the Shakespeares in 1596?",a:["Non sanz droict — Not without right","Dieu et mon droit","Honi soit qui mal y pense","Ars longa, vita brevis"],c:0,n:"The grant made William a gentleman, entitled to be called 'Master Shakespeare'."},
+{t:5,q:"In which riverside district was the Globe built?",a:["Southwark, on Bankside","Shoreditch","Westminster","Greenwich"],c:0,n:"South of the Thames, outside the City's control — and reached by boat or London Bridge."},
+{t:5,q:"Which noisy entertainment competed with the theatres on Bankside?",a:["Bear-baiting","Horse racing","Opera","Bare-knuckle boxing"],c:0,n:"The bear gardens stood a few minutes' walk from the Globe."},
+{t:5,q:"What happened to English theatres in 1642?",a:["Parliament closed them","They first admitted actresses","They were bought by the crown","They all moved indoors"],c:0,n:"Closed at the outbreak of the Civil War; the Globe was pulled down two years later."},
+{t:5,q:"Using 'you' rather than 'thou' to a single person usually signalled what?",a:["Respect or distance","Anger","Affection","Nothing at all"],c:0,n:"Watch for characters switching between the two — the change is almost always meaningful."},
+{t:5,q:"Where was Shakespeare most probably educated?",a:["The King's New School in Stratford","Oxford University","Eton College","He had no schooling"],c:0,n:"No register survives, but as a bailiff's son he would have been entitled to a free place."},
+{t:5,q:"In the world of Shakespeare's printers, what is a 'quarto'?",a:["A small, cheap book of a single play","A play in four acts","A four-sided stage","A verse form"],c:0,n:"Named for the way the printed sheet was folded — into four leaves."},
+{t:5,q:"What is a 'bad quarto' generally thought to be?",a:["A text reconstructed from memory","A play with an unhappy ending","A misprint of the Folio","A play banned by the censor"],c:0,n:"Possibly written down by actors recalling their parts — which is why the texts wander."},
+{t:5,q:"What did the coloured flag flown above the Globe traditionally announce?",a:["The kind of play: black tragedy, white comedy, red history","Tomorrow's weather","That the Queen was present","The price of entry"],c:0,n:"The flag went up in the morning and could be seen from across the river."},
+{t:5,q:"The inscription on Shakespeare's grave in Holy Trinity Church curses anyone who does what?",a:["Moves his bones","Copies his plays","Enters the church at night","Sells his house"],c:0,n:"Graves were often cleared to make room; the curse seems to have worked."},
+{t:5,q:"Which fellow playwright was killed in a Deptford tavern in 1593?",a:["Christopher Marlowe","Ben Jonson","Thomas Nashe","John Webster"],c:0,n:"Marlowe was Shakespeare's most brilliant contemporary, and died at 29."}
+];
+
+/* ---------- prize ladder ---------- */
+const MONEY = [100,200,300,500,1000,2000,4000,8000,16000,32000,64000,125000,250000,500000,1000000];
+const SAFE  = [4,9];               // indexes of £1,000 and £32,000
+const TIER_OF = [1,1,1,2,2,2,3,3,3,4,4,4,5,5,5];
+const FRIEND_ACCURACY = {1:.95,2:.9,3:.8,4:.62,5:.48};
+
+const $ = id => document.getElementById(id);
+const fmt = n => "£" + n.toLocaleString("en-GB");
+const shuffle = arr => { const a=arr.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+
+let game = [];      // 15 prepared questions
+let idx = 0;
+let picked = null;
+let locked = false;
+let removed = [];
+let used = {fifty:false, audience:false, friend:false};
+let history = [];
+
+/* One shuffled deck per tier, dealt from across games. A question cannot come
+   round again until every other question in its tier has been used. When a deck
+   runs low it is reshuffled, with the three just dealt held back so that no
+   question repeats across the join.
+
+   The decks are stored in the browser, so a student who closes the page and
+   comes back tomorrow carries on where the deck left off. Storage is wrapped in
+   try/catch: where it is unavailable the game simply falls back to memory only.
+   Bump STORE_KEY's version number after editing the question pool to clear old
+   decks from students' browsers. */
+const STORE_KEY = "shakespeare-millionaire-decks-v1";
+let DECKS = {};
+
+function loadDecks(){
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(!raw) return;
+    const saved = JSON.parse(raw);
+    for(const tier in saved){
+      // stored as question text, so an edited pool degrades gracefully
+      DECKS[tier] = saved[tier].map(text => POOL.find(q => q.q === text)).filter(Boolean);
+    }
+  }catch(e){ DECKS = {}; }
+}
+
+function saveDecks(){
+  try{
+    const out = {};
+    for(const tier in DECKS) out[tier] = DECKS[tier].map(q => q.q);
+    localStorage.setItem(STORE_KEY, JSON.stringify(out));
+  }catch(e){ /* storage unavailable — memory only */ }
+}
+
+function deal(tier){
+  const all = POOL.filter(q => q.t===tier);
+  if(!DECKS[tier] || DECKS[tier].length < 3) DECKS[tier] = shuffle(all);
+  const hand = DECKS[tier].splice(0,3);
+  if(DECKS[tier].length < 3){
+    DECKS[tier] = shuffle(all.filter(q => !hand.includes(q)));
+  }
+  return hand;
+}
+
+function buildGame(){
+  const chosen = [];
+  for(let tier=1; tier<=5; tier++){
+    deal(tier).forEach(q => chosen.push(q));
+  }
+  saveDecks();
+  return chosen.map(q => {
+    const order = shuffle([0,1,2,3]);
+    return {
+      q:q.q,
+      a:order.map(i => q.a[i]),
+      c:order.indexOf(q.c),
+      n:q.n,
+      t:q.t
+    };
+  });
+}
+
+function startGame(){
+  game = buildGame();
+  idx = 0; picked = null; locked = false; removed = []; history = [];
+  used = {fifty:false, audience:false, friend:false};
+  $("ll50").disabled = false; $("llAudience").disabled = false; $("llFriend").disabled = false;
+  $("start").style.display = "none";
+  $("end").style.display = "none";
+  $("game").style.display = "block";
+  renderQuestion();
+  window.scrollTo({top:0, behavior:"instant"});
+}
+
+function renderQuestion(){
+  const q = game[idx];
+  picked = null; locked = false; removed = [];
+  $("qnum").textContent = `Question ${idx+1} of 15`;
+  $("qtext").textContent = q.q;
+  $("nowPlaying").textContent = `Playing for ${fmt(MONEY[idx])}`;
+  $("note").classList.remove("show");
+  $("confirm").style.display = ""; $("confirm").disabled = true;
+  $("next").style.display = "none";
+  $("walk").style.display = "";
+
+  const box = $("answers"); box.innerHTML = "";
+  ["A","B","C","D"].forEach((letter,i) => {
+    const b = document.createElement("button");
+    b.className = "ans";
+    b.innerHTML = `<span class="letter">${letter}</span><span>${q.a[i]}</span>`;
+    b.addEventListener("click", () => selectAnswer(i));
+    box.appendChild(b);
+  });
+  renderLadder();
+}
+
+function selectAnswer(i){
+  if(locked || removed.includes(i)) return;
+  picked = i;
+  [...$("answers").children].forEach((b,j) => b.classList.toggle("picked", j===i));
+  $("confirm").disabled = false;
+}
+
+function lockIn(){
+  if(picked===null || locked) return;
+  locked = true;
+  $("confirm").disabled = true;
+  $("walk").style.display = "none";
+  ["ll50","llAudience","llFriend"].forEach(id => $(id).disabled = true);
+  const delay = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 200 : 1500;
+  setTimeout(reveal, delay);
+}
+
+function reveal(){
+  const q = game[idx];
+  const btns = [...$("answers").children];
+  btns.forEach((b,j) => {
+    b.classList.remove("picked");
+    b.disabled = true;
+    if(j===q.c) b.classList.add("right");
+    else if(j===picked) b.classList.add("wrong");
+  });
+  $("noteText").textContent = q.n;
+  $("note").classList.add("show");
+  history.push({q:q.q, correct:q.a[q.c], given:q.a[picked], ok:picked===q.c, n:q.n});
+
+  if(picked===q.c){
+    renderLadder(true);
+    if(idx===14){ setTimeout(() => finish(MONEY[14], "won"), 900); return; }
+    $("confirm").style.display = "none";
+    $("next").style.display = "";
+    $("next").focus();
+  } else {
+    setTimeout(() => finish(safetyNet(), "lost"), 1400);
+  }
+}
+
+function safetyNet(){
+  let won = 0;
+  SAFE.forEach(s => { if(idx > s) won = MONEY[s]; });
+  return won;
+}
+
+function nextQuestion(){
+  idx++;
+  ["ll50","llAudience","llFriend"].forEach(id => {
+    const key = id==="ll50" ? "fifty" : id==="llAudience" ? "audience" : "friend";
+    $(id).disabled = used[key];
+  });
+  renderQuestion();
+}
+
+function walkAway(){
+  if(locked) return;
+  finish(idx===0 ? 0 : MONEY[idx-1], "walked");
+}
+
+function finish(amount, how){
+  $("game").style.display = "none";
+  $("end").style.display = "block";
+  $("endAmount").textContent = fmt(amount);
+  const words = {
+    won:["Exeunt omnes","You answered all fifteen. Shakespeare himself never earned this much from a play."],
+    lost:["The wrong answer","Wrong at question " + (idx+1) + ". You keep what the safety nets protected."],
+    walked:["You walked away","Discretion is the better part of valour — you leave with the money in hand."]
+  }[how];
+  $("endEyebrow").textContent = words[0];
+  $("endVerdict").textContent = words[1];
+
+  const list = $("reviewList"); list.innerHTML = "";
+  history.forEach((h,i) => {
+    const d = document.createElement("div");
+    d.className = "rev";
+    d.innerHTML =
+      `<div class="q">${i+1}. ${h.q}</div>
+       <div class="a"><span class="mark ${h.ok?"ok":"no"}">${h.ok?"Correct":"You said "+h.given+" —"}</span>${h.correct}</div>
+       <div class="n">${h.n}</div>`;
+    list.appendChild(d);
+  });
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function renderLadder(justWon){
+  const box = $("ladderSteps"); box.innerHTML = "";
+  for(let i=14; i>=0; i--){
+    const d = document.createElement("div");
+    let cls = "step";
+    if(SAFE.includes(i)) cls += " safe";
+    if(i < idx || (justWon && i===idx)) cls += " done";
+    if(i===idx && !justWon) cls += " here";
+    d.className = cls;
+    d.innerHTML = `<span class="lv">${i+1}</span><span>${fmt(MONEY[i])}</span>`;
+    box.appendChild(d);
+  }
+}
+
+/* ---------- lifelines ---------- */
+function openModal(title, html){
+  $("modalTitle").textContent = title;
+  $("modalBody").innerHTML = html;
+  $("modal").classList.add("open");
+  $("modalClose").focus();
+}
+
+function fiftyFifty(){
+  if(used.fifty || locked) return;
+  used.fifty = true; $("ll50").disabled = true;
+  const q = game[idx];
+  const wrong = shuffle([0,1,2,3].filter(i => i!==q.c)).slice(0,2);
+  removed = wrong;
+  [...$("answers").children].forEach((b,j) => {
+    if(wrong.includes(j)){ b.classList.add("gone"); b.disabled = true; if(picked===j){picked=null; b.classList.remove("picked"); $("confirm").disabled=true;} }
+  });
+}
+
+function askTheClass(){
+  if(used.audience || locked) return;
+  used.audience = true; $("llAudience").disabled = true;
+  const q = game[idx];
+  const conf = {1:62,2:55,3:44,4:34,5:28}[q.t];
+  let vals = [0,0,0,0];
+  const live = [0,1,2,3].filter(i => !removed.includes(i));
+  let pool = 100;
+  const correctShare = conf + Math.floor(Math.random()*16);
+  vals[q.c] = Math.min(correctShare, 92); pool -= vals[q.c];
+  const others = live.filter(i => i!==q.c);
+  others.forEach((i,k) => {
+    const share = k===others.length-1 ? pool : Math.floor(Math.random()*(pool+1));
+    vals[i] = share; pool -= share;
+  });
+  const letters = "ABCD";
+  const html = [0,1,2,3].map(i => removed.includes(i) ? "" :
+    `<div class="bar"><span class="k">${letters[i]}</span>
+      <span class="track"><span class="fill" style="width:${vals[i]}%"></span></span>
+      <span class="v">${vals[i]}%</span></div>`).join("");
+  openModal("The class votes", html + `<p style="font-size:14px;color:var(--parchment-dim);margin-top:14px">The harder the question, the less the class agrees.</p>`);
+}
+
+function phoneAFriend(){
+  if(used.friend || locked) return;
+  used.friend = true; $("llFriend").disabled = true;
+  const q = game[idx];
+  const live = [0,1,2,3].filter(i => !removed.includes(i));
+  const right = Math.random() < FRIEND_ACCURACY[q.t];
+  const guess = right ? q.c : shuffle(live.filter(i => i!==q.c))[0] ?? q.c;
+  const letter = "ABCD"[guess];
+  const sure = [
+    `Oh, that one's easy — it's ${letter}. Certain.`,
+    `${letter}. I'd put money on it.`,
+    `I'm fairly confident it's ${letter}.`
+  ];
+  const shaky = [
+    `Hmm. I want to say ${letter}, but don't hold me to it.`,
+    `Honestly? No idea. If you're forcing me — ${letter}.`,
+    `${letter}, I think. Maybe. It rings a faint bell.`
+  ];
+  const line = (q.t <= 2 ? sure : q.t === 3 ? (Math.random()<.5?sure:shaky) : shaky);
+  openModal("Your friend says", `<p class="friend">“${line[Math.floor(Math.random()*line.length)]}”</p>`);
+}
+
+/* ---------- wiring ---------- */
+loadDecks();
+$("begin").addEventListener("click", startGame);
+$("again").addEventListener("click", startGame);
+$("confirm").addEventListener("click", lockIn);
+$("next").addEventListener("click", nextQuestion);
+$("walk").addEventListener("click", walkAway);
+$("ll50").addEventListener("click", fiftyFifty);
+$("llAudience").addEventListener("click", askTheClass);
+$("llFriend").addEventListener("click", phoneAFriend);
+$("modalClose").addEventListener("click", () => $("modal").classList.remove("open"));
+$("modal").addEventListener("click", e => { if(e.target === $("modal")) $("modal").classList.remove("open"); });
+document.addEventListener("keydown", e => { if(e.key === "Escape") $("modal").classList.remove("open"); });
+$("ladderToggle").addEventListener("click", () => {
+  const l = $("ladder"); const open = l.classList.toggle("open");
+  $("ladderToggle").textContent = open ? "Hide prize ladder" : "Show prize ladder";
+});
+</script>
+</body>
+</html>
