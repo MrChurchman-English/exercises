@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insight Upper-Intermediate, Unit 1 — ten nouns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F5F4;
+  --card:#FFFFFF;
+  --ink:#14212B;
+  --muted:#66777F;
+  --rule:#D7DEDD;
+  --petrol:#14615E;
+  --petrol-soft:#E2EDEB;
+  --amber:#9C6B0B;
+  --amber-soft:#F7EEDA;
+  --rust:#A03A2B;
+  --rust-soft:#F7E6E2;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.55;
+  padding-bottom:6.5rem;
+}
+.wrap{max-width:60rem;margin:0 auto;padding:2.5rem 1.25rem 0}
+
+/* ---------- masthead ---------- */
+.eyebrow{
+  font-family:var(--mono);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--petrol);
+  margin:0 0 1rem;
+}
+h1{
+  font-family:var(--display);
+  font-weight:800;
+  font-size:clamp(2rem,6vw,3.4rem);
+  line-height:1.02;
+  letter-spacing:-.02em;
+  margin:0 0 .6rem;
+  max-width:20ch;
+}
+.standfirst{
+  font-size:1.05rem;
+  color:var(--muted);
+  margin:0 0 2.5rem;
+  max-width:52ch;
+}
+.rule{border:0;border-top:1px solid var(--rule);margin:2.5rem 0}
+
+/* ---------- section headers ---------- */
+.task{margin:0 0 2rem}
+.task-no{
+  font-family:var(--mono);
+  font-size:.72rem;
+  letter-spacing:.14em;
+  color:var(--muted);
+  text-transform:uppercase;
+}
+h2{
+  font-family:var(--display);
+  font-weight:600;
+  font-size:clamp(1.3rem,3.2vw,1.75rem);
+  letter-spacing:-.01em;
+  margin:.15rem 0 .5rem;
+}
+.instruction{margin:0;color:var(--muted);max-width:56ch}
+
+/* ---------- exercise 1 ---------- */
+.match{display:grid;grid-template-columns:minmax(0,22rem) minmax(0,1fr);gap:2.5rem;align-items:start}
+@media (max-width:760px){.match{grid-template-columns:1fr;gap:1.75rem}}
+
+.col-label{
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--muted);
+  padding-bottom:.5rem;border-bottom:1px solid var(--rule);margin-bottom:.75rem;
+}
+.stack{display:flex;flex-direction:column;gap:.4rem}
+
+.word,.def{
+  font:inherit;text-align:left;width:100%;
+  background:var(--card);
+  border:1px solid var(--rule);
+  border-radius:2px;
+  padding:.6rem .75rem;
+  cursor:pointer;
+  display:flex;gap:.7rem;align-items:baseline;
+  transition:border-color .12s,background .12s;
+}
+.word:hover,.def:hover{border-color:var(--petrol)}
+.word:focus-visible,.def:focus-visible{outline:2px solid var(--petrol);outline-offset:2px}
+
+.word .num{font-family:var(--mono);font-size:.78rem;color:var(--muted);min-width:1.4rem}
+.word .term{font-family:var(--display);font-weight:600;font-size:1.05rem;flex:1}
+.word .chip{
+  font-family:var(--mono);font-size:.78rem;font-weight:600;
+  background:var(--petrol-soft);color:var(--petrol);
+  border-radius:2px;padding:.1rem .45rem;min-width:1.6rem;text-align:center;
+}
+.word .chip.empty{background:transparent;color:var(--rule);border:1px dashed var(--rule)}
+.word[aria-pressed="true"]{border-color:var(--petrol);background:var(--petrol-soft)}
+
+.def .letter{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--petrol);min-width:1.2rem}
+.def.used{opacity:.42}
+
+.word.ok{border-color:var(--petrol);background:var(--petrol-soft)}
+.word.no{border-color:var(--rust);background:var(--rust-soft)}
+.word.ok .chip{background:var(--petrol);color:#fff}
+.word.no .chip{background:var(--rust);color:#fff}
+
+.pair-status{
+  font-family:var(--mono);font-size:.75rem;color:var(--muted);
+  min-height:1.4rem;margin:.9rem 0 0;
+}
+.pair-status strong{font-family:var(--display);color:var(--ink)}
+
+/* ---------- exercise 2 ---------- */
+.bank{
+  display:flex;flex-wrap:wrap;gap:.4rem;
+  margin:1.25rem 0 2rem;padding:1rem;
+  background:var(--card);border:1px solid var(--rule);border-radius:2px;
+}
+.bank button{
+  font-family:var(--display);font-size:.95rem;font-weight:600;
+  background:var(--paper);border:1px solid var(--rule);border-radius:2px;
+  padding:.3rem .6rem;cursor:pointer;color:var(--ink);
+}
+.bank button:hover{border-color:var(--petrol)}
+.bank button:focus-visible{outline:2px solid var(--petrol);outline-offset:2px}
+.bank button.spent{opacity:.35;text-decoration:line-through}
+
+ol.gaps{list-style:none;counter-reset:g;margin:0;padding:0}
+ol.gaps li{counter-increment:g;margin:0 0 1.4rem;padding-left:2.5rem;position:relative}
+ol.gaps li::before{
+  content:counter(g);position:absolute;left:0;top:.15rem;
+  font-family:var(--mono);font-size:.78rem;color:var(--muted);
+}
+.gap{
+  font-family:var(--display);font-weight:600;font-size:1rem;
+  width:16ch;
+  border:0;border-bottom:1.5px solid var(--ink);
+  background:transparent;color:var(--ink);
+  padding:.1rem .2rem;text-align:center;
+}
+.gap:focus{outline:0;background:var(--petrol-soft);border-bottom-color:var(--petrol)}
+.gap.ok{color:var(--petrol);border-bottom-color:var(--petrol)}
+.gap.near{color:var(--amber);border-bottom-color:var(--amber)}
+.gap.no{color:var(--rust);border-bottom-color:var(--rust)}
+.note{
+  margin:.5rem 0 0;font-size:.92rem;line-height:1.45;
+  padding:.55rem .75rem;border-left:2px solid;border-radius:0 2px 2px 0;
+}
+.note.near{color:var(--amber);background:var(--amber-soft);border-color:var(--amber)}
+.note.no{color:var(--rust);background:var(--rust-soft);border-color:var(--rust)}
+.note[hidden]{display:none}
+
+/* ---------- footer + toolbar ---------- */
+footer.made{
+  margin:3.5rem 0 2rem;padding-top:1.25rem;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:.75rem;line-height:1.7;color:var(--muted);
+  max-width:64ch;
+}
+footer.made h3{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;margin:0 0 .5rem;color:var(--muted)}
+
+.toolbar{
+  position:fixed;left:0;right:0;bottom:0;
+  background:var(--card);border-top:1px solid var(--rule);
+  padding:.75rem 1.25rem;
+  display:flex;gap:.75rem;align-items:center;justify-content:center;
+  flex-wrap:wrap;
+}
+.score{font-family:var(--mono);font-size:.85rem;color:var(--muted);margin-right:auto}
+.score b{color:var(--ink);font-size:1.05rem}
+@media (max-width:620px){.score{margin-right:0;width:100%;text-align:center}.toolbar{justify-content:space-between}}
+.btn{
+  font-family:var(--display);font-weight:600;font-size:.95rem;
+  padding:.55rem 1.1rem;border-radius:2px;cursor:pointer;border:1px solid var(--ink);
+  background:transparent;color:var(--ink);
+}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn:focus-visible{outline:2px solid var(--petrol);outline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Vocabulary · Insight Upper-Intermediate, Unit 1</p>
+  <h1>What it takes, and what gets in the way</h1>
+  <p class="standfirst">Ten nouns. Three of them are close cousins — take your time over those.</p>
+
+  <hr class="rule">
+
+  <section class="task">
+    <span class="task-no">Exercise 1</span>
+    <h2>Match the word to its meaning</h2>
+    <p class="instruction">Tap a word, then tap its definition. Tap the letter again to undo it.</p>
+  </section>
+
+  <div class="match">
+    <div>
+      <p class="col-label">The words</p>
+      <div class="stack" id="words"></div>
+      <p class="pair-status" id="status"></p>
+    </div>
+    <div>
+      <p class="col-label">The meanings</p>
+      <div class="stack" id="defs"></div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <section class="task">
+    <span class="task-no">Exercise 2</span>
+    <h2>Put the words into context</h2>
+    <p class="instruction">Complete each sentence with one word from the box. Use each word once. You can type in the gap or tap a word.</p>
+  </section>
+
+  <div class="bank" id="bank"></div>
+  <ol class="gaps" id="gaps"></ol>
+
+  <footer class="made">
+    <h3>How this exercise was made</h3>
+    <p>Mr Churchman and Claude (an AI assistant made by Anthropic) wrote this together. The ten words come from Insight Upper-Intermediate, Unit 1 — I chose them. Claude wrote the sentences around them and built this page; I set the task, changed what needed changing, and checked every answer myself. If a gap marks your answer wrong and you think you are right, tell me — that is my mistake, not the computer's.</p>
+  </footer>
+</div>
+
+<div class="toolbar">
+  <p class="score" id="score"><b>0</b>/20 correct</p>
+  <button class="btn" id="reset">Start again</button>
+  <button class="btn primary" id="check">Check answers</button>
+</div>
+
+<script>
+const DEFS = [
+  {l:'A', t:'a strong feeling of sympathy for people who are suffering, together with a wish to help them'},
+  {l:'B', t:'the feeling that good things are going to happen in the future'},
+  {l:'C', t:'the quality of concentrating on one aim and paying little attention to anything else'},
+  {l:'D', t:'an advantage, or a helpful result that something brings you'},
+  {l:'E', t:'the ability to think of clever new ways of solving a problem'},
+  {l:'F', t:'the sad feeling you have when something you hoped for does not happen'},
+  {l:'G', t:'the willingness to accept people, opinions or behaviour that you do not agree with'},
+  {l:'H', t:'the quality of continuing to try even when something is difficult'},
+  {l:'I', t:'the willingness to give your time and energy to something you believe in'},
+  {l:'J', t:'something that blocks your way or makes it hard to achieve what you want'}
+];
+
+const WORDS = [
+  {w:'ingenuity', l:'E'},
+  {w:'single-mindedness', l:'C'},
+  {w:'tolerance', l:'G'},
+  {w:'compassion', l:'A'},
+  {w:'commitment', l:'I'},
+  {w:'determination', l:'H'},
+  {w:'optimism', l:'B'},
+  {w:'obstacle', l:'J'},
+  {w:'disappointment', l:'F'},
+  {w:'benefit', l:'D'}
+];
+
+const BANK = ['benefit','commitment','compassion','determination','disappointment',
+              'ingenuity','obstacle','optimism','single-mindedness','tolerance'];
+
+const SENTENCES = [
+  {before:'The engineers showed great ', after:' in repairing the bridge with almost no materials.', a:'ingenuity', near:{}},
+  {before:"Mia's ", after:' impressed her coach, but it cost her most of her friends: she thought about nothing except the race.', a:'single-mindedness',
+    near:{
+      commitment:'Commitment is about the time and energy you give to something. This sentence is about thinking of one thing only, and letting everything else go.',
+      determination:'Determination is about not giving up when things are hard. Nothing here is hard — she has simply shut everything else out.'
+    }},
+  {before:'The city has long been known for its ', after:' of different religions and ways of life.', a:'tolerance', near:{}},
+  {before:'A good nurse needs ', after:' as much as she needs technical skill.', a:'compassion', near:{}},
+  {before:'Playing in the orchestra is a serious ', after:': three rehearsals a week, plus concerts at the weekend.', a:'commitment',
+    near:{
+      determination:'Determination is about carrying on when something is difficult. This sentence is about the time and energy you agree to give.',
+      'single-mindedness':'Single-mindedness means ignoring everything else. She still has a life outside the orchestra — she has just promised it her evenings.'
+    }},
+  {before:'The doctors told Lena she would never walk again. Two years later, through sheer ', after:', she proved them wrong.', a:'determination',
+    near:{
+      commitment:"Commitment isn't wrong here, but the sentence is about not giving up when something is hard. There is a better word.",
+      'single-mindedness':'Single-mindedness is about ignoring everything except one aim. Lena\u2019s problem was that walking was difficult, not that she was distracted.'
+    }},
+  {before:'Even after his third rejection, he was convinced the next interview would be the one. I admire that kind of ', after:'.', a:'optimism',
+    near:{
+      determination:'Determination would fit if the sentence were about how hard he kept trying. It is about what he believes will happen next.'
+    }},
+  {before:'The biggest ', after:' to the project is the lack of money.', a:'obstacle', near:{}},
+  {before:'Losing the final on penalties was a bitter ', after:' for the whole team.', a:'disappointment', near:{}},
+  {before:'One ', after:' of learning a second language is that it may protect the brain in old age.', a:'benefit', near:{}}
+];
+
+/* ---------- exercise 1 ---------- */
+const pairs = {};            // word index -> letter
+let selected = null;
+const wordsEl = document.getElementById('words');
+const defsEl = document.getElementById('defs');
+const statusEl = document.getElementById('status');
+
+WORDS.forEach((item, i) => {
+  const b = document.createElement('button');
+  b.className = 'word';
+  b.type = 'button';
+  b.setAttribute('aria-pressed','false');
+  b.innerHTML = `<span class="num">${i+1}</span><span class="term">${item.w}</span><span class="chip empty">—</span>`;
+  b.addEventListener('click', () => selectWord(i));
+  wordsEl.appendChild(b);
+});
+
+DEFS.forEach(d => {
+  const b = document.createElement('button');
+  b.className = 'def';
+  b.type = 'button';
+  b.dataset.letter = d.l;
+  b.innerHTML = `<span class="letter">${d.l}</span><span>${d.t}</span>`;
+  b.addEventListener('click', () => assign(d.l));
+  defsEl.appendChild(b);
+});
+
+function selectWord(i){
+  if (pairs[i]) { delete pairs[i]; selected = i; }
+  else selected = (selected === i) ? null : i;
+  render1();
+}
+
+function assign(letter){
+  if (selected === null){
+    statusEl.innerHTML = 'Tap a word on the left first.';
+    return;
+  }
+  for (const k in pairs) if (pairs[k] === letter) delete pairs[k];
+  pairs[selected] = letter;
+  selected = null;
+  render1();
+}
+
+function render1(){
+  [...wordsEl.children].forEach((b,i) => {
+    b.classList.remove('ok','no');
+    b.setAttribute('aria-pressed', selected === i ? 'true' : 'false');
+    const chip = b.querySelector('.chip');
+    chip.textContent = pairs[i] || '—';
+    chip.classList.toggle('empty', !pairs[i]);
+  });
+  const taken = Object.values(pairs);
+  [...defsEl.children].forEach(b => b.classList.toggle('used', taken.includes(b.dataset.letter)));
+  statusEl.innerHTML = selected === null
+    ? ''
+    : `Selected <strong>${WORDS[selected].w}</strong> — now tap its meaning.`;
+}
+
+/* ---------- exercise 2 ---------- */
+const gapsEl = document.getElementById('gaps');
+const bankEl = document.getElementById('bank');
+let lastGap = null;
+
+SENTENCES.forEach((s,i) => {
+  const li = document.createElement('li');
+  const input = document.createElement('input');
+  input.className = 'gap';
+  input.type = 'text';
+  input.autocomplete = 'off';
+  input.autocapitalize = 'off';
+  input.spellcheck = false;
+  input.setAttribute('aria-label', 'Gap ' + (i+1));
+  input.addEventListener('focus', () => lastGap = input);
+  input.addEventListener('input', () => {
+    input.classList.remove('ok','near','no');
+    note.hidden = true;
+    renderBank();
+  });
+  const note = document.createElement('p');
+  note.className = 'note';
+  note.hidden = true;
+  li.append(document.createTextNode(s.before), input, document.createTextNode(s.after), note);
+  gapsEl.appendChild(li);
+  s._input = input; s._note = note;
+});
+
+BANK.forEach(w => {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.textContent = w;
+  b.dataset.word = w;
+  b.addEventListener('click', () => {
+    let target = (lastGap && !lastGap.value.trim()) ? lastGap : SENTENCES.map(s=>s._input).find(i => !i.value.trim());
+    if (!target) return;
+    target.value = w;
+    target.classList.remove('ok','near','no');
+    target.focus();
+    renderBank();
+  });
+  bankEl.appendChild(b);
+});
+
+function renderBank(){
+  const used = SENTENCES.map(s => s._input.value.trim().toLowerCase());
+  [...bankEl.children].forEach(b => b.classList.toggle('spent', used.includes(b.dataset.word)));
+}
+
+/* ---------- checking ---------- */
+function normalise(v){
+  return v.trim().toLowerCase().replace(/[.,;:!?]$/,'').replace(/\s+/g,' ').replace(/[\u2010-\u2015]/g,'-');
+}
+
+document.getElementById('check').addEventListener('click', () => {
+  let score = 0;
+
+  [...wordsEl.children].forEach((b,i) => {
+    b.classList.remove('ok','no');
+    if (!pairs[i]) return;
+    if (pairs[i] === WORDS[i].l){ b.classList.add('ok'); score++; }
+    else b.classList.add('no');
+  });
+
+  SENTENCES.forEach(s => {
+    const v = normalise(s._input.value);
+    s._input.classList.remove('ok','near','no');
+    s._note.hidden = true;
+    s._note.className = 'note';
+    if (!v) return;
+    if (v === s.a){ s._input.classList.add('ok'); score++; return; }
+    const nearKey = Object.keys(s.near).find(k => k === v);
+    if (nearKey){
+      s._input.classList.add('near');
+      s._note.classList.add('near');
+      s._note.textContent = s.near[nearKey];
+      s._note.hidden = false;
+    } else {
+      s._input.classList.add('no');
+      s._note.classList.add('no');
+      s._note.textContent = 'Not this one. Read the whole sentence again — what is it really about?';
+      s._note.hidden = false;
+    }
+  });
+
+  document.getElementById('score').innerHTML = `<b>${score}</b>/20 correct`;
+});
+
+document.getElementById('reset').addEventListener('click', () => {
+  for (const k in pairs) delete pairs[k];
+  selected = null;
+  render1();
+  SENTENCES.forEach(s => {
+    s._input.value = '';
+    s._input.classList.remove('ok','near','no');
+    s._note.hidden = true;
+  });
+  renderBank();
+  document.getElementById('score').innerHTML = '<b>0</b>/20 correct';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+render1();
+renderBank();
+</script>
+</body>
+</html>
