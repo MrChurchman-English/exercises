@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Irregular Verbs — Tug of War</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Space+Grotesk:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#140F30; --cab:#241C52; --cab-2:#1A1440; --edge:#3E3184;
+  --cream:#FFF3DA; --dim:#A296D8;
+  --blue:#3FC9F5; --pink:#FF5E7D; --gold:#FFC94A;
+  --rope:#C99456; --rope-hi:#E8C08A; --rope-lo:#7E5228;
+  --disp:'Bungee','Impact','Haettenschweiler',system-ui,sans-serif;
+  --body:'Space Grotesk',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'DM Mono',ui-monospace,Menlo,monospace;
+}
+*{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;padding:clamp(8px,1.6vw,22px);
+  min-height:100%;display:flex;align-items:center;justify-content:center;
+  background:
+    radial-gradient(1100px 620px at 50% -10%,#3B2C7E 0%,rgba(59,44,126,0) 62%),
+    radial-gradient(700px 500px at 50% 110%,#2B1F5F 0%,rgba(43,31,95,0) 60%),
+    var(--void);
+  color:var(--cream);font-family:var(--body);
+}
+.cab{
+  width:100%;max-width:1080px;border-radius:26px;padding:clamp(9px,1.3vw,15px);
+  background:linear-gradient(180deg,#332A6E 0%,var(--cab) 22%,var(--cab-2) 100%);
+  border:2px solid var(--edge);
+  box-shadow:0 40px 90px -30px #000, 0 0 0 1px rgba(255,255,255,.06) inset, 0 2px 0 rgba(255,255,255,.14) inset;
+  display:flex;flex-direction:column;gap:clamp(8px,1.2vw,14px);
+}
+.marquee{position:relative;border-radius:16px;padding:clamp(11px,1.9vw,19px) 58px;text-align:center;
+  background:linear-gradient(180deg,#4A3A9C,#2E2470);border:1px solid #5C4AB8;
+  box-shadow:0 6px 20px -8px #000 inset;}
+.marquee h1{margin:0;font-family:var(--disp);line-height:1;letter-spacing:.02em;
+  font-size:clamp(17px,3.5vw,34px);color:var(--gold);
+  text-shadow:0 0 22px rgba(255,201,74,.55),0 3px 0 #6A4B00;}
+.marquee .sub{font-family:var(--mono);font-size:clamp(8.5px,1.15vw,11px);letter-spacing:.26em;
+  text-transform:uppercase;color:#C9B8FF;margin-top:6px;}
+.bulbs{position:absolute;left:14px;right:14px;display:flex;justify-content:space-between;pointer-events:none;}
+.bulbs.top{top:8px;} .bulbs.bot{bottom:8px;}
+.bulb{width:6px;height:6px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 7px 1px rgba(255,201,74,.85);animation:chase 1.6s linear infinite;}
+@keyframes chase{0%,55%{opacity:1}56%,100%{opacity:.2}}
+.mute,.help{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:38px;border-radius:11px;
+  border:1px solid #6A57C9;background:#241C52;cursor:pointer;line-height:1;}
+.mute{right:12px;color:var(--gold);font-size:16px;}
+.help{left:12px;color:#C9B8FF;font-family:var(--disp);font-size:15px;}
+.mute:hover,.help:hover{background:#2E2470;}
+
+.screen{position:relative;border-radius:16px;background:linear-gradient(180deg,#0E0A26,#150F33);
+  border:1px solid #372C7A;box-shadow:0 0 40px -8px rgba(0,0,0,.9) inset;
+  padding:clamp(11px,1.9vw,20px);display:flex;flex-direction:column;gap:clamp(9px,1.4vw,15px);overflow:hidden;}
+.screen::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:16px;
+  background:repeating-linear-gradient(180deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px);}
+
+.board{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;}
+.side{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.side.r{align-items:flex-end;}
+.side .nm{font-family:var(--disp);font-size:clamp(14px,2.6vw,26px);line-height:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
+.side.l .nm{color:var(--blue);text-shadow:0 0 18px rgba(63,201,245,.45);}
+.side.r .nm{color:var(--pink);text-shadow:0 0 18px rgba(255,94,125,.45);}
+.pips{display:flex;gap:4px;}
+.side.r .pips{flex-direction:row-reverse;}
+.pip{width:clamp(11px,1.7vw,17px);height:6px;border-radius:3px;background:#2A2160;transition:.25s;}
+.side.l .pip.on{background:var(--blue);box-shadow:0 0 9px var(--blue);}
+.side.r .pip.on{background:var(--pink);box-shadow:0 0 9px var(--pink);}
+.side .st{font-family:var(--mono);font-size:10px;letter-spacing:.1em;color:var(--dim);}
+.lead{font-family:var(--mono);font-size:clamp(9px,1.25vw,11.5px);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--dim);text-align:center;padding:0 6px;}
+
+.field{position:relative;height:clamp(96px,15vh,140px);border-radius:12px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(255,255,255,.035),rgba(0,0,0,.25));border:1px solid #2E2470;}
+.tape{position:absolute;top:0;bottom:0;width:9px;opacity:.9;}
+.tape.l{left:19%;background:repeating-linear-gradient(45deg,var(--blue) 0 6px,#0E0A26 6px 12px);}
+.tape.r{right:19%;background:repeating-linear-gradient(-45deg,var(--pink) 0 6px,#0E0A26 6px 12px);}
+.centre{position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,243,218,.28);}
+.centre::before{content:"CENTRE";position:absolute;top:5px;left:50%;transform:translateX(-50%);
+  font-family:var(--mono);font-size:8px;letter-spacing:.2em;color:var(--dim);white-space:nowrap;}
+.ropewrap{position:absolute;top:52%;left:50%;width:280%;transform:translate(-50%,-50%);will-change:transform;
+  transition:transform .5s cubic-bezier(.18,1.35,.4,1);}
+.rope{height:clamp(19px,2.6vh,25px);border-radius:4px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.45) 0 14%,rgba(255,255,255,0) 42%,rgba(0,0,0,.4) 100%),
+    repeating-linear-gradient(70deg,
+      var(--rope-lo) 0 4px, var(--rope) 4px 12px, var(--rope-hi) 12px 16px,
+      var(--rope) 16px 24px, var(--rope-lo) 24px 28px);
+  box-shadow:0 9px 20px -6px #000;}
+.flag{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:15px;height:clamp(40px,6vh,54px);
+  background:linear-gradient(180deg,#FF3B5C,#B01030);border-radius:3px;
+  box-shadow:0 0 16px rgba(255,59,92,.7),0 4px 10px -3px #000;}
+.flag::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);
+  border-left:9px solid transparent;border-right:9px solid transparent;border-top:11px solid #B01030;}
+.field.jolt .ropewrap{animation:jolt .32s ease-out;}
+@keyframes jolt{0%{filter:brightness(1)}25%{filter:brightness(1.5)}100%{filter:brightness(1)}}
+.spark{position:absolute;width:5px;height:5px;border-radius:50%;pointer-events:none;}
+
+.stage{display:flex;flex-direction:column;gap:clamp(7px,1.1vw,12px);align-items:center;text-align:center;
+  min-height:clamp(150px,22vh,206px);justify-content:center;}
+.tasklabel{font-family:var(--mono);font-size:clamp(9px,1.25vw,11.5px);letter-spacing:.26em;
+  text-transform:uppercase;color:var(--gold);}
+.prompt{font-family:var(--disp);line-height:1.06;font-size:clamp(24px,6.4vw,60px);
+  color:var(--cream);text-shadow:0 0 30px rgba(255,243,218,.25);word-break:break-word;}
+.prompt.long{font-family:var(--body);font-weight:700;font-size:clamp(20px,4.4vw,42px);}
+.prompt .blank{color:var(--gold);letter-spacing:-.03em;}
+.cue{font-family:var(--mono);font-size:clamp(11px,1.55vw,14px);color:var(--dim);}
+.row{display:flex;gap:9px;width:100%;max-width:620px;}
+#answer{flex:1;min-width:0;font-family:var(--mono);font-size:clamp(15px,2.3vw,22px);
+  background:#0A0720;border:2px solid #382C80;border-radius:11px;padding:11px 14px;color:var(--cream);
+  text-align:center;letter-spacing:.03em;}
+#answer::placeholder{color:#5B4EA0;letter-spacing:.06em;}
+#answer:disabled{opacity:.55;}
+#answer.p1{border-color:var(--blue);box-shadow:0 0 22px -4px var(--blue);}
+#answer.p2{border-color:var(--pink);box-shadow:0 0 22px -4px var(--pink);}
+#submit{font-family:var(--disp);font-size:clamp(12px,1.7vw,17px);padding:0 clamp(14px,2.4vw,26px);
+  border:0;border-radius:11px;cursor:pointer;color:#2A1A00;background:var(--gold);box-shadow:0 4px 0 #A87B10;}
+#submit:active{transform:translateY(3px);box-shadow:0 1px 0 #A87B10;}
+#submit:disabled{opacity:.3;box-shadow:0 4px 0 #4A3A08;cursor:default;}
+.clock{width:100%;max-width:620px;height:6px;border-radius:3px;background:#241C52;overflow:hidden;}
+.clock i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),#FF9B3D);width:100%;}
+.clock.low i{background:linear-gradient(90deg,var(--pink),#FF3B5C);}
+.clock.hidden{visibility:hidden;}
+.grabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:620px;}
+.grab{font-family:var(--disp);font-size:clamp(12px,1.9vw,19px);padding:13px 6px;border:0;border-radius:12px;
+  cursor:pointer;color:#08061A;line-height:1.1;}
+.grab.a{background:var(--blue);box-shadow:0 4px 0 #1A7C9B;}
+.grab.b{background:var(--pink);box-shadow:0 4px 0 #A32B44;}
+.grab:active:not(:disabled){transform:translateY(3px);box-shadow:none;}
+.grab:disabled{opacity:.28;cursor:default;}
+.grab small{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;opacity:.85;margin-top:3px;}
+.status{font-family:var(--mono);font-size:clamp(11px,1.55vw,13.5px);line-height:1.65;min-height:3.3em;
+  color:var(--cream);max-width:70ch;}
+.status .good{color:#5BE8A8;}
+.status .bad{color:var(--pink);}
+.status .forms{color:var(--dim);font-size:.92em;}
+.status b{color:var(--gold);font-weight:500;}
+
+.setup{display:flex;flex-direction:column;gap:clamp(11px,1.8vw,18px);align-items:center;text-align:center;
+  padding:clamp(6px,1.4vw,16px) 0;}
+.namegrid{display:grid;grid-template-columns:1fr auto 1fr;gap:clamp(9px,1.8vw,20px);align-items:end;width:100%;max-width:660px;}
+.nf{display:flex;flex-direction:column;gap:6px;text-align:left;}
+.nf label{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);}
+.nf input{font-family:var(--disp);font-size:clamp(14px,2.4vw,22px);background:#0A0720;color:var(--cream);
+  border:2px solid #382C80;border-radius:11px;padding:10px 12px;width:100%;}
+.nf.a input{border-bottom-color:var(--blue);}
+.nf.b input{border-bottom-color:var(--pink);}
+.vs{font-family:var(--disp);color:var(--gold);font-size:clamp(14px,2.4vw,22px);padding-bottom:11px;}
+.opts{display:flex;gap:clamp(14px,3vw,34px);flex-wrap:wrap;justify-content:center;}
+.opt{display:flex;flex-direction:column;gap:7px;align-items:center;}
+.opt > span{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);}
+.seg{display:flex;background:#0A0720;border:2px solid #382C80;border-radius:11px;overflow:hidden;}
+.seg button{font-family:var(--mono);font-size:11.5px;background:transparent;border:0;padding:9px 13px;
+  cursor:pointer;color:var(--dim);}
+.seg button[aria-pressed="true"]{background:var(--gold);color:#2A1A00;}
+.go{font-family:var(--disp);font-size:clamp(15px,2.8vw,26px);border:0;border-radius:14px;cursor:pointer;
+  padding:14px clamp(24px,5vw,54px);color:#2A1A00;background:linear-gradient(180deg,#FFD874,var(--gold));
+  box-shadow:0 6px 0 #A87B10,0 0 34px -6px rgba(255,201,74,.7);}
+.go:active{transform:translateY(4px);box-shadow:0 2px 0 #A87B10;}
+.hint{font-family:var(--mono);font-size:clamp(10px,1.4vw,12px);color:var(--dim);line-height:1.8;max-width:62ch;}
+kbd{font-family:var(--mono);background:#382C80;color:var(--cream);border-radius:4px;padding:2px 7px;font-size:.94em;}
+.hide{display:none !important;}
+
+.ov{position:fixed;inset:0;background:rgba(10,7,32,.9);display:none;align-items:center;justify-content:center;
+  padding:18px;z-index:50;backdrop-filter:blur(3px);}
+.ov.on{display:flex;}
+.sheet{width:100%;max-width:600px;max-height:88vh;overflow:auto;border-radius:20px;padding:clamp(18px,3vw,32px);
+  background:linear-gradient(180deg,#2A2168,#191340);border:1px solid var(--edge);box-shadow:0 40px 90px -30px #000;}
+.sheet h2{font-family:var(--disp);font-size:clamp(21px,4.4vw,36px);margin:0 0 10px;color:var(--gold);line-height:1.05;}
+.sheet h3{font-family:var(--mono);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);margin:20px 0 7px;}
+.sheet p,.sheet li{font-size:14.5px;line-height:1.7;color:var(--cream);}
+.sheet ul{padding-left:19px;margin:0;}
+.sheet .go{margin-top:22px;width:100%;}
+.missed{font-family:var(--mono);font-size:12.5px;line-height:1.95;color:var(--cream);}
+.missed em{color:var(--dim);font-style:normal;}
+
+.note{font-family:var(--mono);font-size:9.5px;line-height:1.8;color:#7E71B8;
+  padding:0 clamp(6px,1.4vw,14px) 4px;max-width:96ch;}
+.note b{color:var(--dim);letter-spacing:.14em;text-transform:uppercase;font-weight:500;}
+
+@media (max-width:660px){
+  .namegrid{grid-template-columns:1fr;} .vs{display:none;}
+  .board{grid-template-columns:1fr 1fr;} .lead{grid-column:1/-1;order:3;}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important;}}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px;}
+</style>
+</head>
+<body>
+<div class="cab">
+
+  <div class="marquee">
+    <div class="bulbs top" id="bt"></div>
+    <button class="help" id="helpBtn" aria-label="Rules">?</button>
+    <h1>Irregular Verbs · Tug of War</h1>
+    <div class="sub">Two players · one keyboard · no mercy</div>
+    <button class="mute" id="muteBtn" aria-label="Sound on or off">♪</button>
+    <div class="bulbs bot" id="bb"></div>
+  </div>
+
+  <div class="screen">
+
+    <div class="setup" id="setup">
+      <div class="namegrid">
+        <div class="nf a"><label for="n1">Left team · grabs with A</label><input id="n1" maxlength="12" value="Team A" autocomplete="off"></div>
+        <div class="vs">VS</div>
+        <div class="nf b"><label for="n2">Right team · grabs with L</label><input id="n2" maxlength="12" value="Team B" autocomplete="off"></div>
+      </div>
+      <div class="opts">
+        <div class="opt"><span>Pull this far to win</span>
+          <div class="seg" id="segTarget">
+            <button data-v="4" aria-pressed="false">4 m</button>
+            <button data-v="6" aria-pressed="true">6 m</button>
+            <button data-v="9" aria-pressed="false">9 m</button>
+          </div>
+        </div>
+        <div class="opt"><span>Clock once you hold the rope</span>
+          <div class="seg" id="segClock">
+            <button data-v="8" aria-pressed="false">8 s</button>
+            <button data-v="12" aria-pressed="true">12 s</button>
+            <button data-v="0" aria-pressed="false">Off</button>
+          </div>
+        </div>
+      </div>
+      <button class="go" id="startBtn">Take the rope</button>
+      <p class="hint">One verb appears for both of you at once. First to hit <kbd>A</kbd> or <kbd>L</kbd> answers it.
+      Right, and you pull a metre. Wrong, and you hand a metre over — plus a chance to steal.</p>
+    </div>
+
+    <div class="hide" id="game">
+      <div class="board">
+        <div class="side l">
+          <span class="nm" id="tag1">Team A</span>
+          <div class="pips" id="pips1"></div>
+          <span class="st" id="st1">0 pulls · 0 slips</span>
+        </div>
+        <div class="lead" id="leadTxt">Level</div>
+        <div class="side r">
+          <span class="nm" id="tag2">Team B</span>
+          <div class="pips" id="pips2"></div>
+          <span class="st" id="st2">0 pulls · 0 slips</span>
+        </div>
+      </div>
+
+      <div class="field" id="field">
+        <div class="tape l"></div><div class="tape r"></div><div class="centre"></div>
+        <div class="ropewrap" id="ropewrap"><div class="rope"></div><div class="flag"></div></div>
+      </div>
+
+      <div class="stage">
+        <div class="tasklabel" id="taskLabel">Ready…</div>
+        <div class="prompt" id="prompt">•••</div>
+        <div class="cue" id="cue"></div>
+        <div class="row">
+          <input id="answer" placeholder="grab the rope first" disabled autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">
+          <button id="submit" disabled>Pull</button>
+        </div>
+        <div class="clock hidden" id="clock"><i id="clockBar"></i></div>
+        <div class="grabs">
+          <button class="grab a" id="grabA" disabled>Grab<small>KEY A</small></button>
+          <button class="grab b" id="grabB" disabled>Grab<small>KEY L</small></button>
+        </div>
+        <div class="status" id="status"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <p class="note">
+    <b>How this game was made</b> — Mr Churchman and Claude (an AI assistant made by Anthropic) made this
+    together in August 2026. The verb list is Mr Churchman's own; he compiled it. Claude wrote the questions
+    and built this page; Mr Churchman set the task, changed what needed changing, and checked the answers
+    himself. If the game marks your answer wrong and you think you are right, tell him — that is his mistake,
+    not the computer's.
+  </p>
+</div>
+
+<div class="ov" id="ov"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const V = [
+["be","was / were","been","sein"],["beat","beat","beaten","schlagen"],["become","became","become","werden"],
+["begin","began","begun","beginnen"],["bend","bent","bent","beugen"],["bet","bet","bet","wetten"],
+["bite","bit","bitten","beissen"],["bleed","bled","bled","bluten"],["blow","blew","blown","blasen"],
+["break","broke","broken","brechen"],["bring","brought","brought","bringen"],
+["broadcast","broadcast","broadcast","ausstrahlen"],["build","built","built","bauen"],
+["burst","burst","burst","platzen"],
+["buy","bought","bought","kaufen"],["catch","caught","caught","erwischen, fangen"],
+["choose","chose","chosen","auswählen"],["come","came","come","kommen"],["cost","cost","cost","kosten"],
+["cut","cut","cut","schneiden"],["deal","dealt","dealt","handeln"],["dig","dug","dug","graben"],
+["do","did","done","tun, machen"],["draw","drew","drawn","zeichnen"],
+["drink","drank","drunk","trinken"],
+["drive","drove","driven","fahren"],["eat","ate","eaten","essen"],["fall","fell","fallen","fallen"],
+["feel","felt","felt","fühlen"],["feed","fed","fed","füttern"],["fight","fought","fought","kämpfen"],
+["find","found","found","finden"],["fly","flew","flown","fliegen"],["forbid","forbade","forbidden","verbieten"],
+["forget","forgot","forgotten","vergessen"],["forgive","forgave","forgiven","vergeben"],
+["freeze","froze","frozen","gefrieren"],["get","got","got / gotten","erhalten, bekommen"],
+["give","gave","given","geben"],["go","went","gone","gehen"],["grow","grew","grown","wachsen"],
+["hang","hung","hung","hängen"],["have","had","had","haben"],["hear","heard","heard","hören"],
+["hide","hid","hidden","verstecken"],["hit","hit","hit","schlagen"],["hold","held","held","halten"],
+["hurt","hurt","hurt","verletzen"],["keep","kept","kept","behalten"],["know","knew","known","wissen, kennen"],
+["lay","laid","laid","legen"],["lead","led","led","führen"],
+["leave","left","left","gehen, verlassen"],
+["lend","lent","lent","leihen"],["let","let","let","lassen"],["lie","lay","lain","liegen"],
+["light","lit","lit","anzünden, beleuchten"],["lose","lost","lost","verlieren"],["make","made","made","machen"],
+["mean","meant","meant","bedeuten"],["meet","met","met","treffen"],["mistake","mistook","mistaken","verwechseln"],
+["pay","paid","paid","bezahlen"],["put","put","put","stellen, legen"],["read","read","read","lesen"],
+["ride","rode","ridden","reiten"],["ring","rang","rung","läuten"],["rise","rose","risen","aufgehen"],
+["run","ran","run","rennen"],["say","said","said","sagen"],["see","saw","seen","sehen"],
+["sell","sold","sold","verkaufen"],["send","sent","sent","schicken"],["set","set","set","stellen, legen"],
+["shake","shook","shaken","schütteln"],["shine","shone","shone","scheinen"],["shoot","shot","shot","schiessen"],
+["show","showed","shown","zeigen"],["shrink","shrank","shrunk","schrumpfen"],["shut","shut","shut","schliessen"],
+["sing","sang","sung","singen"],["sink","sank","sunk","sinken"],["sit","sat","sat","sitzen"],
+["sleep","slept","slept","schlafen"],["slide","slid","slid","rutschen"],
+["speak","spoke","spoken","sprechen"],
+
+["spend","spent","spent","ausgeben, verbringen"],
+["split","split","split","teilen, spalten"],["spread","spread","spread","ausbreiten"],
+["stand","stood","stood","stehen"],["steal","stole","stolen","stehlen"],
+["stick","stuck","stuck","kleben, festsitzen"],["sting","stung","stung","stechen"],
+["swim","swam","swum","schwimmen"],["take","took","taken","nehmen"],
+["teach","taught","taught","lehren, unterrichten"],["tear","tore","torn","zerreissen"],
+["tell","told","told","sagen"],["think","thought","thought","denken, glauben"],
+["throw","threw","thrown","werfen"],["understand","understood","understood","verstehen"],
+["wake","woke","woken","wecken"],["wear","wore","worn","tragen"],["win","won","won","gewinnen"],
+["write","wrote","written","schreiben"]
+];
+
+const $ = id => document.getElementById(id);
+const alts = s => s.split("/").map(x=>x.trim()).filter(Boolean);
+const norm = s => s.toLowerCase().replace(/[.!?,;:]+$/,"").replace(/\s+/g," ").trim();
+const deTok = s => s.split(",").map(x=>x.trim().toLowerCase()).filter(Boolean);
+
+/* ---------- sound ---------- */
+let ac=null, muted=false;
+function AC(){ if(!ac){ try{ ac = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return ac; }
+function beep(f1,f2,dur,type,vol,delay){
+  if(muted) return; const c=AC(); if(!c) return;
+  const t=c.currentTime+(delay||0);
+  const o=c.createOscillator(), g=c.createGain();
+  o.type=type||"square"; o.frequency.setValueAtTime(f1,t);
+  if(f2) o.frequency.exponentialRampToValueAtTime(Math.max(30,f2),t+dur);
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(vol||.1,t+.012);
+  g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g).connect(c.destination); o.start(t); o.stop(t+dur+.02);
+}
+function thump(){
+  if(muted) return; const c=AC(); if(!c) return;
+  const t=c.currentTime, len=Math.floor(c.sampleRate*.22);
+  const buf=c.createBuffer(1,len,c.sampleRate), d=buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);
+  const s=c.createBufferSource(); s.buffer=buf;
+  const f=c.createBiquadFilter(); f.type="lowpass"; f.frequency.setValueAtTime(900,t);
+  const g=c.createGain(); g.gain.setValueAtTime(.28,t); g.gain.exponentialRampToValueAtTime(.0001,t+.22);
+  s.connect(f).connect(g).connect(c.destination); s.start(t);
+}
+const sfx = {
+  click(){ beep(760,null,.05,"square",.05,0); },
+  grab(p){ p===0 ? beep(520,900,.12,"square",.12,0) : beep(380,660,.12,"square",.12,0); },
+  pull(){ thump(); beep(330,760,.2,"sawtooth",.1,.02); beep(880,null,.1,"triangle",.09,.14); },
+  wrong(){ beep(240,80,.34,"sawtooth",.13,0); beep(180,70,.34,"square",.07,.03); },
+  steal(){ beep(900,null,.07,"square",.09,0); beep(900,null,.07,"square",.09,.11); },
+  tick(){ beep(1500,null,.025,"square",.05,0); },
+  win(){ [523,659,784,1046,1318].forEach((f,i)=>beep(f,null,.2,"square",.12,i*.11)); thump(); }
+};
+$("muteBtn").onclick = () => {
+  muted = !muted;
+  $("muteBtn").textContent = muted ? "✕" : "♪";
+  $("muteBtn").style.color = muted ? "#7E71B8" : "var(--gold)";
+  if(!muted) sfx.click();
+};
+
+[["bt",22],["bb",22]].forEach(([id,n])=>{
+  const el=$(id);
+  for(let i=0;i<n;i++){ const b=document.createElement("span"); b.className="bulb";
+    b.style.animationDelay=(i*.07)+"s"; el.appendChild(b); }
+});
+
+let names=["Team A","Team B"], target=6, clockSecs=12;
+let pos=0, phase="setup", current=null, holder=-1;
+let pulls=[0,0], slips=[0,0], pool=[], missed=[];
+let tId=null, rId=null, deadline=0, lastTick=99;
+
+function drawVerb(){ if(!pool.length) pool=V.map((_,i)=>i).sort(()=>Math.random()-.5); return V[pool.pop()]; }
+function acceptDe(g){ const w=new Set(deTok(g)),o=[]; V.forEach(v=>{ if(deTok(v[3]).some(t=>w.has(t))) o.push(v[0]); }); return o; }
+function acceptBack(form){ const f=norm(form),o=[]; V.forEach(v=>{
+  if(alts(v[1]).some(x=>norm(x)===f)||alts(v[2]).some(x=>norm(x)===f)) o.push(v[0]); }); return o; }
+
+function buildQuestion(){
+  const v=drawVerb();
+  const kinds=["past","pp","de","gap_past","gap_pp","back"].filter(k=>{
+    if((k==="gap_past"||k==="gap_pp") && v[0]==="be") return false;
+    if(k==="back") return [...alts(v[1]),...alts(v[2])].some(f=>norm(f)!==norm(v[0]));
+    return true;
+  });
+  const kind=kinds[Math.floor(Math.random()*kinds.length)];
+  const row=`${v[0]} — ${v[1]} — ${v[2]} <em>· ${v[3]}</em>`;
+  switch(kind){
+    case "past": return {label:"Past simple",html:v[0],cue:"Write the past simple.",accept:alts(v[1]),show:v[1],row};
+    case "pp": return {label:"Past participle",html:v[0],cue:"Write the past participle.",accept:alts(v[2]),show:v[2],row};
+    case "de": return {label:"German → English",html:v[3],cue:"Write the infinitive.",accept:acceptDe(v[3]),show:v[0],row};
+    case "gap_past": return {label:"Gap-fill · past simple",html:`Yesterday they <span class="blank">___</span>.`,cue:`(${v[0]})`,accept:alts(v[1]),show:v[1],row};
+    case "gap_pp": return {label:"Gap-fill · present perfect",html:`They have already <span class="blank">___</span>.`,cue:`(${v[0]})`,accept:alts(v[2]),show:v[2],row};
+    case "back": {
+      const forms=[...alts(v[1]),...alts(v[2])].filter(f=>norm(f)!==norm(v[0]));
+      const f=forms[Math.floor(Math.random()*forms.length)];
+      return {label:"Back to the infinitive",html:f,cue:"Which verb does this come from?",accept:acceptBack(f),show:v[0],row};
+    }
+  }
+}
+
+function metrePx(){ return ($("field").clientWidth * .31) / target; }
+function drawRope(){ $("ropewrap").style.transform = `translate(calc(-50% + ${pos*metrePx()}px), -50%)`; }
+function buildPips(){
+  [1,2].forEach(n=>{ const el=$("pips"+n); el.innerHTML="";
+    for(let i=0;i<target;i++){ const p=document.createElement("span"); p.className="pip"; el.appendChild(p); } });
+}
+function updateScore(){
+  const lit=[Math.max(0,-pos),Math.max(0,pos)];
+  [1,2].forEach(n=>{ [...$("pips"+n).children].forEach((p,i)=>p.classList.toggle("on", i<lit[n-1])); });
+  $("st1").textContent=`${pulls[0]} pulls · ${slips[0]} slips`;
+  $("st2").textContent=`${pulls[1]} pulls · ${slips[1]} slips`;
+  const m=Math.abs(pos);
+  $("leadTxt").textContent = m===0 ? "Level" : `${names[pos<0?0:1]} +${m} m`;
+}
+function sparks(dir){
+  const f=$("field"), x = f.clientWidth/2 + pos*metrePx();
+  for(let i=0;i<9;i++){
+    const s=document.createElement("span"); s.className="spark";
+    s.style.left=x+"px"; s.style.top="50%";
+    s.style.background = dir===0 ? "var(--blue)" : "var(--pink)";
+    f.appendChild(s);
+    const ang=(Math.random()*1.4-.7)+(dir===0?Math.PI:0), d=30+Math.random()*70;
+    s.animate([{transform:"translate(0,0) scale(1)",opacity:1},
+      {transform:`translate(${Math.cos(ang)*d}px,${(Math.random()*2-1)*38}px) scale(0)`,opacity:0}],
+      {duration:420+Math.random()*240,easing:"cubic-bezier(.2,.7,.4,1)"}).onfinish=()=>s.remove();
+  }
+}
+function move(dir,m){
+  pos += dir===0 ? -m : m;
+  pos = Math.max(-target,Math.min(target,pos));
+  drawRope(); updateScore(); sparks(dir);
+  const f=$("field"); f.classList.remove("jolt"); void f.offsetWidth; f.classList.add("jolt");
+}
+
+function startClock(s){
+  stopClock(); if(!s){ $("clock").classList.add("hidden"); return; }
+  $("clock").classList.remove("hidden","low");
+  deadline=Date.now()+s*1000; const total=s*1000; lastTick=99;
+  rId=setInterval(()=>{
+    const left=Math.max(0,deadline-Date.now());
+    $("clockBar").style.width=(left/total*100)+"%";
+    const secs=Math.ceil(left/1000);
+    if(secs<=3){ $("clock").classList.add("low"); if(secs!==lastTick && secs>0){ lastTick=secs; sfx.tick(); } }
+    if(left<=0) timeUp();
+  },60);
+}
+function stopClock(){ if(rId){clearInterval(rId);rId=null;} $("clock").classList.add("hidden"); $("clockBar").style.width="100%"; }
+
+function newRound(){
+  if(Math.abs(pos)>=target) return finish();
+  phase="reveal"; current=buildQuestion(); holder=-1;
+  $("taskLabel").textContent="Ready…";
+  $("prompt").className="prompt"; $("prompt").textContent="•••";
+  $("cue").textContent=""; $("status").innerHTML="";
+  arm(false,""); $("grabA").disabled=true; $("grabB").disabled=true; stopClock();
+  clearTimeout(tId);
+  tId=setTimeout(()=>{
+    phase="race"; sfx.click();
+    $("taskLabel").textContent=current.label;
+    const p=$("prompt"); p.innerHTML=current.html;
+    p.className = "prompt" + (current.html.replace(/<[^>]+>/g,"").length>16 ? " long" : "");
+    $("cue").textContent=current.cue;
+    $("status").innerHTML=`<b>Grab the rope.</b> ${names[0]} — press A. &nbsp; ${names[1]} — press L.`;
+    $("grabA").disabled=false; $("grabB").disabled=false;
+  },850);
+}
+function arm(on,who){
+  const a=$("answer");
+  a.disabled=!on; $("submit").disabled=!on;
+  a.classList.toggle("p1", on&&holder===0); a.classList.toggle("p2", on&&holder===1);
+  a.value=""; a.placeholder = on ? `${who} — type it exactly` : "grab the rope first";
+  if(on) setTimeout(()=>a.focus(),20);
+}
+function grab(p){
+  if(phase!=="race") return;
+  holder=p; phase="answer"; sfx.grab(p);
+  $("grabA").disabled=true; $("grabB").disabled=true;
+  $("status").innerHTML=`<b>${names[p]}</b> has the rope. Spelling must be exact.`;
+  arm(true,names[p]); startClock(clockSecs);
+}
+function submit(){
+  if(phase!=="answer"&&phase!=="steal") return;
+  const given=norm($("answer").value); if(!given) return;
+  stopClock();
+  current.accept.some(a=>norm(a)===given) ? right() : wrong(given);
+}
+function timeUp(){
+  stopClock();
+  if(phase==="answer") wrong(null);
+  else if(phase==="steal"){ sfx.wrong(); end(`<span class="bad">No steal. The rope stays put.</span>`); }
+}
+function right(){
+  const p=holder, was=phase; pulls[p]++; sfx.pull(); move(p,1);
+  end(`<span class="good">${was==="steal"?"Stolen":"Clean pull"} — ${names[p]} takes a metre.</span>`);
+}
+function wrong(given){
+  const p=holder, o=1-p; slips[p]++; sfx.wrong(); move(o,1);
+  if(!missed.includes(current.row)) missed.push(current.row);
+  const said = given ? `“${given}”` : "nothing";
+  if(Math.abs(pos)>=target)
+    return end(`<span class="bad">Wrong — ${said}. It was <b>${current.show}</b>.</span> ${names[o]} takes a metre.`);
+  phase="steal"; holder=o; sfx.steal();
+  $("status").innerHTML=`<span class="bad">Wrong — ${said}. ${names[o]} gains a metre.</span><br><b>Steal:</b> ${names[o]}, same question — get it and take another.`;
+  arm(true,names[o]); startClock(clockSecs||10);
+}
+function end(msg){
+  phase="result"; arm(false,""); $("grabA").disabled=true; $("grabB").disabled=true;
+  const done=Math.abs(pos)>=target;
+  $("status").innerHTML=`${msg}<br><span class="forms">${current.row}</span>`+
+    (done?"":`<br><b>Press SPACE for the next verb.</b>`);
+  if(done) setTimeout(finish,1000);
+}
+function finish(){
+  phase="over"; sfx.win();
+  const w = pos<0?0:1;
+  const list = missed.length ? missed.join("<br>") : "Nothing. Both of you were faultless.";
+  sheet(`<h2>${names[w]} win</h2>
+    <p>${names[w]} pulled the rope the full ${target} metres.<br>
+    ${names[0]}: ${pulls[0]} pulls, ${slips[0]} slips. &nbsp; ${names[1]}: ${pulls[1]} pulls, ${slips[1]} slips.</p>
+    <h3>Verbs to look at again</h3><div class="missed">${list}</div>
+    <button class="go" id="againBtn">Best of three</button>`);
+  $("againBtn").onclick=()=>{ closeSheet(); reset(); };
+}
+function reset(){ pos=0; pulls=[0,0]; slips=[0,0]; missed=[]; pool=[]; buildPips(); updateScore(); drawRope(); newRound(); }
+
+function sheet(html){ $("sheet").innerHTML=html; $("ov").classList.add("on"); }
+function closeSheet(){ $("ov").classList.remove("on"); }
+$("ov").onclick = e => { if(e.target===$("ov") && phase!=="over") closeSheet(); };
+$("helpBtn").onclick = () => { sfx.click(); sheet(`<h2>Rules</h2>
+  <h3>The pull</h3><ul>
+  <li>One verb appears for both players at the same moment.</li>
+  <li>First to press <kbd>A</kbd> (left) or <kbd>L</kbd> (right) answers it. On a tablet, tap Grab.</li>
+  <li>Right answer: you pull the rope one metre your way.</li>
+  <li>Wrong answer, or no answer in time: your opponent gains a metre and gets one shot at stealing another.</li>
+  <li>First team past their own hazard tape wins.</li></ul>
+  <h3>Spelling</h3>
+  <p>Spelling must be exact. Capitals and spaces do not matter; letters do. Where both forms are standard —
+  <em>got</em> or <em>gotten</em>, <em>was</em> or <em>were</em> — either is accepted.</p>
+  <h3>Six kinds of question</h3><ul>
+  <li>Past simple, and past participle.</li>
+  <li>German word → the English infinitive.</li>
+  <li>Two gap-fills: past simple, and present perfect.</li>
+  <li>A form on its own → the infinitive behind it.</li></ul>`); };
+
+function seg(id,cb){ const s=$(id); s.querySelectorAll("button").forEach(b=>{ b.onclick=()=>{
+  s.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed","false"));
+  b.setAttribute("aria-pressed","true"); cb(parseInt(b.dataset.v,10)); sfx.click(); }; }); }
+seg("segTarget",v=>target=v); seg("segClock",v=>clockSecs=v);
+
+$("startBtn").onclick=()=>{
+  AC(); if(ac && ac.state==="suspended") ac.resume();
+  names=[$("n1").value.trim()||"Team A", $("n2").value.trim()||"Team B"];
+  $("tag1").textContent=names[0]; $("tag2").textContent=names[1];
+  $("setup").classList.add("hide"); $("game").classList.remove("hide");
+  sfx.click(); reset();
+};
+$("grabA").onclick=()=>grab(0);
+$("grabB").onclick=()=>grab(1);
+$("submit").onclick=submit;
+$("answer").addEventListener("keydown",e=>{ if(e.key==="Enter"){ e.preventDefault(); submit(); } });
+
+document.addEventListener("keydown",e=>{
+  if($("ov").classList.contains("on")){ if(e.key==="Escape"&&phase!=="over") closeSheet(); return; }
+  if(phase==="race"){
+    const k=e.key.toLowerCase();
+    if(k==="a"){ e.preventDefault(); grab(0); }
+    else if(k==="l"){ e.preventDefault(); grab(1); }
+  } else if(phase==="result"&&e.code==="Space"){ e.preventDefault(); newRound(); }
+});
+window.addEventListener("resize",drawRope);
+buildPips();
+</script>
+</body>
+</html>
