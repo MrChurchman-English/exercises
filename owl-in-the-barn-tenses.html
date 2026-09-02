@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Owl in the Barn — four tenses</title>
+<style>
+  :root{
+    --ink:#1b2327;
+    --ink-soft:#5c686d;
+    --mist:#dde2e1;
+    --sheet:#fcfcfb;
+    --rule:#c8d0ce;
+    --moss:#3d6b52;
+    --plum:#83323f;
+    --serif: "Iowan Old Style", "Charter", "Georgia", "Times New Roman", serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    padding:2.5rem 1.25rem 4rem;
+    background:var(--mist);
+    color:var(--ink);
+    font-family:var(--serif);
+    -webkit-text-size-adjust:100%;
+  }
+
+  .sheet{
+    max-width:41rem;
+    margin:0 auto;
+    background:var(--sheet);
+    padding:3rem 3rem 2rem;
+    border:1px solid var(--rule);
+  }
+
+  header{
+    border-bottom:1px solid var(--rule);
+    padding-bottom:1.5rem;
+    margin-bottom:2rem;
+  }
+
+  h1{
+    font-family:var(--serif);
+    font-size:2.35rem;
+    line-height:1.1;
+    font-weight:400;
+    letter-spacing:-0.015em;
+    margin:0 0 0.9rem;
+  }
+
+  .task{
+    font-family:var(--sans);
+    font-size:0.9rem;
+    line-height:1.55;
+    color:var(--ink-soft);
+    margin:0;
+    max-width:32rem;
+  }
+
+  .tenses{
+    font-family:var(--sans);
+    font-size:0.9rem;
+    color:var(--ink);
+    margin:0.5rem 0 0;
+  }
+
+  .text p{
+    font-size:1.12rem;
+    line-height:2.15;
+    margin:0 0 1.5rem;
+    max-width:34rem;
+  }
+
+  .cue{
+    font-family:var(--sans);
+    font-size:0.82rem;
+    color:var(--ink-soft);
+    font-style:normal;
+  }
+
+  /* --- the gaps --- */
+  .gap{white-space:nowrap}
+
+  .gap sup{
+    font-family:var(--sans);
+    font-size:0.62rem;
+    color:var(--ink-soft);
+    vertical-align:super;
+    margin-right:1px;
+  }
+
+  input.blank{
+    font-family:var(--serif);
+    font-size:1.05rem;
+    color:var(--ink);
+    background:transparent;
+    border:0;
+    border-bottom:1.5px solid var(--ink-soft);
+    padding:0 2px 1px;
+    margin:0 1px;
+    text-align:center;
+  }
+
+  input.blank:focus{
+    outline:2px solid var(--ink);
+    outline-offset:3px;
+    border-bottom-color:transparent;
+  }
+
+  input.blank.ok{
+    color:var(--moss);
+    border-bottom-color:var(--moss);
+    border-bottom-width:2px;
+  }
+
+  input.blank.no{
+    color:var(--plum);
+    border-bottom-color:var(--plum);
+    border-bottom-width:2px;
+    text-decoration:line-through;
+    text-decoration-thickness:1px;
+  }
+
+  input.blank.given{
+    color:var(--ink-soft);
+    border-bottom-color:var(--ink-soft);
+    font-style:italic;
+  }
+
+  .note{
+    display:block;
+    font-family:var(--sans);
+    font-size:0.82rem;
+    line-height:1.5;
+    white-space:normal;
+    margin:0.35rem 0 0.9rem 0;
+    padding-left:0.85rem;
+    border-left:2px solid var(--plum);
+    color:var(--ink-soft);
+    max-width:30rem;
+  }
+
+  .note.accepted{border-left-color:var(--moss)}
+  .note b{color:var(--ink);font-weight:600}
+
+  /* --- controls --- */
+  .controls{
+    margin-top:2.5rem;
+    padding-top:1.75rem;
+    border-top:1px solid var(--rule);
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.6rem;
+    align-items:center;
+  }
+
+  button{
+    font-family:var(--sans);
+    font-size:0.92rem;
+    padding:0.6rem 1.15rem;
+    border:1px solid var(--ink);
+    background:var(--ink);
+    color:var(--sheet);
+    cursor:pointer;
+  }
+
+  button.quiet{
+    background:transparent;
+    color:var(--ink);
+    border-color:var(--rule);
+  }
+
+  button:hover{opacity:0.88}
+  button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+  .score{
+    font-family:var(--sans);
+    font-size:0.95rem;
+    line-height:1.6;
+    margin:1.5rem 0 0;
+    color:var(--ink);
+  }
+
+  .score strong{font-size:1.15rem}
+  .score span{display:block;color:var(--ink-soft);font-size:0.88rem;margin-top:0.2rem}
+
+  footer{
+    max-width:41rem;
+    margin:1.5rem auto 0;
+    padding:1.25rem 3rem 0;
+    border-top:1px solid var(--rule);
+    font-family:var(--sans);
+    font-size:0.76rem;
+    line-height:1.6;
+    color:var(--ink-soft);
+  }
+
+  footer b{display:block;color:var(--ink);font-weight:600;margin-bottom:0.3rem}
+
+  @media (max-width:34rem){
+    body{padding:1rem 0.5rem 2rem}
+    .sheet{padding:1.75rem 1.35rem 1.5rem}
+    footer{padding:1.25rem 1.35rem 0}
+    h1{font-size:1.85rem}
+    .text p{font-size:1.05rem;line-height:2.1}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important;animation:none !important}
+  }
+
+  @media print{
+    body{background:#fff;padding:0}
+    .sheet{border:0;padding:0;max-width:none}
+    .controls,.score{display:none}
+    input.blank{border-bottom:1px solid #666}
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+  <header>
+    <h1>The Owl in the Barn</h1>
+    <p class="task">Put the verb in brackets into the right tense. Write the whole verb form, including <em>don't</em>, <em>didn't</em>, <em>is</em> and so on. Short forms are fine.</p>
+    <p class="tenses">Present simple &middot; present continuous &middot; past simple &middot; past continuous</p>
+  </header>
+
+  <div class="text" id="text">
+    <p>My aunt Marisa <span class="gap"><sup>1</sup><input class="blank" data-id="1" size="6" aria-label="Gap 1, run"></span> <span class="cue">(run)</span> a small wildlife rescue centre in the hills above Chur. She <span class="gap"><sup>2</sup><input class="blank" data-id="2" size="6" aria-label="Gap 2, know"></span> <span class="cue">(know)</span> more about injured birds than anyone else I have ever met, and in a normal year the centre <span class="gap"><sup>3</sup><input class="blank" data-id="3" size="8" aria-label="Gap 3, take in"></span> <span class="cue">(take in)</span> about forty of them. This spring, though, the number <span class="gap"><sup>4</sup><input class="blank" data-id="4" size="9" aria-label="Gap 4, rise"></span> <span class="cue">(rise)</span> steadily week by week, and nobody at the centre <span class="gap"><sup>5</sup><input class="blank" data-id="5" size="11" aria-label="Gap 5, understand"></span> <span class="cue">(understand)</span> why. &ldquo;Something <span class="gap"><sup>6</sup><input class="blank" data-id="6" size="11" aria-label="Gap 6, change"></span> <span class="cue">(change)</span> in the valley,&rdquo; she says. &ldquo;I just <span class="gap"><sup>7</sup><input class="blank" data-id="7" size="10" aria-label="Gap 7, not know"></span> <span class="cue">(not know)</span> what yet.&rdquo;</p>
+
+    <p>At the moment she <span class="gap"><sup>8</sup><input class="blank" data-id="8" size="15" aria-label="Gap 8, look after"></span> <span class="cue">(look after)</span> an owl called Bruno, who <span class="gap"><sup>9</sup><input class="blank" data-id="9" size="7" aria-label="Gap 9, spend"></span> <span class="cue">(spend)</span> most of the day asleep on a beam in the old barn behind her house.</p>
+
+    <p>She <span class="gap"><sup>10</sup><input class="blank" data-id="10" size="6" aria-label="Gap 10, find"></span> <span class="cue">(find)</span> him last April. She <span class="gap"><sup>11</sup><input class="blank" data-id="11" size="11" aria-label="Gap 11, drive"></span> <span class="cue">(drive)</span> home from the vet's late one evening when she <span class="gap"><sup>12</sup><input class="blank" data-id="12" size="8" aria-label="Gap 12, notice"></span> <span class="cue">(notice)</span> something pale at the edge of the road. It <span class="gap"><sup>13</sup><input class="blank" data-id="13" size="11" aria-label="Gap 13, rain"></span> <span class="cue">(rain)</span> so hard that she almost <span class="gap"><sup>14</sup><input class="blank" data-id="14" size="10" aria-label="Gap 14, not stop"></span> <span class="cue">(not stop)</span>. The owl <span class="gap"><sup>15</sup><input class="blank" data-id="15" size="10" aria-label="Gap 15, lie"></span> <span class="cue">(lie)</span> in the wet grass with one wing at a strange angle, and while she <span class="gap"><sup>16</sup><input class="blank" data-id="16" size="12" aria-label="Gap 16, wrap"></span> <span class="cue">(wrap)</span> him in her jacket he <span class="gap"><sup>17</sup><input class="blank" data-id="17" size="10" aria-label="Gap 17, not move"></span> <span class="cue">(not move)</span> at all.</p>
+
+    <p>Six months later he is still there. Bruno <span class="gap"><sup>18</sup><input class="blank" data-id="18" size="6" aria-label="Gap 18, eat"></span> <span class="cue">(eat)</span> three mice a night and shows no sign of wanting to leave. Marisa <span class="gap"><sup>19</sup><input class="blank" data-id="19" size="18" aria-label="Gap 19, always complain"></span> <span class="cue">(always / complain)</span> that he costs her more than her car does, but she <span class="gap"><sup>20</sup><input class="blank" data-id="20" size="11" aria-label="Gap 20, not want"></span> <span class="cue">(not want)</span> him to go.</p>
+  </div>
+
+  <div class="controls">
+    <button id="check">Check my answers</button>
+    <button class="quiet" id="reveal">Show the answers</button>
+    <button class="quiet" id="reset">Start again</button>
+  </div>
+
+  <p class="score" id="score" hidden></p>
+</div>
+
+<footer>
+  <b>How this exercise was made</b>
+  Mr Churchman and Claude (an AI assistant made by Anthropic) wrote this together in September 2026. I chose the four tenses to test and set the level; Claude wrote the story and built this page; I changed what needed changing and checked every answer myself. If a gap marks your answer wrong and you think you are right, tell me — that is my mistake, not the computer's.
+</footer>
+
+<script>
+const GAPS = {
+  1:{a:["runs"], why:"Present simple: this is her permanent job."},
+  2:{a:["knows"], why:"<b>Know</b> is a state verb, so it has no continuous form."},
+  3:{a:["takes in"], why:"Present simple for what normally happens — <b>in a normal year</b>."},
+  4:{a:["is rising","'s rising"], why:"Present continuous for a situation that is changing over time."},
+  5:{a:["understands"], why:"<b>Understand</b> is a state verb: no continuous form."},
+  6:{a:["is changing","'s changing"], why:"Present continuous for a change that is still going on."},
+  7:{a:["don't know","do not know"], why:"State verb again, so present simple. <b>Just</b> does not change that."},
+  8:{a:["is looking after","'s looking after"], why:"Present continuous: <b>at the moment</b> tells you this is temporary."},
+  9:{a:["spends"], why:"Present simple: this is what Bruno does every day, not only right now."},
+  10:{a:["found"], why:"Past simple: a finished action at a stated past time (<b>last April</b>)."},
+  11:{a:["was driving"], why:"Past continuous for the longer action that was going on when something interrupted it."},
+  12:{a:["noticed"], why:"Past simple for the short action that interrupted the driving."},
+  13:{a:["was raining"], why:"Past continuous for the weather in the background of the scene."},
+  14:{a:["didn't stop","did not stop"], why:"Past simple for a single completed action — here, one she nearly didn't do."},
+  15:{a:["was lying"], why:"Past continuous for a position held over a period of time. Careful with the spelling: <b>lie &rarr; lying</b>."},
+  16:{a:["was wrapping"], why:"<b>While</b> introduces the longer action, so past continuous."},
+  17:{a:["didn't move","did not move"], why:"Past simple: the short thing that happened (or didn't) during the wrapping."},
+  18:{a:["eats"], why:"Present simple for a repeated habit."},
+  19:{a:["is always complaining","'s always complaining"],
+      alt:["always complains"],
+      altWhy:"Not wrong, but <b>is always complaining</b> is the better answer here: <b>always</b> with the continuous adds the idea that she finds it irritating.",
+      why:"Present continuous with <b>always</b>, to show that this is a repeated habit that annoys her."},
+  20:{a:["doesn't want","does not want"], why:"<b>Want</b> is a state verb, so present simple."}
+};
+
+const inputs = [...document.querySelectorAll("input.blank")];
+const scoreEl = document.getElementById("score");
+
+const tidy = s => s.toLowerCase().trim()
+  .replace(/[\u2018\u2019\u02BC]/g, "'")
+  .replace(/\s+/g, " ");
+
+function clearMarks(){
+  document.querySelectorAll(".note").forEach(n => n.remove());
+  inputs.forEach(i => { i.classList.remove("ok","no","given"); i.disabled = false; });
+  scoreEl.hidden = true;
+}
+
+function addNote(input, html, accepted){
+  const note = document.createElement("span");
+  note.className = "note" + (accepted ? " accepted" : "");
+  note.innerHTML = html;
+  input.closest(".gap").insertAdjacentElement("afterend", note);
+}
+
+document.getElementById("check").addEventListener("click", () => {
+  clearMarks();
+  let right = 0;
+  inputs.forEach(input => {
+    const g = GAPS[input.dataset.id];
+    const given = tidy(input.value);
+    if(given === ""){
+      input.classList.add("no");
+      addNote(input, "You left this one empty. The answer is <b>" + g.a[0] + "</b>. " + g.why, false);
+    } else if(g.a.some(x => tidy(x) === given)){
+      input.classList.add("ok");
+      right++;
+    } else if(g.alt && g.alt.some(x => tidy(x) === given)){
+      input.classList.add("ok");
+      right++;
+      addNote(input, g.altWhy, true);
+    } else {
+      input.classList.add("no");
+      addNote(input, "The answer is <b>" + g.a[0] + "</b>. " + g.why, false);
+    }
+  });
+  const tail = right === 20
+    ? "All twenty. Nothing left for me to explain."
+    : "Read the notes under the gaps you missed, then press Start again and do those ones once more.";
+  scoreEl.innerHTML = "<strong>" + right + " out of 20.</strong><span>" + tail + "</span>";
+  scoreEl.hidden = false;
+  scoreEl.scrollIntoView({behavior:"smooth", block:"nearest"});
+});
+
+document.getElementById("reveal").addEventListener("click", () => {
+  clearMarks();
+  inputs.forEach(input => {
+    const g = GAPS[input.dataset.id];
+    input.value = g.a[0];
+    input.classList.add("given");
+    input.disabled = true;
+    addNote(input, g.why, true);
+  });
+});
+
+document.getElementById("reset").addEventListener("click", () => {
+  clearMarks();
+  inputs.forEach(i => i.value = "");
+  inputs[0].focus();
+});
+
+inputs.forEach((input, n) => {
+  input.addEventListener("keydown", e => {
+    if(e.key === "Enter"){
+      e.preventDefault();
+      if(n + 1 < inputs.length) inputs[n + 1].focus();
+      else document.getElementById("check").click();
+    }
+  });
+  input.addEventListener("input", () => {
+    if(input.classList.contains("ok") || input.classList.contains("no")){
+      input.classList.remove("ok","no");
+      const next = input.closest(".gap").nextElementSibling;
+      if(next && next.classList.contains("note")) next.remove();
+    }
+  });
+});
+</script>
+</body>
+</html>
