@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C1 Advanced: Reading & Use of English Part 2</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #eff6ff;
+            --success: #15803d;
+            --success-bg: #f0fdf4;
+            --error: #b91c1c;
+            --error-bg: #fef2f2;
+            --border: #cbd5e1;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions {
+            background-color: var(--primary-light);
+            padding: 1rem;
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .instructions strong {
+            color: var(--primary);
+        }
+
+        .text-content {
+            font-size: 1.1rem;
+            line-height: 2.2;
+            margin-bottom: 2rem;
+        }
+
+        .gap-input {
+            width: 110px;
+            height: 36px;
+            font-size: 1rem;
+            text-align: center;
+            font-weight: 600;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            margin: 0 4px;
+            transition: all 0.2s ease;
+            outline: none;
+            background-color: #fff;
+        }
+
+        .gap-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+        }
+
+        .gap-input.correct {
+            border-color: var(--success);
+            background-color: var(--success-bg);
+            color: var(--success);
+        }
+
+        .gap-input.incorrect {
+            border-color: var(--error);
+            background-color: var(--error-bg);
+            color: var(--error);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        .score-board {
+            display: none;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .score-board.visible {
+            display: block;
+        }
+
+        .score-board.good {
+            background-color: var(--success-bg);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .score-board.try-again {
+            background-color: var(--error-bg);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        .expla-section {
+            display: none;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .expla-section.visible {
+            display: block;
+        }
+
+        .expla-title {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .expla-list {
+            list-style-type: none;
+        }
+
+        .expla-item {
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background-color: var(--background);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .expla-item strong {
+            color: var(--primary);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.25rem;
+            }
+            .gap-input {
+                width: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Cambridge C1 Advanced (CAE)</h1>
+        <p>Reading and Use of English - Part 2: Open Cloze</p>
+    </header>
+
+    <div class="instructions">
+        <strong>Instructions:</strong> Read the text below and think of the word which best fits each gap. Use only <strong>one word</strong> in each gap. Type your answer in lowercase. The exercise tests both base verbs and particles in phrasal verbs.
+    </div>
+
+    <div class="score-board" id="scoreBoard"></div>
+
+    <div class="text-content">
+        <h3>Overcoming the Creative Block</h3>
+        <p>
+            For artists and writers alike, 
+            <strong>(1)</strong> running <input type="text" id="gap1" class="gap-input" autocomplete="off" placeholder="1"> against a creative block is an almost inevitable hurdle. 
+            Many people tend to 
+            <strong>(2)</strong> <input type="text" id="gap2" class="gap-input" autocomplete="off" placeholder="2"> it down to external factors like stress or tiredness, but the root cause often lies much deeper. 
+        </p>
+        <p>
+            When inspiration dries up, the worst thing you can do is sit around waiting for ideas to hit you. Instead, experts suggest trying to 
+            <strong>(3)</strong> come <input type="text" id="gap3" class="gap-input" autocomplete="off" placeholder="3"> with a structured daily routine to keep your mind active. Procrastination frequently 
+            <strong>(4)</strong> <input type="text" id="gap4" class="gap-input" autocomplete="off" placeholder="4"> in when there is a distinct lack of clear boundaries or goals.
+        </p>
+        <p>
+            Another effective approach is to break large projects 
+            <strong>(5)</strong> <input type="text" id="gap5" class="gap-input" autocomplete="off" placeholder="5"> into manageable chunks. If you find yourself completely stuck on a chapter or drawing, try 
+            <strong>(6)</strong> <input type="text" id="gap6" class="gap-input" autocomplete="off" placeholder="6"> it aside for a day or two and working on something else. Often, your subconscious will continue to work on the problem in the background, allowing fresh insights to 
+            <strong>(7)</strong> crop <input type="text" id="gap7" class="gap-input" autocomplete="off" placeholder="7"> when you least expect them. 
+        </p>
+        <p>
+            Finally, don't be too quick to 
+            <strong>(8)</strong> <input type="text" id="gap8" class="gap-input" autocomplete="off" placeholder="8"> up on an idea just because the first draft feels uninspired—perseverance is usually what makes all the difference.
+        </p>
+    </div>
+
+    <div class="controls">
+        <button class="btn-primary" onclick="checkAnswers()">Check Answers</button>
+        <button class="btn-secondary" onclick="resetExercise()">Reset</button>
+        <button class="btn-secondary" onclick="toggleExplanations()">Toggle Explanations</button>
+    </div>
+
+    <div class="expla-section" id="explaSection">
+        <h3 class="expla-title">Phrasal Verb Explanations & Target Types</h3>
+        <ul class="expla-list">
+            <li class="expla-item"><strong>1. up</strong> (Particle): <em>run up against</em> — to encounter or experience a difficulty, problem, or opposition.</li>
+            <li class="expla-item"><strong>2. put</strong> (Base Verb): <em>put something down to</em> — to attribute something to a particular cause.</li>
+            <li class="expla-item"><strong>3. up</strong> (Particle): <em>come up with</em> — to think of or produce an idea, plan, or solution.</li>
+            <li class="expla-item"><strong>4. sets</strong> (Base Verb): <em>set in</em> — (of something unpleasant) to begin and seem likely to continue.</li>
+            <li class="expla-item"><strong>5. down</strong> (Particle): <em>break down into</em> — to divide or separate into smaller, more manageable parts.</li>
+            <li class="expla-item"><strong>6. setting</strong> (Base Verb): <em>set aside</em> — to temporarily stop doing or thinking about something. (Requires <em>-ing</em> form after "try").</li>
+            <li class="expla-item"><strong>7. up</strong> (Particle): <em>crop up</em> — to appear, happen, or come to light unexpectedly.</li>
+            <li class="expla-item"><strong>8. give</strong> (Base Verb): <em>give up on</em> — to stop hoping or believing that something/someone will improve or succeed.</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    const answers = {
+        gap1: "up",
+        gap2: "put",
+        gap3: "up",
+        gap4: "sets",
+        gap5: "down",
+        gap6: "setting",
+        gap7: "up",
+        gap8: "give"
+    };
+
+    function checkAnswers() {
+        let score = 0;
+        const total = Object.keys(answers).length;
+
+        for (let key in answers) {
+            const input = document.getElementById(key);
+            const userValue = input.value.trim().toLowerCase();
+            const correctValue = answers[key];
+
+            input.classList.remove("correct", "incorrect");
+
+            if (userValue === correctValue) {
+                input.classList.add("correct");
+                score++;
+            } else {
+                input.classList.add("incorrect");
+            }
+        }
+
+        const scoreBoard = document.getElementById("scoreBoard");
+        scoreBoard.className = "score-board visible";
+        scoreBoard.innerHTML = `Your score: ${score} / ${total}`;
+
+        if (score === total) {
+            scoreBoard.classList.add("good");
+            scoreBoard.classList.remove("try-again");
+            scoreBoard.innerHTML += " — Excellent work! You mastered all phrasal verbs.";
+        } else {
+            scoreBoard.classList.add("try-again");
+            scoreBoard.classList.remove("good");
+            scoreBoard.innerHTML += " — Check the red fields and try again or review the explanations below.";
+        }
+    }
+
+    function resetExercise() {
+        for (let key in answers) {
+            const input = document.getElementById(key);
+            input.value = "";
+            input.classList.remove("correct", "incorrect");
+        }
+        const scoreBoard = document.getElementById("scoreBoard");
+        scoreBoard.className = "score-board";
+        document.getElementById("explaSection").classList.remove("visible");
+    }
+
+    function toggleExplanations() {
+        const explaSection = document.getElementById("explaSection");
+        explaSection.classList.toggle("visible");
+    }
+</script>
+
+</body>
+</html>

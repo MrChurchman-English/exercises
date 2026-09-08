@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C1 Advanced: Reading & Use of English Part 2 - Linking Words</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #eff6ff;
+            --success: #15803d;
+            --success-bg: #f0fdf4;
+            --error: #b91c1c;
+            --error-bg: #fef2f2;
+            --border: #cbd5e1;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --background: #f8fafc;
+            --card-bg: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .instructions {
+            background-color: var(--primary-light);
+            padding: 1rem;
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .instructions strong {
+            color: var(--primary);
+        }
+
+        .text-content {
+            font-size: 1.1rem;
+            line-height: 2.2;
+            margin-bottom: 2rem;
+        }
+
+        .gap-input {
+            width: 110px;
+            height: 36px;
+            font-size: 1rem;
+            text-align: center;
+            font-weight: 600;
+            border: 2px solid var(--border);
+            border-radius: 6px;
+            margin: 0 4px;
+            transition: all 0.2s ease;
+            outline: none;
+            background-color: #fff;
+        }
+
+        .gap-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.15);
+        }
+
+        .gap-input.correct {
+            border-color: var(--success);
+            background-color: var(--success-bg);
+            color: var(--success);
+        }
+
+        .gap-input.incorrect {
+            border-color: var(--error);
+            background-color: var(--error-bg);
+            color: var(--error);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background-color: #cbd5e1;
+        }
+
+        .score-board {
+            display: none;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .score-board.visible {
+            display: block;
+        }
+
+        .score-board.good {
+            background-color: var(--success-bg);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .score-board.try-again {
+            background-color: var(--error-bg);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        .expla-section {
+            display: none;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .expla-section.visible {
+            display: block;
+        }
+
+        .expla-title {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .expla-list {
+            list-style-type: none;
+        }
+
+        .expla-item {
+            margin-bottom: 0.75rem;
+            padding: 0.75rem;
+            background-color: var(--background);
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+
+        .expla-item strong {
+            color: var(--primary);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.25rem;
+            }
+            .gap-input {
+                width: 90px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Cambridge C1 Advanced (CAE)</h1>
+        <p>Reading and Use of English - Part 2: Open Cloze (Linking Words)</p>
+    </header>
+
+    <div class="instructions">
+        <strong>Instructions:</strong> Read the text below and think of the word which best fits each gap. Use only <strong>one word</strong> in each gap. Type your answer in lowercase (except at the start of a sentence). This exercise focuses strictly on logical connectors, discourse markers, and linking structures.
+    </div>
+
+    <div class="score-board" id="scoreBoard"></div>
+
+    <div class="text-content">
+        <h3>The Shift to Remote Work</h3>
+        <p>
+            In recent years, remote work has grown exponentially. 
+            <strong>(1)</strong> <input type="text" id="gap1" class="gap-input" autocomplete="off" placeholder="1"> many employees enjoy the flexibility it offers, others find the boundary between professional and personal life increasingly blurred. 
+            <strong>(2)</strong> <input type="text" id="gap2" class="gap-input" autocomplete="off" placeholder="2"> a result, companies are having to rethink how they manage team cohesion from a distance.
+        </p>
+        <p>
+            Working from home reduces daily commuting stress and leads to higher individual productivity. What is 
+            <strong>(3)</strong> <input type="text" id="gap3" class="gap-input" autocomplete="off" placeholder="3">, it allows organizations to recruit top talent globally rather than restricting themselves locally. 
+            <strong>(4)</strong> <input type="text" id="gap4" class="gap-input" autocomplete="off" placeholder="4">, without structured virtual meetings, spontaneous collaboration can drop sharply. 
+            <strong>(5)</strong> <input type="text" id="gap5" class="gap-input" autocomplete="off" placeholder="5"> order to prevent employees from feeling isolated, managers must proactively organize regular check-ins.
+        </p>
+        <p>
+            <strong>(6)</strong> <input type="text" id="gap6" class="gap-input" autocomplete="off" placeholder="6"> spite of these ongoing logistical challenges, few workers express a desire to return to the office full-time. 
+            <strong>(7)</strong> <input type="text" id="gap7" class="gap-input" autocomplete="off" placeholder="7"> than spending five days in a corporate building, most prefer a hybrid setup combining remote flexibility with face-to-face interaction. 
+            <strong>(8)</strong> <input type="text" id="gap8" class="gap-input" autocomplete="off" placeholder="8"> long as businesses adapt to these evolving demands, flexible work arrangements will remain a permanent fixture of modern employment.
+        </p>
+    </div>
+
+    <div class="controls">
+        <button class="btn-primary" onclick="checkAnswers()">Check Answers</button>
+        <button class="btn-secondary" onclick="resetExercise()">Reset</button>
+        <button class="btn-secondary" onclick="toggleExplanations()">Toggle Explanations</button>
+    </div>
+
+    <div class="expla-section" id="explaSection">
+        <h3 class="expla-title">Linking Words & Structure Explanations</h3>
+        <ul class="expla-list">
+            <li class="expla-item"><strong>1. Although / While / Whereas</strong> (Concession): Introduces a contrast between employees who like flexibility and those who struggle with boundaries.</li>
+            <li class="expla-item"><strong>2. As</strong> (Result): Part of the linking phrase <em>As a result</em>, introducing a consequence.</li>
+            <li class="expla-item"><strong>3. more</strong> (Addition): Part of the discourse marker <em>What is more</em>, used to add a supporting point.</li>
+            <li class="expla-item"><strong>4. However / Nevertheless</strong> (Contrast): Adversative linker presenting a counterargument.</li>
+            <li class="expla-item"><strong>5. In</strong> (Purpose): Completes the complex conjunction <em>In order to</em> (+ verb) expressing goal/purpose.</li>
+            <li class="expla-item"><strong>6. In</strong> (Concession): Completes the prepositional linker <em>In spite of</em> (+ noun phrase).</li>
+            <li class="expla-item"><strong>7. Rather</strong> (Contrast / Preference): Part of the linking preposition <em>Rather than</em> (+ -ing clause), used to reject one alternative in favor of another.</li>
+            <li class="expla-item"><strong>8. As / So</strong> (Condition): Completes the conditional linker <em>As long as</em> / <em>So long as</em> ("provided that").</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    const acceptedAnswers = {
+        gap1: ["although", "while", "whereas"],
+        gap2: ["as"],
+        gap3: ["more"],
+        gap4: ["however", "nevertheless"],
+        gap5: ["in"],
+        gap6: ["in"],
+        gap7: ["rather"],
+        gap8: ["as", "so"]
+    };
+
+    function checkAnswers() {
+        let score = 0;
+        const total = Object.keys(acceptedAnswers).length;
+
+        for (let key in acceptedAnswers) {
+            const input = document.getElementById(key);
+            const userValue = input.value.trim().toLowerCase();
+            const validOptions = acceptedAnswers[key];
+
+            input.classList.remove("correct", "incorrect");
+
+            if (validOptions.includes(userValue)) {
+                input.classList.add("correct");
+                score++;
+            } else {
+                input.classList.add("incorrect");
+            }
+        }
+
+        const scoreBoard = document.getElementById("scoreBoard");
+        scoreBoard.className = "score-board visible";
+        scoreBoard.innerHTML = `Your score: ${score} / ${total}`;
+
+        if (score === total) {
+            scoreBoard.classList.add("good");
+            scoreBoard.classList.remove("try-again");
+            scoreBoard.innerHTML += " — Excellent work! You mastered linking words and connectors.";
+        } else {
+            scoreBoard.classList.add("try-again");
+            scoreBoard.classList.remove("good");
+            scoreBoard.innerHTML += " — Check the red fields and try again or review the explanations below.";
+        }
+    }
+
+    function resetExercise() {
+        for (let key in acceptedAnswers) {
+            const input = document.getElementById(key);
+            input.value = "";
+            input.classList.remove("correct", "incorrect");
+        }
+        const scoreBoard = document.getElementById("scoreBoard");
+        scoreBoard.className = "score-board";
+        document.getElementById("explaSection").classList.remove("visible");
+    }
+
+    function toggleExplanations() {
+        const explaSection = document.getElementById("explaSection");
+        explaSection.classList.toggle("visible");
+    }
+</script>
+
+</body>
+</html>

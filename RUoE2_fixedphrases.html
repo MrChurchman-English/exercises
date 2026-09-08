@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>C1 Open Cloze — Losing the art of getting lost</title>
+<style>
+  :root{
+    --paper:#E7EAE3;
+    --paper-2:#F1F3EC;
+    --ink:#16211D;
+    --ink-soft:#5F6D66;
+    --rule:#C3CABF;
+    --route:#24557E;
+    --right:#2F6B4A;
+    --wrong:#A8321F;
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --label: "Avenir Next Condensed","Helvetica Neue Condensed","Arial Narrow",Inter,"Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:18px;
+    line-height:1.62;
+    -webkit-text-size-adjust:100%;
+  }
+  .sheet{max-width:44rem;margin:0 auto;padding:0 1.5rem 4rem}
+
+  /* ---- header: contour band ---- */
+  .band{position:relative;margin:0 -1.5rem 2.25rem;overflow:hidden;background:var(--paper-2);border-bottom:1px solid var(--rule)}
+  .band svg{display:block;width:100%;height:170px}
+  .band .titles{position:absolute;inset:auto 1.5rem 1.1rem;}
+  .eyebrow{
+    font-family:var(--label);
+    font-size:.82rem;letter-spacing:.06em;
+    color:var(--route);margin:0 0 .15rem;
+  }
+  h1{
+    font-family:var(--label);
+    font-weight:600;
+    font-size:clamp(1.85rem,6.2vw,2.9rem);
+    line-height:1.02;
+    letter-spacing:-.012em;
+    margin:0;
+    max-width:16ch;
+  }
+
+  /* ---- rubric ---- */
+  .rubric{
+    font-family:var(--label);
+    font-size:1rem;
+    color:var(--ink-soft);
+    border-left:2px solid var(--route);
+    padding:.1rem 0 .1rem .9rem;
+    margin:0 0 2rem;
+    max-width:34rem;
+  }
+  .rubric b{color:var(--ink);font-weight:600}
+
+  /* ---- passage ---- */
+  .passage{max-width:34rem}
+  .passage h2{
+    font-family:var(--label);font-size:1.15rem;font-weight:600;
+    margin:0 0 .9rem;
+  }
+  .passage p{margin:0 0 1.15rem}
+
+  .gap{display:inline-block;white-space:nowrap;position:relative}
+  .gap sup{
+    font-family:var(--label);font-size:.7em;color:var(--route);
+    vertical-align:.55em;margin-right:.12em;font-weight:600;
+  }
+  input.g{
+    font-family:var(--serif);font-size:1rem;
+    width:6.4ch;padding:.05em .28em .1em;
+    color:var(--ink);
+    background:rgba(255,255,255,.55);
+    border:0;border-bottom:1.5px solid var(--ink);
+    border-radius:2px 2px 0 0;
+    text-align:center;
+  }
+  input.g:focus{outline:2px solid var(--route);outline-offset:2px;background:#fff}
+  input.g.ex{background:transparent;border-bottom-style:dotted;color:var(--ink-soft)}
+  input.g.ok{border-bottom-color:var(--right);color:var(--right);background:rgba(47,107,74,.09)}
+  input.g.no{border-bottom-color:var(--wrong);color:var(--wrong);background:rgba(168,50,31,.09)}
+
+  /* ---- controls ---- */
+  .controls{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;margin:2rem 0 0;padding-top:1.4rem;border-top:1px solid var(--rule)}
+  button{
+    font-family:var(--label);font-size:1rem;font-weight:600;
+    padding:.5rem 1.1rem;border-radius:3px;cursor:pointer;
+    border:1.5px solid var(--route);
+  }
+  .primary{background:var(--route);color:var(--paper-2)}
+  .ghost{background:transparent;color:var(--route)}
+  button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+  .score{font-family:var(--label);font-size:1.05rem;margin-left:auto;color:var(--ink-soft)}
+  .score b{color:var(--ink);font-size:1.3rem}
+
+  /* ---- review ---- */
+  .review{margin-top:1.6rem;display:none}
+  .review.on{display:block}
+  .review h3{font-family:var(--label);font-size:1rem;font-weight:600;margin:0 0 .7rem;color:var(--ink-soft)}
+  .review ol{margin:0;padding:0;list-style:none;font-family:var(--label);font-size:1rem}
+  .review li{display:flex;gap:.7rem;padding:.42rem 0;border-bottom:1px solid var(--rule)}
+  .review .num{color:var(--route);font-weight:600;min-width:1.4rem}
+  .review .word{font-family:var(--serif);font-weight:600;min-width:6.5rem}
+  .review .word.no{color:var(--wrong)}
+  .review .word.ok{color:var(--right)}
+  .review .phr{color:var(--ink-soft)}
+
+  footer{
+    margin-top:3rem;padding-top:1rem;border-top:1px solid var(--rule);
+    font-family:var(--label);font-size:.83rem;line-height:1.5;color:var(--ink-soft);
+    max-width:34rem;
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .route-line{stroke-dasharray:520;stroke-dashoffset:520;animation:draw 2.6s ease-out .3s forwards}
+    @keyframes draw{to{stroke-dashoffset:0}}
+  }
+  @media print{
+    body{background:#fff}
+    .controls,.review{display:none}
+    input.g{background:transparent}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="band">
+    <svg viewBox="0 0 800 170" preserveAspectRatio="none" aria-hidden="true">
+      <g fill="none" stroke="#9C8B72" stroke-width="1">
+        <path d="M-10,40 C120,10 210,72 330,58 S560,4 810,34" opacity=".45"/>
+        <path d="M-10,62 C130,32 220,94 340,80 S570,26 810,56" opacity=".4"/>
+        <path d="M-10,86 C140,56 230,118 350,104 S580,50 810,80" opacity=".34"/>
+        <path d="M-10,112 C150,84 240,144 360,130 S590,76 810,106" opacity=".26"/>
+        <path d="M-10,140 C160,112 250,172 370,158 S600,104 810,134" opacity=".18"/>
+      </g>
+      <path class="route-line" d="M60,150 L150,104 L250,118 L352,64 L470,78 L600,30"
+            fill="none" stroke="#24557E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="60" cy="150" r="4.5" fill="#24557E"/>
+      <circle cx="600" cy="30" r="4.5" fill="none" stroke="#24557E" stroke-width="2.4"/>
+    </svg>
+    <div class="titles">
+      <p class="eyebrow">C1 Advanced · Reading and Use of English, Part 2</p>
+      <h1>Losing the art of getting lost</h1>
+    </div>
+  </div>
+
+  <p class="rubric">
+    Read the text and think of the word which best fits each gap.
+    Use <b>only one word</b> in each gap. There is an example at the beginning <b>(0)</b>.
+  </p>
+
+  <div class="passage">
+    <p>
+      <span class="gap"><sup>0</sup><input class="g ex" value="Not" disabled aria-label="Gap 0, example, answer Not"></span>
+      so long ago, a journey to an unfamiliar city began with a paper map spread across the
+      kitchen table. Today that map has all
+      <span class="gap"><sup>1</sup><input class="g" id="g1" aria-label="Gap 1" autocomplete="off" spellcheck="false"></span>
+      vanished: we simply type an address into a phone and follow a blue arrow. By and
+      <span class="gap"><sup>2</sup><input class="g" id="g2" aria-label="Gap 2" autocomplete="off" spellcheck="false"></span>,
+      this is progress: fewer wrong turns, fewer arguments in the car. Yet something has been
+      lost along the
+      <span class="gap"><sup>3</sup><input class="g" id="g3" aria-label="Gap 3" autocomplete="off" spellcheck="false"></span>.
+    </p>
+    <p>
+      Researchers who study navigation argue that constant guidance comes at the
+      <span class="gap"><sup>4</sup><input class="g" id="g4" aria-label="Gap 4" autocomplete="off" spellcheck="false"></span>
+      of our sense of direction. When we hand over the work of finding our way, the parts of
+      the brain that build mental maps are, to some
+      <span class="gap"><sup>5</sup><input class="g" id="g5" aria-label="Gap 5" autocomplete="off" spellcheck="false"></span>,
+      left idle. Getting lost, it turns out, is how we come to know a place.
+    </p>
+    <p>
+      None of this means we should throw our phones away,
+      <span class="gap"><sup>6</sup><input class="g" id="g6" aria-label="Gap 6" autocomplete="off" spellcheck="false"></span>
+      alone print out directions for every trip. But it may be worth walking the long way home
+      now and again,
+      <span class="gap"><sup>7</sup><input class="g" id="g7" aria-label="Gap 7" autocomplete="off" spellcheck="false"></span>
+      the sake of what you stumble across. The city you know by
+      <span class="gap"><sup>8</sup><input class="g" id="g8" aria-label="Gap 8" autocomplete="off" spellcheck="false"></span>,
+      after all, is rarely the one you first drove through.
+    </p>
+  </div>
+
+  <div class="controls">
+    <button class="primary" id="check">Check answers</button>
+    <button class="ghost" id="reveal">Show the answers</button>
+    <button class="ghost" id="again">Start again</button>
+    <p class="score" id="score" role="status" aria-live="polite"></p>
+  </div>
+
+  <div class="review" id="review">
+    <h3 id="revhead">The phrases</h3>
+    <ol id="revlist"></ol>
+  </div>
+
+  <footer>
+    <strong>How this exercise was made.</strong>
+    Mr Churchman and Claude (an AI assistant made by Anthropic) wrote this together in
+    September 2026. I set the task and chose the eight fixed phrases; Claude wrote the text
+    around them and built this page; I changed what needed changing and checked every answer
+    myself. The format follows Cambridge C1 Advanced, Part 2, but the text is new — it is not
+    from a past paper. If a gap marks your answer wrong and you think you are right, tell me:
+    that is my mistake, not the computer's.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var GAPS = [
+    {n:1, ans:["but"],            phrase:"all but — almost completely"},
+    {n:2, ans:["large"],          phrase:"by and large — generally speaking"},
+    {n:3, ans:["way"],            phrase:"lost along the way"},
+    {n:4, ans:["expense","cost"], phrase:"at the expense of — with damage to"},
+    {n:5, ans:["extent"],         phrase:"to some extent — partly"},
+    {n:6, ans:["let"],            phrase:"let alone — and certainly not"},
+    {n:7, ans:["for"],            phrase:"for the sake of — in order to get"},
+    {n:8, ans:["heart"],          phrase:"know something by heart"}
+  ];
+  var $ = function(id){ return document.getElementById(id); };
+  var inputs = GAPS.map(function(g){ return $("g"+g.n); });
+  var score = $("score"), review = $("review"), revlist = $("revlist"), revhead = $("revhead");
+
+  function tidy(s){ return (s||"").trim().toLowerCase().replace(/[.,;:!?'"]/g,""); }
+  function isRight(g,v){ return g.ans.indexOf(tidy(v)) > -1; }
+
+  function clearMarks(){
+    inputs.forEach(function(i){ i.classList.remove("ok","no"); });
+    score.textContent = "";
+    review.classList.remove("on");
+    revlist.innerHTML = "";
+  }
+
+  function check(){
+    var right = 0;
+    GAPS.forEach(function(g,k){
+      var i = inputs[k], ok = isRight(g, i.value);
+      i.classList.toggle("ok", ok);
+      i.classList.toggle("no", !ok);
+      if(ok) right++;
+    });
+    score.innerHTML = "<b>" + right + "</b> / 8";
+    list(false);
+  }
+
+  function list(all){
+    revlist.innerHTML = "";
+    var shown = 0;
+    GAPS.forEach(function(g,k){
+      var ok = isRight(g, inputs[k].value);
+      if(!all && ok) return;
+      shown++;
+      var li = document.createElement("li");
+      li.innerHTML = '<span class="num">' + g.n + '</span>' +
+                     '<span class="word ' + (ok ? "ok" : "no") + '">' + g.ans[0] + '</span>' +
+                     '<span class="phr">' + g.phrase + '</span>';
+      revlist.appendChild(li);
+    });
+    if(!all && shown === 0){
+      revhead.textContent = "All eight. Nothing left to review.";
+      review.classList.add("on");
+      return;
+    }
+    revhead.textContent = all ? "The phrases" : "Have another look at these";
+    review.classList.add("on");
+  }
+
+  $("check").addEventListener("click", check);
+
+  $("reveal").addEventListener("click", function(){
+    GAPS.forEach(function(g,k){
+      if(!inputs[k].value.trim()) inputs[k].value = g.ans[0];
+      inputs[k].classList.remove("ok","no");
+    });
+    score.textContent = "";
+    list(true);
+  });
+
+  $("again").addEventListener("click", function(){
+    inputs.forEach(function(i){ i.value = ""; });
+    clearMarks();
+    revhead.textContent = "The phrases";
+    inputs[0].focus();
+  });
+
+  inputs.forEach(function(i,k){
+    i.addEventListener("input", function(){ i.classList.remove("ok","no"); });
+    i.addEventListener("keydown", function(e){
+      if(e.key === "Enter"){ e.preventDefault(); check(); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
