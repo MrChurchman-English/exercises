@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insight Upper-Intermediate, Unit 1 — the self- words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F5F4;
+  --card:#FFFFFF;
+  --ink:#14212B;
+  --muted:#66777F;
+  --rule:#D7DEDD;
+  --petrol:#14615E;
+  --petrol-soft:#E2EDEB;
+  --amber:#9C6B0B;
+  --amber-soft:#F7EEDA;
+  --rust:#A03A2B;
+  --rust-soft:#F7E6E2;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.55;
+  padding-bottom:6.5rem;
+}
+.wrap{max-width:60rem;margin:0 auto;padding:2.5rem 1.25rem 0}
+
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--petrol);margin:0 0 1rem}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,3.4rem);line-height:1.02;letter-spacing:-.02em;margin:0 0 .6rem;max-width:20ch}
+.standfirst{font-size:1.05rem;color:var(--muted);margin:0 0 2.5rem;max-width:52ch}
+.rule{border:0;border-top:1px solid var(--rule);margin:2.5rem 0}
+
+.task{margin:0 0 2rem}
+.task-no{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(1.3rem,3.2vw,1.75rem);letter-spacing:-.01em;margin:.15rem 0 .5rem}
+.instruction{margin:0;color:var(--muted);max-width:56ch}
+
+.match{display:grid;grid-template-columns:minmax(0,20rem) minmax(0,1fr);gap:2.5rem;align-items:start}
+@media (max-width:760px){.match{grid-template-columns:1fr;gap:1.75rem}}
+.col-label{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-bottom:.5rem;border-bottom:1px solid var(--rule);margin-bottom:.75rem}
+.stack{display:flex;flex-direction:column;gap:.4rem}
+
+.word,.def{
+  font:inherit;text-align:left;width:100%;background:var(--card);
+  border:1px solid var(--rule);border-radius:2px;padding:.6rem .75rem;cursor:pointer;
+  display:flex;gap:.7rem;align-items:baseline;transition:border-color .12s,background .12s;
+}
+.word:hover,.def:hover{border-color:var(--petrol)}
+.word:focus-visible,.def:focus-visible{outline:2px solid var(--petrol);outline-offset:2px}
+.word .num{font-family:var(--mono);font-size:.78rem;color:var(--muted);min-width:1.4rem}
+.word .term{font-family:var(--display);font-weight:600;font-size:1.05rem;flex:1}
+.word .chip{font-family:var(--mono);font-size:.78rem;font-weight:600;background:var(--petrol-soft);color:var(--petrol);border-radius:2px;padding:.1rem .45rem;min-width:1.6rem;text-align:center}
+.word .chip.empty{background:transparent;color:var(--rule);border:1px dashed var(--rule)}
+.word[aria-pressed="true"]{border-color:var(--petrol);background:var(--petrol-soft)}
+.def .letter{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--petrol);min-width:1.2rem}
+.def.used{opacity:.42}
+.word.ok{border-color:var(--petrol);background:var(--petrol-soft)}
+.word.no{border-color:var(--rust);background:var(--rust-soft)}
+.word.ok .chip{background:var(--petrol);color:#fff}
+.word.no .chip{background:var(--rust);color:#fff}
+.pair-status{font-family:var(--mono);font-size:.75rem;color:var(--muted);min-height:1.4rem;margin:.9rem 0 0}
+.pair-status strong{font-family:var(--display);color:var(--ink)}
+
+.bank{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.25rem 0 2rem;padding:1rem;background:var(--card);border:1px solid var(--rule);border-radius:2px}
+.bank button{font-family:var(--display);font-size:.95rem;font-weight:600;background:var(--paper);border:1px solid var(--rule);border-radius:2px;padding:.3rem .6rem;cursor:pointer;color:var(--ink)}
+.bank button:hover{border-color:var(--petrol)}
+.bank button:focus-visible{outline:2px solid var(--petrol);outline-offset:2px}
+.bank button.spent{opacity:.35;text-decoration:line-through}
+
+ol.gaps{list-style:none;margin:0;padding:0;counter-reset:g}
+ol.gaps li{counter-increment:g;margin:0 0 1.4rem;padding-left:2.5rem;position:relative}
+ol.gaps li::before{content:counter(g);position:absolute;left:0;top:.15rem;font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+.gap{font-family:var(--display);font-weight:600;font-size:1rem;width:17ch;border:0;border-bottom:1.5px solid var(--ink);background:transparent;color:var(--ink);padding:.1rem .2rem;text-align:center}
+.gap:focus{outline:0;background:var(--petrol-soft);border-bottom-color:var(--petrol)}
+.gap.ok{color:var(--petrol);border-bottom-color:var(--petrol)}
+.gap.near{color:var(--amber);border-bottom-color:var(--amber)}
+.gap.no{color:var(--rust);border-bottom-color:var(--rust)}
+.prompt{font-family:var(--mono);font-size:.8rem;color:var(--muted);white-space:nowrap}
+.note{margin:.5rem 0 0;font-size:.92rem;line-height:1.45;padding:.55rem .75rem;border-left:2px solid;border-radius:0 2px 2px 0}
+.note.near{color:var(--amber);background:var(--amber-soft);border-color:var(--amber)}
+.note.no{color:var(--rust);background:var(--rust-soft);border-color:var(--rust)}
+.note[hidden]{display:none}
+
+footer.made{margin:3.5rem 0 2rem;padding-top:1.25rem;border-top:1px solid var(--rule);font-family:var(--mono);font-size:.75rem;line-height:1.7;color:var(--muted);max-width:64ch}
+footer.made h3{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;margin:0 0 .5rem;color:var(--muted)}
+
+.toolbar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--rule);padding:.75rem 1.25rem;display:flex;gap:.75rem;align-items:center;justify-content:center;flex-wrap:wrap}
+.score{font-family:var(--mono);font-size:.85rem;color:var(--muted);margin-right:auto}
+.score b{color:var(--ink);font-size:1.05rem}
+@media (max-width:620px){.score{margin-right:0;width:100%;text-align:center}.toolbar{justify-content:space-between}}
+.btn{font-family:var(--display);font-weight:600;font-size:.95rem;padding:.55rem 1.1rem;border-radius:2px;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn:focus-visible{outline:2px solid var(--petrol);outline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Vocabulary · Insight Upper-Intermediate, Unit 1</p>
+  <h1>Looking after yourself, looking past yourself</h1>
+  <p class="standfirst">Eight nouns, all built on <em>self-</em>. Two of the pairs are close enough to be worth arguing about.</p>
+
+  <hr class="rule">
+
+  <section class="task">
+    <span class="task-no">Exercise 1</span>
+    <h2>Match the word to its meaning</h2>
+    <p class="instruction">Tap a word, then tap its definition. Tap the word again to undo it.</p>
+  </section>
+
+  <div class="match">
+    <div>
+      <p class="col-label">The words</p>
+      <div class="stack" id="words"></div>
+      <p class="pair-status" id="status"></p>
+    </div>
+    <div>
+      <p class="col-label">The meanings</p>
+      <div class="stack" id="defs"></div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <section class="task">
+    <span class="task-no">Exercise 2</span>
+    <h2>Put the words into context</h2>
+    <p class="instruction">Complete each sentence with one word from the box. Use each word once. You can type in the gap or tap a word.</p>
+  </section>
+
+  <div class="bank" id="bank"></div>
+  <ol class="gaps" id="gaps2"></ol>
+
+  <hr class="rule">
+
+  <section class="task">
+    <span class="task-no">Exercise 3</span>
+    <h2>Change the noun into an adjective</h2>
+    <p class="instruction">The noun in grey is not the right form. Write the adjective that fits the sentence.</p>
+  </section>
+
+  <ol class="gaps" id="gaps3"></ol>
+
+  <footer class="made">
+    <h3>How this exercise was made</h3>
+    <p>Mr Churchman and Claude (an AI assistant made by Anthropic) wrote this together. The eight words come from Insight Upper-Intermediate, Unit 1 — I chose them. Claude wrote the sentences around them and built this page; I set the task, changed what needed changing, and checked every answer myself. If a gap marks your answer wrong and you think you are right, tell me — that is my mistake, not the computer's.</p>
+  </footer>
+</div>
+
+<div class="toolbar">
+  <p class="score" id="score"><b>0</b>/22 correct</p>
+  <button class="btn" id="reset">Start again</button>
+  <button class="btn primary" id="check">Check answers</button>
+</div>
+
+<script>
+const DEFS = [
+  {l:'A', t:'the natural instinct to keep yourself alive and out of danger'},
+  {l:'B', t:'the act of giving up something you want or need so that someone else benefits'},
+  {l:'C', t:'the quality of being confident about your own abilities and judgement'},
+  {l:'D', t:'the habit of thinking and talking about yourself almost all the time'},
+  {l:'E', t:'the ability to stay calm and stop yourself from doing what you feel like doing'},
+  {l:'F', t:'caring about what is good for you rather than about other people'},
+  {l:'G', t:"the quality of caring more about other people's needs than about your own"},
+  {l:'H', t:'protecting yourself physically when someone attacks you'}
+];
+
+const WORDS = [
+  {w:'self-assurance',   l:'C'},
+  {w:'self-control',     l:'E'},
+  {w:'self-defence',     l:'H'},
+  {w:'self-interest',    l:'F'},
+  {w:'selflessness',     l:'G'},
+  {w:'self-obsession',   l:'D'},
+  {w:'self-preservation',l:'A'},
+  {w:'self-sacrifice',   l:'B'}
+];
+
+const BANK = ['self-obsession','self-preservation','selflessness','self-defence',
+              'self-sacrifice','self-assurance','self-interest','self-control'];
+
+const EX2 = [
+  {before:'Nothing seems to shake Daniel. He walked into the interview with the ', after:' of a man who already had the job.', a:'self-assurance', near:{}},
+  {before:"The referee's decision was absurd, but Ana said nothing and walked away. That takes real ", after:'.', a:'self-control', near:{}},
+  {before:'The court accepted that she had acted in ', after:', and she left without a conviction.', a:'self-defence', alt:['self-defense'],
+    near:{'self-preservation':'Self-preservation is the instinct to stay out of danger. A court is judging what she did to someone who attacked her, and there is a legal term for that.'}},
+  {before:'Companies rarely protect the environment out of kindness. Usually it is plain ', after:': green products sell.', a:'self-interest',
+    near:{'self-obsession':'Self-obsession is about attention — thinking and talking about yourself. This sentence is about advantage: what makes money for the company.'}},
+  {before:'He thinks about everyone else before he thinks about himself. I have never met anyone with that much ', after:'.', a:'selflessness',
+    near:{'self-sacrifice':'Self-sacrifice is a thing you do — something given up. This sentence describes what he is like, not what he did.'}},
+  {before:'Sending both her sons to university meant years of ', after:' — no holidays, no new clothes, two jobs.', a:'self-sacrifice',
+    near:{'selflessness':'Selflessness is the quality. Here the sentence lists what she actually gave up, so it needs the word for the act itself.'}},
+  {before:'The fire alarm went off during the lecture, and nobody stopped to pick up their bags. In a burning building, ', after:' takes over.', a:'self-preservation',
+    near:{'self-defence':'Self-defence is what you do when a person attacks you. Nobody is attacking here — the danger is the fire, and instinct takes over.',
+          'self-defense':'Self-defence is what you do when a person attacks you. Nobody is attacking here — the danger is the fire, and instinct takes over.'}},
+  {before:'Every conversation comes back to him: his career, his diet, his opinions. The ', after:' is exhausting.', a:'self-obsession',
+    near:{'self-interest':'Self-interest is about advantage. He is not gaining anything here — he simply cannot stop talking about himself.'}}
+];
+
+const EX3 = [
+  {before:'Daniel is remarkably ', after:' for a seventeen-year-old, and adults trust him because of it.', a:'self-assured', prompt:'self-assurance',
+    near:{'self-assuring':'Not quite. The adjective describes how he is, not what he does to others: think of an -ed ending.'}},
+  {before:'She is the most ', after:' person I know. I have never once heard her raise her voice.', a:'self-controlled', prompt:'self-control',
+    near:{'self-controlling':'We do not describe people as self-controlling. The form you want ends in -ed.'}},
+  {before:'Donating a kidney to a stranger is about as ', after:' an act as I can imagine.', a:'selfless', prompt:'selflessness',
+    near:{}},
+  {before:'He is far too ', after:' to notice that nobody is listening any more.', a:'self-obsessed', prompt:'self-obsession',
+    near:{'self-obsessive':'You will meet self-obsessive occasionally, but self-obsessed is much more common and is the form to learn.'}},
+  {before:'The offer looks generous, but it is entirely ', after:': they want the contract.', a:'self-interested', prompt:'self-interest',
+    near:{}},
+  {before:'Her parents were so ', after:' that they never spent a franc on themselves.', a:'self-sacrificing', alt:['self-sacrificial'], prompt:'self-sacrifice',
+    near:{}}
+];
+
+/* ---------- exercise 1 ---------- */
+const pairs = {};
+let selected = null;
+const wordsEl = document.getElementById('words');
+const defsEl  = document.getElementById('defs');
+const statusEl= document.getElementById('status');
+
+WORDS.forEach((item,i)=>{
+  const b=document.createElement('button');
+  b.className='word'; b.type='button'; b.setAttribute('aria-pressed','false');
+  b.innerHTML=`<span class="num">${i+1}</span><span class="term">${item.w}</span><span class="chip empty">—</span>`;
+  b.addEventListener('click',()=>selectWord(i));
+  wordsEl.appendChild(b);
+});
+DEFS.forEach(d=>{
+  const b=document.createElement('button');
+  b.className='def'; b.type='button'; b.dataset.letter=d.l;
+  b.innerHTML=`<span class="letter">${d.l}</span><span>${d.t}</span>`;
+  b.addEventListener('click',()=>assign(d.l));
+  defsEl.appendChild(b);
+});
+function selectWord(i){
+  if(pairs[i]){delete pairs[i];selected=i;}
+  else selected=(selected===i)?null:i;
+  render1();
+}
+function assign(letter){
+  if(selected===null){statusEl.textContent='Tap a word on the left first.';return;}
+  for(const k in pairs) if(pairs[k]===letter) delete pairs[k];
+  pairs[selected]=letter; selected=null; render1();
+}
+function render1(){
+  [...wordsEl.children].forEach((b,i)=>{
+    b.classList.remove('ok','no');
+    b.setAttribute('aria-pressed',selected===i?'true':'false');
+    const chip=b.querySelector('.chip');
+    chip.textContent=pairs[i]||'—';
+    chip.classList.toggle('empty',!pairs[i]);
+  });
+  const taken=Object.values(pairs);
+  [...defsEl.children].forEach(b=>b.classList.toggle('used',taken.includes(b.dataset.letter)));
+  statusEl.innerHTML = selected===null ? '' :
+    `Selected <strong>${WORDS[selected].w}</strong> — now tap its meaning.`;
+}
+
+/* ---------- gap builder (used by both 2 and 3) ---------- */
+function buildGaps(list, container, showPrompt){
+  const ol=document.getElementById(container);
+  list.forEach((s,i)=>{
+    const li=document.createElement('li');
+    const input=document.createElement('input');
+    input.className='gap'; input.type='text'; input.autocomplete='off';
+    input.autocapitalize='off'; input.spellcheck=false;
+    input.setAttribute('aria-label','Gap '+(i+1));
+    input.addEventListener('focus',()=>{ if(!showPrompt) lastGap=input; });
+    const note=document.createElement('p');
+    note.className='note'; note.hidden=true;
+    input.addEventListener('input',()=>{
+      input.classList.remove('ok','near','no'); note.hidden=true; renderBank();
+    });
+    li.append(document.createTextNode(s.before), input, document.createTextNode(s.after));
+    if(showPrompt){
+      const p=document.createElement('span');
+      p.className='prompt'; p.textContent=' ('+s.prompt+')';
+      li.append(p);
+    }
+    li.append(note);
+    ol.appendChild(li);
+    s._input=input; s._note=note;
+  });
+}
+let lastGap=null;
+buildGaps(EX2,'gaps2',false);
+buildGaps(EX3,'gaps3',true);
+
+/* ---------- word bank ---------- */
+const bankEl=document.getElementById('bank');
+BANK.forEach(w=>{
+  const b=document.createElement('button');
+  b.type='button'; b.textContent=w; b.dataset.word=w;
+  b.addEventListener('click',()=>{
+    let target=(lastGap&&!lastGap.value.trim())?lastGap:EX2.map(s=>s._input).find(i=>!i.value.trim());
+    if(!target) return;
+    target.value=w; target.classList.remove('ok','near','no');
+    target.focus(); renderBank();
+  });
+  bankEl.appendChild(b);
+});
+function renderBank(){
+  const used=EX2.map(s=>s._input.value.trim().toLowerCase().replace(/[\s\u2010-\u2015-]/g,''));
+  [...bankEl.children].forEach(b=>{
+    b.classList.toggle('spent',used.includes(b.dataset.word.replace(/-/g,'')));
+  });
+}
+
+/* ---------- checking ---------- */
+function key(v){
+  return v.trim().toLowerCase()
+          .replace(/[.,;:!?]+$/,'')
+          .replace(/[\u2010-\u2015]/g,'-')
+          .replace(/[\s-]/g,'');
+}
+function markGaps(list){
+  let s=0;
+  list.forEach(item=>{
+    const v=key(item._input.value);
+    item._input.classList.remove('ok','near','no');
+    item._note.hidden=true; item._note.className='note';
+    if(!v) return;
+    const accepted=[item.a].concat(item.alt||[]).map(key);
+    if(accepted.includes(v)){ item._input.classList.add('ok'); s++; return; }
+    if(item.prompt && v===key(item.prompt)){
+      item._input.classList.add('near');
+      item._note.classList.add('near');
+      item._note.textContent='That is the noun you were given. The gap needs the adjective form.';
+      item._note.hidden=false; return;
+    }
+    const nk=Object.keys(item.near||{}).find(k=>key(k)===v);
+    if(nk){
+      item._input.classList.add('near');
+      item._note.classList.add('near');
+      item._note.textContent=item.near[nk];
+      item._note.hidden=false; return;
+    }
+    item._input.classList.add('no');
+    item._note.classList.add('no');
+    item._note.textContent='Not this one. Read the whole sentence again — what is it really about?';
+    item._note.hidden=false;
+  });
+  return s;
+}
+
+document.getElementById('check').addEventListener('click',()=>{
+  let score=0;
+  [...wordsEl.children].forEach((b,i)=>{
+    b.classList.remove('ok','no');
+    if(!pairs[i]) return;
+    if(pairs[i]===WORDS[i].l){ b.classList.add('ok'); score++; }
+    else b.classList.add('no');
+  });
+  score+=markGaps(EX2);
+  score+=markGaps(EX3);
+  document.getElementById('score').innerHTML=`<b>${score}</b>/22 correct`;
+});
+
+document.getElementById('reset').addEventListener('click',()=>{
+  for(const k in pairs) delete pairs[k];
+  selected=null; render1();
+  EX2.concat(EX3).forEach(s=>{
+    s._input.value=''; s._input.classList.remove('ok','near','no'); s._note.hidden=true;
+  });
+  renderBank();
+  document.getElementById('score').innerHTML='<b>0</b>/22 correct';
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+render1();
+renderBank();
+</script>
+</body>
+</html>
