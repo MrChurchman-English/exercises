@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Insight Upper Intermediate, Unit 1 — nine words and phrases</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F5F4;
+  --card:#FFFFFF;
+  --ink:#14212B;
+  --muted:#66777F;
+  --rule:#D7DEDD;
+  --petrol:#14615E;
+  --petrol-soft:#E2EDEB;
+  --amber:#9C6B0B;
+  --amber-soft:#F7EEDA;
+  --rust:#A03A2B;
+  --rust-soft:#F7E6E2;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --body:"Source Serif 4",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--body);font-size:17px;line-height:1.55;
+  padding-bottom:6.5rem;
+}
+.wrap{max-width:60rem;margin:0 auto;padding:2.5rem 1.25rem 0}
+
+/* ---------- masthead ---------- */
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--petrol);margin:0 0 1rem}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(2rem,6vw,3.4rem);line-height:1.02;letter-spacing:-.02em;margin:0 0 .6rem;max-width:20ch}
+.standfirst{font-size:1.05rem;color:var(--muted);margin:0 0 2.5rem;max-width:52ch}
+.rule{border:0;border-top:1px solid var(--rule);margin:2.5rem 0}
+
+/* ---------- section headers ---------- */
+.task{margin:0 0 2rem}
+.task-no{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+h2{font-family:var(--display);font-weight:600;font-size:clamp(1.3rem,3.2vw,1.75rem);letter-spacing:-.01em;margin:.15rem 0 .5rem}
+.instruction{margin:0;color:var(--muted);max-width:56ch}
+
+/* ---------- exercise 1 ---------- */
+.match{display:grid;grid-template-columns:minmax(0,22rem) minmax(0,1fr);gap:2.5rem;align-items:start}
+@media (max-width:760px){.match{grid-template-columns:1fr;gap:1.75rem}}
+.col-label{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);padding-bottom:.5rem;border-bottom:1px solid var(--rule);margin-bottom:.75rem}
+.stack{display:flex;flex-direction:column;gap:.4rem}
+.word,.def{
+  font:inherit;text-align:left;width:100%;
+  background:var(--card);border:1px solid var(--rule);border-radius:2px;
+  padding:.6rem .75rem;cursor:pointer;
+  display:flex;gap:.7rem;align-items:baseline;
+  transition:border-color .12s,background .12s;color:var(--ink);
+}
+.word:hover,.def:hover{border-color:var(--petrol)}
+.word:focus-visible,.def:focus-visible{outline:2px solid var(--petrol);outline-offset:2px}
+.word .num{font-family:var(--mono);font-size:.78rem;color:var(--muted);min-width:1.4rem}
+.word .term{font-family:var(--display);font-weight:600;font-size:1.05rem;flex:1}
+.word .chip{font-family:var(--mono);font-size:.78rem;font-weight:600;background:var(--petrol-soft);color:var(--petrol);border-radius:2px;padding:.1rem .45rem;min-width:1.6rem;text-align:center}
+.word .chip.empty{background:transparent;color:var(--rule);border:1px dashed var(--rule)}
+.word[aria-pressed="true"]{border-color:var(--petrol);background:var(--petrol-soft)}
+.def .letter{font-family:var(--mono);font-size:.78rem;font-weight:600;color:var(--petrol);min-width:1.2rem}
+.def.used{opacity:.42}
+.word.ok{border-color:var(--petrol);background:var(--petrol-soft)}
+.word.no{border-color:var(--rust);background:var(--rust-soft)}
+.word.ok .chip{background:var(--petrol);color:#fff}
+.word.no .chip{background:var(--rust);color:#fff}
+.pair-status{font-family:var(--mono);font-size:.75rem;color:var(--muted);min-height:1.4rem;margin:.9rem 0 0}
+.pair-status strong{font-family:var(--display);color:var(--ink)}
+
+/* ---------- word banks ---------- */
+.bank{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.25rem 0 2rem;padding:1rem;background:var(--card);border:1px solid var(--rule);border-radius:2px}
+.bank button{font-family:var(--display);font-size:.95rem;font-weight:600;background:var(--paper);border:1px solid var(--rule);border-radius:2px;padding:.3rem .6rem;cursor:pointer;color:var(--ink)}
+.bank button:hover{border-color:var(--petrol)}
+.bank button:focus-visible{outline:2px solid var(--petrol);outline-offset:2px}
+.bank button.spent{opacity:.35;text-decoration:line-through}
+
+/* ---------- exercise 2 ---------- */
+ol.gaps{list-style:none;counter-reset:g;margin:0;padding:0}
+ol.gaps li{counter-increment:g;margin:0 0 1.4rem;padding-left:2.5rem;position:relative}
+ol.gaps li::before{content:counter(g);position:absolute;left:0;top:.15rem;font-family:var(--mono);font-size:.78rem;color:var(--muted)}
+
+/* ---------- gaps (shared) ---------- */
+.gap{
+  font-family:var(--display);font-weight:600;font-size:1rem;
+  width:17ch;max-width:100%;
+  border:0;border-bottom:1.5px solid var(--ink);border-radius:0;
+  background:transparent;color:var(--ink);
+  padding:.1rem .2rem;text-align:center;
+}
+.gap:focus{outline:0;background:var(--petrol-soft);border-bottom-color:var(--petrol)}
+.gap.ok{color:var(--petrol);border-bottom-color:var(--petrol)}
+.gap.near{color:var(--amber);border-bottom-color:var(--amber)}
+.gap.no{color:var(--rust);border-bottom-color:var(--rust)}
+.note{margin:.5rem 0 0;font-size:.92rem;line-height:1.45;padding:.55rem .75rem;border-left:2px solid;border-radius:0 2px 2px 0}
+.note.near{color:var(--amber);background:var(--amber-soft);border-color:var(--amber)}
+.note.no{color:var(--rust);background:var(--rust-soft);border-color:var(--rust)}
+.note[hidden]{display:none}
+.note b{font-family:var(--mono);font-weight:600;font-size:.8rem;margin-right:.35rem}
+
+/* ---------- exercise 3 ---------- */
+.text{
+  background:var(--card);border:1px solid var(--rule);border-radius:2px;
+  padding:1.5rem 1.5rem .5rem;max-width:44rem;
+}
+.text h3{font-family:var(--display);font-weight:800;font-size:1.35rem;letter-spacing:-.01em;margin:0 0 1rem}
+.text p.para{margin:0 0 .4rem;line-height:2.1}
+.text .notes{margin:0 0 1.2rem}
+.gno{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-right:.15rem}
+@media (max-width:620px){.text{padding:1.1rem 1rem .25rem}}
+
+/* ---------- footer + toolbar ---------- */
+footer.made{margin:3.5rem 0 2rem;padding-top:1.25rem;border-top:1px solid var(--rule);font-family:var(--mono);font-size:.75rem;line-height:1.7;color:var(--muted);max-width:64ch}
+footer.made h3{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;margin:0 0 .5rem;color:var(--muted)}
+.toolbar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--rule);padding:.75rem 1.25rem;display:flex;gap:.75rem;align-items:center;justify-content:center;flex-wrap:wrap}
+.score{font-family:var(--mono);font-size:.85rem;color:var(--muted);margin:0 auto 0 0}
+.score b{color:var(--ink);font-size:1.05rem}
+@media (max-width:620px){.score{margin:0;width:100%;text-align:center}.toolbar{justify-content:space-between}}
+.btn{font-family:var(--display);font-weight:600;font-size:.95rem;padding:.55rem 1.1rem;border-radius:2px;cursor:pointer;border:1px solid var(--ink);background:transparent;color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--paper)}
+.btn:focus-visible{outline:2px solid var(--petrol);outline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Vocabulary · Insight Upper Intermediate, Unit 1</p>
+  <h1>Small steps and striking results</h1>
+  <p class="standfirst">Nine words and phrases. Two of them are close cousins, so take your time over those.</p>
+
+  <hr class="rule">
+
+  <!-- ===== Exercise 1 ===== -->
+  <section class="task">
+    <span class="task-no">Exercise 1</span>
+    <h2>Match the word to its meaning</h2>
+    <p class="instruction">Tap a word, then tap its definition. Tap the letter again to undo it.</p>
+  </section>
+
+  <div class="match">
+    <div>
+      <p class="col-label">The words</p>
+      <div class="stack" id="words"></div>
+      <p class="pair-status" id="status"></p>
+    </div>
+    <div>
+      <p class="col-label">The meanings</p>
+      <div class="stack" id="defs"></div>
+    </div>
+  </div>
+
+  <hr class="rule">
+
+  <!-- ===== Exercise 2 ===== -->
+  <section class="task">
+    <span class="task-no">Exercise 2</span>
+    <h2>Put the words into context</h2>
+    <p class="instruction">Complete each sentence with one word or phrase from the box. Use each one once. You can type in the gap or tap a word.</p>
+  </section>
+
+  <div class="bank" id="bank2"></div>
+  <ol class="gaps" id="gaps2"></ol>
+
+  <hr class="rule">
+
+  <!-- ===== Exercise 3 ===== -->
+  <section class="task">
+    <span class="task-no">Exercise 3</span>
+    <h2>Complete the text</h2>
+    <p class="instruction">Use each word or phrase from the box once. Some of them need a different form (for example, add <i>-ly</i> or <i>-ed</i>). Tapping a word puts it in the gap as it is, so check whether you need to change it.</p>
+  </section>
+
+  <div class="bank" id="bank3"></div>
+  <div class="text" id="text3"><h3>Life without phones</h3></div>
+
+  <footer class="made">
+    <h3>How this exercise was made</h3>
+    <p>Mr Churchman and Claude (an AI assistant made by Anthropic) wrote this together. The nine words and phrases come from Insight Upper Intermediate, Unit 1 — I chose them. Claude wrote the sentences and the text around them and built this page; I set the task, changed what needed changing, and checked every answer myself. If a gap marks your answer wrong and you think you are right, tell me — that is my mistake, not the computer's.</p>
+  </footer>
+</div>
+
+<div class="toolbar">
+  <p class="score" id="score"><b>0</b>/27 correct</p>
+  <button class="btn" id="reset" type="button">Start again</button>
+  <button class="btn primary" id="check" type="button">Check answers</button>
+</div>
+
+<script>
+/* ================= data ================= */
+const DEFS = [
+  {l:'A', t:'a confusing and difficult problem that is hard to solve'},
+  {l:'B', t:'looking very tired, thin and worried, especially in the face'},
+  {l:'C', t:'happening in a series of small, separate steps'},
+  {l:'D', t:'in the meantime; in the period between two events'},
+  {l:'E', t:'a large amount of (used before uncountable nouns)'},
+  {l:'F', t:'to punish someone for breaking a rule, often by taking something away from them'},
+  {l:'G', t:'so unusual or attractive that you notice it immediately'},
+  {l:'H', t:'happening slowly and evenly over a period of time, not suddenly'},
+  {l:'I', t:'listening or watching carefully; also, quick to notice what other people need'}
+];
+
+const WORDS = [
+  {w:'gradual', l:'H'},
+  {w:'incremental', l:'C'},
+  {w:'striking', l:'G'},
+  {w:'in the interim', l:'D'},
+  {w:'haggard', l:'B'},
+  {w:'a great deal of', l:'E'},
+  {w:'attentive', l:'I'},
+  {w:'conundrum', l:'A'},
+  {w:'penalize', l:'F'}
+];
+
+const BANK = ['a great deal of','attentive','conundrum','gradual','haggard',
+              'in the interim','incremental','penalize','striking'];
+
+const WRONG2 = 'Not this one. Read the whole sentence again: what is it really about?';
+const WRONG3 = 'Not this one. Read the sentences around the gap again.';
+const BOX_PHRASE = 'That means the same, but use the phrase from the box.';
+
+const SENTENCES = [
+  {before:'There is a ', after:' resemblance between Nora and her grandmother: the same eyes, the same smile.', a:['striking'], near:{}},
+  {before:'If you hand in your essay late, I will ', after:' you: half a mark off for every day.', a:['penalize','penalise'],
+    near:{
+      penalized:'Right word, wrong form. After <i>will</i> you need the base form.',
+      penalised:'Right word, wrong form. After <i>will</i> you need the base form.'
+    }},
+  {before:'The path up the Uetliberg has a ', after:' slope, so even small children can manage it.', a:['gradual'],
+    near:{
+      incremental:'<i>Incremental</i> means in separate steps. This slope doesn\u2019t go up in steps: it rises slowly and evenly. There is a better word.'
+    }},
+  {before:'Here\u2019s a real ', after:': the train is cheaper if we book early, but we won\u2019t know the date of the match until next week.', a:['conundrum'], near:{}},
+  {before:'Organising the class trip to Berlin took ', after:' time and patience.', a:['a great deal of'],
+    near:{'a lot of':BOX_PHRASE, 'great deal of':'Almost. The phrase has one more word at the start.'}},
+  {before:'After three nights of revising for his exams, Luca looked pale and ', after:'.', a:['haggard'], near:{}},
+  {before:'The app doesn\u2019t change all at once. The developers release small, ', after:' updates every two weeks.', a:['incremental'],
+    near:{
+      gradual:'<i>Gradual</i> isn\u2019t wrong in meaning, but look at \u201csmall updates every two weeks\u201d. Those are separate steps. There is a better word.'
+    }},
+  {before:'The waiter was very ', after:': our glasses were never empty, and he remembered that Sara can\u2019t eat nuts.', a:['attentive'], near:{}},
+  {before:'The new sports hall won\u2019t open until March, so we\u2019ll have PE lessons in the park ', after:'.', a:['in the interim'],
+    near:{
+      'in the meantime':BOX_PHRASE,
+      'meanwhile':BOX_PHRASE,
+      'interim':'Almost. You need the whole phrase here: three words.',
+      'the interim':'Almost. You need the whole phrase here: three words.'
+    }}
+];
+
+/* Exercise 3: paragraphs made of text strings and gap objects */
+const FORM_ADV = ' The gap needs an adverb, because it tells us <i>how</i> something happened.';
+const TEXT3 = [
+  ['Last August, our school decided to ban mobile phones during lessons. Rather than doing it all at once, the head teacher introduced the ban ',
+    {a:['incrementally'], near:{
+      incremental:'Right word, wrong form.' + FORM_ADV,
+      gradually:'<i>Gradually</i> isn\u2019t wrong here, but look at \u201cone year group at a time\u201d. That describes separate steps. There is a better word.',
+      gradual:'Close, but not quite, in two ways. \u201cOne year group at a time\u201d describes separate steps, and' + FORM_ADV.replace(' The gap',' the gap')
+    }},
+   ', one year group at a time, starting with the first-years. Anyone caught using a phone in class was ',
+    {a:['penalized','penalised'], near:{
+      penalize:'Right word, wrong form. Look at <i>was</i>: the sentence is passive, so you need the past participle.',
+      penalise:'Right word, wrong form. Look at <i>was</i>: the sentence is passive, so you need the past participle.'
+    }},
+   ' with an extra hour of homework.'],
+  ['For some of us, this created a real ',
+    {a:['conundrum'], near:{}},
+   ': how do you check whether your train is late if your phone is locked in a box until four o\u2019clock? The school promised a proper solution by Christmas. ',
+    {a:['in the interim'], near:{
+      'in the meantime':BOX_PHRASE,
+      'meanwhile':BOX_PHRASE,
+      'interim':'Almost. You need the whole phrase here: three words.',
+      'the interim':'Almost. You need the whole phrase here: three words.'
+    }},
+   ', we were allowed to ask the school secretary to check the timetable for us.'],
+  ['The results were ',
+    {a:['striking'], near:{}},
+   '. Within a month, the corridors were noisy again at break, because people were actually talking to each other. Teachers said students were far more ',
+    {a:['attentive'], near:{}},
+   ' in class. Mr Brunner, our maths teacher, told us he used to spend ',
+    {a:['a great deal of'], near:{'a lot of':BOX_PHRASE, 'great deal of':'Almost. The phrase has one more word at the start.'}},
+   ' energy fighting phones, and by Friday afternoon he always looked pale and ',
+    {a:['haggard'], near:{}},
+   '.'],
+  ['Our marks didn\u2019t jump overnight, but they improved ',
+    {a:['gradually'], near:{
+      gradual:'Right word, wrong form.' + FORM_ADV,
+      incrementally:'<i>Incrementally</i> isn\u2019t wrong here, but look at \u201ca slow, steady rise\u201d. That describes smooth change, not separate steps. There is a better word.',
+      incremental:'Close, but not quite, in two ways. \u201cA slow, steady rise\u201d describes smooth change, not steps, and' + FORM_ADV.replace(' The gap',' the gap')
+    }},
+   ' over the year: a slow, steady rise. Nobody wants to go back. Well, almost nobody.']
+];
+
+const TOTAL = WORDS.length + SENTENCES.length + 9;
+
+/* ================= helpers ================= */
+function normalise(v){
+  return v.toLowerCase()
+    .replace(/[\u2010-\u2015]/g,'-')
+    .replace(/\s+/g,' ')
+    .replace(/^[\s.,;:!?]+|[\s.,;:!?]+$/g,'');
+}
+/* stem used only to strike through bank words already used */
+function stem(v){
+  return normalise(v).replace('penalis','penaliz');
+}
+function bankUsed(word, values){
+  const s = stem(word).replace(/e$/,'');
+  return values.some(v => v && stem(v).startsWith(s));
+}
+
+function makeGap(label, onFocus, onInput){
+  const input = document.createElement('input');
+  input.className = 'gap';
+  input.type = 'text';
+  input.autocomplete = 'off';
+  input.setAttribute('autocapitalize','off');
+  input.setAttribute('autocorrect','off');
+  input.spellcheck = false;
+  input.setAttribute('aria-label', label);
+  input.addEventListener('focus', () => onFocus(input));
+  input.addEventListener('input', () => onInput(input));
+  return input;
+}
+
+function makeNote(){
+  const n = document.createElement('p');
+  n.className = 'note';
+  n.hidden = true;
+  n.setAttribute('aria-live','polite');
+  return n;
+}
+
+function clearGap(g){
+  g._input.classList.remove('ok','near','no');
+  g._note.hidden = true;
+  g._note.className = 'note';
+}
+
+/* returns 1 if correct, else 0; writes feedback */
+function markGap(g, wrongMsg, prefix){
+  clearGap(g);
+  const v = normalise(g._input.value);
+  if (!v) return 0;
+  if (g.a.includes(v)){ g._input.classList.add('ok'); return 1; }
+  const nearMsg = g.near[v];
+  const cls = nearMsg ? 'near' : 'no';
+  g._input.classList.add(cls);
+  g._note.classList.add(cls);
+  g._note.innerHTML = (prefix || '') + (nearMsg || wrongMsg);
+  g._note.hidden = false;
+  return 0;
+}
+
+function buildBank(el, gaps, getLast, render){
+  BANK.forEach(w => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = w;
+    b.dataset.word = w;
+    b.addEventListener('click', () => {
+      const last = getLast();
+      const target = (last && !last.value.trim()) ? last : gaps.map(g => g._input).find(i => !i.value.trim());
+      if (!target) return;
+      target.value = w;
+      target.classList.remove('ok','near','no');
+      target.focus();
+      render();
+    });
+    el.appendChild(b);
+  });
+}
+
+function renderBank(el, gaps){
+  const values = gaps.map(g => g._input.value);
+  [...el.children].forEach(b => b.classList.toggle('spent', bankUsed(b.dataset.word, values)));
+}
+
+/* ================= exercise 1 ================= */
+const pairs = {};
+let selected = null;
+const wordsEl = document.getElementById('words');
+const defsEl = document.getElementById('defs');
+const statusEl = document.getElementById('status');
+
+WORDS.forEach((item, i) => {
+  const b = document.createElement('button');
+  b.className = 'word';
+  b.type = 'button';
+  b.setAttribute('aria-pressed','false');
+  b.innerHTML = `<span class="num">${i+1}</span><span class="term">${item.w}</span><span class="chip empty">—</span>`;
+  b.addEventListener('click', () => selectWord(i));
+  wordsEl.appendChild(b);
+});
+
+DEFS.forEach(d => {
+  const b = document.createElement('button');
+  b.className = 'def';
+  b.type = 'button';
+  b.dataset.letter = d.l;
+  b.innerHTML = `<span class="letter">${d.l}</span><span>${d.t}</span>`;
+  b.addEventListener('click', () => assign(d.l));
+  defsEl.appendChild(b);
+});
+
+function selectWord(i){
+  if (pairs[i]) { delete pairs[i]; selected = i; }
+  else selected = (selected === i) ? null : i;
+  render1();
+}
+function assign(letter){
+  if (selected === null){ statusEl.innerHTML = 'Tap a word on the left first.'; return; }
+  for (const k in pairs) if (pairs[k] === letter) delete pairs[k];
+  pairs[selected] = letter;
+  selected = null;
+  render1();
+}
+function render1(){
+  [...wordsEl.children].forEach((b,i) => {
+    b.classList.remove('ok','no');
+    b.setAttribute('aria-pressed', selected === i ? 'true' : 'false');
+    const chip = b.querySelector('.chip');
+    chip.textContent = pairs[i] || '—';
+    chip.classList.toggle('empty', !pairs[i]);
+  });
+  const taken = Object.values(pairs);
+  [...defsEl.children].forEach(b => b.classList.toggle('used', taken.includes(b.dataset.letter)));
+  statusEl.innerHTML = selected === null ? '' : `Selected <strong>${WORDS[selected].w}</strong> — now tap its meaning.`;
+}
+
+/* ================= exercise 2 ================= */
+const gaps2El = document.getElementById('gaps2');
+const bank2El = document.getElementById('bank2');
+let last2 = null;
+const render2 = () => renderBank(bank2El, SENTENCES);
+
+SENTENCES.forEach((s,i) => {
+  const li = document.createElement('li');
+  const note = makeNote();
+  const input = makeGap('Exercise 2, gap ' + (i+1), el => last2 = el, () => { clearGap(s); render2(); });
+  li.append(document.createTextNode(s.before), input, document.createTextNode(s.after), note);
+  gaps2El.appendChild(li);
+  s._input = input; s._note = note;
+});
+buildBank(bank2El, SENTENCES, () => last2, render2);
+
+/* ================= exercise 3 ================= */
+const text3El = document.getElementById('text3');
+const bank3El = document.getElementById('bank3');
+const GAPS3 = [];
+let last3 = null;
+const render3 = () => renderBank(bank3El, GAPS3);
+
+TEXT3.forEach(para => {
+  const p = document.createElement('p');
+  p.className = 'para';
+  const notes = document.createElement('div');
+  notes.className = 'notes';
+  para.forEach(seg => {
+    if (typeof seg === 'string'){ p.append(document.createTextNode(seg)); return; }
+    const n = GAPS3.length + 1;
+    seg._n = n;
+    const no = document.createElement('span');
+    no.className = 'gno';
+    no.textContent = '(' + n + ')';
+    const input = makeGap('Exercise 3, gap ' + n, el => last3 = el, () => { clearGap(seg); render3(); });
+    const note = makeNote();
+    seg._input = input; seg._note = note;
+    p.append(no, input);
+    notes.append(note);
+    GAPS3.push(seg);
+  });
+  text3El.append(p, notes);
+});
+buildBank(bank3El, GAPS3, () => last3, render3);
+
+/* ================= checking ================= */
+document.getElementById('check').addEventListener('click', () => {
+  let score = 0;
+
+  [...wordsEl.children].forEach((b,i) => {
+    b.classList.remove('ok','no');
+    if (!pairs[i]) return;
+    if (pairs[i] === WORDS[i].l){ b.classList.add('ok'); score++; }
+    else b.classList.add('no');
+  });
+
+  SENTENCES.forEach(s => { score += markGap(s, WRONG2); });
+  GAPS3.forEach(g => { score += markGap(g, WRONG3, `<b>(${g._n})</b>`); });
+
+  document.getElementById('score').innerHTML = `<b>${score}</b>/${TOTAL} correct`;
+});
+
+document.getElementById('reset').addEventListener('click', () => {
+  for (const k in pairs) delete pairs[k];
+  selected = null;
+  render1();
+  [...SENTENCES, ...GAPS3].forEach(g => { g._input.value = ''; clearGap(g); });
+  render2(); render3();
+  document.getElementById('score').innerHTML = `<b>0</b>/${TOTAL} correct`;
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+document.getElementById('score').innerHTML = `<b>0</b>/${TOTAL} correct`;
+render1(); render2(); render3();
+</script>
+</body>
+</html>
