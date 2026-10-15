@@ -1,0 +1,370 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Verb Pattern Lab · Intermediate English</title><style>
+:root{--ink:#183b3a;--green:#126958;--paper:#f5f5ed;--line:#d9e1d9}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 system-ui,sans-serif}header,main,footer{max-width:1000px;margin:auto;padding:28px}header{padding-top:42px}.eyebrow{font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:var(--green)}h1{font-size:clamp(36px,6vw,58px);letter-spacing:-2px;line-height:1.1;margin:14px 0}h2{font-size:26px;line-height:1.3;margin:8px 0}p{margin:8px 0}.intro{max-width:700px;color:#4b6261}.meta{display:flex;gap:10px;margin:23px 0;flex-wrap:wrap}.pill{border:1px solid var(--line);border-radius:30px;padding:5px 13px;font-size:13px;background:white}.dashboard{background:var(--ink);color:white;border-radius:16px;padding:20px;display:flex;gap:18px;align-items:center;flex-wrap:wrap}.dashboard strong{font-size:23px}progress{flex:1;min-width:120px;accent-color:#b3d76e;height:12px}nav{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}button{font:inherit;cursor:pointer;border:0;border-radius:8px;padding:10px 16px;background:var(--green);color:white;font-weight:650}button:hover{filter:brightness(.93)}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid #e4a426;outline-offset:3px}button:disabled{opacity:.5;cursor:default}nav button{background:#e3e9e1;color:var(--ink);flex:1;min-width:180px;text-align:left}nav button.active{background:var(--green);color:white}nav small{display:block;font-size:12px;font-weight:400}.sectionhead{margin:0 0 25px}.question{background:white;border:1px solid var(--line);border-radius:14px;margin:14px 0;padding:22px;display:grid;grid-template-columns:32px 1fr;gap:12px}.number{font-size:13px;font-weight:800;color:#718080;padding-top:4px}.sentence{margin-bottom:12px}.entry{display:flex;gap:10px;flex-wrap:wrap}input,select{font:inherit;border:1px solid #aebfba;border-radius:7px;padding:9px 12px;background:#fff;color:var(--ink);width:250px;max-width:100%}.feedback{font-size:14px;margin-top:9px;min-height:23px;color:#5a6c6b}.correct{border-left:5px solid #288764}.revealed{border-left:5px solid #cf9231}.good{color:#126143}.warn{color:#8c5416}.hint{font-size:14px;color:#657552}.nextrow{display:flex;justify-content:space-between;gap:12px;margin:28px 0;flex-wrap:wrap}.secondary{color:var(--ink);background:#e2e7df}.summary{padding:20px;background:#e6efdb;border-radius:12px}footer{font-size:13px;color:#657552;padding-bottom:40px}footer button{font-size:13px;margin:10px 8px 0 0}a{color:var(--green)}[hidden]{display:none!important}@media(max-width:600px){header,main,footer{padding:20px}.question{padding:16px;grid-template-columns:23px 1fr}.entry input,.entry select{width:100%}.entry button{width:100%}}
+</style></head><body><header><div class="eyebrow">English practice / Intermediate</div><h1>Verb Pattern Lab<span style="color:#7e9b42">.</span></h1><p class="intro">Small changes in form. Big changes in meaning. Work through three exercises at your own pace.</p><div class="meta"><span class="pill">Intermediate</span><span class="pill">≈ 20 minutes</span><span class="pill">55 questions</span><span class="pill">3 attempts per question</span></div><div class="dashboard"><div><strong id="completed">0 / 55</strong><div style="font-size:13px">questions completed</div></div><progress id="progress" max="55" value="0" aria-label="Questions completed"></progress><div id="score">0 correct · 0 revealed</div></div><nav aria-label="Exercises" id="tabs"></nav></header><main><div class="sectionhead"><div class="eyebrow" id="sectionlabel"></div><h2 id="title"></h2><p id="instructions"></p><p class="hint">Check each answer separately. Empty answers and unchanged retries do not use an attempt. Answers appear after three unsuccessful attempts.</p></div><div id="questions"></div><div id="summary" class="summary" hidden></div><div class="nextrow"><button class="secondary" id="back">← Previous exercise</button><button id="next">Next exercise →</button></div></main><footer><p>Progress is saved in this browser where available. There is no time limit.</p><button class="secondary" id="download">Download offline HTML</button><button class="secondary" id="reset">Start again</button><span id="storageNotice" role="status"></span></footer>
+<script>
+const sections=[
+  {
+    "title": "Complete the form",
+    "time": "8 minutes",
+    "type": "type",
+    "instructions": "Complete each sentence with the -ing form or the infinitive (with to) of the verb in brackets. Write only the missing words.",
+    "items": [
+      [
+        "Maya suggested ___ the earlier train so that we would have time for lunch.",
+        "take",
+        "taking",
+        "Suggest + -ing."
+      ],
+      [
+        "After comparing the prices, we decided ___ the tickets online.",
+        "book",
+        "to book",
+        "Decide + infinitive."
+      ],
+      [
+        "I hope ___ my driving test before the summer holidays.",
+        "pass",
+        "to pass",
+        "Hope + infinitive."
+      ],
+      [
+        "I’m considering ___ for a summer job at the cinema.",
+        "apply",
+        "applying",
+        "Consider + -ing."
+      ],
+      [
+        "Liam admitted ___ the last slice of cake.",
+        "eat",
+        "eating",
+        "Admit + -ing."
+      ],
+      [
+        "Sam offered ___ me with the decorations for the party.",
+        "help",
+        "to help",
+        "Offer + infinitive."
+      ],
+      [
+        "We enjoy ___ short films together at weekends.",
+        "make",
+        "making",
+        "Enjoy + -ing."
+      ],
+      [
+        "She promised ___ my secret to anyone.",
+        "not tell",
+        "not to tell",
+        "Promise + infinitive. Put not before to to make it negative."
+      ],
+      [
+        "After several attempts, we managed ___ the old computer.",
+        "restart",
+        "to restart",
+        "Manage + infinitive means succeed in doing something difficult."
+      ],
+      [
+        "To avoid ___ the neighbours, we practised in the school music room.",
+        "disturb",
+        "disturbing",
+        "Avoid + -ing."
+      ],
+      [
+        "Ella denied ___ my headphones without permission.",
+        "borrow",
+        "borrowing",
+        "Deny + -ing."
+      ],
+      [
+        "Don’t risk ___ all your work: save a backup now.",
+        "lose",
+        "losing",
+        "Risk + -ing."
+      ],
+      [
+        "The player refused ___ the referee’s decision.",
+        "accept",
+        "to accept",
+        "Refuse + infinitive."
+      ],
+      [
+        "We can’t afford ___ new laptops this year.",
+        "buy",
+        "to buy",
+        "Afford + infinitive."
+      ],
+      [
+        "The video is so funny that I can’t help ___ every time I watch it.",
+        "laugh",
+        "laughing",
+        "Can’t help + -ing means you cannot prevent yourself from doing something."
+      ],
+      [
+        "The students agreed ___ the cost of the materials.",
+        "share",
+        "to share",
+        "Agree + infinitive."
+      ],
+      [
+        "I can’t stand ___ in a long queue when I’m hungry.",
+        "wait",
+        "waiting",
+        "For this exercise, use the -ing pattern with can’t stand."
+      ],
+      [
+        "Would you mind ___ the window? It’s quite cold in here.",
+        "close",
+        "closing",
+        "Mind + -ing."
+      ],
+      [
+        "When the teacher came in, Alex pretended ___ asleep.",
+        "be",
+        "to be",
+        "Pretend + infinitive."
+      ],
+      [
+        "You keep ___ your phone. Are you waiting for an important message?",
+        "check",
+        "checking",
+        "Keep + -ing means continue or repeatedly do something."
+      ],
+      [
+        "We plan ___ the science museum during our trip.",
+        "visit",
+        "to visit",
+        "Plan + infinitive."
+      ],
+      [
+        "If you fail ___ your work on time, you will lose marks.",
+        "submit",
+        "to submit",
+        "Fail + infinitive."
+      ],
+      [
+        "We’re looking forward to ___ our exchange partners next month.",
+        "meet",
+        "meeting",
+        "In look forward to, to is a preposition: it is followed by -ing."
+      ],
+      [
+        "Nora chose ___ at home and revise instead of going out.",
+        "stay",
+        "to stay",
+        "Choose + infinitive."
+      ],
+      [
+        "Have you finished ___ the report, or do you need another ten minutes?",
+        "write",
+        "writing",
+        "Finish + -ing."
+      ]
+    ]
+  },
+  {
+    "title": "Read the situation",
+    "time": "7 minutes",
+    "type": "select",
+    "instructions": "Choose the form that matches the situation. Pay close attention to when an action happens and what the speaker means.",
+    "items": [
+      [
+        "I remember ___ the door this morning: I can still picture myself turning the key.",
+        "lock",
+        "locking",
+        "Remember + -ing refers to a memory of a past action."
+      ],
+      [
+        "Please remember ___ the door when you leave tomorrow.",
+        "lock",
+        "to lock",
+        "Remember + infinitive means not forgetting to do something."
+      ],
+      [
+        "I’ll never forget ___ the sea for the first time. It was an unforgettable moment.",
+        "see",
+        "seeing",
+        "Forget + -ing refers to losing a memory of a past experience; never forget means the memory stays."
+      ],
+      [
+        "I forgot ___ the tickets, so we couldn’t get into the concert.",
+        "bring",
+        "to bring",
+        "Forget + infinitive means failing to do something because you do not remember."
+      ],
+      [
+        "When the film began, everyone stopped ___. The room became silent.",
+        "talk",
+        "talking",
+        "Stop + -ing means end that activity."
+      ],
+      [
+        "Halfway through our walk, we stopped ___ some photos, then continued along the path.",
+        "take",
+        "to take",
+        "Stop + infinitive means pause another activity in order to do something."
+      ],
+      [
+        "The room felt stuffy, so I tried ___ the window to see whether fresh air would help.",
+        "open",
+        "opening",
+        "Try + -ing means test a possible solution."
+      ],
+      [
+        "I tried ___ the heavy cupboard, but however hard I pushed, it wouldn’t move.",
+        "move",
+        "to move",
+        "Try + infinitive means make an effort to do something, here without success."
+      ],
+      [
+        "I regret ___ that unkind comment yesterday. I wish I hadn’t said it.",
+        "make",
+        "making",
+        "Regret + -ing means feel sorry about a past action."
+      ],
+      [
+        "We regret ___ you that your application has been unsuccessful.",
+        "inform",
+        "to inform",
+        "Regret + infinitive is used in formal announcements of unwelcome news."
+      ],
+      [
+        "Taking the early train means ___ home at six. There is no later connection.",
+        "leave",
+        "leaving",
+        "Mean + -ing means involve or have as a consequence."
+      ],
+      [
+        "I meant ___ you last night, but my phone battery died before I had the chance.",
+        "call",
+        "to call",
+        "Mean + infinitive means intend to do something."
+      ],
+      [
+        "Although the bell rang, the teacher went on ___ the same topic for another five minutes.",
+        "explain",
+        "explaining",
+        "Go on + -ing means continue the same activity."
+      ],
+      [
+        "After describing the problem, the speaker went on ___ a solution.",
+        "propose",
+        "to propose",
+        "Go on + infinitive means move on to a different action."
+      ]
+    ]
+  },
+  {
+    "title": "Correct or incorrect?",
+    "time": "5 minutes",
+    "type": "judgement",
+    "instructions": "Read each sentence and its context. Decide whether the verb pattern is correct and expresses the intended meaning. Select Correct or Incorrect, then check your answer.",
+    "items": [
+      [
+        "I remember meeting our new neighbour last week. We had a long conversation.",
+        "",
+        "Correct",
+        "Remember + -ing refers to a memory of a past event."
+      ],
+      [
+        "I forgot bringing my PE kit this morning, so I couldn’t take part in the lesson.",
+        "",
+        "Incorrect",
+        "Correction: I forgot to bring my PE kit. Forget + infinitive means failing to do something because you do not remember."
+      ],
+      [
+        "We were cycling home when we stopped to buy some water. Then we continued our ride.",
+        "",
+        "Correct",
+        "Stop + infinitive means pause one activity in order to do another."
+      ],
+      [
+        "The room was stuffy, so I tried to opening the window to see whether fresh air would help.",
+        "",
+        "Incorrect",
+        "Correction: I tried opening the window. Try + -ing describes testing a possible solution; try + infinitive focuses on making an effort."
+      ],
+      [
+        "I regret to post that rude comment yesterday. I wish I hadn’t done it.",
+        "",
+        "Incorrect",
+        "Correction: I regret posting that rude comment. Regret + -ing expresses feeling sorry about a past action."
+      ],
+      [
+        "Joining the team means training twice a week. That is part of the commitment.",
+        "",
+        "Correct",
+        "Mean + -ing means involve or have as a consequence."
+      ],
+      [
+        "The teacher finished explaining the rules. She then went on to describing the scoring system, moving on to this new topic.",
+        "",
+        "Incorrect",
+        "Correction: She then went on to describe the scoring system. Go on + infinitive means move on to a different action; go on + -ing means continue the same activity."
+      ],
+      [
+        "My parents want that I tidy my room before I go out.",
+        "",
+        "Incorrect",
+        "Correction: My parents want me to tidy my room. Use want + object + infinitive."
+      ],
+      [
+        "Our coach expects us to arrive ten minutes before the match.",
+        "",
+        "Correct",
+        "Expect + object + infinitive: expects us to arrive."
+      ],
+      [
+        "I would like you helping me with the decorations.",
+        "",
+        "Incorrect",
+        "Correction: I would like you to help me with the decorations. Use would like + object + infinitive."
+      ],
+      [
+        "Maya suggested to take the earlier train.",
+        "",
+        "Incorrect",
+        "Correction: Maya suggested taking the earlier train. Suggest is followed by -ing in this pattern."
+      ],
+      [
+        "We avoided making too much noise because the baby was asleep.",
+        "",
+        "Correct",
+        "Avoid + -ing: avoided making."
+      ],
+      [
+        "I can’t help to laugh whenever I watch that video.",
+        "",
+        "Incorrect",
+        "Correction: I can’t help laughing. Can’t help + -ing means you cannot prevent yourself from doing something."
+      ],
+      [
+        "We’re looking forward to meeting our exchange partners.",
+        "",
+        "Correct",
+        "The to in look forward to is a preposition, so it is followed by -ing."
+      ],
+      [
+        "You keep to interrupt me while I’m speaking.",
+        "",
+        "Incorrect",
+        "Correction: You keep interrupting me. Keep + -ing expresses a repeated or continuing action."
+      ],
+      [
+        "After comparing the prices, we decided to book the tickets online.",
+        "",
+        "Correct",
+        "Decide + infinitive: decided to book."
+      ]
+    ]
+  }
+];
+const KEY='verb-pattern-lab-v3';let active=0;let states=sections.map(s=>s.items.map(()=>({tries:0,status:'open',value:'',last:''})));try{const saved=JSON.parse(localStorage.getItem(KEY));if(saved&&saved.states&&saved.states.length===3){states=saved.states;active=saved.active||0}}catch(e){}
+const $=id=>document.getElementById(id);const norm=s=>s.trim().toLowerCase().replace(/\s+/g,' ').replace(/[.!?]+$/,'');
+function judge(st,value,answer){const n=norm(value);if(!n)return {kind:'empty'};if(n===st.last)return {kind:'same'};st.value=value;st.last=n;st.tries++;if(n===norm(answer)){st.status='correct';return {kind:'correct'}}if(st.tries>=3){st.status='revealed';return {kind:'revealed'}}return {kind:'wrong'}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({states,active}))}catch(e){$('storageNotice').textContent=' Progress cannot be saved in this browser.'}}
+function totals(){const all=states.flat(),good=all.filter(s=>s.status==='correct').length,shown=all.filter(s=>s.status==='revealed').length;$('completed').textContent=`${good+shown} / 55`;$('progress').value=good+shown;$('score').textContent=`${good} correct · ${shown} revealed`;const done=states[active].filter(s=>s.status!=='open').length;$('summary').hidden=done!==states[active].length;$('summary').textContent=good+shown===55?`All three exercises complete. You solved ${good} questions; ${shown} answers were revealed. Review the explanations before you finish.`:'Exercise complete. Review the explanations, then continue when you are ready.';document.querySelectorAll('nav small').forEach((el,i)=>el.textContent=`${states[i].filter(s=>s.status!=='open').length} / ${states[i].length} complete`)}
+function render(){const section=sections[active];$('tabs').innerHTML='';sections.forEach((s,i)=>{const b=document.createElement('button');b.className=i===active?'active':'';b.setAttribute('aria-current',i===active?'step':'false');b.innerHTML=`${i+1}. ${s.title}<small></small>`;b.onclick=()=>{active=i;save();render()};$('tabs').append(b)});$('sectionlabel').textContent=`Exercise ${active+1} / ${section.time}`;$('title').textContent=section.title+' · '+section.items.length+' questions';$('instructions').textContent=section.instructions;$('questions').innerHTML='';section.items.forEach((item,i)=>{const st=states[active][i];const card=document.createElement('article');card.className='question '+st.status;const n=document.createElement('div');n.className='number';n.textContent=String(i+1).padStart(2,'0');card.append(n);const body=document.createElement('div');const sentence=document.createElement('div');sentence.className='sentence';sentence.id=`q-${active}-${i}`;sentence.textContent=item[0];body.append(sentence);const hint=document.createElement('div');hint.className='hint';hint.textContent=item[1]?'('+item[1]+')':'';if(item[1])body.append(hint);const form=document.createElement('form');form.className='entry';form.style.marginTop='10px';const entry=document.createElement((section.type==='select'||section.type==='judgement')?'select':'input');entry.setAttribute('aria-labelledby',sentence.id);entry.setAttribute('aria-describedby',`f-${active}-${i}`);if(section.type==='judgement'){entry.add(new Option('Choose your judgement…',''));['Correct','Incorrect'].forEach(v=>entry.add(new Option(v,v)))}else if(section.type==='select'){const blank=new Option('Choose a form…','');entry.add(blank);const ing=item[2].startsWith('to ')?({lock:'locking',bring:'bringing',take:'taking',move:'moving',inform:'informing',call:'calling',propose:'proposing'}[item[1]]):item[2];let choices=[ing,'to '+item[1]];if(i%2)choices.reverse();choices.forEach(v=>entry.add(new Option(v,v)))}else{entry.type='text';entry.autocomplete='off';entry.spellcheck=false;entry.placeholder='Your answer'}entry.value=st.value;entry.oninput=()=>{st.value=entry.value;save()};const check=document.createElement('button');check.textContent='Check';const feedback=document.createElement('div');feedback.className='feedback';feedback.id=`f-${active}-${i}`;feedback.setAttribute('aria-live','polite');function update(){card.className='question '+st.status;const closed=st.status!=='open';entry.disabled=closed;check.disabled=closed;if(st.status==='correct'){feedback.className='feedback good';feedback.textContent=`Well done · ${item[2]}. ${item[3]}`}else if(st.status==='revealed'){feedback.className='feedback warn';feedback.textContent=`After 3 attempts: ${item[2]}. ${item[3]}`}else feedback.textContent=st.tries?`Not quite. ${3-st.tries} attempt${3-st.tries===1?'':'s'} left. Read the context and check your spelling.`:'3 attempts available'}form.onsubmit=e=>{e.preventDefault();if(st.status!=='open')return;const result=judge(st,entry.value,item[2]);if(result.kind==='empty'){feedback.textContent='Enter or choose an answer first. No attempt used.';return}if(result.kind==='same'){feedback.textContent='Change your answer before trying again. No attempt used.';return}save();update();totals();if(st.status==='open')entry.focus()};form.append(entry,check);body.append(form,feedback);card.append(body);$('questions').append(card);update()});$('back').hidden=active===0;$('next').hidden=active===2;totals()}
+$('back').onclick=()=>{active--;save();render();window.scrollTo({top:0,behavior:'smooth'})};$('next').onclick=()=>{active++;save();render();window.scrollTo({top:0,behavior:'smooth'})};$('reset').onclick=()=>{if(confirm('Clear all answers and attempts and start again?')){states=sections.map(s=>s.items.map(()=>({tries:0,status:'open',value:'',last:''})));active=0;save();render()}};
+$('download').onclick=()=>{const clone=document.documentElement.cloneNode(true);clone.querySelector('#questions').innerHTML='';clone.querySelector('#tabs').innerHTML='';clone.querySelector('#summary').hidden=true;const blob=new Blob(['<!doctype html>\n'+clone.outerHTML],{type:'text/html'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='Verb_Pattern_Lab.html';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)};
+render();
+</script></body></html>
