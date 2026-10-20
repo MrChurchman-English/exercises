@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gap-Fill Exercise: The Art Project Nightmare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        h2 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 20px;
+            font-weight: normal;
+        }
+        
+        .word-bank {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+        
+        .word-bank h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .words {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .word {
+            background: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            border: 2px solid #667eea;
+            color: #667eea;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .text-content {
+            line-height: 2;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .text-content p {
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            border: none;
+            border-bottom: 2px solid #667eea;
+            padding: 2px 8px;
+            font-size: 16px;
+            min-width: 150px;
+            background: #f0f4ff;
+            transition: all 0.3s;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-bottom: 2px solid #764ba2;
+            background: #e8f0ff;
+        }
+        
+        input.correct {
+            border-bottom: 2px solid #28a745;
+            background: #d4edda;
+        }
+        
+        input.incorrect {
+            border-bottom: 2px solid #dc3545;
+            background: #f8d7da;
+        }
+        
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        #result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        #result.show {
+            display: block;
+        }
+        
+        .answer-key {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            border-left: 4px solid #28a745;
+            display: none;
+        }
+        
+        .answer-key.show {
+            display: block;
+        }
+        
+        .answer-key h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .answer-key ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gap-Fill Exercise</h1>
+        <h2>The Art Project Nightmare</h2>
+        
+        <div class="word-bank">
+            <h3>Words to use:</h3>
+            <div class="words">
+                <span class="word">recurring</span>
+                <span class="word">slip</span>
+                <span class="word">groggy</span>
+                <span class="word">do up</span>
+                <span class="word">mindboggling</span>
+                <span class="word">inconsistency</span>
+                <span class="word">tedious</span>
+                <span class="word">munch</span>
+                <span class="word">painstakingly</span>
+                <span class="word">worst-case scenario</span>
+                <span class="word">tense</span>
+                <span class="word">random</span>
+                <span class="word">stroke</span>
+            </div>
+        </div>
+        
+        <div class="text-content">
+            <p>Maya woke up feeling <input type="text" id="gap1" data-answer="groggy"> after staying up until 2 a.m. to finish her art coursework. She had <input type="text" id="gap2" data-answer="painstakingly"> painted every detail of her landscape piece, making sure each <input type="text" id="gap3" data-answer="stroke"> was perfect. But now, sitting in art class, she noticed an <input type="text" id="gap4" data-answer="inconsistency"> in the sky's color that made her <input type="text" id="gap5" data-answer="tense">.</p>
+            
+            <p>"Don't worry about it," whispered her friend Jake, who was busy trying to <input type="text" id="gap6" data-answer="munch"> on crisps without the teacher noticing. "In the <input type="text" id="gap7" data-answer="worst-case scenario">, you could have spilled paint all over it like I did last week."</p>
+            
+            <p>Maya tried to relax, but this was a <input type="text" id="gap8" data-answer="recurring"> problem for her – she always stressed about her work. Looking around the room, she saw <input type="text" id="gap9" data-answer="random"> drawings and paintings everywhere. The sheer variety of styles was <input type="text" id="gap10" data-answer="mindboggling">.</p>
+            
+            <p>"Can you help me <input type="text" id="gap11" data-answer="do up"> my hoodie?" asked Sam, struggling with the zipper. Maya nodded, grateful for the distraction from her <input type="text" id="gap12" data-answer="tedious"> self-criticism. Maybe her painting didn't need to be absolutely perfect. After all, even professionals <input type="text" id="gap13" data-answer="slip"> up sometimes.</p>
+        </div>
+        
+        <div class="button-container">
+            <button onclick="checkAnswers()">Check Answers</button>
+            <button onclick="showAnswers()">Show Answer Key</button>
+            <button onclick="resetExercise()">Reset</button>
+        </div>
+        
+        <div id="result"></div>
+        
+        <div class="answer-key" id="answerKey">
+            <h3>Answer Key:</h3>
+            <ol>
+                <li>groggy</li>
+                <li>painstakingly</li>
+                <li>stroke</li>
+                <li>inconsistency</li>
+                <li>tense</li>
+                <li>munch</li>
+                <li>worst-case scenario</li>
+                <li>recurring</li>
+                <li>random</li>
+                <li>mindboggling</li>
+                <li>do up</li>
+                <li>tedious</li>
+                <li>slip</li>
+            </ol>
+        </div>
+    </div>
+    
+    <script>
+        function normalizeText(text) {
+            return text.toLowerCase().trim().replace(/[^\w\s-]/g, '');
+        }
+        
+        function checkAnswers() {
+            let correct = 0;
+            let total = 13;
+            
+            for (let i = 1; i <= total; i++) {
+                const input = document.getElementById('gap' + i);
+                const userAnswer = normalizeText(input.value);
+                const correctAnswer = normalizeText(input.getAttribute('data-answer'));
+                
+                if (userAnswer === correctAnswer) {
+                    input.classList.remove('incorrect');
+                    input.classList.add('correct');
+                    correct++;
+                } else {
+                    input.classList.remove('correct');
+                    input.classList.add('incorrect');
+                }
+            }
+            
+            const resultDiv = document.getElementById('result');
+            const percentage = Math.round((correct / total) * 100);
+            resultDiv.classList.add('show');
+            
+            if (percentage === 100) {
+                resultDiv.style.background = '#d4edda';
+                resultDiv.style.color = '#155724';
+                resultDiv.textContent = `Perfect! You got all ${correct} out of ${total} correct! 🎉`;
+            } else if (percentage >= 70) {
+                resultDiv.style.background = '#fff3cd';
+                resultDiv.style.color = '#856404';
+                resultDiv.textContent = `Good job! You got ${correct} out of ${total} correct (${percentage}%)`;
+            } else {
+                resultDiv.style.background = '#f8d7da';
+                resultDiv.style.color = '#721c24';
+                resultDiv.textContent = `You got ${correct} out of ${total} correct (${percentage}%). Keep trying!`;
+            }
+        }
+        
+        function showAnswers() {
+            const answerKey = document.getElementById('answerKey');
+            answerKey.classList.toggle('show');
+        }
+        
+        function resetExercise() {
+            for (let i = 1; i <= 13; i++) {
+                const input = document.getElementById('gap' + i);
+                input.value = '';
+                input.classList.remove('correct', 'incorrect');
+            }
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.remove('show');
+            
+            const answerKey = document.getElementById('answerKey');
+            answerKey.classList.remove('show');
+        }
+    </script>
+</body>
+</html>
