@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mistakes in the past – practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Caveat:wght@600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F5F8; --sheet:#FFFFFF; --ink:#1E2B3A; --muted:#5B6676; --rule:#D3DAE3;
+  --red:#B8322A; --green:#2C7A47; --hl:#FFE27A; --wrong-bg:#FBEDEB; --right-bg:#E6F2EA;
+  --field:#FAFBFC;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11161C; --sheet:#19212A; --ink:#E5EAF0; --muted:#9AA7B5; --rule:#2D3844;
+    --red:#FF8B7D; --green:#7DD49A; --hl:#6B5A14; --wrong-bg:#3A201D; --right-bg:#18321F;
+    --field:#141B22; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11161C; --sheet:#19212A; --ink:#E5EAF0; --muted:#9AA7B5; --rule:#2D3844;
+  --red:#FF8B7D; --green:#7DD49A; --hl:#6B5A14; --wrong-bg:#3A201D; --right-bg:#18321F;
+  --field:#141B22; color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 4rem)}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  font-size:1.0625rem; line-height:1.55;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--sheet)}
+
+/* top bar */
+.bar{
+  position:sticky; top:env(safe-area-inset-top,0px); z-index:5;
+  background:var(--sheet); border-bottom:1px solid var(--rule);
+}
+.bar nav{max-width:46rem;margin:0 auto;display:flex;gap:.25rem;overflow-x:auto;padding:.5rem 1rem}
+.bar a{
+  flex:0 0 auto; text-decoration:none; color:var(--ink);
+  padding:.35rem .75rem; border-radius:999px; font-size:.95rem;
+  display:flex; gap:.5rem; align-items:baseline;
+}
+.bar a:hover{background:var(--paper)}
+.bar .score{color:var(--muted);font-variant-numeric:tabular-nums;font-size:.85rem}
+.bar .score.done{color:var(--green);font-weight:700}
+
+main{max-width:46rem;margin:0 auto;padding:0 1rem 3rem}
+
+/* title */
+header.hero{padding:2.5rem 0 1.5rem}
+.hero h1{
+  font-family:"Source Serif 4", Georgia, serif; font-weight:600;
+  font-size:clamp(2.1rem, 6vw, 3rem); line-height:1.1; margin:0 0 1.25rem; letter-spacing:-.01em;
+}
+.correction{
+  font-family:"Source Serif 4", Georgia, serif; font-size:clamp(1.2rem,3.5vw,1.45rem);
+  line-height:2.4; margin:0 0 1.25rem;
+}
+.correction del{text-decoration:none;position:relative;color:var(--muted)}
+.correction del::after{
+  content:"";position:absolute;left:-2px;right:-2px;top:52%;height:2px;background:var(--red);transform:rotate(-2deg);
+}
+.correction ins{
+  text-decoration:none;font-family:"Caveat", "Comic Sans MS", cursive;color:var(--red);
+  font-size:1.35em;margin-left:.2em;
+}
+.hero p.lead{margin:0;color:var(--muted);max-width:36rem}
+
+/* sections */
+section.ex{
+  background:var(--sheet); border:1px solid var(--rule); border-radius:10px;
+  padding:1.5rem 1.25rem 1.25rem; margin-top:1.5rem;
+}
+@media (min-width:40rem){section.ex{padding:2rem 2rem 1.5rem}}
+.ex h2{font-family:"Source Serif 4", Georgia, serif;font-weight:600;font-size:1.6rem;margin:0 0 .35rem;line-height:1.2}
+.ex .task{margin:0 0 1.25rem;color:var(--muted)}
+ol.items{list-style:none;margin:0;padding:0;counter-reset:item}
+ol.items>li{
+  counter-increment:item; position:relative; padding:.9rem 0 .9rem 2.25rem;
+  border-top:1px solid var(--rule);
+}
+ol.items>li::before{
+  content:counter(item); position:absolute; left:0; top:.95rem;
+  font-variant-numeric:tabular-nums; color:var(--muted); font-weight:700; width:1.6rem; text-align:right;
+}
+.line{line-height:2.3}
+.cue{color:var(--muted);white-space:nowrap}
+.orig{margin:0 0 .35rem}
+.key{
+  display:inline-block; font-weight:700; letter-spacing:.04em; font-size:.9rem;
+  border:1.5px solid var(--ink); border-radius:4px; padding:0 .4rem; margin:0 0 .25rem;
+}
+.de{font-family:"Source Serif 4", Georgia, serif;font-style:italic;font-size:1.12rem;margin:0 0 .5rem}
+
+input.gap, input.full{
+  font:inherit; color:var(--ink); background:var(--field);
+  border:0; border-bottom:2px solid var(--muted); border-radius:4px 4px 0 0;
+  padding:.1rem .4rem; margin:0 .15rem;
+}
+input.gap{min-width:9rem;max-width:100%}
+input.full{width:100%;margin:0;padding:.45rem .55rem}
+input:focus{outline:none;background:var(--hl);border-bottom-color:var(--ink)}
+input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+li.right input{border-bottom-color:var(--green);background:var(--right-bg)}
+li.wrong input{border-bottom-color:var(--red);background:var(--wrong-bg)}
+li.right input:focus,li.wrong input:focus{background:var(--hl)}
+
+.fb{margin:.3rem 0 0;font-size:.95rem;min-height:0}
+.fb:empty{display:none}
+li.right .fb{color:var(--green)}
+li.wrong .fb{color:var(--red)}
+li.shown input{border-bottom-color:var(--muted);background:var(--field);color:var(--muted)}
+li.shown .fb{color:var(--ink)}
+.fb .mark{font-weight:700}
+
+.actions{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;border-top:1px solid var(--rule);padding-top:1.1rem;margin-top:.25rem}
+button{
+  font:inherit; font-weight:700; cursor:pointer; border-radius:6px; padding:.55rem 1.1rem;
+  border:2px solid var(--ink);
+}
+button.check{background:var(--ink);color:var(--sheet)}
+button.reset{background:transparent;color:var(--ink)}
+button:focus-visible{outline:3px solid var(--hl);outline-offset:2px}
+.result{font-weight:700;font-variant-numeric:tabular-nums}
+
+footer.note{
+  max-width:46rem;margin:0 auto;padding:1.25rem 1rem 2.5rem;
+  border-top:1px solid var(--rule); color:var(--muted); font-size:.85rem; line-height:1.5;
+}
+footer.note h3{font-size:.85rem;margin:0 0 .3rem;color:var(--muted)}
+footer.note p{margin:0;max-width:40rem}
+
+@media print{
+  .bar,.actions{display:none}
+  body{background:#fff}
+  section.ex{border:0;padding:0;break-inside:avoid-page}
+}
+</style>
+</head>
+<body>
+<div class="bar">
+  <nav aria-label="Exercises">
+    <a href="#gap-fill">Gap-filling <span class="score" data-for="gap">0/10</span></a>
+    <a href="#rewriting">Rewriting <span class="score" data-for="rew">0/10</span></a>
+    <a href="#translation">Translation <span class="score" data-for="tr">0/10</span></a>
+  </nav>
+</div>
+
+<main>
+  <header class="hero">
+    <h1>Mistakes in the past</h1>
+    <p class="correction" aria-label="Example: If only I hadn’t taken out such a big loan.">If only I <del>didn’t take</del><ins>hadn’t taken</ins> out such a big loan.</p>
+    <p class="lead">Practise <i>wish</i> and <i>if only</i>, <i>should have</i>, <i>ought to have</i>, <i>could have</i>, <i>might have</i> and <i>was/were supposed to</i>. Write your answers, then press <b>Check answers</b>. You can correct a wrong answer and check again. After three wrong tries, the page shows you the answer.</p>
+  </header>
+
+  <section class="ex" id="gap-fill">
+    <h2>Gap-filling</h2>
+    <p class="task">Complete each sentence with the correct form of the words in brackets.</p>
+    <ol class="items" id="gap-list"></ol>
+    <div class="actions">
+      <button class="check" data-ex="gap">Check answers</button>
+      <button class="reset" data-ex="gap">Start again</button>
+      <span class="result" id="gap-result" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section class="ex" id="rewriting">
+    <h2>Rewriting sentences</h2>
+    <p class="task">Complete the second sentence so that it means the same as the first. Use the word in the box and do not change it. Write two to six words.</p>
+    <ol class="items" id="rew-list"></ol>
+    <div class="actions">
+      <button class="check" data-ex="rew">Check answers</button>
+      <button class="reset" data-ex="rew">Start again</button>
+      <span class="result" id="rew-result" aria-live="polite"></span>
+    </div>
+  </section>
+
+  <section class="ex" id="translation">
+    <h2>Translation</h2>
+    <p class="task">Translate the sentences into English. Use the grammar from this unit. There is often more than one good answer.</p>
+    <ol class="items" id="tr-list"></ol>
+    <div class="actions">
+      <button class="check" data-ex="tr">Check answers</button>
+      <button class="reset" data-ex="tr">Start again</button>
+      <span class="result" id="tr-result" aria-live="polite"></span>
+    </div>
+  </section>
+</main>
+
+<footer class="note">
+  <h3>How this exercise was made</h3>
+  <p>Mr Churchman and Claude (an AI assistant made by Anthropic) wrote this together in October 2026. The grammar comes from <i>Roadmap</i>, unit 5A, “Mistakes in the past” – I chose it and set the task. Claude wrote the sentences and built this page; I changed what needed changing and checked every answer myself. If the page marks your answer wrong and you think you are right, tell me – that is my mistake, not the computer’s.</p>
+</footer>
+
+<script>
+/* Answers use {a|b} for alternatives ({a|} = optional). Contractions are expanded before comparing,
+   so "hadn't", "I'd" and "should've" are accepted automatically. */
+const DATA = {
+  gap: [
+    {pre:"I wish I", post:"that second piece of cake.", cue:"not / eat", ans:["had not eaten"], hint:"wish + past perfect: had (not) + past participle."},
+    {pre:"If only we", post:"home earlier – then we wouldn’t have missed the train.", cue:"leave", ans:["had left"], hint:"If only + past perfect."},
+    {pre:"You", post:"me you were vegetarian! I made a beef stew.", cue:"should / tell", ans:["should have told"], hint:"should have + past participle criticises what someone did or didn’t do."},
+    {pre:"They", post:"in front of the fire station.", cue:"ought / not / park", ans:["ought not to have parked"], hint:"ought not to have + past participle."},
+    {pre:"We", post:"a taxi, but we decided to walk home in the rain.", cue:"could / take", ans:["could have taken"], hint:"could have + past participle: it was possible, but you didn’t do it."},
+    {pre:"Sara", post:"the exam if she had revised a bit more.", cue:"might / pass", ans:["might have passed"], hint:"might have + past participle, often with an if-clause."},
+    {pre:"I", post:"Leo at six, but my bus broke down.", cue:"be supposed to / meet", ans:["was supposed to meet"], hint:"was/were supposed to + infinitive: something was planned but didn’t happen."},
+    {pre:"You", post:"that present until your birthday!", cue:"not / be supposed to / open", ans:["were not supposed to open"], hint:"wasn’t/weren’t supposed to + infinitive: it happened, but it wasn’t planned."},
+    {pre:"Thanks for helping me move house. I", post:"it without you.", cue:"could / not / do", ans:["could not have done"], hint:"couldn’t have + past participle."},
+    {pre:"The storm damaged the roof, but it", post:"worse – nobody was hurt.", cue:"could / be", ans:["could have been"], hint:"A common phrase meaning “It wasn’t so bad.”"}
+  ],
+  rew: [
+    {orig:"I regret not buying that flat when it was cheap.", key:"WISH", pre:"I", post:"that flat when it was cheap.", ans:["wish i had bought"], hint:"wish + past perfect."},
+    {orig:"It was a mistake for Tom to drive so fast.", key:"SHOULD", pre:"Tom", post:"so fast.", ans:["should not have driven","should not have been driving"], hint:"shouldn’t have + past participle."},
+    {orig:"It’s a pity I didn’t listen to my parents’ advice.", key:"ONLY", pre:"If", post:"to my parents’ advice.", ans:["only i had listened"], hint:"If only + past perfect."},
+    {orig:"You were wrong not to apologise to her.", key:"OUGHT", pre:"You", post:"to her.", ans:["ought to have {apologised|apologized}"], hint:"ought to have + past participle."},
+    {orig:"It was possible for us to stay at a hotel, but we chose to camp.", key:"COULD", pre:"We", post:"at a hotel, but we chose to camp.", ans:["could have stayed"], hint:"could have + past participle: possible, but not done."},
+    {orig:"The plan was for the parcel to arrive on Monday, but it didn’t come.", key:"SUPPOSED", pre:"The parcel", post:"on Monday, but it didn’t come.", ans:["was supposed to {arrive|come|be delivered}"], hint:"was supposed to + infinitive."},
+    {orig:"You did very well. I’m sure I wouldn’t have done any better.", key:"COULDN’T", pre:"You did very well. I", post:"myself.", ans:["could not have done {|any }better"], hint:"A common phrase: I couldn’t have … myself."},
+    {orig:"Perhaps I would have got the job if I hadn’t been late for the interview.", key:"MIGHT", pre:"I", post:"the job if I hadn’t been late for the interview.", ans:["might have {got|gotten|been given|been offered}"], hint:"might have + past participle."},
+    {orig:"Nobody planned for you to see the cake before the party.", key:"SUPPOSED", pre:"You", post:"the cake before the party!", ans:["were not supposed to see"], hint:"weren’t supposed to + infinitive."},
+    {orig:"I’m sorry I said those hurtful things.", key:"WISH", pre:"I", post:"those hurtful things.", ans:["wish i had {not|never} said"], hint:"wish + past perfect (negative)."}
+  ],
+  tr: [
+    {de:"Ich wünschte, ich hätte mehr Geld gespart.", ans:["{i wish|if only} i had saved {|up }more{| money}"], focus:/\b(wish i|if only i) had\b/, hint:"I wish / If only + past perfect."},
+    {de:"Wenn ich nur nicht so viel gegessen hätte!", ans:["{if only|i wish} i had not eaten {so|that} much"], focus:/\b(if only|wish) i had not\b/, hint:"If only + past perfect (negative)."},
+    {de:"Du hättest mich anrufen sollen.", ans:["you {should|ought to} have {called|phoned|rung} me","you {should|ought to} have given me a {call|ring}"], focus:/\b(should|ought to) have\b/, hint:"should have / ought to have + past participle."},
+    {de:"Die Nachbarn hätten nicht so laut sein sollen.", ans:["the {neighbours|neighbors} {should not|ought not to} have been so {loud|noisy}"], focus:/\b(should not|ought not to) have been\b/, hint:"shouldn’t have / ought not to have + past participle."},
+    {de:"Wir hätten den Zug nehmen können, aber wir wollten nicht.", ans:["we could have {taken|caught|gone by} {the|a} train but we did not want to"], focus:/\bcould have\b/, hint:"could have + past participle."},
+    {de:"Ich hätte vielleicht gewonnen, wenn ich mehr trainiert hätte.", ans:["i {might|may} have won if i had {trained|practised|practiced} {more|harder}","if i had {trained|practised|practiced} {more|harder} i {might|may} have won"], focus:/\b(might|may) have won\b/, hint:"might have + past participle, with if + past perfect."},
+    {de:"Es hätte schlimmer sein können.", ans:["{it|things} could have been worse"], focus:/\bcould have been\b/, hint:"A common phrase with could have been."},
+    {de:"Ohne dich hätte ich es nicht geschafft.", ans:["i could not have {done|managed|made} it without you","without you i could not have {done|managed|made} it"], focus:/\bcould not have\b/, hint:"couldn’t have + past participle."},
+    {de:"Eigentlich sollte ich heute Abend kochen, aber ich habe es vergessen.", ans:["{|actually }i was supposed to {cook|make dinner|cook dinner|make supper|cook supper} {tonight|this evening} but i forgot{| about it}"], focus:/\bwas supposed to\b/, hint:"was supposed to + infinitive: planned, but it didn’t happen."},
+    {de:"Du solltest die Schokolade doch nicht essen!", ans:["you were not supposed to eat {the|that} chocolate"], focus:/\bwere not supposed to\b/, hint:"weren’t supposed to + infinitive: it happened, but it wasn’t planned."}
+  ]
+};
+
+function expand(s){
+  const m = s.match(/\{([^{}]*)\}/);
+  if(!m) return [s];
+  return m[1].split("|").flatMap(o => expand(s.slice(0,m.index) + o + s.slice(m.index + m[0].length)));
+}
+function norm(s){
+  return (" " + s + " ").toLowerCase()
+    .replace(/[\u2018\u2019\u02BC`´]/g,"'")
+    .replace(/[\u2013\u2014]/g," ")
+    .replace(/\bcan't\b/g,"can not").replace(/\bcannot\b/g,"can not").replace(/\bwon't\b/g,"will not")
+    .replace(/'ve\b/g," have")
+    .replace(/n't\b/g," not")
+    .replace(/'d\b/g," had")
+    .replace(/'re\b/g," are")
+    .replace(/'m\b/g," am")
+    .replace(/[.,!?;:"“”«»()]/g," ")
+    .replace(/\s+/g," ").trim();
+}
+const TR_MODELS = [
+  "I wish I had saved more money.",
+  "If only I hadn’t eaten so much!",
+  "You should have called me.",
+  "The neighbours shouldn’t have been so noisy.",
+  "We could have taken the train, but we didn’t want to.",
+  "I might have won if I had trained more.",
+  "It could have been worse.",
+  "I couldn’t have done it without you.",
+  "I was supposed to cook tonight, but I forgot.",
+  "You weren’t supposed to eat the chocolate!"
+];
+DATA.tr.forEach((it,i) => it.model = TR_MODELS[i]);
+const MAX_TRIES = 3;
+const STATE = {};
+function freshState(ex){ STATE[ex] = DATA[ex].map(() => ({tries:0, last:"", shown:false})); }
+function modelFor(ex, i){
+  const it = DATA[ex][i];
+  if(ex === "tr") return it.model;
+  return (it.pre + " " + expand(it.ans[0])[0] + " " + it.post).replace(/\bi\b/g, "I");
+}
+const ANS = {};
+for(const ex in DATA){
+  freshState(ex);
+  ANS[ex] = DATA[ex].map(it => new Set(it.ans.flatMap(expand).map(norm)));
+}
+
+function el(tag, attrs={}, ...kids){
+  const e = document.createElement(tag);
+  for(const k in attrs){ if(k==="class") e.className = attrs[k]; else e.setAttribute(k, attrs[k]); }
+  kids.forEach(k => e.append(k));
+  return e;
+}
+function gapInput(label, longest){
+  return el("input",{class:"gap", type:"text", autocomplete:"off", autocapitalize:"off", spellcheck:"false",
+    "aria-label":label, size:String(Math.max(12, longest))});
+}
+
+// Build gap-fill
+DATA.gap.forEach((it,i)=>{
+  const li = el("li");
+  const line = el("div",{class:"line"});
+  line.append(it.pre + " ", gapInput("Gap " + (i+1) + ", " + it.cue, it.ans[0].length + 2), " ", el("span",{class:"cue"},"(" + it.cue + ")"), " " + it.post);
+  li.append(line, el("p",{class:"fb", "aria-live":"polite"}));
+  document.getElementById("gap-list").append(li);
+});
+// Build rewriting
+DATA.rew.forEach((it,i)=>{
+  const li = el("li");
+  const line = el("div",{class:"line"});
+  line.append(it.pre + " ", gapInput("Sentence " + (i+1) + ", use the word " + it.key, 20), " " + it.post);
+  li.append(el("p",{class:"orig"}, it.orig), el("span",{class:"key"}, it.key), line, el("p",{class:"fb", "aria-live":"polite"}));
+  document.getElementById("rew-list").append(li);
+});
+// Build translation
+DATA.tr.forEach((it,i)=>{
+  const li = el("li");
+  li.append(el("p",{class:"de", lang:"de-CH"}, it.de),
+    el("input",{class:"full", type:"text", autocomplete:"off", spellcheck:"false", "aria-label":"English translation of sentence " + (i+1)}),
+    el("p",{class:"fb", "aria-live":"polite"}));
+  document.getElementById("tr-list").append(li);
+});
+
+function isRight(ex, i, value){
+  const set = ANS[ex][i], v = norm(value);
+  if(set.has(v)) return true;
+  if(ex === "gap" || ex === "rew"){
+    // also accept the answer typed together with the words before the gap
+    const pre = norm(DATA[ex][i].pre);
+    if(v.startsWith(pre + " ") && set.has(v.slice(pre.length + 1))) return true;
+  }
+  return false;
+}
+
+function check(ex){
+  const items = document.querySelectorAll("#" + ex + "-list > li");
+  let score = 0;
+  items.forEach((li,i)=>{
+    const input = li.querySelector("input"), fb = li.querySelector(".fb"), it = DATA[ex][i], st = STATE[ex][i];
+    if(st.shown) return;
+    li.classList.remove("right","wrong");
+    fb.textContent = "";
+    if(!input.value.trim()) return;
+    if(isRight(ex,i,input.value)){
+      score++; li.classList.add("right");
+      fb.innerHTML = '<span class="mark">✓ Correct.</span>';
+      return;
+    }
+    const v = norm(input.value);
+    if(v !== st.last){ st.tries++; st.last = v; }
+    if(st.tries >= MAX_TRIES){
+      st.shown = true; input.readOnly = true;
+      li.classList.add("shown");
+      fb.innerHTML = '<span class="mark">The answer:</span> ' + modelFor(ex,i);
+      return;
+    }
+    li.classList.add("wrong");
+    const left = MAX_TRIES - st.tries;
+    const tries = ' <i>' + left + (left === 1 ? ' try' : ' tries') + ' left before the answer is shown.</i>';
+    if(ex === "tr" && it.focus.test(v)){
+      fb.innerHTML = '<span class="mark">✗ Not quite.</span> Your grammar is right – check the words and the word order.' + tries;
+    } else {
+      fb.innerHTML = '<span class="mark">✗ Not yet.</span> Hint: ' + it.hint + tries;
+    }
+  });
+  const empty = [...items].filter(li => !li.querySelector("input").value.trim()).length;
+  document.getElementById(ex + "-result").textContent =
+    score + " of " + items.length + " correct" + (empty ? " · " + empty + " not answered" : "");
+  const chip = document.querySelector('.score[data-for="' + ex + '"]');
+  chip.textContent = score + "/" + items.length;
+  chip.classList.toggle("done", score === items.length);
+}
+function reset(ex){
+  freshState(ex);
+  document.querySelectorAll("#" + ex + "-list > li").forEach(li=>{
+    li.classList.remove("right","wrong","shown");
+    li.querySelector("input").readOnly = false;
+    li.querySelector("input").value = "";
+    li.querySelector(".fb").textContent = "";
+  });
+  document.getElementById(ex + "-result").textContent = "";
+  const chip = document.querySelector('.score[data-for="' + ex + '"]');
+  chip.textContent = "0/10"; chip.classList.remove("done");
+}
+document.querySelectorAll("button.check").forEach(b => b.addEventListener("click", () => check(b.dataset.ex)));
+document.querySelectorAll("button.reset").forEach(b => b.addEventListener("click", () => reset(b.dataset.ex)));
+// Enter in any field checks that exercise
+document.querySelectorAll("section.ex").forEach(sec=>{
+  const ex = sec.querySelector("button.check").dataset.ex;
+  sec.addEventListener("keydown", e => { if(e.key === "Enter" && e.target.tagName === "INPUT"){ e.preventDefault(); check(ex); } });
+});
+// Open the section named in the link
+function goToHash(){
+  const id = location.hash.slice(1);
+  const t = id && document.getElementById(id);
+  if(t) t.scrollIntoView({block:"start"});
+}
+window.addEventListener("hashchange", goToHash);
+goToHash();
+</script>
+</body>
+</html>
