@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Insight Intermediate Unit 5: Three-part phrasal verbs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F4F7FB;
+  --sheet: #FFFFFF;
+  --ink: #16202C;
+  --muted: #5A6575;
+  --line: #D5DCE6;
+  --accent: #1D4E89;
+  --accent-ink: #FFFFFF;
+  --marker: #FFD84D;
+  --marker-ink: #16202C;
+  --ok: #1E7B4F;
+  --ok-bg: #E3F4EA;
+  --bad: #B42318;
+  --bad-bg: #FDECEA;
+  --shown: #8A5300;
+  --shown-bg: #FFF2D6;
+  --field: #FFFFFF;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #0F1620; --sheet: #17212D; --ink: #E7ECF3; --muted: #A2ADBC; --line: #2C3A4B;
+    --accent: #7FB0EE; --accent-ink: #0F1620; --marker: #E9C440; --marker-ink: #16202C;
+    --ok: #6FD3A0; --ok-bg: #173527; --bad: #FF8A80; --bad-bg: #3A1D1B;
+    --shown: #F2B85B; --shown-bg: #3A2C12; --field: #0F1620;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #0F1620; --sheet: #17212D; --ink: #E7ECF3; --muted: #A2ADBC; --line: #2C3A4B;
+  --accent: #7FB0EE; --accent-ink: #0F1620; --marker: #E9C440; --marker-ink: #16202C;
+  --ok: #6FD3A0; --ok-bg: #173527; --bad: #FF8A80; --bad-bg: #3A1D1B;
+  --shown: #F2B85B; --shown-bg: #3A2C12; --field: #0F1620;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Atkinson Hyperlegible", "Segoe UI", Verdana, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+main { max-width: 52rem; margin: 0 auto; padding: 0 1.25rem 3rem; }
+h1, h2 { font-family: "Bricolage Grotesque", "Trebuchet MS", sans-serif; line-height: 1.15; }
+
+/* Hero */
+header.hero { padding: 3rem 0 2rem; }
+.hero h1 { font-size: clamp(2rem, 6vw, 3.2rem); font-weight: 800; margin: 0 0 1.5rem; letter-spacing: -0.01em; }
+.formula { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin: 0 0 1.25rem; font-family: "Bricolage Grotesque", sans-serif; font-weight: 600; font-size: clamp(1.15rem, 3.5vw, 1.5rem); }
+.formula .verb { padding: .2em .55em; border: 2px solid var(--ink); border-radius: .4rem; }
+.formula .part { padding: .2em .55em; background: var(--marker); color: var(--marker-ink); border-radius: .4rem; }
+.formula .plus { color: var(--muted); font-weight: 400; }
+.formula .gloss { color: var(--muted); font-family: "Atkinson Hyperlegible", sans-serif; font-weight: 400; font-size: .75em; margin-left: .25rem; }
+.hero p { max-width: 40rem; margin: 0 0 .75rem; }
+.howto { color: var(--muted); }
+nav.jump { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.5rem; }
+nav.jump a { color: var(--accent); text-decoration: none; border: 1px solid var(--line); background: var(--sheet); padding: .4rem .85rem; border-radius: 2rem; font-weight: 700; font-size: .95rem; }
+nav.jump a:hover { border-color: var(--accent); }
+
+/* Exercise sections */
+section.ex { background: var(--sheet); border: 1px solid var(--line); border-radius: .75rem; padding: 1.5rem 1.25rem 1.25rem; margin: 0 0 2rem; }
+@media (min-width: 40rem) { section.ex { padding: 2rem 2rem 1.5rem; } }
+.ex h2 { font-size: 1.5rem; margin: 0 0 .5rem; font-weight: 800; }
+.ex h2 .n { color: var(--accent); margin-right: .35rem; }
+.task { margin: 0 0 1.25rem; color: var(--muted); }
+ol.items { margin: 0; padding: 0; list-style: none; counter-reset: item; }
+ol.items > li { counter-increment: item; display: grid; grid-template-columns: 2rem 1fr; gap: .25rem .5rem; padding: .7rem 0; border-top: 1px solid var(--line); align-items: baseline; }
+ol.items > li::before { content: counter(item) "."; color: var(--muted); font-variant-numeric: tabular-nums; }
+.def-row { display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: center; justify-content: space-between; }
+.def-row .def { flex: 1 1 16rem; }
+
+select, input[type="text"] {
+  font: inherit; color: var(--ink); background: var(--field);
+  border: 2px solid var(--line); border-radius: .4rem; padding: .2rem .45rem;
+}
+select { min-width: 11rem; padding-right: 1.6rem; }
+input[type="text"] { width: 5.5rem; text-align: center; }
+.story input[type="text"] { width: 10.5rem; text-align: left; }
+select:focus-visible, input:focus-visible, button:focus-visible, nav.jump a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.is-ok { border-color: var(--ok) !important; background: var(--ok-bg) !important; color: var(--ok) !important; font-weight: 700; }
+.is-bad { border-color: var(--bad) !important; background: var(--bad-bg) !important; }
+.is-shown { border-color: var(--shown) !important; background: var(--shown-bg) !important; color: var(--shown) !important; font-weight: 700; }
+select:disabled, input:disabled { opacity: 1; -webkit-text-fill-color: currentColor; cursor: default; }
+
+.fb { font-size: .875rem; display: inline-block; margin-left: .35rem; }
+.fb.bad { color: var(--bad); }
+.fb.ok { color: var(--ok); }
+.fb.shown { color: var(--shown); }
+.fb:empty { display: none; }
+
+.sentence { line-height: 2.2; }
+
+/* Word bank and story */
+.bank { display: flex; flex-wrap: wrap; gap: .45rem; padding: 1rem; margin: 0 0 1.25rem; border: 2px dashed var(--line); border-radius: .6rem; }
+.bank span { padding: .15rem .6rem; border-radius: .35rem; background: var(--paper); border: 1px solid var(--line); font-size: .95rem; }
+.bank span.used { text-decoration: line-through; color: var(--muted); opacity: .7; }
+.story h3 { font-family: "Bricolage Grotesque", sans-serif; font-size: 1.15rem; margin: 0 0 .5rem; }
+.story p { line-height: 2.3; margin: 0 0 1rem; max-width: 46rem; }
+.gapno { font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; margin-right: .15rem; }
+
+/* Controls */
+.controls { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+button { font: inherit; font-weight: 700; border-radius: .45rem; padding: .55rem 1.1rem; cursor: pointer; border: 2px solid var(--accent); }
+button.check { background: var(--accent); color: var(--accent-ink); }
+button.reset { background: transparent; color: var(--accent); }
+.score { flex: 1 1 100%; margin: .25rem 0 0; font-size: .95rem; color: var(--muted); min-height: 1.5em; }
+.score strong { color: var(--ink); }
+
+footer.credit { max-width: 52rem; margin: 0 auto; padding: 1.5rem 1.25rem 2.5rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+footer.credit h2 { font-family: "Atkinson Hyperlegible", sans-serif; font-size: .9rem; margin: 0 0 .35rem; color: var(--muted); }
+footer.credit p { margin: 0; max-width: 42rem; }
+</style>
+</head>
+<body>
+<main>
+  <header class="hero">
+    <h1>Insight Intermediate Unit 5: Three-part phrasal verbs</h1>
+    <div class="formula" aria-label="verb plus particle plus particle, for example put up with">
+      <span class="verb">put</span><span class="plus">+</span><span class="part">up</span><span class="plus">+</span><span class="part">with</span>
+      <span class="gloss">= tolerate</span>
+    </div>
+    <p>A three-part phrasal verb is a verb with two particles. The particles change the meaning, so you need to learn them together.</p>
+    <p class="howto">Fill in your answers and press “Check answers”. You have three tries for every item. After your third wrong try, the page shows you the correct answer.</p>
+    <nav class="jump" aria-label="Exercises">
+      <a href="#ex1">1. Meanings</a>
+      <a href="#ex2">2. Missing particles</a>
+      <a href="#ex3">3. A story</a>
+    </nav>
+  </header>
+
+  <section class="ex" id="ex1" aria-labelledby="ex1-title">
+    <h2 id="ex1-title"><span class="n">1</span>Meanings</h2>
+    <p class="task">Choose the phrasal verb that matches each meaning.</p>
+    <ol class="items" id="ex1-list"></ol>
+    <div class="controls">
+      <button type="button" class="check" data-ex="ex1">Check answers</button>
+      <button type="button" class="reset" data-ex="ex1">Start again</button>
+      <p class="score" id="ex1-score" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="ex" id="ex2" aria-labelledby="ex2-title">
+    <h2 id="ex2-title"><span class="n">2</span>Missing particles</h2>
+    <p class="task">Write the two missing particles, one in each gap.</p>
+    <ol class="items" id="ex2-list"></ol>
+    <div class="controls">
+      <button type="button" class="check" data-ex="ex2">Check answers</button>
+      <button type="button" class="reset" data-ex="ex2">Start again</button>
+      <p class="score" id="ex2-score" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <section class="ex" id="ex3" aria-labelledby="ex3-title">
+    <h2 id="ex3-title"><span class="n">3</span>A story</h2>
+    <p class="task">Complete the story with the phrasal verbs from the box. Use each one once and change the form where necessary (for example <em>looked</em>, <em>getting</em>).</p>
+    <div class="bank" id="ex3-bank" aria-label="Word bank"></div>
+    <div class="story" id="ex3-story"></div>
+    <div class="controls">
+      <button type="button" class="check" data-ex="ex3">Check answers</button>
+      <button type="button" class="reset" data-ex="ex3">Start again</button>
+      <p class="score" id="ex3-score" aria-live="polite"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="credit">
+  <h2>How this exercise was made</h2>
+  <p>Mr Churchman and Claude (an AI assistant made by Anthropic) wrote this together in October 2026. The 23 phrasal verbs come from Insight Intermediate, Unit 5 — I chose them. Claude wrote the sentences and the story and built this page; I set the task, changed what needed changing, and checked every answer myself. If a gap marks your answer wrong and you think you are right, tell me — that is my mistake, not the computer’s.</p>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  var MAX_TRIES = 3;
+
+  // ---------- Content ----------
+  var EX1 = [
+    ["admire and respect someone", "look up to"],
+    ["have no more of something left", "run out of"],
+    ["think of an idea, a plan or an answer", "come up with"],
+    ["accept something or someone unpleasant without complaining", "put up with"],
+    ["not be punished for something wrong you have done", "get away with"],
+    ["finally find the time to do something you planned to do", "get round to"],
+    ["get rid of a law, a rule or a system", "do away with"],
+    ["stop being friends with someone after an argument", "fall out with"],
+    ["be as good as people expected", "live up to"],
+    ["reduce how much of something you do or use", "cut down on"],
+    ["admit that you did something wrong", "own up to"],
+    ["think that you are better than someone", "look down on"],
+    ["do something good because you did something bad before", "make up for"],
+    ["refuse to accept bad treatment from someone", "stand up to"],
+    ["decide not to take part in something any more", "pull out of"]
+  ];
+
+  // Each [[...]] is one gap; alternatives separated by |
+  var EX2 = [
+    "If you carry [[on]] [[with]] your work now, you’ll finish before lunch.",
+    "Do you get [[on]] [[with]] your new stepbrother?",
+    "The kids are very quiet. What have they been getting [[up]] [[to]]?",
+    "Sam has been going [[out]] [[with]] Mia for six months.",
+    "I’m really looking [[forward]] [[to]] the summer holidays.",
+    "When she saw the gang, she turned round and walked [[away]] [[from]] the fight.",
+    "Half the audience walked [[out]] [[of]] the concert in protest.",
+    "The police put the rise in crime [[down]] [[to]] youth unemployment.",
+    "Our car ran [[out]] [[of]] petrol on the motorway.",
+    "Many people think all countries should do [[away]] [[with]] the death penalty.",
+    "The shoplifter thought he could get [[away]] [[with]] it, but the cameras had filmed everything.",
+    "Nobody likes people who look [[down]] [[on]] others because they have less money.",
+    "I can’t put [[up]] [[with]] the noise from next door any longer.",
+    "I keep meaning to tidy my room, but I never get [[round|around]] [[to]] it.",
+    "It took a lot of courage to stand [[up]] [[to]] the bullies."
+  ];
+
+  var EX3_BANK = ["carry on with", "come up with", "cut down on", "fall out with", "get away with",
+    "get up to", "live up to", "look down on", "look forward to", "look up to",
+    "make up for", "own up to", "run out of", "stand up to", "walk away from"];
+
+  // gaps: [accepted answers..., bank entry]
+  var EX3_GAPS = [
+    [["looked up to"], "look up to"],
+    [["getting up to"], "get up to"],
+    [["came up with"], "come up with"],
+    [["look down on"], "look down on"],
+    [["got away with", "gotten away with"], "get away with"],
+    [["own up to"], "own up to"],
+    [["fell out with"], "fall out with"],
+    [["make up for"], "make up for"],
+    [["walked away from"], "walk away from"],
+    [["cut down on"], "cut down on"],
+    [["carry on with", "get on with"], "carry on with"],
+    [["running out of"], "run out of"],
+    [["stood up to"], "stand up to"],
+    [["live up to"], "live up to"],
+    [["looking forward to"], "look forward to"]
+  ];
+
+  var EX3_TEXT = [
+    "Jake had always {1} his older brother Leo, but Leo was not a good role model. When Jake was fifteen, he started spending time with Leo’s friends, and his parents had no idea what he was {2} after school.",
+    "One evening the group {3} a plan to steal phones from a shop in town. Jake felt nervous, but he didn’t want the others to {4} him, so he joined in. At first it looked as if they had {5} it. However, the shop’s cameras had filmed everything, and two days later the police knocked on the door.",
+    "Jake decided to {6} what he had done. After a huge argument, he {7} his father, and for weeks they hardly spoke. In court, the judge gave Jake 100 hours of community service and told him he had to {8} the harm he had caused.",
+    "When the gang asked him to join another “job”, Jake simply {9} them and went home. He also had to {10} the time he spent online and {11} his schoolwork, because he had missed a lot of lessons. Some days he felt he was {12} energy. But when Leo tried to drag him back into trouble, Jake {13} him.",
+    "Today Jake is determined to {14} his parents’ expectations, and he is {15} starting an apprenticeship next summer."
+  ];
+
+  // ---------- Helpers ----------
+  function norm(s) {
+    return String(s || "").toLowerCase().replace(/[’‘`]/g, "'").replace(/[.,!?]+$/g, "").replace(/\s+/g, " ").trim();
+  }
+  function el(tag, attrs, text) {
+    var e = document.createElement(tag);
+    if (attrs) for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  // item: { fields:[inputs], answers:[[accepted]...], fb:span, tries, last, done:null|'ok'|'shown', bank? }
+  var exercises = { ex1: [], ex2: [], ex3: [] };
+
+  // ---------- Build exercise 1 ----------
+  var options = EX1.map(function (r) { return r[1]; }).sort();
+  var list1 = document.getElementById("ex1-list");
+  EX1.forEach(function (row, i) {
+    var li = el("li");
+    var wrap = el("div", { "class": "def-row" });
+    var def = el("span", { "class": "def" }, row[0]);
+    var right = el("span");
+    var sel = el("select", { "aria-label": "Phrasal verb for meaning " + (i + 1) });
+    sel.appendChild(el("option", { value: "" }, "Choose…"));
+    options.forEach(function (o) { sel.appendChild(el("option", { value: o }, o)); });
+    var fb = el("span", { "class": "fb", "aria-live": "polite" });
+    right.appendChild(sel); right.appendChild(fb);
+    wrap.appendChild(def); wrap.appendChild(right);
+    li.appendChild(wrap);
+    list1.appendChild(li);
+    exercises.ex1.push({ fields: [sel], answers: [[row[1]]], fb: fb });
+  });
+
+  // ---------- Build exercise 2 ----------
+  var list2 = document.getElementById("ex2-list");
+  EX2.forEach(function (sentence, i) {
+    var li = el("li");
+    var p = el("span", { "class": "sentence" });
+    var parts = sentence.split(/\[\[|\]\]/);
+    var fields = [], answers = [];
+    parts.forEach(function (part, j) {
+      if (j % 2 === 0) { p.appendChild(document.createTextNode(part)); return; }
+      var inp = el("input", { type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false",
+        "aria-label": "Sentence " + (i + 1) + ", particle " + (fields.length + 1) });
+      p.appendChild(inp);
+      fields.push(inp);
+      answers.push(part.split("|"));
+    });
+    var fb = el("span", { "class": "fb", "aria-live": "polite" });
+    p.appendChild(fb);
+    li.appendChild(p);
+    list2.appendChild(li);
+    exercises.ex2.push({ fields: fields, answers: answers, fb: fb });
+  });
+
+  // ---------- Build exercise 3 ----------
+  var bank = document.getElementById("ex3-bank");
+  var bankEls = {};
+  EX3_BANK.forEach(function (w) { var s = el("span", null, w); bankEls[w] = s; bank.appendChild(s); });
+  var story = document.getElementById("ex3-story");
+  story.appendChild(el("h3", null, "Jake’s second chance"));
+  EX3_TEXT.forEach(function (para) {
+    var p = el("p");
+    para.split(/\{(\d+)\}/).forEach(function (part, j) {
+      if (j % 2 === 0) { p.appendChild(document.createTextNode(part)); return; }
+      var n = parseInt(part, 10);
+      var gap = EX3_GAPS[n - 1];
+      p.appendChild(el("span", { "class": "gapno" }, "(" + n + ")"));
+      var inp = el("input", { type: "text", autocomplete: "off", autocapitalize: "off", spellcheck: "false",
+        "aria-label": "Gap " + n });
+      p.appendChild(inp);
+      var fb = el("span", { "class": "fb", "aria-live": "polite" });
+      p.appendChild(fb);
+      exercises.ex3[n - 1] = { fields: [inp], answers: [gap[0]], fb: fb, bank: bankEls[gap[1]] };
+    });
+    story.appendChild(p);
+  });
+
+  // ---------- Logic ----------
+  function resetItem(it) {
+    it.tries = 0; it.last = null; it.done = null;
+    it.fields.forEach(function (f) {
+      f.disabled = false; f.value = "";
+      f.classList.remove("is-ok", "is-bad", "is-shown");
+    });
+    it.fb.textContent = ""; it.fb.className = "fb";
+    if (it.bank) it.bank.classList.remove("used");
+  }
+
+  Object.keys(exercises).forEach(function (key) {
+    exercises[key].forEach(function (it) {
+      resetItem(it);
+      it.fields.forEach(function (f) {
+        var evt = f.tagName === "SELECT" ? "change" : "input";
+        f.addEventListener(evt, function () {
+          if (it.done) return;
+          it.fields.forEach(function (g) { g.classList.remove("is-bad"); });
+        });
+        if (f.tagName === "INPUT") {
+          f.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") { e.preventDefault(); check(key); }
+          });
+        }
+      });
+    });
+  });
+
+  function isCorrect(it, vals) {
+    return vals.every(function (v, i) {
+      return it.answers[i].some(function (a) { return norm(a) === v; });
+    });
+  }
+
+  function triesLeftText(n) { return n === 1 ? "1 try left" : n + " tries left"; }
+
+  function check(key) {
+    var items = exercises[key];
+    var empty = 0, unchanged = 0;
+    items.forEach(function (it) {
+      if (it.done) return;
+      var vals = it.fields.map(function (f) { return norm(f.value); });
+      if (vals.some(function (v) { return v === ""; })) { empty++; return; }
+      var sig = vals.join("|");
+      if (sig === it.last) { unchanged++; return; }
+      if (isCorrect(it, vals)) {
+        it.done = "ok";
+        it.fields.forEach(function (f) { f.classList.remove("is-bad"); f.classList.add("is-ok"); f.disabled = true; });
+        it.fb.className = "fb ok";
+        it.fb.textContent = it.tries === 0 ? "Correct!" : "Correct.";
+        if (it.bank) it.bank.classList.add("used");
+        return;
+      }
+      it.tries++;
+      it.last = sig;
+      if (it.tries >= MAX_TRIES) {
+        it.done = "shown";
+        it.fields.forEach(function (f, i) {
+          f.value = it.answers[i][0];
+          f.classList.remove("is-bad"); f.classList.add("is-shown"); f.disabled = true;
+        });
+        it.fb.className = "fb shown";
+        it.fb.textContent = "This is the correct answer.";
+        if (it.bank) it.bank.classList.add("used");
+      } else {
+        it.fields.forEach(function (f, i) {
+          var ok = it.answers[i].some(function (a) { return norm(a) === vals[i]; });
+          if (!ok || it.fields.length === 1) f.classList.add("is-bad");
+        });
+        it.fb.className = "fb bad";
+        it.fb.textContent = "Not quite. " + triesLeftText(MAX_TRIES - it.tries) + ".";
+      }
+    });
+    updateScore(key, empty, unchanged);
+  }
+
+  function updateScore(key, empty, unchanged) {
+    var items = exercises[key];
+    var ok = 0, first = 0, shown = 0, open = 0;
+    items.forEach(function (it) {
+      if (it.done === "ok") { ok++; if (it.tries === 0) first++; }
+      else if (it.done === "shown") shown++;
+      else open++;
+    });
+    var out = document.getElementById(key + "-score");
+    var msg = "<strong>Correct: " + ok + " of " + items.length + ".</strong> Right on the first try: " + first + ". Answers shown after three tries: " + shown + ".";
+    if (open === 0) {
+      msg += " You have finished this exercise.";
+    } else if (empty > 0) {
+      msg += " Fill in the empty " + (empty === 1 ? "gap" : "gaps") + " and check again.";
+    } else if (unchanged > 0) {
+      msg += " Change your red answers before you check again.";
+    }
+    out.innerHTML = msg;
+  }
+
+  document.querySelectorAll("button.check").forEach(function (b) {
+    b.addEventListener("click", function () { check(b.getAttribute("data-ex")); });
+  });
+  document.querySelectorAll("button.reset").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var key = b.getAttribute("data-ex");
+      if (!b.dataset.armed) {
+        b.dataset.armed = "1";
+        b.textContent = "Click again to clear all answers";
+        b._timer = setTimeout(function () { delete b.dataset.armed; b.textContent = "Start again"; }, 4000);
+        return;
+      }
+      clearTimeout(b._timer);
+      delete b.dataset.armed;
+      b.textContent = "Start again";
+      exercises[key].forEach(resetItem);
+      document.getElementById(key + "-score").textContent = "";
+    });
+  });
+})();
+</script>
+</body>
+</html>
