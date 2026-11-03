@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Key word transformations · C1 practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper: #F6F7F9;
+  --sheet: #FFFFFF;
+  --ink: #1C2B40;
+  --pencil: #5A6474;
+  --line: #D5DAE1;
+  --blue: #2B4C7E;
+  --blue-soft: #E6ECF5;
+  --good: #2C7A4B;
+  --good-soft: #E3F1E8;
+  --half: #9A6410;
+  --half-soft: #FBF0DC;
+  --bad: #A83838;
+  --bad-soft: #F8E5E5;
+  color-scheme: light;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #151A22; --sheet: #1D2430; --ink: #E4E8EE; --pencil: #A3ADBB; --line: #343E4D;
+    --blue: #8FB0E0; --blue-soft: #253247; --good: #7CCB98; --good-soft: #1E3328;
+    --half: #E2B566; --half-soft: #3A2F1C; --bad: #E58C8C; --bad-soft: #3D2424;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #151A22; --sheet: #1D2430; --ink: #E4E8EE; --pencil: #A3ADBB; --line: #343E4D;
+  --blue: #8FB0E0; --blue-soft: #253247; --good: #7CCB98; --good-soft: #1E3328;
+  --half: #E2B566; --half-soft: #3A2F1C; --bad: #E58C8C; --bad-soft: #3D2424;
+  color-scheme: dark;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+main { max-width: 46rem; margin: 0 auto; padding: 2rem 1.25rem 7rem; }
+header h1 {
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  font-weight: 600;
+  font-size: clamp(1.75rem, 4vw, 2.4rem);
+  line-height: 1.15;
+  margin: 0 0 0.75rem;
+}
+.rubric {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--pencil);
+  margin: 0 0 0.5rem;
+  max-width: 38rem;
+}
+.marking { font-size: 0.92rem; color: var(--pencil); margin: 0 0 2rem; max-width: 38rem; }
+
+ol.items { list-style: none; margin: 0; padding: 0; counter-reset: q; }
+li.item {
+  counter-increment: q;
+  background: var(--sheet);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--line);
+  border-radius: 6px;
+  padding: 1.1rem 1.25rem 1.2rem 3.25rem;
+  margin-bottom: 1rem;
+  position: relative;
+}
+li.item::before {
+  content: counter(q);
+  position: absolute; left: 1rem; top: 1.05rem;
+  font-weight: 700; color: var(--pencil); font-variant-numeric: tabular-nums;
+}
+li.item.m2 { border-left-color: var(--good); }
+li.item.m1 { border-left-color: var(--half); }
+li.item.m0 { border-left-color: var(--bad); }
+
+.first {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.1rem; line-height: 1.6; margin: 0 0 0.6rem;
+}
+.kw {
+  display: inline-block;
+  font-weight: 700; letter-spacing: 0.06em;
+  border: 2px solid var(--ink);
+  padding: 0.05rem 0.55rem;
+  margin: 0 0 0.7rem;
+  font-size: 0.95rem;
+}
+.second {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.1rem; line-height: 2.1; margin: 0;
+}
+.second input {
+  font: inherit;
+  font-family: "Atkinson Hyperlegible", system-ui, sans-serif;
+  font-size: 1rem;
+  color: var(--ink);
+  background: var(--blue-soft);
+  border: none;
+  border-bottom: 2px solid var(--blue);
+  border-radius: 3px 3px 0 0;
+  padding: 0.2rem 0.45rem;
+  width: min(22rem, 100%);
+  margin: 0 0.2rem;
+}
+.second input:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+.result { margin-top: 0.75rem; font-size: 0.95rem; display: none; }
+.result.show { display: block; }
+.badge {
+  display: inline-block; font-weight: 700; padding: 0.1rem 0.6rem; border-radius: 999px; margin-right: 0.5rem;
+}
+.m2 .badge { background: var(--good-soft); color: var(--good); }
+.m1 .badge { background: var(--half-soft); color: var(--half); }
+.m0 .badge { background: var(--bad-soft); color: var(--bad); }
+.reveal {
+  font: inherit; font-size: 0.9rem; color: var(--blue);
+  background: none; border: none; padding: 0; margin-top: 0.4rem;
+  text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+}
+.reveal:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+.model { margin: 0.35rem 0 0; color: var(--pencil); }
+.model strong { color: var(--ink); }
+
+.bar {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  background: var(--sheet);
+  border-top: 1px solid var(--line);
+  padding: 0.75rem 1.25rem calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  z-index: 5;
+}
+.bar-inner {
+  max-width: 46rem; margin: 0 auto;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem;
+}
+.score { flex: 1 1 10rem; font-size: 1.05rem; }
+.score b { font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+button.primary, button.secondary {
+  font: inherit; font-weight: 700; cursor: pointer;
+  border-radius: 6px; padding: 0.6rem 1.1rem;
+}
+button.primary { background: var(--blue); color: var(--sheet); border: 2px solid var(--blue); }
+button.secondary { background: transparent; color: var(--ink); border: 2px solid var(--line); }
+button.primary:focus-visible, button.secondary:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+footer.made {
+  margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line);
+  font-size: 0.82rem; color: var(--pencil); max-width: 38rem;
+}
+footer.made h2 { font-size: 0.85rem; margin: 0 0 0.3rem; color: var(--pencil); }
+footer.made p { margin: 0; }
+
+@media (max-width: 30rem) {
+  li.item { padding-left: 2.6rem; padding-right: 1rem; }
+  li.item::before { left: 0.85rem; }
+  .second input { width: 100%; margin: 0.25rem 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  li.item { transition: border-left-color 0.25s ease; }
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Key word transformations</h1>
+    <p class="rubric">Complete the second sentence so that it has a similar meaning to the first sentence, using the word given. Do not change the word given. You must use between three and six words, including the word given.</p>
+    <p class="marking">Each answer is worth up to 2 marks, one for each part. Contractions count as two words (<i>didn’t</i> = <i>did not</i>). Answers over six words, or without the word given, get 0.</p>
+  </header>
+
+  <ol class="items" id="items"></ol>
+
+  <footer class="made">
+    <h2>How this exercise was made</h2>
+    <p>Mr Churchman and Claude (an AI assistant made by Anthropic) wrote this together in November 2026. Claude wrote the sentences and built this page; I set the task, changed what needed changing, and checked every answer myself. If a question marks your answer wrong and you think you are right, tell me. That is my mistake, not the computer’s.</p>
+  </footer>
+</main>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="score" id="score" aria-live="polite">Score: <b>–</b> / 40</div>
+    <button class="secondary" id="reset" type="button">Start again</button>
+    <button class="primary" id="check" type="button">Check answers</button>
+  </div>
+</div>
+
+<script>
+const ITEMS = [
+  { first: "They postponed the meeting because the manager was ill.", kw: "OFF",
+    pre: "The meeting", post: "the manager’s illness.",
+    p1: /\bwas put off\b/, p2: /\b(because of|due to|owing to|on account of)$/,
+    parts: ["the passive form of the phrasal verb", "the linking phrase before a noun"],
+    model: "was put off | because of / due to" },
+  { first: "“I’m sorry I didn’t call you back,” Anna said to Ben.", kw: "APOLOGISED", kwAlt: ["apologized"],
+    pre: "Anna", post: "him back.",
+    p1: /\bapologi[sz]ed to ben\b/, p2: /\bfor not (calling|phoning|ringing)$/,
+    parts: ["apologise + the person", "for + a negative -ing form"],
+    model: "apologised to Ben | for not calling" },
+  { first: "I felt really nervous before the interview.", kw: "BUTTERFLIES",
+    pre: "I", post: "before the interview.",
+    p1: /^(had|got|'d got|had got) butterflies\b/, p2: /\bin my stomach$/,
+    parts: ["the idiom", "where the butterflies are"],
+    model: "had butterflies | in my stomach" },
+  { first: "Nobody expected the team to win the final.", kw: "CONTRARY",
+    pre: "", post: ", the team won the final.",
+    p1: /^contrary to\b/, p2: /\b((all |popular |general )?expectations?|what (everyone|everybody|anyone|anybody|people) (had )?expected)$/,
+    parts: ["contrary + preposition", "the idea of what people expected"],
+    model: "Contrary to | (all) expectations / what everyone expected" },
+  { first: "People believe that the thief escaped through a window.", kw: "HAVE",
+    pre: "The thief", post: "through a window.",
+    p1: /^is (widely |generally )?(believed|thought)\b/, p2: /\bto have escaped$/,
+    parts: ["the passive reporting verb", "the perfect infinitive"],
+    model: "is believed | to have escaped" },
+  { first: "I’m not going to tolerate his rudeness any more.", kw: "PUT",
+    pre: "I refuse", post: "his rudeness any more.",
+    p1: /^to put up\b/, p2: /\bup with$/,
+    parts: ["to + the phrasal verb", "the preposition that completes it"],
+    model: "to put up | with" },
+  { first: "It’s a pity I didn’t take your advice.", kw: "WISH",
+    pre: "I", post: "your advice.",
+    p1: /^wish i ?('d|had)\b/, p2: /\b(taken|followed|listened to)$/,
+    parts: ["wish + past perfect", "the past participle of the verb"],
+    model: "wish I had / I’d | taken" },
+  { first: "A mechanic is repairing my car at the moment.", kw: "HAVING",
+    pre: "I", post: "by a mechanic at the moment.",
+    p1: /^('m|am) having\b/, p2: /\bmy car (repaired|fixed|serviced)$/,
+    parts: ["the present continuous of have", "object + past participle"],
+    model: "am having | my car repaired" },
+  { first: "“Where did you buy that jacket?” Sue asked me.", kw: "WANTED",
+    pre: "Sue", post: "bought my jacket.",
+    p1: /^wanted to know\b/, p2: /\bwhere i ?('d|had)$/,
+    parts: ["wanted to know", "where + past perfect, in statement word order"],
+    model: "wanted to know | where I had" },
+  { first: "My brother and I disagree about almost everything.", kw: "EYE",
+    pre: "My brother and I hardly ever", post: "anything.",
+    p1: /^see eye to eye\b/, p2: /\b(on|about|over)$/,
+    parts: ["the idiom", "the preposition after it"],
+    model: "see eye to eye | on / about" },
+  { first: "He didn’t realise the danger at all.", kw: "UNAWARE",
+    pre: "He", post: "the danger.",
+    p1: /^was (completely|totally|entirely|wholly|utterly|quite)\b/, p2: /\bunaware of$/,
+    parts: ["was + a word meaning ‘at all’", "unaware + preposition"],
+    model: "was completely / totally | unaware of" },
+  { first: "I’m sure nobody told Lisa about the change of plan.", kw: "CAN'T", kwAlt: ["cannot", "can not"],
+    pre: "Lisa", post: "about the change of plan.",
+    p1: /^(can't|cannot|can not) have\b/, p2: /\bbeen (told|informed)$/,
+    parts: ["can’t + have", "the passive past participle"],
+    model: "can’t have | been told" },
+  { first: "The new evidence makes it unlikely that he is guilty.", kw: "DOUBT",
+    pre: "The new evidence", post: "his guilt.",
+    p1: /^(casts|throws)\b/, p2: /\bdoubt (on|upon)$/,
+    parts: ["the verb", "doubt + preposition"],
+    model: "casts (serious) | doubt on" },
+  { first: "As soon as I sat down, the phone rang.", kw: "HARDLY",
+    pre: "", post: "the phone rang.",
+    p1: /^hardly had i\b/, p2: /\bsat down (when|before)$/,
+    parts: ["Hardly + inversion", "the verb and the linking word"],
+    model: "Hardly had I | sat down when" },
+  { first: "I’d like some time to think about your offer before I decide.", kw: "SLEEP",
+    pre: "I’d like to", post: "before I decide.",
+    p1: /^sleep on\b/, p2: /\b(it|your offer|the offer)$/,
+    parts: ["the phrasal verb", "what you sleep on"],
+    model: "sleep on | it / your offer" },
+  { first: "It was a mistake not to investigate these complaints immediately.", kw: "LOOKED",
+    pre: "These complaints", post: "immediately.",
+    p1: /^(should|ought to) have been\b/, p2: /\blooked into$/,
+    parts: ["should + perfect passive", "the phrasal verb"],
+    model: "should have been | looked into" },
+  { first: "I wasn’t at all surprised when she resigned.", kw: "CAME",
+    pre: "Her resignation", post: "to me.",
+    p1: /^came as\b/, p2: /\bno (great |real |big )?surprise( at all)?$/,
+    parts: ["came as", "the noun phrase"],
+    model: "came as | no surprise" },
+  { first: "If the government raised taxes, there would be protests.", kw: "WERE",
+    pre: "", post: "raise taxes, there would be protests.",
+    p1: /^were the government\b/, p2: /\bto$/,
+    parts: ["inversion with were", "were … to + verb"],
+    model: "Were the government | to" },
+  { first: "I found it very difficult to understand the lecture.", kw: "DIFFICULTY",
+    pre: "I", post: "the lecture.",
+    p1: /^had (great|considerable|real|enormous|a lot of|huge|serious) difficulty\b/, p2: /\bdifficulty (in )?(understanding|following)$/,
+    parts: ["had + adjective + difficulty", "(in) + the -ing form"],
+    model: "had great difficulty | (in) understanding" },
+  { first: "Please don’t smoke in here.", kw: "RATHER",
+    pre: "I’d", post: "in here.",
+    p1: /^rather you\b/, p2: /\b(didn't|did not) smoke$/,
+    parts: ["would rather + subject", "the past tense, negative"],
+    model: "rather | you didn’t smoke" }
+];
+
+const STORE = "kwt-c1-inversion-practice-v1";
+const list = document.getElementById("items");
+
+function normalise(s) {
+  return s.toLowerCase()
+    .replace(/[\u2018\u2019\u02bc`]/g, "'")
+    .replace(/[\u201c\u201d"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim()
+    .replace(/^[,.;:!?\s]+|[,.;:!?\s]+$/g, "")
+    .trim();
+}
+function countWords(s) {
+  if (!s) return 0;
+  const tokens = s.split(" ");
+  let n = 0;
+  for (const t of tokens) {
+    n += 1;
+    if (/n't$|'d$|'m$|'re$|'ve$|'ll$/.test(t)) n += 1;
+    else if (/^(it|he|she|that|there|what|who|here|let)'s$/.test(t)) n += 1;
+  }
+  return n;
+}
+function hasKeyword(s, item) {
+  const forms = [item.kw.toLowerCase(), ...(item.kwAlt || [])];
+  return forms.some(f => new RegExp("(^|[^a-z'])" + f.replace(/'/g, "'") + "($|[^a-z'])").test(s));
+}
+
+function build() {
+  ITEMS.forEach((it, i) => {
+    const li = document.createElement("li");
+    li.className = "item";
+    li.id = "q" + (i + 1);
+    const id = "a" + (i + 1);
+    li.innerHTML = `
+      <p class="first">${it.first}</p>
+      <span class="kw">${it.kw.replace("'", "’")}</span>
+      <p class="second">${it.pre ? it.pre + " " : ""}<label class="sr" for="${id}" style="position:absolute;left:-9999px">Answer ${i + 1}</label><input id="${id}" type="text" autocomplete="off" autocapitalize="off" spellcheck="false"> ${it.post}</p>
+      <div class="result" aria-live="polite"></div>`;
+    list.appendChild(li);
+  });
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE) || "[]");
+    saved.forEach((v, i) => { const el = document.getElementById("a" + (i + 1)); if (el && typeof v === "string") el.value = v; });
+  } catch (e) {}
+  list.addEventListener("input", () => {
+    try { localStorage.setItem(STORE, JSON.stringify(ITEMS.map((_, i) => document.getElementById("a" + (i + 1)).value))); } catch (e) {}
+  });
+}
+
+function mark(it, raw) {
+  const s = normalise(raw);
+  if (!s) return { m: 0, msg: "No answer yet." };
+  const words = countWords(s);
+  if (!hasKeyword(s, it)) return { m: 0, msg: `You need to use the word ${it.kw.replace("'", "’")}, without changing it.` };
+  if (words > 6) return { m: 0, msg: `That’s ${words} words. The limit is six, so this gets 0.` };
+  const a = it.p1.test(s), b = it.p2.test(s);
+  if (a && b) return { m: 2, msg: "Both parts are right." };
+  if (a) return { m: 1, msg: `The first part is right. Check ${it.parts[1]}.` };
+  if (b) return { m: 1, msg: `The second part is right. Check ${it.parts[0]}.` };
+  return { m: 0, msg: `Not yet. Check ${it.parts[0]} and ${it.parts[1]}.` };
+}
+
+function checkAll() {
+  let total = 0;
+  ITEMS.forEach((it, i) => {
+    const li = document.getElementById("q" + (i + 1));
+    const input = document.getElementById("a" + (i + 1));
+    const res = li.querySelector(".result");
+    const r = mark(it, input.value);
+    total += r.m;
+    li.classList.remove("m0", "m1", "m2");
+    li.classList.add("m" + r.m);
+    const label = r.m === 1 ? "1 mark" : r.m + " marks";
+    res.innerHTML = `<span class="badge">${label}</span>${r.msg}` +
+      (r.m < 2 ? `<br><button class="reveal" type="button">Show model answer</button><p class="model" hidden>Model answer: <strong>${it.model}</strong></p>` : "");
+    res.classList.add("show");
+  });
+  document.getElementById("score").innerHTML = `Score: <b>${total}</b> / 40`;
+  document.getElementById("check").textContent = "Check again";
+}
+
+list.addEventListener("click", e => {
+  if (e.target.classList.contains("reveal")) {
+    const p = e.target.nextElementSibling;
+    p.hidden = !p.hidden;
+    e.target.textContent = p.hidden ? "Show model answer" : "Hide model answer";
+  }
+});
+document.getElementById("check").addEventListener("click", checkAll);
+document.getElementById("reset").addEventListener("click", () => {
+  if (!confirm("Clear all your answers and start again?")) return;
+  ITEMS.forEach((_, i) => {
+    document.getElementById("a" + (i + 1)).value = "";
+    const li = document.getElementById("q" + (i + 1));
+    li.classList.remove("m0", "m1", "m2");
+    const res = li.querySelector(".result");
+    res.classList.remove("show"); res.innerHTML = "";
+  });
+  try { localStorage.removeItem(STORE); } catch (e) {}
+  document.getElementById("score").innerHTML = "Score: <b>–</b> / 40";
+  document.getElementById("check").textContent = "Check answers";
+  document.getElementById("a1").focus();
+});
+
+build();
+</script>
+</body>
+</html>
