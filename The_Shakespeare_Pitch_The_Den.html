@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Shakespeare Pitch — The Den</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#F6F3EC; --surface:#FFFDF8; --ink:#2B1F2E; --muted:#7C7283;
+  --plum:#5C2A4D; --brass:#9A7224; --brass-soft:#C9A24B;
+  --line:#DDD5C8; --good:#2E6B3F; --bad:#8C3030;
+  --shadow:0 2px 14px rgba(43,31,46,.10);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --paper:#201722; --surface:#2B1F2E; --ink:#F2EAE0; --muted:#A398A8;
+    --plum:#C98BB0; --brass:#D4A94E; --brass-soft:#9A7224;
+    --line:#443747; --good:#7FC08F; --bad:#E08C8C;
+    --shadow:0 2px 14px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --paper:#201722; --surface:#2B1F2E; --ink:#F2EAE0; --muted:#A398A8;
+  --plum:#C98BB0; --brass:#D4A94E; --brass-soft:#9A7224;
+  --line:#443747; --good:#7FC08F; --bad:#E08C8C;
+  --shadow:0 2px 14px rgba(0,0,0,.4);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{
+  margin:0;height:100%;background:var(--paper);color:var(--ink);
+  font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.display{font-family:Fraunces,Georgia,"Times New Roman",serif}
+#app{min-height:100%;display:flex;flex-direction:column}
+
+header{
+  display:flex;align-items:baseline;gap:1rem;flex-wrap:wrap;
+  padding:1rem 1.5rem .6rem;border-bottom:2px solid var(--brass);
+}
+header h1{font-family:Fraunces,Georgia,serif;font-weight:700;font-size:1.5rem;margin:0}
+header .sub{color:var(--muted);font-size:.9rem}
+nav{margin-left:auto;display:flex;gap:.25rem}
+nav button{
+  border:1px solid transparent;background:none;color:var(--muted);
+  font:inherit;padding:.4rem .8rem;border-radius:.5rem;cursor:pointer;
+}
+nav button[aria-current="true"]{color:var(--ink);border-color:var(--brass);background:var(--surface)}
+nav button:focus-visible,button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+#saveBadge{font-size:.75rem;color:var(--muted);align-self:center}
+#saveBadge.warn{color:var(--bad)}
+
+main{flex:1;width:100%;max-width:1100px;margin:0 auto;padding:1.5rem}
+.view{display:none}.view.active{display:block}
+h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.6rem;margin:.2rem 0 1rem}
+p.lead{max-width:60ch;color:var(--muted)}
+button.primary{
+  font:inherit;font-weight:600;color:var(--paper);background:var(--plum);
+  border:none;border-radius:.6rem;padding:.65rem 1.3rem;cursor:pointer;
+}
+:root[data-theme="dark"] button.primary,
+body button.primary{color:#fff}
+button.primary:disabled{opacity:.45;cursor:not-allowed}
+button.ghost{
+  font:inherit;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:.6rem;padding:.6rem 1.1rem;cursor:pointer;
+}
+.row{display:flex;gap:.8rem;flex-wrap:wrap;align-items:center;margin:.8rem 0}
+
+/* Setup */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:.8rem;box-shadow:var(--shadow);padding:1.1rem 1.3rem;margin-bottom:1.2rem}
+.panel h3{margin:.1rem 0 .7rem;font-size:1.05rem}
+.list{display:flex;flex-direction:column;gap:.45rem}
+.list input{
+  font:inherit;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);border-radius:.45rem;padding:.45rem .6rem;width:100%;max-width:26rem;
+}
+.list .item{display:flex;gap:.5rem;align-items:center}
+.list .item button{border:none;background:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:.2rem .4rem}
+.stepper{display:inline-flex;align-items:center;gap:.6rem}
+.stepper button{width:2.2rem;height:2.2rem;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--ink);font-size:1.1rem;cursor:pointer}
+.stepper b{font-size:1.2rem;min-width:1.4rem;text-align:center}
+
+/* Draw */
+#drawGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(13.5rem,1fr));gap:1rem;margin-top:1rem}
+.card3d{perspective:1200px;min-height:11.5rem}
+.cardInner{position:relative;width:100%;height:100%;min-height:11.5rem;transition:transform .7s;transform-style:preserve-3d;cursor:pointer}
+.card3d.revealed .cardInner{transform:rotateY(180deg);cursor:default}
+@media (prefers-reduced-motion: reduce){.cardInner{transition:none}}
+.face{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:.8rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;
+  padding:1rem;text-align:center;box-shadow:var(--shadow);
+}
+.face.front{
+  background:var(--plum);color:#F6F3EC;border:2px solid var(--brass);
+}
+.face.front .seal{font-size:2rem}
+.face.front .gname{font-family:Fraunces,Georgia,serif;font-size:1.25rem;font-weight:600}
+.face.front .hint{font-size:.8rem;opacity:.75}
+.face.back{
+  background:var(--surface);color:var(--ink);border:2px solid var(--brass);transform:rotateY(180deg);
+}
+.face.back .play{font-family:Fraunces,Georgia,serif;font-size:1.3rem;font-weight:700;line-height:1.2}
+.face.back .order{font-size:.95rem;color:var(--brass);font-weight:600}
+.face.back .gname{font-size:.85rem;color:var(--muted)}
+
+/* Kiosk */
+#kioskWrap{position:fixed;inset:0;background:var(--paper);z-index:50;display:none;flex-direction:column;padding:calc(1rem + env(safe-area-inset-top,0px)) 1rem calc(1rem + env(safe-area-inset-bottom,0px))}
+#kioskWrap.on{display:flex}
+#kioskWrap .stage{flex:1;max-width:900px;width:100%;margin:0 auto;display:flex;flex-direction:column;justify-content:center}
+#kioskWrap h2{text-align:center;font-size:clamp(1.4rem,3.5vw,2.2rem)}
+#kioskWrap .ksub{text-align:center;color:var(--muted);margin:0 0 1.2rem}
+.pickGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:.8rem}
+.pickGrid button{
+  font:inherit;font-size:1.05rem;padding:1.1rem .8rem;border-radius:.8rem;cursor:pointer;
+  background:var(--surface);border:2px solid var(--line);color:var(--ink);
+}
+.pickGrid button .pplay{display:block;font-family:Fraunces,Georgia,serif;font-weight:600}
+.pickGrid button .pg{display:block;font-size:.8rem;color:var(--muted);margin-top:.2rem}
+.allocRow{
+  display:flex;align-items:center;gap:1rem;background:var(--surface);
+  border:1px solid var(--line);border-radius:.7rem;padding:.6rem .9rem;margin:.45rem 0;
+}
+.allocRow .who{flex:1;min-width:0}
+.allocRow .who .pplay{font-family:Fraunces,Georgia,serif;font-weight:600}
+.allocRow .who .pg{font-size:.8rem;color:var(--muted)}
+.allocRow .amt{font-variant-numeric:tabular-nums;font-weight:700;min-width:5.5rem;text-align:right}
+.chip{width:2.6rem;height:2.6rem;border-radius:50%;border:2px solid var(--brass);background:var(--surface);color:var(--ink);font-size:1.3rem;cursor:pointer}
+.chip:disabled{opacity:.3;cursor:not-allowed}
+#budgetLeft{
+  text-align:center;font-family:Fraunces,Georgia,serif;font-weight:700;
+  font-size:clamp(1.6rem,4vw,2.4rem);margin:.8rem 0;font-variant-numeric:tabular-nums;
+}
+#budgetLeft.zero{color:var(--good)}
+.kActions{display:flex;gap:.8rem;justify-content:center;margin-top:.6rem}
+#kioskExit{position:absolute;top:calc(.6rem + env(safe-area-inset-top,0px));right:.8rem;border:none;background:none;color:var(--muted);font-size:.75rem;cursor:pointer;padding:.5rem}
+#castOverlay{
+  position:absolute;inset:0;background:var(--paper);display:none;
+  flex-direction:column;align-items:center;justify-content:center;gap:.6rem;text-align:center;padding:1rem;
+}
+#castOverlay.on{display:flex}
+#castOverlay .big{font-size:3.2rem}
+#castOverlay h3{font-family:Fraunces,Georgia,serif;font-size:1.8rem;margin:0}
+
+/* Results */
+#resultChart{display:flex;flex-direction:column;gap:.7rem;margin-top:1.2rem}
+.rRow{display:grid;grid-template-columns:minmax(9rem,16rem) 1fr auto;gap:.9rem;align-items:center}
+.rRow .rname .pplay{font-family:Fraunces,Georgia,serif;font-weight:600}
+.rRow .rname .pg{font-size:.8rem;color:var(--muted)}
+.barTrack{background:var(--surface);border:1px solid var(--line);border-radius:.5rem;height:2.1rem;overflow:hidden}
+.bar{height:100%;width:0;background:linear-gradient(90deg,var(--brass),var(--brass-soft));transition:width 1.4s cubic-bezier(.2,.7,.2,1)}
+@media (prefers-reduced-motion: reduce){.bar{transition:none}}
+.rAmt{font-variant-numeric:tabular-nums;font-weight:700;min-width:6.5rem;text-align:right}
+.winner{margin-top:1.4rem;text-align:center;display:none}
+.winner.on{display:block}
+.winner .crown{font-size:2.6rem}
+.winner h3{font-family:Fraunces,Georgia,serif;font-size:clamp(1.5rem,4vw,2.3rem);margin:.2rem 0}
+.winner p{color:var(--muted);margin:.2rem 0}
+footer{padding:.8rem 1.5rem;color:var(--muted);font-size:.75rem;border-top:1px solid var(--line)}
+@media (max-width:640px){
+  header{padding:.8rem 1rem .5rem}
+  main{padding:1rem}
+  .rRow{grid-template-columns:1fr;gap:.25rem}
+  .rAmt{text-align:left}
+}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <h1 class="display">The Shakespeare Pitch</h1>
+  <span class="sub">commissioning board — the den</span>
+  <nav id="nav" aria-label="Sections">
+    <button data-view="setup">Setup</button>
+    <button data-view="draw">The draw</button>
+    <button data-view="vote">Ballots</button>
+    <button data-view="results">Results</button>
+  </nav>
+  <span id="saveBadge"></span>
+</header>
+
+<main>
+  <!-- SETUP -->
+  <section class="view" id="view-setup">
+    <h2 class="display">Set the stage</h2>
+    <p class="lead">Name the teams and confirm the slate of plays, then open the draw. Everything here is saved as you type, so you can prepare it the evening before.</p>
+    <div class="panel">
+      <h3>Teams</h3>
+      <div class="row">
+        <span class="stepper">
+          <button id="gMinus" aria-label="Fewer teams">−</button>
+          <b id="gCount">7</b>
+          <button id="gPlus" aria-label="More teams">+</button>
+        </span>
+        <span style="color:var(--muted);font-size:.9rem">Rename them if you like — names appear on the cards and ballots.</span>
+      </div>
+      <div class="list" id="groupList"></div>
+    </div>
+    <div class="panel">
+      <h3>The plays</h3>
+      <div class="list" id="playList"></div>
+      <div class="row">
+        <button class="ghost" id="addPlay">Add a play</button>
+        <span style="color:var(--muted);font-size:.9rem">One per team. Julius Caesar stands ready as the reserve for an extra group.</span>
+      </div>
+    </div>
+    <div class="row">
+      <button class="primary" id="toDraw">Open the draw</button>
+      <span id="setupWarn" style="color:var(--bad);font-size:.9rem"></span>
+    </div>
+  </section>
+
+  <!-- DRAW -->
+  <section class="view" id="view-draw">
+    <h2 class="display">The draw</h2>
+    <p class="lead" id="drawLead">Deal the cards, then let one member of each team come to the front and turn their own card. Some of these plays are easy to sell. Some are a challenge. Investors remember the founder who sold them the hard thing.</p>
+    <div class="row">
+      <button class="primary" id="dealBtn">Shuffle &amp; deal</button>
+      <button class="ghost" id="redealBtn" disabled>Re-deal</button>
+    </div>
+    <div id="drawGrid"></div>
+  </section>
+
+  <!-- VOTE (teacher side) -->
+  <section class="view" id="view-vote">
+    <h2 class="display">Ballots</h2>
+    <p class="lead">After the final pitch, open the ballot station and let producers vote one at a time at this machine. Each producer allocates 100,000 francs across the other teams — not a franc to their own. Ballots are anonymous.</p>
+    <div class="panel">
+      <div class="row">
+        <button class="primary" id="openKiosk">Open the ballot station</button>
+        <span style="font-size:1rem"><b id="ballotCount">0</b> ballots cast</span>
+        <button class="ghost" id="voidLast">Void last ballot</button>
+      </div>
+      <p style="color:var(--muted);font-size:.85rem;margin:.4rem 0 0">The station takes over the screen so voters see nothing else. To leave it, use the small “teacher” link in its corner.</p>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section class="view" id="view-results">
+    <h2 class="display">The verdict</h2>
+    <p class="lead" id="resultsLead">Nothing is shown until you reveal it. Build the pause — the room has earned a drumroll.</p>
+    <div class="row">
+      <button class="primary" id="revealBtn">Reveal the funding</button>
+      <span style="color:var(--muted)"><b id="ballotCount2">0</b> ballots in the box</span>
+    </div>
+    <div id="resultChart" hidden></div>
+    <div class="winner" id="winnerBox">
+      <div class="crown">🏆</div>
+      <h3 class="display" id="winnerName"></h3>
+      <p id="winnerLine"></p>
+    </div>
+  </section>
+</main>
+
+<footer>Made by Mr Churchman with Claude (an AI assistant made by Anthropic), November 2026 — the teacher set the format; Claude built the page.</footer>
+</div>
+
+<!-- KIOSK -->
+<div id="kioskWrap" role="dialog" aria-label="Ballot station">
+  <button id="kioskExit">teacher</button>
+  <div class="stage" id="kioskStage"></div>
+  <div id="castOverlay">
+    <div class="big">🎭</div>
+    <h3 class="display">Ballot cast</h3>
+    <p style="color:var(--muted)">Thank you, producer. Next, please.</p>
+  </div>
+</div>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const fmt = n => n.toLocaleString("en-CH") + " fr.";
+const DEFAULT_PLAYS = ["Hamlet","Othello","King Lear","Richard III","A Midsummer Night\u2019s Dream","Twelfth Night","The Tempest"];
+const BUDGET = 100000, CHIP = 10000;
+
+let state = {
+  groups: Array.from({length:7},(_,i)=>({id:"g"+(i+1), name:"Group "+(i+1)})),
+  plays: DEFAULT_PLAYS.slice(),
+  assignments: null,          // {gid:{play,order}}
+  revealedCards: [],          // gids revealed
+  drawDealt: false,
+  ballots: [],                // {group, alloc:{gid:amt}, t}
+  revealed: false
+};
+
+/* ---------- persistence ---------- */
+let db = null, saveTimer = null, dirty = false;
+const badge = $("#saveBadge");
+function setBadge(txt, warn){ badge.textContent = txt; badge.className = warn ? "warn" : ""; }
+function scheduleSave(){
+  dirty = true;
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(saveNow, 500);
+}
+async function saveNow(){
+  if(!dirty) return;
+  dirty = false;
+  if(!db){ setBadge("Not saving \u2014 this window only", true); return; }
+  try{
+    await db.doc("state/main").set({ json: JSON.stringify(state), t: Date.now() });
+    setBadge("Saved");
+  }catch(e){ setBadge("Save failed \u2014 keep this window open", true); }
+}
+async function initDb(){
+  try{
+    const use = window.claude && window.claude.use;
+    if(!use) { setBadge("Not saving \u2014 this window only", true); return; }
+    db = await use.call(window.claude, "db");
+    if(!db){ setBadge("Not saving \u2014 this window only", true); return; }
+    let timedOut = false;
+    const timer = setTimeout(()=>{ timedOut = true; setBadge("Saved locally"); }, 10000);
+    try{
+      const snap = await db.doc("state/main").get();
+      clearTimeout(timer);
+      if(!timedOut && snap && snap.exists && snap.data() && snap.data().json){
+        const loaded = JSON.parse(snap.data().json);
+        state = Object.assign(state, loaded);
+      }
+      setBadge("Saved");
+    }catch(e){ clearTimeout(timer); setBadge("Ready"); }
+    renderAll();
+  }catch(e){ setBadge("Not saving \u2014 this window only", true); }
+}
+
+/* ---------- navigation ---------- */
+let current = "setup";
+function show(view){
+  current = view;
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("active", v.id === "view-"+view));
+  document.querySelectorAll("#nav button").forEach(b=>b.setAttribute("aria-current", b.dataset.view===view ? "true" : "false"));
+}
+$("#nav").addEventListener("click", e=>{
+  const b = e.target.closest("button"); if(!b) return;
+  show(b.dataset.view);
+});
+
+/* ---------- setup ---------- */
+function renderSetup(){
+  $("#gCount").textContent = state.groups.length;
+  const gl = $("#groupList"); gl.innerHTML = "";
+  state.groups.forEach((g)=>{
+    const d = document.createElement("div"); d.className="item";
+    const inp = document.createElement("input");
+    inp.value = g.name; inp.setAttribute("aria-label","Team name");
+    inp.addEventListener("input", ()=>{ g.name = inp.value; scheduleSave(); renderDraw(); });
+    d.appendChild(inp); gl.appendChild(d);
+  });
+  const pl = $("#playList"); pl.innerHTML = "";
+  state.plays.forEach((p,i)=>{
+    const d = document.createElement("div"); d.className="item";
+    const inp = document.createElement("input");
+    inp.value = p; inp.setAttribute("aria-label","Play title");
+    inp.addEventListener("input", ()=>{ state.plays[i]=inp.value; scheduleSave(); });
+    const del = document.createElement("button");
+    del.textContent = "\u00D7"; del.setAttribute("aria-label","Remove play");
+    del.addEventListener("click", ()=>{ state.plays.splice(i,1); scheduleSave(); renderSetup(); });
+    d.appendChild(inp); d.appendChild(del); pl.appendChild(d);
+  });
+}
+function setGroupCount(n){
+  n = Math.max(2, Math.min(12, n));
+  while(state.groups.length < n) state.groups.push({id:"g"+(state.groups.length+1), name:"Group "+(state.groups.length+1)});
+  while(state.groups.length > n) state.groups.pop();
+  state.assignments = null; state.drawDealt=false; state.revealedCards=[];
+  scheduleSave(); renderSetup(); renderDraw();
+}
+$("#gMinus").addEventListener("click", ()=>setGroupCount(state.groups.length-1));
+$("#gPlus").addEventListener("click", ()=>setGroupCount(state.groups.length+1));
+$("#addPlay").addEventListener("click", ()=>{
+  state.plays.push(state.plays.includes("Julius Caesar") ? "" : "Julius Caesar");
+  scheduleSave(); renderSetup();
+});
+$("#toDraw").addEventListener("click", ()=>{
+  const plays = state.plays.filter(p=>p.trim());
+  if(plays.length < state.groups.length){
+    $("#setupWarn").textContent = "You need at least as many plays as teams.";
+    return;
+  }
+  $("#setupWarn").textContent = "";
+  show("draw");
+});
+
+/* ---------- draw ---------- */
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function deal(){
+  const plays = shuffle(state.plays.filter(p=>p.trim())).slice(0, state.groups.length);
+  const orders = shuffle(state.groups.map((_,i)=>i+1));
+  state.assignments = {};
+  state.groups.forEach((g,i)=>{ state.assignments[g.id] = { play: plays[i], order: orders[i] }; });
+  state.drawDealt = true; state.revealedCards = [];
+  scheduleSave(); renderDraw();
+}
+$("#dealBtn").addEventListener("click", deal);
+$("#redealBtn").addEventListener("click", deal);
+function renderDraw(){
+  const grid = $("#drawGrid"); grid.innerHTML = "";
+  const dealt = state.drawDealt && state.assignments;
+  $("#dealBtn").disabled = !!dealt;
+  $("#redealBtn").disabled = !dealt || state.revealedCards.length > 0;
+  state.groups.forEach(g=>{
+    const wrap = document.createElement("div");
+    wrap.className = "card3d" + (state.revealedCards.includes(g.id) ? " revealed" : "");
+    const inner = document.createElement("div"); inner.className="cardInner";
+    const a = dealt ? state.assignments[g.id] : null;
+    inner.innerHTML =
+      '<div class="face front"><div class="seal">\uD83C\uDFAD</div><div class="gname"></div>' +
+      '<div class="hint">' + (dealt ? "tap to turn" : "waiting for the deal") + '</div></div>' +
+      '<div class="face back"><div class="gname"></div><div class="play"></div><div class="order"></div></div>';
+    inner.querySelector(".front .gname").textContent = g.name;
+    if(a){
+      inner.querySelector(".back .gname").textContent = g.name;
+      inner.querySelector(".back .play").textContent = a.play;
+      inner.querySelector(".back .order").textContent = "Pitch " + a.order + " of " + state.groups.length;
+    }
+    inner.addEventListener("click", ()=>{
+      if(!dealt || state.revealedCards.includes(g.id)) return;
+      state.revealedCards.push(g.id);
+      scheduleSave(); renderDraw();
+    });
+    wrap.appendChild(inner); grid.appendChild(wrap);
+  });
+}
+
+/* ---------- kiosk ---------- */
+let kStep = 0, kGroup = null, kAlloc = {};
+const kiosk = $("#kioskWrap");
+$("#openKiosk").addEventListener("click", ()=>{
+  if(!state.assignments){ alert("Run the draw first \u2014 ballots list each team with its play."); return; }
+  kStep = 0; kGroup = null;
+  kiosk.classList.add("on");
+  renderKiosk();
+});
+let exitArmed = 0;
+$("#kioskExit").addEventListener("click", ()=>{
+  const now = Date.now();
+  if(now - exitArmed < 3000){ kiosk.classList.remove("on"); updateCounts(); }
+  else { exitArmed = now; $("#kioskExit").textContent = "tap again to exit"; setTimeout(()=>{$("#kioskExit").textContent="teacher";}, 3000); }
+});
+function playOf(gid){ return state.assignments && state.assignments[gid] ? state.assignments[gid].play : ""; }
+function renderKiosk(){
+  const s = $("#kioskStage");
+  $("#castOverlay").classList.remove("on");
+  if(kStep === 0){
+    s.innerHTML = '<h2 class="display">Producer, which team are you on?</h2>' +
+      '<p class="ksub">Your own team is excluded from your ballot.</p><div class="pickGrid" id="pg"></div>';
+    const pg = $("#pg");
+    state.groups.forEach(g=>{
+      const b = document.createElement("button");
+      b.innerHTML = '<span class="pplay"></span><span class="pg"></span>';
+      b.querySelector(".pplay").textContent = playOf(g.id) || g.name;
+      b.querySelector(".pg").textContent = g.name;
+      b.addEventListener("click", ()=>{
+        kGroup = g.id; kAlloc = {}; kStep = 1; renderKiosk();
+      });
+      pg.appendChild(b);
+    });
+  } else {
+    s.innerHTML = '<h2 class="display">Allocate your budget</h2>' +
+      '<p class="ksub">100,000 francs, in chips of 10,000 \u2014 every franc must be placed.</p>' +
+      '<div id="budgetLeft"></div><div id="allocList"></div>' +
+      '<div class="kActions"><button class="ghost" id="kBack">Back</button>' +
+      '<button class="primary" id="kCast" disabled>Cast ballot</button></div>';
+    const list = $("#allocList");
+    state.groups.filter(g=>g.id!==kGroup).forEach(g=>{
+      kAlloc[g.id] = kAlloc[g.id] || 0;
+      const r = document.createElement("div"); r.className="allocRow";
+      r.innerHTML = '<button class="chip" data-d="-1" aria-label="Remove 10,000">\u2212</button>' +
+        '<div class="who"><div class="pplay"></div><div class="pg"></div></div>' +
+        '<div class="amt"></div>' +
+        '<button class="chip" data-d="1" aria-label="Add 10,000">+</button>';
+      r.querySelector(".pplay").textContent = playOf(g.id);
+      r.querySelector(".pg").textContent = g.name;
+      r.querySelectorAll(".chip").forEach(c=>{
+        c.addEventListener("click", ()=>{
+          const d = +c.dataset.d;
+          const left = BUDGET - Object.values(kAlloc).reduce((a,b)=>a+b,0);
+          if(d>0 && left>=CHIP) kAlloc[g.id]+=CHIP;
+          if(d<0 && kAlloc[g.id]>=CHIP) kAlloc[g.id]-=CHIP;
+          updateAllocUI();
+        });
+      });
+      r.dataset.gid = g.id;
+      list.appendChild(r);
+    });
+    $("#kBack").addEventListener("click", ()=>{ kStep=0; renderKiosk(); });
+    $("#kCast").addEventListener("click", ()=>{
+      state.ballots.push({ group:kGroup, alloc:Object.assign({},kAlloc), t:Date.now() });
+      scheduleSave();
+      $("#castOverlay").classList.add("on");
+      setTimeout(()=>{ kStep=0; kGroup=null; renderKiosk(); }, 1600);
+    });
+    updateAllocUI();
+  }
+}
+function updateAllocUI(){
+  const spent = Object.values(kAlloc).reduce((a,b)=>a+b,0);
+  const left = BUDGET - spent;
+  const bl = $("#budgetLeft");
+  bl.textContent = fmt(left) + " left";
+  bl.classList.toggle("zero", left===0);
+  document.querySelectorAll(".allocRow").forEach(r=>{
+    const gid = r.dataset.gid;
+    r.querySelector(".amt").textContent = fmt(kAlloc[gid]||0);
+    r.querySelector('[data-d="1"]').disabled = left < CHIP;
+    r.querySelector('[data-d="-1"]').disabled = (kAlloc[gid]||0) < CHIP;
+  });
+  $("#kCast").disabled = left !== 0;
+}
+
+/* ---------- vote admin + results ---------- */
+function updateCounts(){
+  $("#ballotCount").textContent = state.ballots.length;
+  $("#ballotCount2").textContent = state.ballots.length;
+}
+$("#voidLast").addEventListener("click", ()=>{
+  if(!state.ballots.length) return;
+  if(confirm("Remove the most recent ballot?")){ state.ballots.pop(); scheduleSave(); updateCounts(); }
+});
+$("#revealBtn").addEventListener("click", ()=>{
+  state.revealed = true; scheduleSave(); renderResults(true);
+});
+function totals(){
+  const t = {}; state.groups.forEach(g=>t[g.id]=0);
+  state.ballots.forEach(b=>{ for(const gid in b.alloc){ if(gid in t) t[gid]+=b.alloc[gid]; } });
+  return t;
+}
+function renderResults(animate){
+  const chart = $("#resultChart");
+  if(!state.revealed){ chart.hidden = true; $("#winnerBox").classList.remove("on"); return; }
+  chart.hidden = false; chart.innerHTML = "";
+  const t = totals();
+  const max = Math.max(1, ...Object.values(t));
+  const ranked = state.groups.slice().sort((a,b)=>t[b.id]-t[a.id]);
+  ranked.forEach(g=>{
+    const row = document.createElement("div"); row.className="rRow";
+    row.innerHTML = '<div class="rname"><div class="pplay"></div><div class="pg"></div></div>' +
+      '<div class="barTrack"><div class="bar"></div></div><div class="rAmt"></div>';
+    row.querySelector(".pplay").textContent = playOf(g.id) || g.name;
+    row.querySelector(".pg").textContent = g.name;
+    row.querySelector(".rAmt").textContent = fmt(t[g.id]);
+    chart.appendChild(row);
+    const bar = row.querySelector(".bar");
+    const w = (t[g.id]/max*100)+"%";
+    if(animate){ requestAnimationFrame(()=>requestAnimationFrame(()=>{ bar.style.width = w; })); }
+    else bar.style.width = w;
+  });
+  const top = ranked[0];
+  if(top && t[top.id] > 0){
+    const tie = ranked.length>1 && t[ranked[1].id] === t[top.id];
+    $("#winnerName").textContent = tie ? "A tie at the top" : (playOf(top.id) || top.name);
+    $("#winnerLine").textContent = tie
+      ? "Two productions matched \u2014 the board may demand a sudden-death question."
+      : top.name + " takes the funding with " + fmt(t[top.id]) + ".";
+    $("#winnerBox").classList.add("on");
+  }
+}
+
+/* ---------- boot ---------- */
+function renderAll(){ renderSetup(); renderDraw(); updateCounts(); renderResults(false); }
+renderAll(); show("setup");
+initDb();
+</script>
+</body>
+</html>
