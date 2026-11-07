@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f6ef">
+  <meta name="description" content="Practise 38 English binomials in three interactive exercises for upper-intermediate learners.">
+  <title>Binomials in context · English workbook</title>
+  <style>
+:root {
+  color-scheme: light;
+  --paper: #f8f6ef;
+  --surface: #fffefa;
+  --ink: #202e28;
+  --green: #224f42;
+  --quiet: #56645b;
+  --line: #d5d8cc;
+  --pale: #e9efdf;
+  --amber: #805018;
+  --amber-bg: #fbefd8;
+  --focus: #1a6d83;
+  --sans: "Rubik", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --serif: "Baskervville", Georgia, "Times New Roman", serif;
+  font: 16px/1.5 var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; min-width: 280px; }
+button, input { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: default; }
+button, input, a { -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.page { width: min(calc(100% - 64px), 1140px); margin-inline: auto; }
+.skip-link {
+  position: fixed; z-index: 5; top: 7px; left: 12px; transform: translateY(-150%);
+  padding: 9px 14px; color: white; background: var(--green); border-radius: 4px;
+}
+.skip-link:focus { transform: none; }
+.masthead { border-bottom: 1px solid var(--line); }
+.masthead-inner { display: flex; justify-content: space-between; align-items: center; min-height: 64px; gap: 15px; }
+.workbook-name { display: inline-flex; align-items: center; gap: 11px; font-weight: 620; letter-spacing: -.025em; }
+.book-mark {
+  display: inline-grid; place-items: center; width: 33px; height: 35px; padding-right: 2px;
+  font: italic 29px/1 var(--serif); background: var(--green); color: #fff7de;
+  border-radius: 7px 2px 7px 2px; box-shadow: inset -3px 0 0 rgb(255 255 255 / .14);
+}
+.level { color: var(--quiet); font-size: .86rem; font-weight: 520; }
+.level span, .footer-dot { margin: 0 .32em; color: #738074; }
+.intro { display: flex; align-items: center; justify-content: space-between; gap: 38px; padding: 31px 0 27px; }
+h1, h2, p { margin: 0; }
+h1 { font: 500 clamp(2.8rem, 5.4vw, 4.6rem)/1.1 var(--serif); letter-spacing: -.057em; }
+h1 em { color: var(--green); font-weight: 400; }
+.definition { margin-top: 7px; color: var(--quiet); font-size: .97rem; line-height: 1.55; }
+.definition i { font-family: var(--serif); color: var(--ink); font-size: 1.14em; }
+.total-progress { width: 196px; flex-shrink: 0; align-self: center; margin: 8px 0 0; }
+.progress-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 9px; color: var(--quiet); font-size: .82rem; }
+#total-count { font-weight: 650; color: var(--ink); font-variant-numeric: tabular-nums; }
+progress { appearance: none; display: block; margin-top: 9px; width: 100%; height: 6px; border: 0; border-radius: 12px; overflow: hidden; background: #e0e4d7; color: var(--green); }
+progress::-webkit-progress-bar { background: #e0e4d7; border-radius: 12px; }
+progress::-webkit-progress-value { background: var(--green); border-radius: 12px; }
+progress::-moz-progress-bar { background: var(--green); border-radius: 12px; }
+.exercise-tabs {
+  display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px;
+  padding: 0 0 20px; border-bottom: 1px solid var(--line);
+}
+.exercise-tab {
+  min-width: 0; min-height: 61px; padding: 10px 15px; display: flex; align-items: center; gap: 13px;
+  text-align: left; border: 1px solid #cfd4c6; background: #fcfbf5; border-radius: 8px;
+  font-weight: 575; font-size: .98rem; line-height: 1.25; letter-spacing: -.015em;
+}
+.exercise-tab:hover { background: #edf1e5; border-color: #92a58e; }
+.exercise-tab[aria-current="true"] { color: #fffef7; background: var(--green); border-color: var(--green); }
+.tab-number {
+  display: inline-grid; flex: 0 0 28px; width: 28px; height: 28px; place-items: center;
+  color: var(--green); background: #edf0e7; border: 1px solid #d8ddce;
+  border-radius: 50%; font: 600 .83rem/1 var(--sans); font-variant-numeric: tabular-nums;
+}
+.exercise-tab[aria-current="true"] .tab-number { color: var(--green); background: #e4eccf; border-color: #e4eccf; }
+.work-grid { display: grid; grid-template-columns: minmax(0,1fr) 267px; align-items: start; gap: 19px; margin: 21px 0 29px; }
+.question-card, .question-index { border: 1px solid var(--line); border-radius: 12px; }
+.question-card { padding: 26px 29px 20px; background: var(--surface); box-shadow: 0 3px 0 rgb(49 58 43 / .045); scroll-margin-top: 8px; }
+.question-card:focus { outline: none; }
+.question-card:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
+.card-topline, .index-title-row, .card-actions, .dialog-actions { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.question-kicker, .dialog-kicker { color: var(--green); font-size: .72rem; font-weight: 700; letter-spacing: .105em; text-transform: uppercase; }
+.question-kicker { display: flex; align-items: center; gap: 8px; }
+.active-dot { width: 7px; height: 7px; background: #75904d; border-radius: 50%; }
+.attempt-count { color: var(--quiet); font-size: .8rem; font-variant-numeric: tabular-nums; }
+#instruction { margin-top: 8px; font: 560 1.04rem/1.48 var(--sans); letter-spacing: -.01em; }
+.context-box {
+  margin: 17px 0 18px; padding: 18px 20px; border-left: 3px solid #9daa80;
+  border-radius: 1px 6px 6px 1px; background: #f3f4eb;
+}
+.sentence, .dialogue-line { font: 400 clamp(1.25rem, 1.7vw, 1.56rem)/1.55 var(--serif); letter-spacing: -.012em; overflow-wrap: anywhere; }
+.blank { display: inline-block; width: 4.7em; max-width: 95%; min-height: .91em; border-bottom: 2px solid var(--green); vertical-align: baseline; margin: 0 .08em; }
+.solved-word { font-weight: 650; color: var(--green); border-bottom: 1px solid #91a58c; }
+.shown-word { font-weight: 650; color: #724913; border-bottom: 1px solid #c79d58; }
+.choice-set { margin: 0; padding: 0; border: 0; min-width: 0; }
+.choices { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
+.choice { position: relative; display: block; min-width: 0; }
+.choice input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.answer-option {
+  display: flex; align-items: center; position: relative; min-height: 48px; height: 100%; gap: 11px; padding: 8px 13px;
+  border: 1px solid #cfd6c8; border-radius: 6px; background: #fffefa; font-weight: 510; line-height: 1.35;
+}
+.choice input:enabled ~ .answer-option { cursor: pointer; }
+.choice input:enabled ~ .answer-option:hover { background: #f2f5eb; border-color: #8a9b84; }
+.choice input:checked ~ .answer-option { border-color: var(--green); background: var(--pale); box-shadow: inset 0 0 0 1px var(--green); }
+.choice input:focus-visible ~ .answer-option { outline: 3px solid var(--focus); outline-offset: 2px; }
+.option-letter {
+  width: 25px; height: 25px; flex: 0 0 25px; display: grid; place-items: center;
+  border: 1px solid #d7ddce; border-radius: 5px; color: #516051; background: #f7f8f1;
+  font: 600 .74rem/1 var(--sans);
+}
+.choice input:checked ~ .answer-option .option-letter, .answer-option.right .option-letter { background: var(--green); color: white; border-color: var(--green); }
+.answer-option.missed { color: #755e45; background: #fbf5eb; border-color: #d8c2a2; }
+.answer-option.missed .option-letter { color: var(--amber); background: #f6ead8; border-color: #d3b98e; }
+.answer-option.right { background: var(--pale); border-color: #668268; box-shadow: none; }
+.word-field, .phrase-field {
+  border: 1px solid #9aa995; border-bottom: 2px solid #55745b; border-radius: 5px; background: var(--surface); color: var(--ink);
+}
+.word-field { width: 6.2em; max-width: 95%; padding: 0 .38em; margin: .09em .1em; font: 500 .94em/1.4 var(--serif); vertical-align: baseline; }
+.word-field:focus, .phrase-field:focus { outline: 2px solid var(--focus); outline-offset: 2px; }
+.word-context { padding-block: 23px; margin-block-end: 22px; }
+.reply-box { padding-block: 16px; margin-bottom: 13px; }
+.dialogue-line { display: grid; align-items: baseline; grid-template-columns: 1.15rem minmax(0,1fr); gap: 9px; }
+.dialogue-line + .dialogue-line { margin-top: 8px; }
+.speaker { font: 700 .69rem/1 var(--sans); color: #566c52; letter-spacing: .03em; }
+mark { background: #f3dfaa; color: inherit; border-radius: 2px; box-decoration-break: clone; -webkit-box-decoration-break: clone; padding: .03em .09em; }
+.response-label { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin: 0 0 6px; font-size: .85rem; font-weight: 570; }
+.key-hint { color: var(--quiet); font-size: .8rem; font-weight: 400; }
+.key-hint strong { color: #5a4826; background: #f6ebce; margin-left: 4px; padding: 2px 6px; border-radius: 3px; font-weight: 650; letter-spacing: .05em; }
+.phrase-field { width: 100%; padding: 10px 12px; font-size: 1rem; }
+.phrase-field::placeholder { color: #727970; }
+.feedback { margin-top: 16px; padding: 12px 14px; border-radius: 6px; border-left: 3px solid; font-size: .92rem; line-height: 1.48; }
+.feedback strong { display: block; margin-bottom: 2px; font-size: .95rem; }
+.feedback.good { color: #254d3e; background: #e9f2e4; border-color: #668f69; }
+.feedback.try, .feedback.shown { color: #61461e; background: #faf0dc; border-color: #bf9755; }
+.card-actions { margin-top: 21px; padding-top: 15px; border-top: 1px solid #e1e4d9; }
+.primary, .secondary, .arrow-button {
+  border: 1px solid var(--green); border-radius: 6px; font-weight: 590; font-size: .92rem; line-height: 1.2;
+}
+.primary, .secondary { min-height: 42px; padding: 10px 18px; }
+.primary { background: var(--green); color: white; }
+.primary:hover { background: #183f34; }
+.primary:disabled { color: #566451; background: #e4e9df; border-color: #d2d9cb; }
+.secondary, .arrow-button { color: var(--green); background: var(--surface); border-color: #ccd4c5; }
+.secondary:hover, .arrow-button:enabled:hover { background: #edf2e5; border-color: #8b9d84; }
+.prev-next { display: flex; gap: 7px; }
+.arrow-button { width: 42px; height: 42px; display: grid; place-items: center; font-size: 1.2rem; }
+.arrow-button:disabled { color: #aeb7a9; background: #f7f8f2; border-color: #e1e4da; }
+.question-index { padding: 20px; background: #f1f2e9; }
+.index-title-row { align-items: baseline; gap: 5px; }
+.index-title-row h2 { font: 500 1.4rem/1.25 var(--serif); letter-spacing: -.035em; }
+.index-title-row > span { color: var(--quiet); font-size: .75rem; }
+.number-grid { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 6px; margin: 16px 0 12px; }
+.number-button {
+  position: relative; min-width: 0; min-height: 37px; border: 1px solid #ced4c6; border-radius: 5px;
+  color: #455047; background: #fbfcf6; font-weight: 540; font-size: .88rem; font-variant-numeric: tabular-nums; padding: 5px 2px;
+}
+.number-button:hover { border-color: #749075; }
+.number-button.correct { color: #2a503e; background: #e0ecd8; border-color: #acc3a4; }
+.number-button.revealed { color: #644414; background: #faedd1; border-color: #ceb381; }
+.number-button.tried:not([aria-current="step"]) { border-style: dashed; border-color: #927f5b; }
+.number-button[aria-current="step"] { border-color: var(--green); box-shadow: inset 0 0 0 1px var(--green); font-weight: 700; }
+.number-button[aria-current="step"]:not(.correct):not(.revealed) { color: #fff; background: var(--green); }
+.number-status { position: absolute; top: 1px; right: 2px; font-size: .57rem; line-height: 1.1; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 12px; color: var(--quiet); font-size: .70rem; }
+.legend > span { display: inline-flex; align-items: center; gap: 4px; }
+.legend-icon { display: inline-grid; place-items: center; width: 15px; height: 15px; border-radius: 3px; line-height: 1; }
+.legend-icon.correct { color: #31593d; border: 1px solid #b6c9ac; background: #e1ecd8; }
+.legend-icon.revealed { color: #765017; border: 1px solid #d9ba88; background: #f8eacb; }
+.index-bottom { margin-top: 17px; padding-top: 14px; border-top: 1px solid #d5dacd; }
+.index-bottom p { color: var(--quiet); line-height: 1.55; font-size: .83rem; }
+.index-bottom strong { color: #3c4e40; font-weight: 610; }
+.text-button { background: transparent; border: 0; padding: 3px 0; color: var(--green); font-size: .81rem; font-weight: 600; }
+.text-button:hover { text-decoration: underline; text-underline-offset: .17em; }
+.restart { display: inline-flex; align-items: center; gap: 6px; margin-top: 11px; }
+.restart > span { font-size: 1rem; }
+.restart:disabled { opacity: .55; text-decoration: none; }
+.results-link { margin-top: 5px; }
+.page-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; border-top: 1px solid var(--line); padding: 13px 0 22px; color: var(--quiet); font-size: .76rem; }
+.no-js { margin: 15px 0; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+dialog { width: min(94vw, 485px); max-height: 86vh; padding: 24px; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 12px; box-shadow: 0 16px 75px #1d342b35; }
+dialog::backdrop { background: rgb(27 43 34 / .35); }
+dialog h2 { font: 500 2.05rem/1.2 var(--serif); margin: 0 0 10px; letter-spacing: -.04em; }
+dialog p { color: var(--quiet); line-height: 1.55; font-size: .94rem; }
+.dialog-kicker { display: block; margin-bottom: 8px; }
+.dialog-actions { flex-wrap: wrap; justify-content: flex-end; margin-top: 23px; }
+.result-rows { margin-top: 16px; }
+.result-row { display: flex; justify-content: space-between; gap: 15px; border-top: 1px solid var(--line); padding: 9px 0; font-size: .88rem; }
+.result-row b { color: var(--green); white-space: nowrap; }
+@media (min-width: 1450px) {
+  .intro { padding-block: 42px 35px; }
+  .question-card { padding: 30px 34px 23px; }
+}
+@media (max-width: 900px) {
+  .page { width: min(calc(100% - 40px), 1140px); }
+  .work-grid { grid-template-columns: minmax(0,1fr) 235px; gap: 14px; }
+  .question-index { padding: 16px; }
+  .question-card { padding: 21px 20px 16px; }
+  .exercise-tab { gap: 8px; padding-inline: 10px; }
+  .context-box { padding: 15px 14px; }
+  .choices { gap: 7px; }
+  .answer-option { gap: 7px; padding-inline: 9px; font-size: .95rem; }
+}
+@media (max-width: 720px) {
+  .page { width: min(calc(100% - 32px), 650px); }
+  .masthead-inner { min-height: 53px; }
+  .intro { align-items: flex-start; padding: 22px 0 19px; gap: 13px; flex-direction: column; }
+  .total-progress { align-self: auto; width: 100%; max-width: 275px; margin: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 6px 12px; }
+  .progress-heading { gap: 8px; font-size: .76rem; }
+  progress { flex: 1 0 68px; min-width: 65px; width: auto; margin: 0; }
+  .results-link { margin: 0; }
+  .definition { margin-top: 5px; }
+  .exercise-tabs { gap: 6px; padding-bottom: 13px; }
+  .exercise-tab { min-height: 53px; gap: 6px; font-size: .84rem; }
+  .tab-number { flex-basis: 22px; width: 22px; height: 22px; font-size: .73rem; }
+  .work-grid { grid-template-columns: minmax(0,1fr); margin: 14px 0 20px; }
+  .question-index { padding: 17px 18px; }
+  .number-grid { max-width: 100%; grid-template-columns: repeat(8,minmax(0,1fr)); gap: 6px; }
+  .index-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 12px; padding-top: 10px; }
+  .restart { margin: 0; }
+  .question-card { padding: 19px 18px 15px; }
+  .context-box { margin-block: 14px; }
+}
+@media (max-width: 470px) {
+  h1 { font-size: clamp(2.52rem, 10.7vw, 3.05rem); }
+  .workbook-name { font-size: .91rem; gap: 8px; }
+  .level { font-size: .72rem; }
+  .book-mark { width: 26px; height: 29px; font-size: 24px; }
+  .definition { font-size: .88rem; }
+  .exercise-tab { flex-direction: column; justify-content: center; align-items: flex-start; min-height: 67px; gap: 5px; padding: 7px 8px; font-size: .78rem; }
+  .tab-number { flex-basis: auto; width: 19px; height: 19px; font-size: .66rem; }
+  .answer-option { padding: 8px; gap: 6px; font-size: .88rem; }
+  .option-letter { width: 20px; height: 22px; flex-basis: 20px; font-size: .65rem; }
+  .sentence, .dialogue-line { font-size: 1.20rem; }
+  #instruction { font-size: .96rem; }
+  .context-box { padding: 12px; }
+  .number-grid { grid-template-columns: repeat(5,minmax(0,1fr)); }
+  .attempt-count { font-size: .72rem; }
+  .question-kicker { font-size: .66rem; }
+  .card-actions { margin-top: 16px; padding-top: 12px; }
+  .page-footer { font-size: .71rem; }
+}
+@media (max-width: 340px) {
+  .page { width: calc(100% - 20px); }
+  .choices { grid-template-columns: 1fr; }
+  .level { text-align: right; }
+  .question-card, .question-index { padding: 14px; }
+}
+
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#work-area">Skip to the exercise</a>
+  <header class="masthead">
+    <div class="page masthead-inner">
+      <span class="workbook-name"><span aria-hidden="true" class="book-mark">&amp;</span> English workbook</span>
+      <span class="level">Upper-intermediate <span aria-hidden="true">·</span> B2+</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <h1 id="page-title">Binomials <em>in context</em></h1>
+        <p class="definition">A binomial pairs words in a set order. Pay attention to the word that joins them.</p>
+      </div>
+      <div class="total-progress">
+        <div class="progress-heading"><span>Overall progress</span><span id="total-count">0 / 45</span></div>
+        <progress id="overall-progress" max="45" value="0" aria-label="Completed questions in all exercises"></progress>
+        <button type="button" class="text-button results-link" id="open-results" hidden>View results <span aria-hidden="true">→</span></button>
+      </div>
+    </section>
+
+    <nav class="exercise-tabs" id="exercise-tabs" aria-label="Choose an exercise"></nav>
+    <noscript><p class="no-js">Please enable JavaScript in your browser to use this interactive workbook.</p></noscript>
+    <div class="work-grid">
+      <section class="question-card" id="work-area" tabindex="-1" aria-labelledby="instruction">
+        <div class="card-topline">
+          <div class="question-kicker"><span class="active-dot" aria-hidden="true"></span><span id="question-number">Question 1 of 15</span></div>
+          <span class="attempt-count" id="attempt-count"></span>
+        </div>
+        <h2 id="instruction">Choose the expression that best fits the gap.</h2>
+        <form id="answer-form" autocomplete="off" novalidate>
+          <div id="task"></div>
+          <div role="status" aria-atomic="true" id="feedback" class="feedback" hidden></div>
+          <div class="card-actions">
+            <button type="submit" class="primary" id="check">Check answer</button>
+            <button type="button" class="primary" id="continue" hidden>Continue <span aria-hidden="true">→</span></button>
+            <div class="prev-next" aria-label="Question navigation">
+              <button type="button" class="arrow-button" id="previous" aria-label="Previous question" title="Previous question"><span aria-hidden="true">←</span></button>
+              <button type="button" class="arrow-button" id="next" aria-label="Next question" title="Next question"><span aria-hidden="true">→</span></button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <aside class="question-index" aria-labelledby="index-title">
+        <div class="index-title-row"><h2 id="index-title">Question index</h2><span id="index-exercise">Exercise 1</span></div>
+        <div class="number-grid" id="number-grid" role="group" aria-label="Questions in this exercise"></div>
+        <div class="legend" aria-label="Question status symbols">
+          <span><b class="legend-icon correct" aria-hidden="true">✓</b>Correct</span>
+          <span><b class="legend-icon revealed" aria-hidden="true">◇</b>Answer shown</span>
+        </div>
+        <div class="index-bottom">
+          <p>Try each item up to <strong>three times</strong>. A missed attempt unlocks a hint.</p>
+          <button type="button" class="text-button restart" id="restart"><span aria-hidden="true">↺</span> Restart exercise</button>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="page-footer"><span>38 expressions <span class="footer-dot" aria-hidden="true">·</span> 45 questions</span><span id="storage-note"></span></footer>
+  </main>
+
+  <dialog id="reset-dialog" aria-labelledby="reset-title" aria-describedby="reset-copy">
+    <h2 id="reset-title">Restart this exercise?</h2>
+    <p id="reset-copy"></p>
+    <div class="dialog-actions"><button type="button" class="secondary" id="cancel-reset" autofocus>Keep practising</button><button type="button" class="primary" id="confirm-reset">Restart exercise</button></div>
+  </dialog>
+  <dialog id="results-dialog" aria-labelledby="results-title">
+    <span class="dialog-kicker">45 questions complete</span><h2 id="results-title">Your results</h2>
+    <p id="result-overview"></p>
+    <div id="result-rows" class="result-rows"></div>
+    <div class="dialog-actions"><button type="button" class="primary" id="close-results" autofocus>Back to practice</button></div>
+  </dialog>
+
+  <script>
+/* [] marks the gap. In the dialogues, [brackets] mark the words to rephrase. */
+const exercises = [
+  {
+    title: 'Choose the expression',
+    instruction: 'Choose the expression that best fits the gap.',
+    type: 'choice',
+    items: [
+      {
+        text: 'The band gave up its Friday slot, and the drama club agreed to rehearse elsewhere on Tuesday. Sharing a hall takes a bit of [].',
+        options: ['trial and error', 'give and take', 'law and order', 'wear and tear'],
+        answer: 'give and take',
+        hint: 'Both groups have given something up to reach an agreement.',
+        note: 'Each group makes a concession so the arrangement works for both.'
+      },
+      {
+        text: 'A couple of reviewers hated the ending, but [] the critics agreed it was the best film at the festival.',
+        options: ['there and then', 'now and then', 'sooner or later', 'by and large'],
+        answer: 'by and large',
+        hint: 'The writer is giving a general judgement that allows for a few exceptions.',
+        note: 'The writer sums up the majority view while acknowledging two exceptions.'
+      },
+      {
+        text: 'The automatic captions get a complicated medical term right in one scene and turn a simple greeting into nonsense in the next. Their accuracy is rather [].',
+        options: ['hit and miss', 'touch and go', 'short and sweet', 'loud and clear'],
+        answer: 'hit and miss',
+        hint: 'Focus on the inconsistency from one scene to the next.',
+        note: 'Something that is hit and miss works well on some occasions and badly on others.'
+      },
+      {
+        text: 'The video of our rooftop concert spread []. Within an hour our little Swiss band was getting messages from Peru, Ghana and Japan.',
+        options: ['back and forth', 'now and then', 'far and wide', 'there and then'],
+        answer: 'far and wide',
+        hint: 'The countries tell you how far the video travelled.',
+        note: 'The messages show that the video reached people in many different places.'
+      },
+      {
+        text: 'I thought working at the animal shelter would just mean playing with puppies. On my first day I discovered that scrubbing the kennels was [] of the job.',
+        options: ['more or less', 'part and parcel', 'first and foremost', 'by and large'],
+        answer: 'part and parcel',
+        hint: 'Cleaning comes with the job. It is an unavoidable part of it.',
+        note: 'If something is part and parcel of a job, it belongs to the job itself.'
+      },
+      {
+        text: 'The hire shop charges for broken zips, but it expects the fabric of a tent to fade a little with each summer’s use. That counts as ordinary [].',
+        options: ['wear and tear', 'trial and error', 'give and take', 'hustle and bustle'],
+        answer: 'wear and tear',
+        hint: 'Think about the gradual damage caused by normal use.',
+        note: 'Fading caused by repeated use is an example of wear and tear.'
+      },
+      {
+        text: 'On my first shift at the café, the manager handed me an apron and left me alone with the lunch queue. With nobody to show me what to do, I had to [].',
+        options: ['wait and see', 'rise and shine', 'wine and dine', 'sink or swim'],
+        answer: 'sink or swim',
+        hint: 'The new employee has to succeed or fail entirely through their own efforts.',
+        note: 'Someone left to sink or swim has to manage a difficult situation independently.'
+      },
+      {
+        text: 'We tried recording the interview in a café, but the blender kept drowning out our guest. The empty music room finally gave us the [] we needed.',
+        options: ['hustle and bustle', 'ins and outs', 'peace and quiet', 'give and take'],
+        answer: 'peace and quiet',
+        hint: 'The interview needs a calm place where the speakers can be heard.',
+        note: 'The empty room provides freedom from noise and interruptions.'
+      },
+      {
+        text: 'Our first show sold out, the second barely sold a ticket, and the third sold out again. In her tour diary, our drummer describes the [] of that first month on the road.',
+        options: ['ups and downs', 'odds and ends', 'wear and tear', 'law and order'],
+        answer: 'ups and downs',
+        hint: 'Look at how the band’s fortunes changed from one show to the next.',
+        note: 'The expression covers the good periods and the difficult ones in a changing experience.'
+      },
+      {
+        text: 'Listeners often call our podcast a comedy because the presenters are funny. For us, though, it is [] a piece of journalism. Getting the facts right is our top priority.',
+        options: ['there and then', 'sooner or later', 'back and forth', 'first and foremost'],
+        answer: 'first and foremost',
+        hint: 'The producers are saying which aspect matters most.',
+        note: 'The phrase puts journalism ahead of the podcast’s other roles.'
+      },
+      {
+        text: 'The missing kayakers finally rang from a farmhouse. Their boat had been damaged, but both paddlers were [], without so much as a scratch.',
+        options: ['short and sweet', 'safe and sound', 'sick and tired', 'skin and bones'],
+        answer: 'safe and sound',
+        hint: 'The call reassures everyone about the paddlers’ physical condition.',
+        note: 'Both paddlers have come through a worrying experience unharmed.'
+      },
+      {
+        text: 'Before voting on a later start to the school day, we weighed up the []. Extra sleep sounded good, but getting home later would make football practice tricky.',
+        options: ['bits and pieces', 'ins and outs', 'pros and cons', 'ups and downs'],
+        answer: 'pros and cons',
+        hint: 'The class is comparing an advantage with a disadvantage before making a decision.',
+        note: 'To weigh up the pros and cons is to compare the arguments for and against a choice.'
+      },
+      {
+        text: 'I cycle to school almost every day. I still take the tram [], perhaps twice a term when it’s raining particularly hard.',
+        options: ['once and for all', 'there and then', 'sooner or later', 'now and then'],
+        answer: 'now and then',
+        hint: 'Twice a term tells you how often it happens.',
+        note: 'The tram journey happens occasionally.'
+      },
+      {
+        text: 'One more gust would have forced the balloon pilot to cancel. For a few minutes it was [] whether we would be able to take off.',
+        options: ['hit and miss', 'touch and go', 'more or less', 'short and sweet'],
+        answer: 'touch and go',
+        hint: 'The outcome of this particular flight was uncertain.',
+        note: 'Use touch and go when it is uncertain whether something will succeed or turn out safely.'
+      },
+      {
+        text: 'There was no recipe for that shade of blue. I added a different amount of green to each of six test pots until one matched the original. I found the right mix by [].',
+        options: ['trial and error', 'give and take', 'wear and tear', 'law and order'],
+        answer: 'trial and error',
+        hint: 'Each unsuccessful mixture helped the painter work out what to try next.',
+        note: 'The painter found a solution by testing possible mixtures and learning from the results.'
+      }
+    ]
+  },
+  {
+    title: 'Complete the pair',
+    instruction: 'Type the missing word directly into the gap.',
+    type: 'word',
+    items: [
+      {
+        text: 'The architect walked back and [] between the window and the model, checking how the afternoon light fell on it.',
+        answer: 'back and forth', missing: 'forth',
+        hint: 'The architect keeps moving in opposite directions between the same two places.',
+        note: 'The movement is repeated, first in one direction and then in the other.'
+      },
+      {
+        text: 'The first ferry leaves at six. If we want seats on deck, we’ll need to be at the harbour [] and early.',
+        answer: 'bright and early', missing: 'bright',
+        hint: 'The speaker wants everyone there first thing in the morning.',
+        note: 'The expression emphasises a very early start to the day.'
+      },
+      {
+        text: 'Most of the stage props had labels. The last drawer held assorted [] and ends, including a cracked compass and a single brass key.',
+        answer: 'odds and ends', missing: 'odds',
+        hint: 'The drawer contains miscellaneous small objects with no obvious connection.',
+        note: 'The compass and the key are examples of the miscellaneous things left in the drawer.'
+      },
+      {
+        text: 'At first Lina could play the piano for only five minutes. A month later she could manage a whole piece. Slowly [] surely, her injured wrist was recovering.',
+        answer: 'slowly but surely', missing: 'but',
+        hint: 'The linking word contrasts the slow pace with the certainty of progress.',
+        note: 'The improvement takes time, yet there is steady progress.'
+      },
+      {
+        text: 'Before my first shift at the radio station, a producer showed me the ins and [] of running a live phone-in, including how to cut off a caller politely.',
+        answer: 'ins and outs', missing: 'outs',
+        hint: 'The producer explains all the practical details of the job.',
+        note: 'Knowing the ins and outs of something means understanding how it works in detail.'
+      },
+      {
+        text: 'Our camera crew travelled the length and [] of Wales, filming everywhere from tiny coastal villages to remote farms in the hills.',
+        answer: 'length and breadth', missing: 'breadth',
+        hint: 'The crew covered the whole country. Think of a word meaning width.',
+        note: 'To travel the length and breadth of a place is to travel throughout it.'
+      },
+      {
+        text: 'A cheerful voice came through the tent flap at six. “[] and shine! You’ll miss the seals if you stay in bed.”',
+        answer: 'rise and shine', missing: 'rise',
+        hint: 'Someone is cheerfully telling the campers to get up.',
+        note: 'This is a cheerful way to wake someone up.'
+      },
+      {
+        text: '“The costumes go back by five, no ifs or [].” The wardrobe manager pointed at the clock before I could make another excuse.',
+        answer: 'ifs or buts', missing: 'buts',
+        hint: 'The speaker refuses to accept objections or excuses.',
+        note: 'After no, this expression signals that the instruction is final.'
+      },
+      {
+        text: 'The seating plan shows 198 chairs. That’s [] or less the 200 we promised, so one extra row should be plenty.',
+        answer: 'more or less', missing: 'more',
+        hint: 'The speaker is giving an approximate figure.',
+        note: 'Here more or less means approximately.'
+      },
+      {
+        text: 'By the third cancellation I was [] and tired of rearranging the rehearsal. I asked the organiser to set a date she could stick to.',
+        answer: 'sick and tired', missing: 'sick',
+        hint: 'The repeated cancellations have made the speaker thoroughly annoyed.',
+        note: 'Use sick and tired of something when it has annoyed you for too long.'
+      },
+      {
+        text: 'When the vet first examined the stray cat, it was skin and []. Now it is strong enough to climb the curtains.',
+        answer: 'skin and bones', missing: 'bones',
+        hint: 'The vet was worried by how extremely thin the cat was.',
+        note: 'The expression describes an animal or person who is extremely thin.'
+      },
+      {
+        text: '“Do you cancel the market if it pours?” “No, we set up our stall every Saturday, rain [] shine.”',
+        answer: 'rain or shine', missing: 'or',
+        hint: 'The linking word introduces two weather possibilities. The market takes place in either case.',
+        note: 'The stall opens whatever the weather.'
+      },
+      {
+        text: 'When the director offered Leila the role, she signed the contract there and [], before he could even put his pen away.',
+        answer: 'there and then', missing: 'then',
+        hint: 'Leila acted immediately, on the spot.',
+        note: 'She signed at the very moment the offer was made.'
+      },
+      {
+        text: 'We could barely hear the guide until she switched microphones. After that, her voice came through [] and clear, even at the back of the hall.',
+        answer: 'loud and clear', missing: 'loud',
+        hint: 'The new microphone solved a problem with volume.',
+        note: 'Everyone can now hear and understand the guide easily.'
+      },
+      {
+        text: '“You mean the train ticket also covers the ferry? I’ve been paying twice for years. Oh well, you live and []!”',
+        answer: 'live and learn', missing: 'learn',
+        hint: 'The speaker has just discovered something surprising through experience.',
+        note: 'People say you live and learn when an experience teaches them something new.'
+      }
+    ]
+  },
+  {
+    title: 'Rephrase the reply',
+    instruction: 'Replace the highlighted words with a binomial. Use the key word and type only the expression.',
+    type: 'reply',
+    items: [
+      {
+        question: 'Would you miss anything if you moved out of town?',
+        reply: 'Yes. I’d miss the [busy, noisy activity] of the Saturday market.',
+        key: 'bustle', answer: 'hustle and bustle',
+        hint: 'Think of crowds of people moving around in a lively place.',
+        note: 'The market’s noise and movement are part of what the speaker would miss.'
+      },
+      {
+        question: 'You’ve already held three votes. Why hold another one?',
+        reply: 'Because this one will settle the question [permanently].',
+        key: 'once', answer: 'once and for all',
+        hint: 'The speaker wants a decision that will never need to be discussed again.',
+        note: 'The decision is intended to settle the issue for good.'
+      },
+      {
+        question: 'Could you tell what the people at the next table were saying?',
+        reply: 'With the café so noisy, I only caught [a few scattered fragments] of their conversation.',
+        key: 'pieces', answer: 'bits and pieces',
+        hint: 'The speaker heard disconnected fragments of a longer conversation.',
+        note: 'Here the expression refers to the small, disconnected parts the speaker could hear.'
+      },
+      {
+        question: 'How have you managed to share such a tiny studio?',
+        reply: 'It’s taken [a willingness to compromise on both sides]. I paint in the mornings, and Leo uses the space after lunch.',
+        key: 'take', answer: 'give and take',
+        hint: 'Both people have adjusted what they do so the arrangement will work.',
+        note: 'Each person gives up something so both can use the studio.'
+      },
+      {
+        question: 'Do you think anyone will spot the wrong date on the posters?',
+        reply: 'Someone’s bound to notice it [eventually]. We’d better print new ones.',
+        key: 'sooner', answer: 'sooner or later',
+        hint: 'The speaker feels sure it will happen, even though the timing is unknown.',
+        note: 'The mistake will be noticed at some point in the future.'
+      },
+      {
+        question: 'What did the mayor promise after the riots in the novel?',
+        reply: 'She promised to restore [public safety] so that shopkeepers could reopen without fear.',
+        key: 'order', answer: 'law and order',
+        hint: 'The mayor is talking about public safety and obedience to the law.',
+        note: 'To restore law and order is to make the community safe by enforcing its laws.'
+      },
+      {
+        question: 'What did the exchange students think of their stay?',
+        reply: '[On the whole], they enjoyed it, although a few felt homesick.',
+        key: 'large', answer: 'by and large',
+        hint: 'The speaker makes a general statement and then mentions an exception.',
+        note: 'The phrase introduces an overall judgement about a group with different experiences.'
+      },
+      {
+        question: 'What do the sponsors expect in return for backing the show?',
+        reply: 'They expect the organisers to [lavishly entertain] them at the best restaurant in town after the show.',
+        key: 'dine', answer: 'wine and dine',
+        hint: 'The guests are being treated to an expensive meal with drinks.',
+        note: 'To wine and dine guests is to entertain them with good food and drink.'
+      },
+      {
+        question: 'Does your band still get nervous before a concert?',
+        reply: 'Of course. Those nerves are [a natural part] of performing in public.',
+        key: 'parcel', answer: 'part and parcel',
+        hint: 'The nerves come with the experience of performing.',
+        note: 'The speaker sees nervousness as an inseparable element of performing.'
+      },
+      {
+        question: 'Did the captain keep you long after training?',
+        reply: 'No. Her speech was [brief and enjoyable]. A quick thank-you and we were off.',
+        key: 'sweet', answer: 'short and sweet',
+        hint: 'The speaker liked both the tone and the brevity of the speech.',
+        note: 'This is an approving way to describe something pleasantly brief.'
+      },
+      {
+        question: 'Did you know the battery would last until the interview was over?',
+        reply: 'No. For the last ten minutes it was [very uncertain] whether the recorder would keep going.',
+        key: 'touch', answer: 'touch and go',
+        hint: 'One outcome was just as real a possibility as the other right up to the end.',
+        note: 'The speaker was unsure whether the recording would end too early.'
+      },
+      {
+        question: 'Are we getting the rehearsal room on Friday?',
+        reply: 'We’ll have to [be patient until we know the outcome]. The caretaker won’t have the timetable until tomorrow.',
+        key: 'see', answer: 'wait and see',
+        hint: 'There is nothing to do until more information becomes available.',
+        note: 'The speakers must allow time for the situation to become clear.'
+      },
+      {
+        question: 'Could anyone take over the lighting desk tonight?',
+        reply: 'Ask Ada. She knows [all the practical details] of that particular system.',
+        key: 'outs', answer: 'ins and outs',
+        hint: 'Ada understands exactly how the equipment works.',
+        note: 'Knowing the ins and outs of the system means knowing how to operate it in detail.'
+      },
+      {
+        question: 'How did you work out where to put the microphone?',
+        reply: 'By [testing different positions until one worked]. We kept moving it until the echo disappeared.',
+        key: 'trial', answer: 'trial and error',
+        hint: 'Each attempt taught the speakers something they could use in the next one.',
+        note: 'The speakers found the right position through repeated experiments.'
+      },
+      {
+        question: 'Why did Hana turn down the chance to manage the team?',
+        reply: 'She’s [above all] a player. Giving up her place on the pitch was too high a price.',
+        key: 'foremost', answer: 'first and foremost',
+        hint: 'Being a player matters more to Hana than any other role.',
+        note: 'Playing is the most important part of Hana’s involvement in the team.'
+      }
+    ]
+  }
+];
+
+  </script>
+  <script>
+'use strict';
+
+const maxAttempts = 3;
+const storageKey = 'english-workbook.binomials.v1';
+const totalItems = exercises.reduce((sum, exercise) => sum + exercise.items.length, 0);
+const byId = id => document.getElementById(id);
+const initialRecord = () => ({draft: '', guesses: []});
+let canSave = true;
+
+function normalise(value) {
+  return String(value).normalize('NFKC').toLowerCase()
+    .replace(/&/g, ' and ').replace(/[‐‑‒–—-]/g, ' ')
+    .replace(/^[\s"'“”‘’.,!?;:()]+|[\s"'“”‘’.,!?;:()]+$/g, '')
+    .replace(/\s+/g, ' ').trim();
+}
+
+function expected(item) {
+  return item.missing || item.answer;
+}
+
+function answerKey(item, draft) {
+  const typed = normalise(draft);
+  // A student who types the whole pair into a one-word gap has also supplied the missing word.
+  return item.missing && typed === item.answer ? item.missing : typed;
+}
+
+function statusOf(item, record) {
+  if (record.guesses.includes(expected(item))) return 'correct';
+  if (record.guesses.length >= maxAttempts) return 'revealed';
+  return record.guesses.length ? 'tried' : 'open';
+}
+
+function isFinished(status) {
+  return status === 'correct' || status === 'revealed';
+}
+
+function newState() {
+  return {
+    active: 0,
+    positions: exercises.map(() => 0),
+    records: exercises.map(exercise => exercise.items.map(initialRecord))
+  };
+}
+
+function validIndex(index, length) {
+  return Number.isInteger(index) && index >= 0 && index < length;
+}
+
+function restore() {
+  const fresh = newState();
+  let raw;
+  try {
+    raw = localStorage.getItem(storageKey);
+  } catch {
+    canSave = false;
+  }
+  if (!raw) return fresh;
+  try {
+    const saved = JSON.parse(raw);
+    if (validIndex(saved.active, exercises.length)) fresh.active = saved.active;
+    exercises.forEach((exercise, e) => {
+      if (validIndex(saved.positions?.[e], exercise.items.length)) fresh.positions[e] = saved.positions[e];
+      exercise.items.forEach((item, q) => {
+        const record = saved.records?.[e]?.[q];
+        if (!record || !Array.isArray(record.guesses)) return;
+        const restored = fresh.records[e][q];
+        for (const value of record.guesses) {
+          if (typeof value !== 'string' || value.length > 150) continue;
+          const key = answerKey(item, value);
+          if (!key || restored.guesses.includes(key) || (item.options && !item.options.includes(key))) continue;
+          restored.guesses.push(key);
+          if (isFinished(statusOf(item, restored))) break;
+        }
+        if (typeof record.draft === 'string') restored.draft = record.draft.slice(0, 150);
+      });
+    });
+  } catch { /* An unreadable saved session can be replaced by a fresh workbook. */ }
+  return fresh;
+}
+
+const state = restore();
+
+function save() {
+  if (canSave) {
+    try { localStorage.setItem(storageKey, JSON.stringify(state)); }
+    catch { canSave = false; }
+  }
+  byId('storage-note').textContent = canSave ? 'Progress is saved in this browser.' : 'Progress lasts while this page is open.';
+}
+
+function current() {
+  const e = state.active;
+  const q = state.positions[e];
+  const exercise = exercises[e];
+  const item = exercise.items[q];
+  const record = state.records[e][q];
+  return {e, q, exercise, item, record, status: statusOf(item, record)};
+}
+
+function node(tag, className, content) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  if (content !== undefined) element.textContent = content;
+  return element;
+}
+
+function hiddenFromSpeech(element) {
+  element.setAttribute('aria-hidden', 'true');
+  return element;
+}
+
+function counts(e) {
+  const result = {correct: 0, revealed: 0, first: 0};
+  exercises[e].items.forEach((item, q) => {
+    const record = state.records[e][q];
+    const status = statusOf(item, record);
+    if (isFinished(status)) result[status]++;
+    if (status === 'correct' && record.guesses.length === 1) result.first++;
+  });
+  return result;
+}
+
+function nextUnfinished() {
+  const {e, q} = current();
+  for (let step = 0; step < exercises.length; step++) {
+    const target = (e + step) % exercises.length;
+    const items = exercises[target].items;
+    const start = step === 0 ? q + 1 : state.positions[target];
+    for (let offset = 0; offset < items.length; offset++) {
+      const index = (start + offset) % items.length;
+      if (!isFinished(statusOf(items[index], state.records[target][index]))) return {e: target, q: index};
+    }
+  }
+  return null;
+}
+
+function navigate(e, q, focus = true) {
+  state.active = e;
+  state.positions[e] = q;
+  save();
+  render();
+  if (focus) {
+    const workArea = byId('work-area');
+    workArea.focus({preventScroll: true});
+    const top = workArea.getBoundingClientRect().top;
+    if (top < 0 || top > window.innerHeight * .65) workArea.scrollIntoView({block: 'start'});
+  }
+}
+
+function move(direction) {
+  const {e, q, exercise} = current();
+  const target = q + direction;
+  if (validIndex(target, exercise.items.length)) navigate(e, target);
+  else if (validIndex(e + direction, exercises.length)) {
+    navigate(e + direction, direction > 0 ? 0 : exercises[e - 1].items.length - 1);
+  }
+}
+
+function buildNavigation() {
+  exercises.forEach((exercise, e) => {
+    const button = node('button', 'exercise-tab');
+    button.type = 'button';
+    button.append(hiddenFromSpeech(node('span', 'tab-number', e + 1)), node('span', '', exercise.title));
+    button.addEventListener('click', () => navigate(e, state.positions[e]));
+    byId('exercise-tabs').append(button);
+  });
+  // Each exercise contains the same number of questions.
+  exercises[0].items.forEach((_, q) => {
+    const button = node('button', 'number-button');
+    button.type = 'button';
+    button.addEventListener('click', () => navigate(state.active, q));
+    byId('number-grid').append(button);
+  });
+}
+
+function updateNavigation(data) {
+  const {e, q, exercise} = data;
+  let complete = 0;
+  Array.from(byId('exercise-tabs').children).forEach((button, i) => {
+    const tally = counts(i);
+    const finished = tally.correct + tally.revealed;
+    complete += finished;
+    button.setAttribute('aria-current', i === e ? 'true' : 'false');
+    button.setAttribute('aria-label', 'Exercise ' + (i + 1) + '. ' + exercises[i].title + '. ' + finished + ' of ' + exercises[i].items.length + ' complete.');
+  });
+  byId('total-count').textContent = complete + ' / ' + totalItems;
+  byId('overall-progress').max = totalItems;
+  byId('overall-progress').value = complete;
+  byId('open-results').hidden = complete < totalItems;
+  byId('index-exercise').textContent = 'Exercise ' + (e + 1);
+  const descriptions = {open: 'Unanswered', tried: 'In progress', correct: 'Correct', revealed: 'Answer shown'};
+  Array.from(byId('number-grid').children).forEach((button, i) => {
+    const status = statusOf(exercise.items[i], state.records[e][i]);
+    button.className = 'number-button ' + status;
+    if (q === i) button.setAttribute('aria-current', 'step');
+    else button.removeAttribute('aria-current');
+    const label = 'Question ' + (i + 1) + '. ' + descriptions[status] + '.';
+    button.title = label;
+    button.setAttribute('aria-label', label);
+    button.replaceChildren(document.createTextNode(String(i + 1)));
+    if (isFinished(status)) button.append(hiddenFromSpeech(node('span', 'number-status', status === 'correct' ? '✓' : '◇')));
+  });
+  byId('restart').disabled = !state.records[e].some(record => record.guesses.length || record.draft.trim());
+  byId('previous').disabled = e === 0 && q === 0;
+  byId('next').disabled = e === exercises.length - 1 && q === exercise.items.length - 1;
+}
+
+function capitaliseInPlace(text, prefix) {
+  const startsSentence = !prefix.trim() || /[.!?]\s*[“‘"'(]*\s*$/.test(prefix);
+  return startsSentence ? text[0].toUpperCase() + text.slice(1) : text;
+}
+
+function resolvedAnswer(text, prefix, status) {
+  return node('span', status === 'correct' ? 'solved-word' : 'shown-word', capitaliseInPlace(text, prefix));
+}
+
+function textInput(className, label, data) {
+  const input = node('input', className);
+  input.id = 'typed-answer';
+  input.type = 'text';
+  input.setAttribute('aria-label', label);
+  input.setAttribute('aria-describedby', 'instruction');
+  input.autocomplete = 'off';
+  input.setAttribute('autocapitalize', 'off');
+  input.setAttribute('autocorrect', 'off');
+  input.spellcheck = false;
+  input.maxLength = 150;
+  input.value = data.record.draft;
+  input.addEventListener('input', () => {
+    data.record.draft = input.value;
+    save();
+    updateCheck(data);
+    byId('restart').disabled = false;
+  });
+  return input;
+}
+
+function sentenceBox(data) {
+  const {exercise, item, status} = data;
+  const container = node('div', 'context-box' + (exercise.type === 'word' ? ' word-context' : ''));
+  const sentence = node('p', 'sentence');
+  const [before, after] = item.text.split('[]');
+  sentence.append(before);
+  if (isFinished(status)) {
+    sentence.append(resolvedAnswer(expected(item), before, status));
+  } else if (exercise.type === 'word') {
+    sentence.append(textInput('word-field', 'Missing word', data));
+  } else {
+    const gap = node('span', 'blank');
+    gap.append(node('span', 'sr-only', 'blank'));
+    sentence.append(gap);
+  }
+  sentence.append(after);
+  container.append(sentence);
+  return container;
+}
+
+function choiceSet(data) {
+  const {item, record, status} = data;
+  const fieldset = node('fieldset', 'choice-set');
+  fieldset.append(node('legend', 'sr-only', 'Choose one expression'));
+  const list = node('div', 'choices');
+  item.options.forEach((option, index) => {
+    const label = node('label', 'choice');
+    const radio = node('input');
+    radio.type = 'radio';
+    radio.name = 'expression';
+    radio.value = option;
+    const wrong = record.guesses.includes(option) && option !== item.answer;
+    const right = isFinished(status) && option === item.answer;
+    radio.disabled = wrong || isFinished(status);
+    radio.checked = isFinished(status) ? right : (record.draft === option && !wrong);
+    const optionFace = node('span', 'answer-option' + (right ? ' right' : wrong ? ' missed' : ''));
+    const letter = right ? '✓' : wrong ? '×' : String.fromCharCode(65 + index);
+    optionFace.append(hiddenFromSpeech(node('span', 'option-letter', letter)), node('span', '', option));
+    if (right || wrong) optionFace.append(node('span', 'sr-only', right ? 'Correct answer' : 'Incorrect choice'));
+    label.append(radio, optionFace);
+    radio.addEventListener('change', () => {
+      record.draft = option;
+      save();
+      updateCheck(data);
+      byId('restart').disabled = false;
+    });
+    list.append(label);
+  });
+  fieldset.append(list);
+  return fieldset;
+}
+
+function dialogueLine(speaker, content) {
+  const line = node('p', 'dialogue-line');
+  const label = node('span', 'speaker', speaker);
+  label.setAttribute('aria-label', 'Speaker ' + speaker);
+  line.append(label, content);
+  return line;
+}
+
+function dialogueTask(data) {
+  const {item, status} = data;
+  const container = document.createDocumentFragment();
+  const box = node('div', 'context-box reply-box');
+  box.append(dialogueLine('A', node('span', '', item.question)));
+  const [, prefix, phrase, suffix] = item.reply.match(/^(.*?)\[([^\]]+)\](.*)$/);
+  const reply = node('span');
+  reply.append(prefix);
+  if (isFinished(status)) reply.append(resolvedAnswer(item.answer, prefix, status));
+  else {
+    reply.append(node('span', 'sr-only', 'Words to replace: '), node('mark', '', phrase), node('span', 'sr-only', '. End of words to replace. '));
+  }
+  reply.append(suffix);
+  box.append(dialogueLine('B', reply));
+  container.append(box);
+  if (!isFinished(status)) {
+    const label = node('label', 'response-label');
+    label.htmlFor = 'typed-answer';
+    const clue = node('span', 'key-hint', 'Key word ');
+    clue.id = 'key-hint';
+    clue.append(node('strong', '', item.key.toUpperCase()));
+    label.append(node('span', '', 'Your expression'), clue);
+    const input = textInput('phrase-field', 'Your expression', data);
+    input.setAttribute('aria-describedby', 'instruction key-hint');
+    input.placeholder = 'Type the full expression';
+    container.append(label, input);
+  }
+  return container;
+}
+
+function updateCheck(data) {
+  const key = answerKey(data.item, data.record.draft);
+  byId('check').disabled = !key || data.record.guesses.includes(key);
+}
+
+function retryHint(data) {
+  const {exercise, item, record} = data;
+  if (record.guesses.length === 1) return item.hint;
+  if (exercise.type === 'choice') return item.hint + ' Compare the two remaining options.';
+  if (exercise.type === 'word') {
+    return item.hint + ' The missing word has ' + item.missing.length + ' letters and begins with ' + item.missing[0].toUpperCase() + '.';
+  }
+  const words = item.answer.split(' ');
+  return 'Use ' + words.length + ' words. Their first letters are ' + words.map(word => word[0].toUpperCase()).join(' · ') + '.';
+}
+
+function renderFeedback(data) {
+  const {item, record, status} = data;
+  const feedback = byId('feedback');
+  feedback.replaceChildren();
+  feedback.hidden = status === 'open';
+  if (feedback.hidden) return;
+  let heading, body, kind;
+  if (status === 'correct') {
+    heading = 'Correct — ' + item.answer + '.';
+    body = item.note;
+    kind = 'good';
+  } else if (status === 'revealed') {
+    heading = 'Answer shown — ' + item.answer + '.';
+    body = item.note;
+    kind = 'shown';
+  } else {
+    heading = record.guesses.length === 1 ? 'Try again.' : 'One more try.';
+    body = retryHint(data);
+    kind = 'try';
+  }
+  feedback.className = 'feedback ' + kind;
+  feedback.append(node('strong', '', heading), node('span', '', body));
+}
+
+function render() {
+  const data = current();
+  const {exercise, q, record, status} = data;
+  updateNavigation(data);
+  byId('question-number').textContent = 'Question ' + (q + 1) + ' of ' + exercise.items.length;
+  const remaining = maxAttempts - record.guesses.length;
+  byId('attempt-count').textContent = isFinished(status)
+    ? (status === 'correct' ? 'Answered correctly' : 'Answer shown')
+    : remaining + (remaining === 1 ? ' attempt left' : ' attempts left');
+  byId('instruction').textContent = exercise.instruction;
+  const task = byId('task');
+  if (exercise.type === 'reply') task.replaceChildren(dialogueTask(data));
+  else {
+    task.replaceChildren(sentenceBox(data));
+    if (exercise.type === 'choice') task.append(choiceSet(data));
+  }
+  renderFeedback(data);
+  const done = isFinished(status);
+  byId('check').hidden = done;
+  byId('continue').hidden = !done;
+  if (done) {
+    const next = nextUnfinished();
+    const label = !next ? 'View results' : next.e === data.e ? 'Continue' : 'Continue to exercise ' + (next.e + 1);
+    byId('continue').replaceChildren(label + ' ', hiddenFromSpeech(node('span', '', '→')));
+  } else updateCheck(data);
+}
+
+byId('answer-form').addEventListener('submit', event => {
+  event.preventDefault();
+  const data = current();
+  if (isFinished(data.status)) return;
+  const key = answerKey(data.item, data.record.draft);
+  if (!key || data.record.guesses.includes(key)) return;
+  data.record.guesses.push(key);
+  if (data.exercise.type === 'choice' && key !== data.item.answer) data.record.draft = '';
+  save();
+  render();
+  if (isFinished(current().status)) byId('continue').focus({preventScroll: true});
+  else if (data.exercise.type === 'choice') {
+    document.querySelector('.choice input:enabled')?.focus({preventScroll: true});
+  } else {
+    const input = byId('typed-answer');
+    input.focus({preventScroll: true});
+    input.select();
+  }
+});
+
+function showResults() {
+  const tallies = exercises.map((_, e) => counts(e));
+  const correct = tallies.reduce((sum, value) => sum + value.correct, 0);
+  const first = tallies.reduce((sum, value) => sum + value.first, 0);
+  const shown = totalItems - correct;
+  const revealedMessage = shown === 1 ? '1 answer was shown.' : shown + ' answers were shown.';
+  byId('result-overview').textContent = 'You answered ' + correct + ' of ' + totalItems + ' correctly, including ' + first + ' on your first try. ' + revealedMessage;
+  const rows = byId('result-rows');
+  rows.replaceChildren();
+  exercises.forEach((exercise, e) => {
+    const row = node('div', 'result-row');
+    row.append(node('span', '', exercise.title), node('b', '', tallies[e].correct + ' / ' + exercise.items.length + ' correct'));
+    rows.append(row);
+  });
+  byId('results-dialog').showModal();
+}
+
+byId('previous').addEventListener('click', () => move(-1));
+byId('next').addEventListener('click', () => move(1));
+byId('continue').addEventListener('click', () => {
+  const next = nextUnfinished();
+  if (next) navigate(next.e, next.q);
+  else showResults();
+});
+byId('open-results').addEventListener('click', showResults);
+byId('close-results').addEventListener('click', () => byId('results-dialog').close());
+byId('restart').addEventListener('click', () => {
+  const {e, exercise} = current();
+  byId('reset-copy').textContent = 'Clear your answers and attempts for exercise ' + (e + 1) + ', “' + exercise.title + '”?';
+  byId('reset-dialog').showModal();
+});
+byId('cancel-reset').addEventListener('click', () => byId('reset-dialog').close());
+byId('confirm-reset').addEventListener('click', () => {
+  const e = state.active;
+  state.records[e] = exercises[e].items.map(initialRecord);
+  byId('reset-dialog').close();
+  navigate(e, 0);
+});
+
+buildNavigation();
+render();
+save();
+
+  </script>
+</body>
+</html>
