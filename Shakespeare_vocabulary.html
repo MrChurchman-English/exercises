@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Shakespeare – Complete the Words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #E9ECEF;
+  --sheet: #FBFBF9;
+  --ink: #1D2433;
+  --muted: #5B6475;
+  --rule: #C9CED6;
+  --accent: #2E5A4F;
+  --accent-ink: #FFFFFF;
+  --ok: #2D7A4A;
+  --ok-bg: #E2F1E6;
+  --bad: #A33A3A;
+  --bad-bg: #F8E3E1;
+  --reveal: #7A5A12;
+  --field: #FFFFFF;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #14181F;
+    --sheet: #1D232D;
+    --ink: #E7EAF0;
+    --muted: #9AA3B2;
+    --rule: #364050;
+    --accent: #7FB7A6;
+    --accent-ink: #10201B;
+    --ok: #7FCB97;
+    --ok-bg: #1F3A2A;
+    --bad: #F0928A;
+    --bad-bg: #452626;
+    --reveal: #E2C27A;
+    --field: #262D39;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #14181F; --sheet: #1D232D; --ink: #E7EAF0; --muted: #9AA3B2; --rule: #364050;
+  --accent: #7FB7A6; --accent-ink: #10201B; --ok: #7FCB97; --ok-bg: #1F3A2A;
+  --bad: #F0928A; --bad-bg: #452626; --reveal: #E2C27A; --field: #262D39;
+}
+*, *::before, *::after { box-sizing: inherit; }
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: "Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+.wrap { max-width: 46rem; margin: 0 auto; padding: 2.5rem 1.25rem 3rem; }
+header h1 {
+  font-family: "IM Fell English", Garamond, "Times New Roman", serif;
+  font-weight: 400;
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  line-height: 1.05;
+  margin: 0 0 .5rem;
+  letter-spacing: -.01em;
+}
+header p { margin: 0 0 1.75rem; color: var(--muted); max-width: 36rem; }
+
+nav { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: -1px; position: relative; z-index: 1; }
+nav a {
+  font-family: "IM Fell English", Garamond, serif;
+  font-size: 1.15rem;
+  text-decoration: none;
+  color: var(--muted);
+  padding: .55rem 1rem .45rem;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+}
+nav a:hover { color: var(--ink); }
+nav a[aria-current="page"] {
+  background: var(--sheet);
+  color: var(--ink);
+  border-color: var(--rule);
+}
+nav a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+.sheet {
+  background: var(--sheet);
+  border: 1px solid var(--rule);
+  border-radius: 0 6px 6px 6px;
+  padding: 2rem clamp(1.1rem, 4vw, 2.5rem) 2rem;
+}
+.sheet h2 {
+  font-family: "IM Fell English", Garamond, serif;
+  font-weight: 400;
+  font-size: 1.9rem;
+  margin: 0 0 .75rem;
+  line-height: 1.15;
+}
+.howto { color: var(--muted); margin: 0 0 1rem; }
+.example {
+  border-left: 3px solid var(--rule);
+  padding: .35rem 0 .35rem 1rem;
+  margin: 0 0 1.75rem;
+  color: var(--muted);
+}
+.example .demo { color: var(--ink); }
+.example .demo u { text-decoration-thickness: 1px; text-underline-offset: 4px; padding: 0 .4em; }
+
+.text p { margin: 0 0 1.1rem; line-height: 2.25; }
+.gap { white-space: nowrap; }
+.gap .n {
+  font-size: .7rem;
+  color: var(--muted);
+  vertical-align: super;
+  margin-right: .1rem;
+}
+.gap em { font-style: italic; font-weight: 700; margin-right: .35rem; }
+.gap input {
+  font: inherit;
+  width: 7.5em;
+  max-width: 48vw;
+  padding: .05rem .35rem;
+  border: none;
+  border-bottom: 2px solid var(--muted);
+  border-radius: 3px 3px 0 0;
+  background: var(--field);
+  color: var(--ink);
+}
+.gap input:focus { outline: none; border-bottom-color: var(--accent); box-shadow: 0 2px 0 0 var(--accent); }
+.gap input.ok { border-bottom-color: var(--ok); background: var(--ok-bg); }
+.gap input.bad { border-bottom-color: var(--bad); background: var(--bad-bg); }
+.gap input.shown { border-bottom-color: var(--reveal); color: var(--reveal); font-style: italic; }
+
+.controls {
+  display: flex; flex-wrap: wrap; align-items: center; gap: .6rem;
+  margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule);
+}
+button {
+  font: inherit; font-size: 1rem;
+  padding: .55rem 1.1rem;
+  border-radius: 6px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+}
+button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 700; }
+button:disabled { opacity: .45; cursor: default; }
+.score { margin-left: auto; font-weight: 700; min-height: 1.6em; }
+.score.good { color: var(--ok); }
+
+.key { margin-top: 1.25rem; display: none; }
+.key.open { display: block; }
+.key h3 { font-family: "IM Fell English", Garamond, serif; font-weight: 400; font-size: 1.35rem; margin: 0 0 .5rem; }
+.key ol { margin: 0; padding-left: 1.6rem; columns: 2 14rem; column-gap: 2rem; }
+.key li { break-inside: avoid; }
+
+footer.note {
+  margin-top: 2.5rem; padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: .85rem; line-height: 1.55; color: var(--muted);
+}
+footer.note strong { color: var(--ink); font-weight: 700; }
+@media (prefers-reduced-motion: no-preference) {
+  .gap input { transition: background-color .2s, border-color .2s; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Shakespeare: complete the words</h1>
+    <p>Three texts, fifteen gaps each. Work through them in any order.</p>
+  </header>
+
+  <nav id="tabs" aria-label="Exercises"></nav>
+  <main class="sheet" id="sheet"></main>
+
+  <footer class="note">
+    <strong>How this exercise was made</strong><br>
+    Mr Churchman and Claude (an AI assistant made by Anthropic) wrote this together in November 2026.
+    The 45 words come from our Shakespeare vocabulary list – I chose them. Claude wrote the texts around
+    them and built this page; I set the task, changed what needed changing, and checked every answer myself.
+    If a gap marks your answer wrong and you think you are right, tell me – that is my mistake, not the computer’s.
+  </footer>
+</div>
+
+<script>
+// Gaps are written as {answer|alternative}. The first letter of the first answer is shown.
+const EXERCISES = [
+  {
+    id: "poetry",
+    tab: "1 · The poet",
+    title: "Shakespeare the poet",
+    example: { letter: "l", rest: "yrical", before: "A sonnet is a short ", after: " poem about feelings." },
+    paras: [
+      "Most people know Shakespeare for his plays, but he also had a remarkable {talent} for poetry. In 1609, a collection of 154 {sonnets} appeared in print. Each of these poems has fourteen {lines}, and most of them are written in a {metre|meter} called iambic pentameter: every line has ten {syllables}, and each unstressed syllable is followed by a stressed one. One such pair of syllables is called an {iamb|iambus}.",
+      "A Shakespearean sonnet is made up of three {quatrains} and a final rhyming {couplet}, which often adds a surprising twist. Inside each quatrain the lines follow a {cross} rhyme, abab, so the full rhyme scheme is abab cdcd efef gg.",
+      "Many of the sonnets are {addressed} to a young man, for whom the speaker feels deep {affection}. Again and again they {deal} with the theme of time: beauty fades, and every human being is {mortal}. Yet in Sonnet 18, which begins “Shall I compare thee to a summer’s day?”, the poet promises that his verse will make his friend {immortal}. Shakespeare’s rich {imagery} – summer days, rough winds, the shining sun – makes these ideas easy to picture."
+    ]
+  },
+  {
+    id: "stage",
+    tab: "2 · On stage",
+    title: "Shakespeare on stage",
+    example: { letter: "e", rest: "loquent", before: "Shakespeare’s heroes are often wonderfully ", after: " speakers." },
+    paras: [
+      "As a {playwright}, Shakespeare wrote many plays, and around 38 of them have {survived}. They are usually divided into comedies, {tragedies} and history plays. Noble characters mostly speak in {blank} verse – unrhymed iambic pentameter – while servants and clowns often speak in {prose}.",
+      "In Othello, the {protagonist} is a respected general in the Venetian army. The {villain}, Iago, {persuades} him to believe that his wife Desdemona has been unfaithful. Slowly, Othello is destroyed by {jealousy}, and he only discovers Iago’s {betrayal} when it is too late. Because the {audience} knows that Desdemona is innocent while Othello does not, every scene is full of dramatic {irony}. Iago often shares his plans in a {soliloquy}, speaking alone on stage to the people watching.",
+      "Even in his darkest tragedies Shakespeare makes room for laughter: the drunken porter in Macbeth provides comic {relief}. And he can never resist a {pun}. In Romeo and Juliet, the dying Mercutio jokes, “Ask for me tomorrow, and you shall find me a grave man” – grave meaning both ‘serious’ and ‘dead and buried’."
+    ]
+  },
+  {
+    id: "england",
+    tab: "3 · His England",
+    title: "Shakespeare’s England",
+    example: { letter: "s", rest: "cholars", before: "Many ", after: " studied ancient Greek and Latin texts." },
+    paras: [
+      "Shakespeare grew up during the {reign} of Elizabeth I, who was queen of England from 1558 to 1603. This period is often called the Elizabethan {age}. Under her {rule}, trade and the arts began to {flourish}.",
+      "In 1588 the English {navy} {defeated} the Spanish Armada, and sailors such as Francis Drake undertook long {voyages} of discovery to {explore} distant parts of the world.",
+      "But it was also a dangerous time. England was divided by questions of religious {faith}, and there were several {conspiracies} against the queen. Public {executions} drew huge crowds. Regular {outbreaks} of disease threatened everyone, and the bubonic {plague} closed London’s theatres more than once. Meanwhile, rich nobles at {court} enjoyed a {lavish} lifestyle."
+    ]
+  }
+];
+
+const tabs = document.getElementById("tabs");
+const sheet = document.getElementById("sheet");
+const state = {}; // keeps typed answers per exercise while switching tabs
+
+EXERCISES.forEach(ex => {
+  const a = document.createElement("a");
+  a.href = "#" + ex.id;
+  a.textContent = ex.tab;
+  a.dataset.id = ex.id;
+  tabs.appendChild(a);
+});
+
+function esc(s) { return s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+function render(ex) {
+  const answers = [];
+  let n = 0;
+  const parasHtml = ex.paras.map(p => {
+    const parts = p.split(/(\{[^}]+\})/);
+    return "<p>" + parts.map(part => {
+      const m = part.match(/^\{([^}]+)\}$/);
+      if (!m) return esc(part);
+      const opts = m[1].split("|");
+      answers.push(opts);
+      n++;
+      const first = opts[0][0];
+      return `<span class="gap"><span class="n">${n}</span><em>${esc(first)}</em><input type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" data-i="${n - 1}" aria-label="Gap ${n}: word starting with ${esc(first)}"></span>`;
+    }).join("") + "</p>";
+  }).join("");
+
+  const e = ex.example;
+  sheet.innerHTML = `
+    <h2>${esc(ex.title)}</h2>
+    <p class="howto">Read the text and complete each word. The first letter is given – type only the missing letters. Each gap is one word from your vocabulary list.</p>
+    <p class="example"><span class="demo">${esc(e.before)}<em><strong>${e.letter}</strong></em> <u>${e.rest}</u>${esc(e.after)}</span><br>
+      You type: <strong>${e.rest}</strong></p>
+    <div class="text">${parasHtml}</div>
+    <div class="controls">
+      <button class="primary" id="check">Check answers</button>
+      <button id="show">Show answers</button>
+      <button id="reset">Start again</button>
+      <span class="score" id="score" aria-live="polite"></span>
+    </div>
+    <div class="key" id="key">
+      <h3>Answer key</h3>
+      <ol>${answers.map(o => `<li>${esc(o[0][0])} + <strong>${esc(o[0].slice(1))}</strong> = ${esc(o.join(" / "))}</li>`).join("")}</ol>
+    </div>`;
+
+  const inputs = [...sheet.querySelectorAll(".gap input")];
+  const saved = state[ex.id] || [];
+  inputs.forEach((inp, i) => {
+    inp.value = saved[i] || "";
+    inp.addEventListener("input", () => {
+      inp.classList.remove("ok", "bad", "shown");
+      state[ex.id] = inputs.map(x => x.value);
+    });
+    inp.addEventListener("keydown", ev => {
+      if (ev.key === "Enter") {
+        ev.preventDefault();
+        if (inputs[i + 1]) inputs[i + 1].focus(); else sheet.querySelector("#check").focus();
+      }
+    });
+  });
+
+  function isRight(i) {
+    const typed = inputs[i].value.trim().toLowerCase();
+    if (!typed) return false;
+    return answers[i].some(a => {
+      const full = a.toLowerCase();
+      return typed === full.slice(1) || typed === full; // accept the rest, or the whole word
+    });
+  }
+
+  sheet.querySelector("#check").addEventListener("click", () => {
+    let score = 0;
+    inputs.forEach((inp, i) => {
+      if (inp.classList.contains("shown")) return;
+      const ok = isRight(i);
+      inp.classList.toggle("ok", ok);
+      inp.classList.toggle("bad", !ok);
+      if (ok) score++;
+    });
+    const out = sheet.querySelector("#score");
+    out.textContent = `${score} / ${inputs.length} correct`;
+    out.classList.toggle("good", score === inputs.length);
+  });
+
+  sheet.querySelector("#show").addEventListener("click", () => {
+    inputs.forEach((inp, i) => {
+      if (!isRight(i)) {
+        inp.value = answers[i][0].slice(1);
+        inp.classList.remove("ok", "bad");
+        inp.classList.add("shown");
+      }
+    });
+    sheet.querySelector("#key").classList.add("open");
+  });
+
+  sheet.querySelector("#reset").addEventListener("click", () => {
+    inputs.forEach(inp => { inp.value = ""; inp.classList.remove("ok", "bad", "shown"); });
+    state[ex.id] = [];
+    const out = sheet.querySelector("#score");
+    out.textContent = ""; out.classList.remove("good");
+    sheet.querySelector("#key").classList.remove("open");
+    inputs[0].focus();
+  });
+}
+
+function route() {
+  const id = location.hash.slice(1);
+  const ex = EXERCISES.find(x => x.id === id) || EXERCISES[0];
+  tabs.querySelectorAll("a").forEach(a => {
+    if (a.dataset.id === ex.id) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  });
+  render(ex);
+}
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
