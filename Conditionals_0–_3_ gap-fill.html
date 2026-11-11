@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Conditionals 0–3: gap-fill</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F6F8F6; --sheet:#FFFFFF; --ink:#1F2933; --muted:#5B6670; --rule:#D3D9D4;
+  --accent:#2F5D8C; --accent-ink:#FFFFFF;
+  --ok:#2E7D4F; --ok-soft:#E3F1E8; --ok2:#7FB894;
+  --bad:#B5402E; --bad-soft:#F8E6E2;
+  --shown:#9AA3AB; --empty:#E4E8E5;
+  --serif:"Literata", Georgia, "Times New Roman", serif;
+  --sans:"Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#14181C; --sheet:#1C2227; --ink:#E5E9EC; --muted:#A3ADB6; --rule:#333D45;
+    --accent:#7FAAD6; --accent-ink:#0F1A26;
+    --ok:#6CC08C; --ok-soft:#1D3328; --ok2:#3F7A56;
+    --bad:#E8826F; --bad-soft:#3A2420;
+    --shown:#66717B; --empty:#2C343B;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#14181C; --sheet:#1C2227; --ink:#E5E9EC; --muted:#A3ADB6; --rule:#333D45;
+  --accent:#7FAAD6; --accent-ink:#0F1A26;
+  --ok:#6CC08C; --ok-soft:#1D3328; --ok2:#3F7A56;
+  --bad:#E8826F; --bad-soft:#3A2420;
+  --shown:#66717B; --empty:#2C343B;
+  color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 96px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.5}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+.wrap{max-width:46rem;margin:0 auto;padding:0 1.25rem}
+
+header.intro{padding:2.5rem 0 1.25rem}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.75rem,4.5vw,2.4rem);line-height:1.15;margin:0 0 .75rem;letter-spacing:-.01em}
+.intro p{margin:.4rem 0;max-width:38rem;color:var(--muted)}
+.intro p strong{color:var(--ink)}
+
+.progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--rule);padding:.7rem 0 .6rem}
+.marks{display:grid;grid-template-columns:repeat(20,1fr);gap:4px}
+.mark{appearance:none;border:0;padding:0;height:14px;border-radius:3px;background:var(--empty);cursor:pointer}
+.mark:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mark[data-s="ok1"]{background:var(--ok)}
+.mark[data-s="ok2"]{background:var(--ok2)}
+.mark[data-s="shown"]{background:var(--shown)}
+.mark[data-s="try"]{background:var(--empty);box-shadow:inset 0 -4px 0 var(--bad)}
+.legend{display:flex;flex-wrap:wrap;gap:.35rem 1.1rem;margin-top:.5rem;font-size:.85rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:.4rem}
+.legend i{display:inline-block;width:.8rem;height:.8rem;border-radius:2px}
+.legend b{color:var(--ink);font-weight:700}
+
+ol.items{list-style:none;margin:0;padding:1rem 0 0;counter-reset:item}
+.item{display:grid;grid-template-columns:2.4rem 1fr;gap:0 .5rem;padding:1.4rem 0;border-bottom:1px solid var(--rule)}
+.num{font-family:var(--serif);font-size:1.25rem;font-weight:600;color:var(--muted);line-height:1.6}
+.item.done-ok .num{color:var(--ok)}
+.item.done-shown .num{color:var(--shown)}
+.context{margin:0 0 .45rem;color:var(--muted);font-size:.95rem}
+.sentence{margin:0;font-family:var(--serif);font-size:1.15rem;line-height:2.15}
+.gap{display:inline-flex;align-items:baseline;gap:.3rem;white-space:nowrap}
+.gap input{font:inherit;font-family:var(--sans);font-size:1rem;color:var(--ink);background:var(--sheet);border:1.5px solid var(--rule);border-radius:4px;padding:.12rem .4rem;width:13ch;min-width:9ch;max-width:100%;line-height:1.4}
+.gap input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 30%,transparent)}
+.gap .base{font-family:var(--sans);font-size:.9rem;color:var(--muted)}
+.gap input.ok{border-color:var(--ok);background:var(--ok-soft)}
+.gap input.bad{border-color:var(--bad);background:var(--bad-soft)}
+.gap input:disabled{opacity:1;color:var(--ink);-webkit-text-fill-color:var(--ink)}
+
+.actions{display:flex;align-items:center;flex-wrap:wrap;gap:.6rem 1rem;margin-top:.6rem}
+button.check{font:inherit;font-weight:700;font-size:.95rem;background:var(--accent);color:var(--accent-ink);border:0;border-radius:4px;padding:.4rem 1rem;cursor:pointer}
+button.check:hover{filter:brightness(1.08)}
+button.check:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+button.check[hidden]{display:none}
+.tries{font-size:.85rem;color:var(--muted)}
+.feedback{font-size:.95rem;margin:0}
+.feedback.ok{color:var(--ok);font-weight:700}
+.feedback.bad{color:var(--bad)}
+.solution{margin-top:.75rem;padding:.7rem .9rem;border-left:3px solid var(--shown);background:var(--sheet);border-radius:0 4px 4px 0}
+.solution p{margin:.2rem 0}
+.solution .full{font-family:var(--serif);font-size:1.05rem}
+.solution .full em{font-style:normal;font-weight:600;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.solution .why{font-size:.9rem;color:var(--muted)}
+
+.finish{padding:1.75rem 0 1rem;display:flex;flex-wrap:wrap;gap:1rem;align-items:center}
+.finish p{margin:0;color:var(--muted)}
+button.reset{font:inherit;font-size:.95rem;background:transparent;color:var(--accent);border:1.5px solid var(--accent);border-radius:4px;padding:.35rem .9rem;cursor:pointer}
+button.reset:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+footer.note{margin:1.5rem 0 2.5rem;padding-top:1rem;border-top:1px solid var(--rule);font-size:.82rem;color:var(--muted);max-width:38rem}
+footer.note h2{font-size:.85rem;margin:0 0 .3rem;font-weight:700;color:var(--muted)}
+footer.note p{margin:0}
+
+@media (max-width:540px){
+  body{font-size:16px}
+  .item{grid-template-columns:1.8rem 1fr}
+  .sentence{font-size:1.08rem}
+  .marks{gap:3px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .mark{transition:background-color .25s}
+  .solution{animation:show .25s ease-out}
+  @keyframes show{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="intro">
+    <h1>Conditionals: zero, first, second and third</h1>
+    <p>Read the short situation first, then decide which conditional fits. Put the verb in brackets into the correct form. Some gaps need more than one word, for example <strong>would have gone</strong>. Short forms like <strong>won’t</strong> and <strong>wouldn’t</strong> are fine.</p>
+    <p>Check each sentence on its own. You have <strong>two tries</strong> per sentence; after the second, the answer is shown.</p>
+  </header>
+</div>
+
+<div class="progress">
+  <div class="wrap">
+    <div class="marks" id="marks" aria-label="Your progress, one mark per sentence"></div>
+    <div class="legend" aria-live="polite">
+      <span><i style="background:var(--ok)"></i>First try: <b id="c1">0</b></span>
+      <span><i style="background:var(--ok2)"></i>Second try: <b id="c2">0</b></span>
+      <span><i style="background:var(--shown)"></i>Answer shown: <b id="c3">0</b></span>
+      <span>Done: <b id="cd">0</b> of 20</span>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+  <ol class="items" id="items"></ol>
+  <div class="finish">
+    <p id="summary">Work through the sentences in any order.</p>
+    <button class="reset" id="reset" type="button">Start again</button>
+  </div>
+  <footer class="note">
+    <h2>How this exercise was made</h2>
+    <p>Mr Churchman and Claude (an AI assistant made by Anthropic) wrote this together in November 2026. I set the task; Claude wrote the sentences and built this page; I changed what needed changing and checked every answer myself. If a gap marks your answer wrong and you think you are right, tell me — that is my mistake, not the computer’s.</p>
+  </footer>
+</main>
+
+<script>
+/* Each gap: {base=answer|alternative|...}. The first answer is the one shown as the solution. */
+const ITEMS = [
+  {t:2, c:"My brother complains about his job every single day but never looks for a new one.",
+   s:"If I {be=were|was} in his position, I {start=would start|'d start} applying for other jobs today."},
+  {t:1, c:"It’s 7.40 and the bus leaves at 7.45. Hurry up!",
+   s:"If you {run=run}, you {catch=will catch|'ll catch} it."},
+  {t:1, c:"Don’t forget your keys! I’m out until ten tonight.",
+   s:"If you {not take=don't take|do not take} them, you {not be able=won't be able|will not be able} to get into the flat."},
+  {t:3, c:"I didn’t know it was your birthday yesterday — nobody told me!",
+   s:"If I {know=had known|'d known}, I {bake=would have baked|'d have baked} you a cake."},
+  {t:0, c:"A simple fact about the human body:",
+   s:"if you {not drink=don't drink|do not drink} enough water, you {get=get} headaches more easily."},
+  {t:2, c:"Marco would love to study in Canada, but at the moment the fees are far too high for him.",
+   s:"If he {have=had} enough money, he {apply=would apply|'d apply} to a university in Vancouver."},
+  {t:3, c:"Last Saturday Lena overslept, missed her train to Bern and arrived after the concert had started.",
+   s:"If her alarm {go off=had gone off|'d gone off} on time, she {not miss=wouldn't have missed|would not have missed|'d not have missed} the beginning."},
+  {t:3, c:"Grandpa never learned to swim properly because there was no pool in his village when he was a boy. He often says that",
+   s:"if there {be=had been} a pool nearby, he {become=would have become|'d have become} a competitive swimmer."},
+  {t:0, c:"Our cat has a very strict routine.",
+   s:"Whenever someone {open=opens} the fridge, she {come=comes} running into the kitchen."},
+  {t:1, c:"Tickets for the festival go on sale at 9 a.m. tomorrow, and they usually sell out within minutes.",
+   s:"If we {not log in=don't log in|do not log in} at exactly nine, we {not get=won't get|will not get} any."},
+  {t:2, c:"Switzerland doesn’t have a coastline, of course. But imagine:",
+   s:"if it {have=had} one, Swiss teenagers {spend=would spend|'d spend} much more time at the beach."},
+  {t:0, c:"At our school the attendance rules are simple and apply to everyone.",
+   s:"If a student {miss=misses} more than three lessons without an excuse, the class teacher {inform=informs} the parents."},
+  {t:1, c:"The forecast for tomorrow says there’s a 90% chance of rain.",
+   s:"If it {rain=rains} tomorrow, we {move=will move|'ll move|are going to move} the barbecue indoors."},
+  {t:3, c:"Sara didn’t save her presentation, and her laptop crashed the night before the deadline.",
+   s:"If she {save=had saved|'d saved} it, she {not have to=wouldn't have had to|would not have had to} start again from scratch."},
+  {t:2, c:"I’m terrified of flying, so I always travel by train. Honestly,",
+   s:"if someone {offer=offered} me a free flight to New York, I {not accept=wouldn't accept|would not accept} it."},
+  {t:0, c:"Every time I forget to water my basil, it’s the same story.",
+   s:"If basil plants {not get=don't get|do not get} enough water, their leaves {turn=turn} yellow within a day."},
+  {t:2, c:"Tim lives in a tiny flat in the city centre, and his landlord doesn’t allow pets.",
+   s:"If his landlord {allow=allowed} pets, he {adopt=would adopt|'d adopt} a dog straight away."},
+  {t:3, c:"We lost the match in the last minute because our goalkeeper slipped on the wet grass.",
+   s:"If the pitch {not be=hadn't been|had not been} so wet, he {catch=would have caught|'d have caught} the ball easily."},
+  {t:1, c:"Our teacher has just reminded us that the essay is due this Friday.",
+   s:"If anyone {submit=submits} it after Friday, they {lose=will lose|'ll lose} points."},
+  {t:0, c:"Many plants react to light in the same way every evening.",
+   s:"When it {get=gets} dark, many flowers {close=close} their petals."}
+];
+
+const WHY = {
+  0:"Zero conditional: a general truth or something that always happens. If / when + present simple, present simple.",
+  1:"First conditional: a real possibility in the future. If + present simple, will + infinitive.",
+  2:"Second conditional: an unreal or unlikely situation now or in the future. If + past simple, would + infinitive.",
+  3:"Third conditional: an unreal situation in the past — it didn’t happen. If + past perfect, would have + past participle."
+};
+
+const curly = s => s.replace(/'/g,"’");
+function norm(s){
+  return s.toLowerCase()
+    .replace(/[’‘‛`´ʼʹ′＇]/g,"'")
+    .replace(/[.,!?;:]+$/,"")
+    .replace(/\s+/g," ").trim()
+    .replace(/\bwon't\b/g,"will not")
+    .replace(/\bcan't\b/g,"can not")
+    .replace(/\bcannot\b/g,"can not")
+    .replace(/n't\b/g," not")
+    .replace(/'ll\b/g," will")
+    .replace(/\s+/g," ").trim();
+}
+
+const state = []; // {tries, status: null|'ok1'|'ok2'|'shown'}
+const listEl = document.getElementById("items");
+const marksEl = document.getElementById("marks");
+
+function build(){
+  listEl.innerHTML = ""; marksEl.innerHTML = ""; state.length = 0;
+  ITEMS.forEach((it, i) => {
+    state.push({tries:0, status:null});
+    const gaps = [];
+    const li = document.createElement("li");
+    li.className = "item"; li.id = "item-" + (i+1);
+
+    const num = document.createElement("div");
+    num.className = "num"; num.textContent = i+1; num.setAttribute("aria-hidden","true");
+
+    const body = document.createElement("div");
+    const ctx = document.createElement("p");
+    ctx.className = "context"; ctx.textContent = it.c;
+    const sen = document.createElement("p");
+    sen.className = "sentence";
+
+    let last = 0, g = 0;
+    const re = /\{([^=}]+)=([^}]+)\}/g; let m;
+    while ((m = re.exec(it.s))){
+      sen.append(document.createTextNode(curly(it.s.slice(last, m.index))));
+      const wrap = document.createElement("span"); wrap.className = "gap";
+      const inp = document.createElement("input");
+      inp.type = "text"; inp.autocomplete = "off"; inp.spellcheck = false;
+      inp.setAttribute("autocapitalize","off"); inp.setAttribute("autocorrect","off");
+      g++;
+      inp.setAttribute("aria-label", `Sentence ${i+1}, gap ${g}: ${m[1]}`);
+      inp.addEventListener("input", () => {
+        inp.classList.remove("bad");
+        inp.style.width = Math.max(13, inp.value.length + 2) + "ch";
+      });
+      inp.addEventListener("keydown", e => { if (e.key === "Enter"){ e.preventDefault(); check(i); }});
+      const base = document.createElement("span");
+      base.className = "base"; base.textContent = "(" + m[1] + ")";
+      wrap.append(inp, base); sen.append(wrap);
+      gaps.push({input:inp, answers:m[2].split("|")});
+      last = re.lastIndex;
+    }
+    sen.append(document.createTextNode(curly(it.s.slice(last))));
+
+    const actions = document.createElement("div"); actions.className = "actions";
+    const btn = document.createElement("button");
+    btn.type = "button"; btn.className = "check"; btn.textContent = "Check";
+    btn.setAttribute("aria-label", `Check sentence ${i+1}`);
+    btn.addEventListener("click", () => check(i));
+    const tries = document.createElement("span"); tries.className = "tries"; tries.textContent = "2 tries left";
+    const fb = document.createElement("p"); fb.className = "feedback"; fb.setAttribute("aria-live","polite");
+    actions.append(btn, tries, fb);
+
+    body.append(ctx, sen, actions);
+    li.append(num, body);
+    listEl.append(li);
+
+    const mk = document.createElement("button");
+    mk.type = "button"; mk.className = "mark"; mk.title = "Sentence " + (i+1);
+    mk.setAttribute("aria-label", "Go to sentence " + (i+1));
+    mk.addEventListener("click", () => {
+      li.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+      const first = gaps.find(x => !x.input.disabled); if (first) first.input.focus({preventScroll:true});
+    });
+    marksEl.append(mk);
+
+    state[i].el = {li, gaps, btn, tries, fb, body, mark:mk};
+  });
+  tally();
+}
+
+function check(i){
+  const st = state[i]; const {gaps, btn, tries, fb, body, li, mark} = st.el;
+  if (st.status) return;
+  if (gaps.some(g => !g.input.value.trim())){
+    fb.className = "feedback bad"; fb.textContent = "Fill in every gap before you check.";
+    return;
+  }
+  st.tries++;
+  let allOk = true;
+  gaps.forEach(g => {
+    const ok = g.answers.some(a => norm(a) === norm(g.input.value));
+    g.input.classList.toggle("ok", ok);
+    g.input.classList.toggle("bad", !ok);
+    if (ok) g.input.disabled = true; else allOk = false;
+  });
+
+  if (allOk){
+    st.status = st.tries === 1 ? "ok1" : "ok2";
+    fb.className = "feedback ok";
+    fb.textContent = st.tries === 1 ? "Correct." : "Correct on the second try.";
+    finish(i, "done-ok");
+  } else if (st.tries < 2){
+    fb.className = "feedback bad";
+    fb.textContent = "Not yet. Look again at the gaps marked in red.";
+    tries.textContent = "1 try left";
+    mark.dataset.s = "try";
+    const firstBad = gaps.find(g => g.input.classList.contains("bad"));
+    if (firstBad) firstBad.input.focus();
+  } else {
+    st.status = "shown";
+    gaps.forEach(g => g.input.disabled = true);
+    fb.className = "feedback bad"; fb.textContent = "Here is the answer.";
+    const sol = document.createElement("div"); sol.className = "solution";
+    const full = document.createElement("p"); full.className = "full";
+    let k = 0;
+    full.innerHTML = escapeHTML(curly(ITEMS[i].s)).replace(/\{([^=}]+)=([^}]+)\}/g, (_, b, a) =>
+      "<em>" + escapeHTML(curly(a.split("|")[0])) + "</em>");
+    const why = document.createElement("p"); why.className = "why"; why.textContent = WHY[ITEMS[i].t];
+    sol.append(full, why);
+    body.append(sol);
+    finish(i, "done-shown");
+  }
+  tally();
+}
+
+function finish(i, cls){
+  const {btn, tries, li, mark} = state[i].el;
+  btn.hidden = true; tries.textContent = "";
+  li.classList.add(cls);
+  mark.dataset.s = state[i].status;
+  if (state[i].status !== "shown"){
+    const why = document.createElement("p");
+    why.className = "tries"; why.style.marginTop = ".35rem";
+    why.textContent = WHY[ITEMS[i].t];
+    state[i].el.body.append(why);
+  }
+}
+
+function escapeHTML(s){ return s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function tally(){
+  const n = s => state.filter(x => x.status === s).length;
+  const a = n("ok1"), b = n("ok2"), c = n("shown"), d = a + b + c;
+  document.getElementById("c1").textContent = a;
+  document.getElementById("c2").textContent = b;
+  document.getElementById("c3").textContent = c;
+  document.getElementById("cd").textContent = d;
+  document.getElementById("summary").textContent = d === 20
+    ? `Finished. You got ${a + b} of 20 right (${a} on the first try). Look again at the sentences in grey and the type of conditional each one needed.`
+    : "Work through the sentences in any order.";
+}
+
+document.getElementById("reset").addEventListener("click", () => {
+  if (state.some(s => s.tries > 0) && !confirm("Clear all your answers and start again?")) return;
+  build(); window.scrollTo(0,0);
+});
+
+build();
+</script>
+</body>
+</html>
