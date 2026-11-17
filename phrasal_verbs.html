@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phrasal Verbs – Self-Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f6f3ec; --paper:#fffdf8; --ink:#1f2328; --muted:#6b6f76; --line:#e2dccf;
+    --accent:#2f5d8a; --accent-soft:#e3ecf5;
+    --ok:#1e7a46; --ok-soft:#e2f3e8; --bad:#b3261e; --bad-soft:#fbe7e5; --rev:#7a5a00; --rev-soft:#fbf1d4;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 "Atkinson Hyperlegible",system-ui,sans-serif}
+  .wrap{max-width:820px;margin:0 auto;padding:32px 20px 48px}
+  header h1{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:2.1rem;margin:0 0 4px;letter-spacing:-.01em}
+  header p{margin:0 0 24px;color:var(--muted)}
+  nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  nav button{font:inherit;font-size:.95rem;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--ink);cursor:pointer}
+  nav button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+  section{display:none;background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:24px 24px 20px}
+  section.active{display:block}
+  h2{font-family:Fraunces,Georgia,serif;font-weight:600;font-size:1.4rem;margin:0 0 6px}
+  .task{margin:0 0 18px;color:var(--muted)}
+  .box{display:flex;flex-wrap:wrap;gap:6px 14px;border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin-bottom:18px;font-weight:700;color:var(--accent)}
+  ol{padding-left:1.6em;margin:0}
+  ol>li{margin:0 0 14px;padding-left:4px}
+  .pair{list-style:none;padding:0;margin:4px 0 0}
+  .pair li{display:flex;gap:10px;align-items:flex-start;margin:0 0 8px}
+  .li-btns{display:flex;gap:4px;flex-shrink:0;margin-top:2px}
+  .li-btns button{font:700 .85rem "Atkinson Hyperlegible",sans-serif;width:32px;height:30px;border-radius:7px;border:1.5px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+  .li-btns button.on{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+  .li-btns.ok button.on{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+  .li-btns.bad button.on{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+  .li-btns.rev button.on{border-color:var(--rev);background:var(--rev-soft);color:var(--rev)}
+  input.gap{font:inherit;border:none;border-bottom:2px solid #b9b2a3;background:#faf8f2;padding:0 4px;margin:0 2px;text-align:center;border-radius:4px 4px 0 0;color:var(--ink)}
+  input.gap:focus{outline:none;border-bottom-color:var(--accent);background:var(--accent-soft)}
+  input.ok,textarea.ok{border-color:var(--ok)!important;background:var(--ok-soft)!important}
+  input.bad,textarea.bad{border-color:var(--bad)!important;background:var(--bad-soft)!important}
+  input.rev,textarea.rev{border-color:var(--rev)!important;background:var(--rev-soft)!important}
+  .wrong{display:block;margin-bottom:6px}
+  textarea.fix{width:100%;font:inherit;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;resize:vertical;min-height:2.6em;background:#faf8f2}
+  textarea.fix:focus{outline:none;border-color:var(--accent);background:#fff}
+  .row{display:flex;gap:10px;align-items:center;margin-top:6px;flex-wrap:wrap}
+  .small{font:inherit;font-size:.85rem;padding:3px 10px;border-radius:6px;border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer}
+  .explain{display:none;font-size:.95rem;background:var(--rev-soft);border-radius:8px;padding:8px 12px;margin-top:6px}
+  .explain.show{display:block}
+  .explain b{color:var(--rev)}
+  .actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:22px;padding-top:16px;border-top:1px solid var(--line)}
+  .actions button{font:inherit;font-size:.95rem;padding:9px 18px;border-radius:9px;cursor:pointer;border:1.5px solid var(--accent)}
+  .primary{background:var(--accent);color:#fff}
+  .secondary{background:#fff;color:var(--accent)}
+  .score{margin-left:auto;font-weight:700}
+  .hint{font-size:.9rem;color:var(--muted);margin-top:8px}
+  footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--line);font:12.5px/1.6 "IBM Plex Mono",monospace;color:var(--muted)}
+  footer strong{color:var(--ink);font-weight:400}
+  @media (max-width:560px){ section{padding:18px 14px} .wrap{padding:20px 12px 40px} header h1{font-size:1.7rem} .score{margin-left:0;width:100%} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Phrasal Verbs</h1>
+    <p>Three exercises for self-study. Do them in any order. Click <em>Check</em> to see how you did.</p>
+  </header>
+
+  <nav role="tablist">
+    <button role="tab" aria-selected="true" data-tab="ex1">1 · Particles</button>
+    <button role="tab" aria-selected="false" data-tab="ex2">2 · Literal or idiomatic?</button>
+    <button role="tab" aria-selected="false" data-tab="ex3">3 · Spot the mistake</button>
+  </nav>
+
+  <section id="ex1" class="active">
+    <h2>Exercise 1</h2>
+    <p class="task">Complete the sentences with the missing particle(s).</p>
+    <ol id="ex1-list"></ol>
+    <div class="actions">
+      <button class="primary" data-check="1">Check</button>
+      <button class="secondary" data-show="1">Show answers</button>
+      <button class="secondary" data-reset="1">Start again</button>
+      <span class="score" id="score1"></span>
+    </div>
+  </section>
+
+  <section id="ex2">
+    <h2>Exercise 2</h2>
+    <p class="task">Complete each pair of sentences with the same phrasal verb in the correct form. Then choose <b>L</b> (literal) or <b>I</b> (idiomatic).</p>
+    <div class="box"><span>take off</span><span>pick up</span><span>put up</span><span>hold on</span><span>wear out</span><span>break up</span><span>turn up</span><span>settle down</span><span>set off</span><span>stand up</span></div>
+    <ol id="ex2-list"></ol>
+    <div class="actions">
+      <button class="primary" data-check="2">Check</button>
+      <button class="secondary" data-show="2">Show answers</button>
+      <button class="secondary" data-reset="2">Start again</button>
+      <span class="score" id="score2"></span>
+    </div>
+  </section>
+
+  <section id="ex3">
+    <h2>Exercise 3</h2>
+    <p class="task">Each sentence has one mistake. Correct the sentence in the box. Then click <em>Check</em>.</p>
+    <ol id="ex3-list"></ol>
+    <div class="actions">
+      <button class="primary" data-check="3">Check</button>
+      <button class="secondary" data-show="3">Show answers</button>
+      <button class="secondary" data-reset="3">Start again</button>
+      <span class="score" id="score3"></span>
+    </div>
+    <p class="hint">Tip: you only need to change the wrong part. Punctuation and capital letters don't matter.</p>
+  </section>
+
+  <footer>
+    <strong>How these exercises were made</strong><br>
+    Mr Churchman and Claude (an AI assistant made by Anthropic) wrote these together in November 2026. The 19 phrasal verbs come from our class list — I chose them. Claude wrote the sentences and built this page; I set the tasks, changed what needed changing, and checked every answer myself. If the page marks your answer wrong and you think you are right, tell me — that is my mistake, not the computer's.
+  </footer>
+</div>
+
+<script>
+/* ---------- Data ---------- */
+// {answer} marks a gap; alternatives separated by |
+const EX1 = [
+  "Can you pick me {up} from the station at seven?",
+  "Could you look {after} my cat while I'm on holiday?",
+  "The baby took ages to settle {down} last night.",
+  "She grew {up} in a small village near Lucerne.",
+  "I've been looking {for} my keys all morning. Have you seen them?",
+  "It takes real courage to stand {up} {to} your boss, even if you know you're right.",
+  "How do you get {on|along} {with} your new flatmate?",
+  "My big sister always stood {up} {for} me when other kids were mean to me.",
+  "She's been feeling down all week. Let's take her out and cheer her {up}.",
+  "It's Friday night, but I'm exhausted, so I think I'll stay {in}."
+];
+
+const EX2 = [
+  [["Her singing career really {took} {off} after she appeared on TV.","I"],
+   ["It's warm in here. Why don't you {take} your jacket {off}?","L"]],
+  [["Could you {pick} that pen {up} for me? It's under your chair.","L"],
+   ["I never had lessons. I just {picked} Spanish {up} while I was living in Madrid.","I"]],
+  [["We need someone to {put} these posters {up} in the corridor.","L"],
+   ["My aunt {put} us {up} when we visited Hamburg last summer.","I"]],
+  [["{Hold} {on} a second. I'll just get my coat.","I"],
+   ["The bus is going to brake, so {hold} {on} tight!","L"]],
+  [["I walk so much that I {wear} {out} a pair of trainers every few months.","L"],
+   ["Three hours of shopping with my little cousins completely {wore} me {out}.","I"]],
+  [["The ship hit the rocks and slowly {broke} {up} in the storm.","L"],
+   ["Have you heard? Tom and Leonie {broke} {up} last weekend.","I"]],
+  [["We waited for an hour, but Jan never {turned} {up}.","I"],
+   ["Can you {turn} the radio {up}? I can't hear the news.","L"]],
+  [["After years of travelling, she {settled} {down} in a small town near Bern and opened a café.","I"],
+   ["The dog turned round three times before it {settled} {down} in its basket.","L"]],
+  [["We {set} {off} at 6 a.m. to beat the traffic on the motorway.","L"],
+   ["The minister's comments {set} {off} a heated debate on social media.","I"]],
+  [["I waited outside the cinema for an hour. He completely {stood} me {up}!","I"],
+   ["Everyone {stood} {up} when the head teacher walked into the hall.","L"]]
+];
+
+const EX3 = [
+  {wrong:"I've been looking after my glasses for ages, but I can't find them anywhere.",
+   right:["I've been looking for my glasses for ages, but I can't find them anywhere."],
+   why:"<b>looking for</b> – <i>look after</i> means take care of; <i>look for</i> means try to find."},
+  {wrong:"She grows up in Bern, but now she lives in Zurich.",
+   right:["She grew up in Bern, but now she lives in Zurich."],
+   why:"<b>grew up</b> – her childhood is finished, so we need the past simple."},
+  {wrong:"It's freezing in here, so I'm not taking off it.",
+   right:["It's freezing in here, so I'm not taking it off."],
+   why:"<b>taking it off</b> – a pronoun (<i>it, me, them …</i>) goes between the verb and the particle."},
+  {wrong:"We set up at dawn and reached the mountain hut by midday.",
+   right:["We set off at dawn and reached the mountain hut by midday."],
+   why:"<b>set off</b> – wrong particle. <i>Set off</i> = start a journey."},
+  {wrong:"I've never really got on my brother with.",
+   right:["I've never really got on with my brother.","I've never really gotten on with my brother."],
+   why:"<b>got on with my brother</b> – <i>get on with</i> can't be separated."},
+  {wrong:"Lena and Max have broken up last month.",
+   right:["Lena and Max broke up last month."],
+   why:"<b>broke up</b> – <i>last month</i> is a finished time, so we need the past simple."},
+  {wrong:"We waited for ages, but Marco never came up.",
+   right:["We waited for ages, but Marco never turned up.","We waited for ages, but Marco never showed up."],
+   why:"<b>turned up</b> – wrong verb. <i>Turn up</i> = arrive / appear."},
+  {wrong:"Sorry for interrupting. Please carry in with what you were saying.",
+   right:["Sorry for interrupting. Please carry on with what you were saying."],
+   why:"<b>carry on with</b> – wrong particle. <i>Carry on</i> = continue."},
+  {wrong:"You need to stand your boss up to. She can't treat you like that.",
+   right:["You need to stand up to your boss. She can't treat you like that."],
+   why:"<b>stand up to your boss</b> – <i>stand up to</i> can't be separated. (Careful: <i>stand someone up</i> means not to come to a date!)"},
+  {wrong:"I was feeling really low, but your message cheered up me.",
+   right:["I was feeling really low, but your message cheered me up."],
+   why:"<b>cheered me up</b> – a pronoun goes between the verb and the particle."}
+];
+
+/* ---------- Helpers ---------- */
+const norm = s => s.toLowerCase()
+  .replace(/[’‘`´]/g,"'")
+  .replace(/\bi have\b/g,"i've").replace(/\bit is\b/g,"it's").replace(/\bi am\b/g,"i'm")
+  .replace(/\bcannot\b/g,"can't").replace(/\bcan not\b/g,"can't")
+  .replace(/[.,!?;:"]/g," ")
+  .replace(/\s+/g," ").trim();
+
+function renderGaps(text){
+  return text.replace(/\{([^}]+)\}/g,(m,ans)=>{
+    const len = Math.max(...ans.split("|").map(a=>a.length));
+    const w = Math.max(4.2, len*0.72+2.2);
+    return `<input class="gap" data-ans="${ans}" style="width:${w}em" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="gap">`;
+  });
+}
+const gapOk = inp => inp.dataset.ans.split("|").some(a=>norm(a)===norm(inp.value));
+const clearMarks = el => el.classList.remove("ok","bad","rev");
+
+/* ---------- Build ---------- */
+document.getElementById("ex1-list").innerHTML =
+  EX1.map(s=>`<li>${renderGaps(s)}</li>`).join("");
+
+document.getElementById("ex2-list").innerHTML = EX2.map(pair=>
+  `<li><ul class="pair">${pair.map(([s,li])=>`
+    <li><span class="li-btns" data-li="${li}"><button type="button" data-v="L" aria-label="literal">L</button><button type="button" data-v="I" aria-label="idiomatic">I</button></span>
+    <span>${renderGaps(s)}</span></li>`).join("")}</ul></li>`).join("");
+
+document.getElementById("ex3-list").innerHTML = EX3.map((it,i)=>`
+  <li><span class="wrong">${it.wrong}</span>
+  <textarea class="fix" data-i="${i}" rows="1" spellcheck="false">${it.wrong}</textarea>
+  <div class="row"><button type="button" class="small" data-explain="${i}">Show answer</button></div>
+  <div class="explain" id="exp${i}">${it.right[0]}<br>${it.why}</div></li>`).join("");
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected", x===b));
+  document.querySelectorAll("section").forEach(s=>s.classList.toggle("active", s.id===b.dataset.tab));
+  window.scrollTo({top:0,behavior:"smooth"});
+}));
+
+/* ---------- L / I toggles ---------- */
+document.getElementById("ex2-list").addEventListener("click",e=>{
+  const b = e.target.closest(".li-btns button"); if(!b) return;
+  const grp = b.parentElement;
+  grp.querySelectorAll("button").forEach(x=>x.classList.toggle("on", x===b));
+  grp.classList.remove("ok","bad","rev");
+});
+
+/* ---------- Clear marking when typing ---------- */
+document.addEventListener("input",e=>{
+  if(e.target.matches("input.gap, textarea.fix")) clearMarks(e.target);
+});
+
+/* ---------- Ex3 explanations ---------- */
+document.getElementById("ex3-list").addEventListener("click",e=>{
+  const b = e.target.closest("[data-explain]"); if(!b) return;
+  const ex = document.getElementById("exp"+b.dataset.explain);
+  ex.classList.toggle("show");
+  b.textContent = ex.classList.contains("show") ? "Hide answer" : "Show answer";
+});
+
+/* ---------- Check / Show / Reset ---------- */
+const sec = n => document.getElementById("ex"+n);
+
+function check(n){
+  const s = sec(n);
+  if(n===1){
+    let right=0;
+    s.querySelectorAll("#ex1-list>li").forEach(li=>{
+      let all=true;
+      li.querySelectorAll("input.gap").forEach(inp=>{
+        clearMarks(inp); const ok=gapOk(inp); inp.classList.add(ok?"ok":"bad"); if(!ok) all=false;
+      });
+      if(all) right++;
+    });
+    document.getElementById("score1").textContent = `${right} / 10 sentences correct`;
+  }
+  if(n===2){
+    let gaps=0, li=0;
+    s.querySelectorAll("input.gap").forEach(inp=>{
+      clearMarks(inp); const ok=gapOk(inp); inp.classList.add(ok?"ok":"bad"); if(ok) gaps++;
+    });
+    s.querySelectorAll(".li-btns").forEach(g=>{
+      g.classList.remove("ok","bad","rev");
+      const on = g.querySelector("button.on");
+      if(!on){ g.classList.add("bad"); return; }
+      const ok = on.dataset.v===g.dataset.li; g.classList.add(ok?"ok":"bad"); if(ok) li++;
+    });
+    document.getElementById("score2").textContent = `Gaps: ${gaps} / 40 · L/I: ${li} / 20`;
+  }
+  if(n===3){
+    let right=0;
+    s.querySelectorAll("textarea.fix").forEach(t=>{
+      clearMarks(t);
+      const ok = EX3[t.dataset.i].right.some(r=>norm(r)===norm(t.value));
+      t.classList.add(ok?"ok":"bad"); if(ok) right++;
+    });
+    document.getElementById("score3").textContent = `${right} / 10 correct`;
+  }
+}
+
+function show(n){
+  const s = sec(n);
+  if(n===1||n===2){
+    s.querySelectorAll("input.gap").forEach(inp=>{
+      if(!gapOk(inp)){ inp.value = inp.dataset.ans.split("|")[0]; clearMarks(inp); inp.classList.add("rev"); }
+    });
+  }
+  if(n===2){
+    s.querySelectorAll(".li-btns").forEach(g=>{
+      const on = g.querySelector("button.on");
+      if(!on || on.dataset.v!==g.dataset.li){
+        g.querySelectorAll("button").forEach(b=>b.classList.toggle("on", b.dataset.v===g.dataset.li));
+        g.classList.remove("ok","bad"); g.classList.add("rev");
+      }
+    });
+  }
+  if(n===3){
+    s.querySelectorAll("textarea.fix").forEach(t=>{
+      const it = EX3[t.dataset.i];
+      if(!it.right.some(r=>norm(r)===norm(t.value))){ t.value = it.right[0]; clearMarks(t); t.classList.add("rev"); }
+    });
+    s.querySelectorAll(".explain").forEach(x=>x.classList.add("show"));
+    s.querySelectorAll("[data-explain]").forEach(b=>b.textContent="Hide answer");
+  }
+  document.getElementById("score"+n).textContent = "Answers shown in yellow";
+}
+
+function reset(n){
+  const s = sec(n);
+  s.querySelectorAll("input.gap").forEach(inp=>{ inp.value=""; clearMarks(inp); });
+  s.querySelectorAll(".li-btns").forEach(g=>{ g.classList.remove("ok","bad","rev"); g.querySelectorAll("button").forEach(b=>b.classList.remove("on")); });
+  s.querySelectorAll("textarea.fix").forEach(t=>{ t.value = EX3[t.dataset.i].wrong; clearMarks(t); });
+  s.querySelectorAll(".explain").forEach(x=>x.classList.remove("show"));
+  s.querySelectorAll("[data-explain]").forEach(b=>b.textContent="Show answer");
+  document.getElementById("score"+n).textContent = "";
+}
+
+document.addEventListener("click",e=>{
+  const t=e.target;
+  if(t.dataset.check) check(+t.dataset.check);
+  if(t.dataset.show) show(+t.dataset.show);
+  if(t.dataset.reset) reset(+t.dataset.reset);
+});
+
+/* Enter in a gap jumps to the next gap */
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter" && e.target.matches("input.gap")){
+    e.preventDefault();
+    const gaps=[...e.target.closest("section").querySelectorAll("input.gap")];
+    const nx=gaps[gaps.indexOf(e.target)+1]; if(nx) nx.focus();
+  }
+});
+</script>
+</body>
+</html>
